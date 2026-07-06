@@ -23,8 +23,8 @@ func perform_action() -> void:
 		Global.player_data.player_act = act_number
 		
 		### parameters of grid
-		var floors_per_act: int = action_interceptor_processor.get_shadowed_action_values("floors_per_act", 10)
-		var locations_per_floor: int = action_interceptor_processor.get_shadowed_action_values("locations_per_floor", 5)
+		var floors_per_act: int = action_interceptor_processor.get_shadowed_action_values("floors_per_act", 2)
+		var locations_per_floor: int = action_interceptor_processor.get_shadowed_action_values("locations_per_floor", 1)
 		var location_obfuscation_rate: float = action_interceptor_processor.get_shadowed_action_values("location_obfuscation_rate", 0.5) # how often locations will be obfuscated
 		var location_non_combat_event_rate: float = action_interceptor_processor.get_shadowed_action_values("location_non_combat_event_rate", 0.3) # how often locations will be a non combat event
 		

@@ -23,7 +23,10 @@ func wait() -> void:
 			ActionHandler.clear_all_actions()
 			var food_count: int = 0 - Global.player_data.player_deck.size()
 			Global.player_data.add_food(food_count/10)
-			Global.player_data.add_influence(-1)
+			if Global.player_food <= 0:
+				Global.end_run(Global.RUN_ENDS.LOSS)
+			if Global.player_data.player_deck.size() >= 100:
+				Global.end_run(Global.RUN_ENDS.VICTORY)
 			end_turn()
 		END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ACTIONS:
 			# prevents further card plays but finishes the rest of the current action stack
@@ -33,7 +36,10 @@ func wait() -> void:
 				await ActionHandler.actions_ended
 			var food_count: int = 0 - Global.player_data.player_deck.size()
 			Global.player_data.add_food(food_count/10)
-			Global.player_data.add_influence(-1)
+			if Global.player_food <= 0:
+				Global.end_run(Global.RUN_ENDS.LOSS)
+			if Global.player_data.player_deck.size() >= 100:
+				Global.end_run(Global.RUN_ENDS.VICTORY)
 			end_turn()
 		END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS, _:
 			# default
@@ -43,7 +49,10 @@ func wait() -> void:
 				await ActionHandler.actions_ended
 			var food_count: int = 0 - Global.player_data.player_deck.size()
 			Global.player_data.add_food(food_count/10)
-			Global.player_data.add_influence(-1)
+			if Global.player_food <= 0:
+				Global.end_run(Global.RUN_ENDS.LOSS)
+			if Global.player_data.player_deck.size() >= 100:
+				Global.end_run(Global.RUN_ENDS.VICTORY)
 			end_turn()
 
 func disable():

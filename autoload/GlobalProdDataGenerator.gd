@@ -1127,7 +1127,7 @@ func add_acts() -> void:
 	act_1.act_easy_combat_event_pool_object_id = "event_pool_act_1_easy"
 	act_1.act_hard_combat_event_pool_object_id = "event_pool_act_1_hard"
 	act_1.act_miniboss_event_pool_object_id = "event_pool_act_1_miniboss"
-	act_1.act_non_combat_event_pool_object_id = "event_pool_act_1_dialogue"
+	act_1.act_non_combat_event_pool_object_id = "event_pool_act_1_easy"
 	act_1.act_boss_event_pool_object_id = "event_pool_act_1_boss"
 	
 	Global.register_rod(act_1)
@@ -2367,10 +2367,10 @@ func add_card_decorators() -> void:
 func add_cards() -> void:
 	add_card_basics()
 	add_cards_misc()
-	add_cards_red()
-	add_cards_blue()
+	add_cards_black()
 	add_cards_green()
-	add_cards_orange()
+	add_cards_purple()
+	add_cards_gold()
 
 func add_card_basics() -> void:
 	var colors: Array[String] = []
@@ -2380,44 +2380,42 @@ func add_card_basics() -> void:
 	
 	for i: int in len(colors):
 		# Basic attack card
-		var card_basic_attack: CardData = CardData.new("card_basic_attack_{0}".format([colors[i]]))
-		card_basic_attack.card_name = "Basic Attack"
-		card_basic_attack.card_color_id = "color_{0}".format([colors[i]])
-		card_basic_attack.card_description = "Attack for [damage] damage."
-		card_basic_attack.card_texture_path = "external/sprites/cards/{0}/card_basic_attack_{0}.png".format([colors[i]])
-		card_basic_attack.card_type = CardData.CARD_TYPES.ATTACK
-		card_basic_attack.card_rarity = CardData.CARD_RARITIES.BASIC
-		card_basic_attack.card_keyword_object_ids = []
-		card_basic_attack.card_values = {"damage": 7, "number_of_attacks": 1}
-		card_basic_attack.card_upgrade_value_improvements = {"damage": 3, "number_of_attacks": 1}
-		card_basic_attack.card_play_actions = [{
-		Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.0, "actions_on_lethal": []},
+		var card_basic_food: CardData = CardData.new("card_basic_food_{0}".format([colors[i]]))
+		card_basic_food.card_name = "Basic Food"
+		card_basic_food.card_color_id = "color_{0}".format([colors[i]])
+		card_basic_food.card_description = "Gain [food_amount] food."
+		card_basic_food.card_texture_path = "external/sprites/cards/{0}/card_basic_attack_{0}.png".format([colors[i]])
+		card_basic_food.card_type = CardData.CARD_TYPES.SKILL
+		card_basic_food.card_rarity = CardData.CARD_RARITIES.BASIC
+		card_basic_food.card_keyword_object_ids = []
+		card_basic_food.card_values = {"food_amount": 2}
+		card_basic_food.card_upgrade_value_improvements = {"food_amount": 1}
+		card_basic_food.card_keyword_object_ids = ["keyword_food"]
+		card_basic_food.card_requires_target = false
+		card_basic_food.card_play_actions = [{
+		Scripts.ACTION_GAIN_FOOD: {},
 		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/slash.wav"},
 		}]
 		
-		Global.register_rod(card_basic_attack)
+		Global.register_rod(card_basic_food)
 		
 		# Basic block card
-		var card_basic_block: CardData = CardData.new("card_basic_block_{0}".format([colors[i]]))
-		card_basic_block.card_name = "Basic Block"
-		card_basic_block.card_color_id = "color_{0}".format([colors[i]])
-		card_basic_block.card_description = "Gain [block] block"
-		card_basic_block.card_texture_path = "external/sprites/cards/{0}/card_basic_block_{0}.png".format([colors[i]])
-		card_basic_block.card_type = CardData.CARD_TYPES.SKILL
-		card_basic_block.card_rarity = CardData.CARD_RARITIES.BASIC
-		card_basic_block.card_requires_target = false
-		card_basic_block.card_keyword_object_ids = ["keyword_block"]
-		card_basic_block.card_values = {"block": 5}
-		card_basic_block.card_upgrade_value_improvements = {"block": 3}
-		card_basic_block.card_play_actions = [{
-		Scripts.ACTION_BLOCK: 
-			{
-				"time_delay": 0.2,
-				"target_override": BaseAction.TARGET_OVERRIDES.PARENT
-			}
+		var card_basic_ore: CardData = CardData.new("card_basic_ore_{0}".format([colors[i]]))
+		card_basic_ore.card_name = "Basic Ore"
+		card_basic_ore.card_color_id = "color_{0}".format([colors[i]])
+		card_basic_ore.card_description = "Gain [ore_amount] Ore"
+		card_basic_ore.card_texture_path = "external/sprites/cards/{0}/card_basic_block_{0}.png".format([colors[i]])
+		card_basic_ore.card_type = CardData.CARD_TYPES.SKILL
+		card_basic_ore.card_rarity = CardData.CARD_RARITIES.BASIC
+		card_basic_ore.card_requires_target = false
+		card_basic_ore.card_keyword_object_ids = ["keyword_ore"]
+		card_basic_ore.card_values = {"ore_amount": 2}
+		card_basic_ore.card_upgrade_value_improvements = {"ore_amount": 1}
+		card_basic_ore.card_play_actions = [{
+		Scripts.ACTION_GAIN_ORE: {}
 		}]
 		
-		Global.register_rod(card_basic_block)
+		Global.register_rod(card_basic_ore)
 
 ## Adds cards that have not yet been sorted into a color
 func add_cards_misc() -> void:
@@ -2445,8 +2443,8 @@ func add_cards_misc() -> void:
 	Global.register_rod(card_energy_next_turn)
 	
 
-func add_cards_green() -> void:
-	var color: String = "green"
+func add_cards_purple() -> void:
+	var color: String = "purple"
 	
 	#region Health and Self Damage
 	
@@ -3504,14 +3502,14 @@ func add_cards_green() -> void:
 	Global.register_rod(card_divination)
 	#endregion
 	
-func add_cards_orange() -> void:
-	var color: String = "orange"
+func add_cards_black() -> void:
+	var color: String = "black"
 
-func add_cards_red() -> void:
-	var color: String = "red"
+func add_cards_green() -> void:
+	var color: String = "green"
 
-func add_cards_blue() -> void:
-	var color: String = "blue"
+func add_cards_gold() -> void:
+	var color: String = "gold"
 
 
 #region Card Packs
@@ -3527,25 +3525,25 @@ func add_card_packs() -> void:
 	var card_pack_prismatic: CardPackData = CardPackData.new("card_pack_prismatic")
 	Global.register_rod(card_pack_prismatic)
 	
-	var card_pack_red: CardPackData = CardPackData.new("card_pack_red")
-	card_pack_red.card_pack_color_id = "color_red"
-	card_pack_red.card_pack_displays_in_codex = true
-	Global.register_rod(card_pack_red)
+	var card_pack_black: CardPackData = CardPackData.new("card_pack_black")
+	card_pack_black.card_pack_color_id = "color_black"
+	card_pack_black.card_pack_displays_in_codex = true
+	Global.register_rod(card_pack_black)
 	
-	var card_pack_blue: CardPackData = CardPackData.new("card_pack_blue")
-	card_pack_blue.card_pack_color_id = "color_blue"
-	card_pack_blue.card_pack_displays_in_codex = true
-	Global.register_rod(card_pack_blue)
+	var card_pack_gold: CardPackData = CardPackData.new("card_pack_gold")
+	card_pack_gold.card_pack_color_id = "color_gold"
+	card_pack_gold.card_pack_displays_in_codex = true
+	Global.register_rod(card_pack_gold)
 	
 	var card_pack_green: CardPackData = CardPackData.new("card_pack_green")
 	card_pack_green.card_pack_color_id = "color_green"
 	card_pack_green.card_pack_displays_in_codex = true
 	Global.register_rod(card_pack_green)
 	
-	var card_pack_orange: CardPackData = CardPackData.new("card_pack_orange")
-	card_pack_orange.card_pack_color_id = "color_orange"
-	card_pack_orange.card_pack_displays_in_codex = true
-	Global.register_rod(card_pack_orange)
+	var card_pack_purple: CardPackData = CardPackData.new("card_pack_purple")
+	card_pack_purple.card_pack_color_id = "color_purple"
+	card_pack_purple.card_pack_displays_in_codex = true
+	Global.register_rod(card_pack_purple)
 	
 	var card_pack_white: CardPackData = CardPackData.new("card_pack_white")
 	card_pack_white.card_pack_color_id = "color_white"
@@ -3569,21 +3567,21 @@ func add_artifact_packs() -> void:
 	artifact_pack_white.artifact_pack_color_id = "color_white"
 	Global.register_rod(artifact_pack_white)
 	
-	var artifact_pack_red: ArtifactPackData = ArtifactPackData.new("artifact_pack_red")
-	artifact_pack_red.artifact_pack_color_id = "color_red"
-	Global.register_rod(artifact_pack_red)
+	var artifact_pack_black: ArtifactPackData = ArtifactPackData.new("artifact_pack_black")
+	artifact_pack_black.artifact_pack_color_id = "color_black"
+	Global.register_rod(artifact_pack_black)
 	
-	var artifact_pack_blue: ArtifactPackData = ArtifactPackData.new("artifact_pack_blue")
-	artifact_pack_blue.artifact_pack_color_id = "color_blue"
-	Global.register_rod(artifact_pack_blue)
+	var artifact_pack_gold: ArtifactPackData = ArtifactPackData.new("artifact_pack_gold")
+	artifact_pack_gold.artifact_pack_color_id = "color_gold"
+	Global.register_rod(artifact_pack_gold)
 	
 	var artifact_pack_green: ArtifactPackData = ArtifactPackData.new("artifact_pack_green")
 	artifact_pack_green.artifact_pack_color_id = "color_green"
 	Global.register_rod(artifact_pack_green)
 	
-	var artifact_pack_orange: ArtifactPackData = ArtifactPackData.new("artifact_pack_orange")
-	artifact_pack_orange.artifact_pack_color_id = "color_orange"
-	Global.register_rod(artifact_pack_orange)
+	var artifact_pack_purple: ArtifactPackData = ArtifactPackData.new("artifact_pack_purple")
+	artifact_pack_purple.artifact_pack_color_id = "color_purple"
+	Global.register_rod(artifact_pack_purple)
 
 #endregion
 
@@ -3599,20 +3597,20 @@ func add_consumable_packs() -> void:
 	consumable_pack_white.consumable_pack_color_id = "color_white"
 	Global.register_rod(consumable_pack_white)
 	
-	var consumable_pack_red: ConsumablePackData = ConsumablePackData.new("consumable_pack_red")
-	consumable_pack_red.consumable_pack_color_id = "color_red"
-	Global.register_rod(consumable_pack_red)
+	var consumable_pack_gold: ConsumablePackData = ConsumablePackData.new("consumable_pack_gold")
+	consumable_pack_gold.consumable_pack_color_id = "color_gold"
+	Global.register_rod(consumable_pack_gold)
 	
-	var consumable_pack_blue: ConsumablePackData = ConsumablePackData.new("consumable_pack_blue")
-	consumable_pack_blue.consumable_pack_color_id = "color_blue"
-	Global.register_rod(consumable_pack_blue)
+	var consumable_pack_black: ConsumablePackData = ConsumablePackData.new("consumable_pack_black")
+	consumable_pack_black.consumable_pack_color_id = "color_black"
+	Global.register_rod(consumable_pack_black)
 	
 	var consumable_pack_green: ConsumablePackData = ConsumablePackData.new("consumable_pack_green")
 	consumable_pack_green.consumable_pack_color_id = "color_green"
 	Global.register_rod(consumable_pack_green)
 	
-	var consumable_pack_orange: ConsumablePackData = ConsumablePackData.new("consumable_pack_orange")
-	consumable_pack_orange.consumable_pack_color_id = "color_orange"
-	Global.register_rod(consumable_pack_orange)
+	var consumable_pack_purple: ConsumablePackData = ConsumablePackData.new("consumable_pack_purple")
+	consumable_pack_purple.consumable_pack_color_id = "color_purple"
+	Global.register_rod(consumable_pack_purple)
 
 #endregion
