@@ -9,6 +9,10 @@ class_name PlayerData
 @export var player_health_max: int = 50
 
 @export var player_money: int = 0
+@export var player_food: int = 0
+@export var player_ore: int = 0
+@export var player_influence: int = 0
+@export var player_insight: int = 0
 
 var player_energy: int = 3 # in combat energy. Not saved.
 ## The energy the player gains each turn. This can be modified.
@@ -224,6 +228,38 @@ func add_money(amount: int) -> void:
 	var delta: int = player_money - old_player_money_amount
 	Signals.player_money_changed.emit(delta)
 
+## Adds or subtracts food from the player
+## If goes into negative amounts, the proper delta will be calculated 
+func add_food(amount: int) -> void:
+	var old_player_food_amount: int = player_food
+	player_food = max(player_food + amount, 0)
+	var delta: int = player_food - old_player_food_amount
+	Signals.player_food_changed.emit(delta)
+	
+## Adds or subtracts ore from the player
+## If goes into negative amounts, the proper delta will be calculated 
+func add_ore(amount: int) -> void:
+	var old_player_ore_amount: int = player_ore
+	player_ore = max(player_ore + amount, 0)
+	var delta: int = player_ore - old_player_ore_amount
+	Signals.player_ore_changed.emit(delta)
+	
+## Adds or subtracts insight from the player
+## If goes into negative amounts, the proper delta will be calculated 
+func add_insight(amount: int) -> void:
+	var old_player_insight_amount: int = player_money
+	player_insight = max(player_insight + amount, 0)
+	var delta: int = player_insight - old_player_insight_amount
+	Signals.player_insight_changed.emit(delta)
+	
+		## Adds or subtracts money from the player
+## If goes into negative amounts, the proper delta will be calculated 
+func add_influence(amount: int) -> void:
+	var old_player_influence_amount: int = player_influence
+	player_influence = max(player_influence + amount, 0)
+	var delta: int = player_influence - old_player_influence_amount
+	Signals.player_influence_changed.emit(delta)
+	
 ## Gets an rng track for the run. If it does not exist create one.
 func get_player_rng(rng_name: String) -> RandomNumberGenerator:
 	if player_rng.has(rng_name):

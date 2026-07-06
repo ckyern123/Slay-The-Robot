@@ -31,6 +31,7 @@ extends Control
 var end_turn_object: CombatEndTurn = null
 
 func _ready():
+	Signals.shop_opened.emit()
 	Signals.player_money_changed.connect(_on_player_money_changed)
 	Signals.player_health_changed.connect(_on_player_health_changed)
 	

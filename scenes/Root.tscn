@@ -240,13 +240,13 @@ NodePath("VBoxContainer/ProfileStatsButton"): NodePath("../ProfileStatsMenu")
 }
 
 [node name="Label" type="Label" parent="TitleScreen/MainMenu" unique_id=860604846]
-layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 offset_top = 16.0
 offset_bottom = 67.0
 grow_horizontal = 2
+layout_direction = 2
 theme = ExtResource("2_bi5lp")
 text = "Slay the Robot"
 horizontal_alignment = 1
@@ -338,13 +338,13 @@ NodePath("StartRun/VBoxContainer/MainMenuButton"): NodePath("../MainMenu")
 }
 
 [node name="Label" type="Label" parent="TitleScreen/NewRunMenu" unique_id=2061026023]
-layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 offset_top = 16.0
 offset_bottom = 67.0
 grow_horizontal = 2
+layout_direction = 2
 theme = ExtResource("2_bi5lp")
 text = "New Run"
 horizontal_alignment = 1
@@ -367,8 +367,8 @@ grow_vertical = 2
 
 [node name="CharacterNameLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer" unique_id=1473832797]
 unique_name_in_owner = true
-layout_direction = 2
 layout_mode = 2
+layout_direction = 2
 theme = ExtResource("2_bi5lp")
 theme_override_font_sizes/font_size = 36
 text = "Character Name"
@@ -380,7 +380,6 @@ layout_mode = 2
 
 [node name="CharacterHealthLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control" unique_id=1228433366]
 unique_name_in_owner = true
-layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
@@ -390,6 +389,7 @@ offset_top = -12.0
 offset_right = 160.0
 offset_bottom = 12.0
 grow_vertical = 2
+layout_direction = 2
 theme = ExtResource("2_bi5lp")
 theme_override_font_sizes/font_size = 17
 text = "HP: "
@@ -397,7 +397,6 @@ vertical_alignment = 1
 
 [node name="CharacterMoneyLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control" unique_id=948848595]
 unique_name_in_owner = true
-layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
@@ -407,6 +406,7 @@ offset_top = -12.0
 offset_right = 323.0
 offset_bottom = 12.0
 grow_vertical = 2
+layout_direction = 2
 theme = ExtResource("2_bi5lp")
 theme_override_font_sizes/font_size = 17
 text = "Money:"
@@ -421,8 +421,8 @@ theme_override_constants/margin_bottom = 32
 [node name="CharacterDescriptionLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/MarginContainer" unique_id=1051847027]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)
-layout_direction = 2
 layout_mode = 2
+layout_direction = 2
 theme_override_font_sizes/font_size = 16
 text = "Character Description"
 autowrap_mode = 2
@@ -451,16 +451,16 @@ offset_bottom = 178.0
 
 [node name="CharacterArtifactNameLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control2/VBoxContainer" unique_id=1043437012]
 unique_name_in_owner = true
-layout_direction = 2
 layout_mode = 2
+layout_direction = 2
 theme_override_font_sizes/font_size = 16
 text = "Artifact Name"
 clip_text = true
 
 [node name="CharacterArtifactDescriptionLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control2/VBoxContainer" unique_id=1447978852]
 unique_name_in_owner = true
-layout_direction = 2
 layout_mode = 2
+layout_direction = 2
 theme_override_font_sizes/font_size = 16
 text = "Description "
 autowrap_mode = 2
@@ -496,7 +496,6 @@ layout_mode = 2
 
 [node name="SeedVisibilityToggle" type="Button" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/SeedSelect" unique_id=2143920552]
 unique_name_in_owner = true
-layout_direction = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -504,6 +503,7 @@ anchor_bottom = 1.0
 offset_right = -352.0
 grow_horizontal = 2
 grow_vertical = 2
+layout_direction = 2
 theme = ExtResource("2_bi5lp")
 theme_override_font_sizes/font_size = 24
 toggle_mode = true
@@ -554,7 +554,6 @@ text = "<--"
 
 [node name="DifficultyLabel" type="Label" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/DifficultySelect" unique_id=876493831]
 unique_name_in_owner = true
-layout_direction = 2
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -563,6 +562,7 @@ offset_left = -144.0
 offset_right = 144.0
 offset_bottom = 31.0
 grow_horizontal = 2
+layout_direction = 2
 theme_override_font_sizes/font_size = 16
 text = "Difficulty 0"
 horizontal_alignment = 1
@@ -619,8 +619,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="TitleScreen/NewRunMenu/CustomModifiers/VBoxContainer" unique_id=296747209]
-layout_direction = 2
 layout_mode = 2
+layout_direction = 2
 theme = ExtResource("2_bi5lp")
 theme_override_font_sizes/font_size = 32
 text = "Custom Modifiers"
@@ -1688,11 +1688,97 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("12_elxq6")
+
+[node name="ShopOverlay" type="Control" parent="RunScreen" unique_id=1618705129]
+unique_name_in_owner = true
+process_mode = 1
+z_index = 10
+anchors_preset = 0
+offset_right = 1200.0
+offset_bottom = 700.0
+script = ExtResource("17_stqr4")
+
+[node name="Background" type="ColorRect" parent="RunScreen/ShopOverlay" unique_id=78866647]
+visible = false
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 700.0
+color = Color(0.203922, 0.188235, 0.215686, 0.635294)
+
+[node name="Background2" type="ColorRect" parent="RunScreen/ShopOverlay" unique_id=1833017692]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -568.0
+offset_top = -286.0
+offset_right = 568.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
+
+[node name="CardContainer" type="HBoxContainer" parent="RunScreen/ShopOverlay" unique_id=2063475107]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -528.0
+offset_top = -278.0
+offset_right = 536.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="ArtifactContainer" type="VBoxContainer" parent="RunScreen/ShopOverlay" unique_id=899795513]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -528.0
+offset_top = 34.0
+offset_right = -248.0
+offset_bottom = 282.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="ConsumableContainer" type="VBoxContainer" parent="RunScreen/ShopOverlay" unique_id=1859136117]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -216.0
+offset_top = 34.0
+offset_right = 64.0
+offset_bottom = 282.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="ContinueButton" type="Button" parent="RunScreen/ShopOverlay" unique_id=1269696807]
+visible = false
+layout_mode = 0
+offset_left = 528.0
+offset_top = 656.0
+offset_right = 672.0
+offset_bottom = 687.0
+text = "Continue"
 
 [node name="Combat" type="Control" parent="RunScreen" unique_id=797179111]
 unique_name_in_owner = true
@@ -1813,9 +1899,9 @@ offset_bottom = 480.0
 [node name="EnemyContainer" type="Control" parent="RunScreen/Combat" unique_id=754159237]
 anchors_preset = 0
 offset_left = 568.0
-offset_top = 256.0
+offset_top = 347.0
 offset_right = 1176.0
-offset_bottom = 448.0
+offset_bottom = 539.0
 mouse_filter = 2
 script = ExtResource("4_kvn7e")
 metadata/_edit_group_ = true
@@ -2249,90 +2335,6 @@ offset_left = 528.0
 offset_top = 624.0
 offset_right = 672.0
 offset_bottom = 655.0
-text = "Continue"
-
-[node name="ShopOverlay" type="Control" parent="RunScreen" unique_id=1618705129]
-unique_name_in_owner = true
-process_mode = 1
-visible = false
-z_index = 10
-anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
-script = ExtResource("17_stqr4")
-
-[node name="Background" type="ColorRect" parent="RunScreen/ShopOverlay" unique_id=78866647]
-layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
-color = Color(0.203922, 0.188235, 0.215686, 0.635294)
-
-[node name="Background2" type="ColorRect" parent="RunScreen/ShopOverlay" unique_id=1833017692]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -568.0
-offset_top = -286.0
-offset_right = 568.0
-offset_bottom = 290.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
-
-[node name="CardContainer" type="HBoxContainer" parent="RunScreen/ShopOverlay" unique_id=2063475107]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -528.0
-offset_top = -278.0
-offset_right = 536.0
-offset_bottom = 18.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 20
-
-[node name="ArtifactContainer" type="VBoxContainer" parent="RunScreen/ShopOverlay" unique_id=899795513]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -528.0
-offset_top = 34.0
-offset_right = -248.0
-offset_bottom = 282.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 20
-
-[node name="ConsumableContainer" type="VBoxContainer" parent="RunScreen/ShopOverlay" unique_id=1859136117]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -216.0
-offset_top = 34.0
-offset_right = 64.0
-offset_bottom = 282.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 20
-
-[node name="ContinueButton" type="Button" parent="RunScreen/ShopOverlay" unique_id=1269696807]
-layout_mode = 0
-offset_left = 528.0
-offset_top = 656.0
-offset_right = 672.0
-offset_bottom = 687.0
 text = "Continue"
 
 [node name="DialogueOverlay" type="Control" parent="RunScreen" unique_id=2021660251]

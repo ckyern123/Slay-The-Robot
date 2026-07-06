@@ -10,7 +10,7 @@ extends Control
 @onready var map = $%Map
 
 func _ready():
-	Signals.combat_started.connect(_on_combat_started)
+	#Signals.combat_started.connect(_on_combat_started)
 	
 	Signals.map_location_selected.connect(_on_map_location_selected)
 	Signals.shop_opened.connect(_on_shop_opened)
@@ -116,9 +116,9 @@ func clear_shop():
 	for child in consumable_container.get_children():
 		child.queue_free()
 
-func _on_combat_started(_event_id: String):
-	visible = false
-	clear_shop()
+#func _on_combat_started(_event_id: String):
+#	visible = false
+#	clear_shop()
 
 func _on_shop_opened():
 	visible = true

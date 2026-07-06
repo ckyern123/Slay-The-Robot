@@ -1,4 +1,4 @@
-## Singleton for data generation in actual production.
+ ## Singleton for data generation in actual production.
 ## This is used to make content programmatically instead of messing with more fragile external JSON files.
 extends Node
 

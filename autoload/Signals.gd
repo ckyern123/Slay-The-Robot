@@ -79,6 +79,11 @@ signal reward_clear_requested(reward_group: int) # -1 for clear all rewards
 
 # player stats
 signal player_money_changed(money_delta: int)
+signal player_food_changed(money_delta: int)
+signal player_ore_changed(money_delta: int)
+signal player_influence_changed(money_delta: int)
+signal player_insight_changed(money_delta: int)
+
 signal player_health_changed
 signal player_artifacts_changed # used for updating the ui
 signal player_artifact_added(artifact_data: ArtifactData)

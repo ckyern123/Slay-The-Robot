@@ -21,6 +21,9 @@ func wait() -> void:
 			# forces the turn to instantly end, removing all remaining card plays and actions
 			HandManager.refund_card_queue()
 			ActionHandler.clear_all_actions()
+			var food_count: int = 0 - Global.player_data.player_deck.size()
+			Global.player_data.add_food(food_count/10)
+			Global.player_data.add_influence(-1)
 			end_turn()
 		END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ACTIONS:
 			# prevents further card plays but finishes the rest of the current action stack
@@ -28,6 +31,9 @@ func wait() -> void:
 			HandManager.set_disable_hand(true)
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
+			var food_count: int = 0 - Global.player_data.player_deck.size()
+			Global.player_data.add_food(food_count/10)
+			Global.player_data.add_influence(-1)
 			end_turn()
 		END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS, _:
 			# default
@@ -35,6 +41,9 @@ func wait() -> void:
 			HandManager.set_disable_hand(true)
 			while len(HandManager.card_play_queue) > 0 or ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
+			var food_count: int = 0 - Global.player_data.player_deck.size()
+			Global.player_data.add_food(food_count/10)
+			Global.player_data.add_influence(-1)
 			end_turn()
 
 func disable():
