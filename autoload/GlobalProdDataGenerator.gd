@@ -1590,6 +1590,11 @@ func add_keywords() -> void:
 	keyword_bomb.keyword_text_bb_code = "Deals damage to all enemies when timer runs out "
 	Global.register_rod(keyword_bomb)
 	
+	var keyword_wield: KeywordData = KeywordData.new("keyword_wield")
+	keyword_wield.keyword_name = "Wield"
+	keyword_wield.keyword_text_bb_code = "Replays random Craft cards "
+	Global.register_rod(keyword_wield)
+	
 	### These are automatically added to cards based on flags
 	var keyword_top_deck: KeywordData = KeywordData.new("keyword_top_deck")
 	keyword_top_deck.keyword_name = "Top Deck"
@@ -3405,6 +3410,98 @@ func add_cards_green() -> void:
 	
 	Global.register_rod(card_waste)
 	
+	#endregion
+	
+	#region Pearl
+	
+	var card_cunningtrader: CardData = CardData.new("card_cunningtrader")
+	card_cunningtrader.card_name = "Cunning Trader"
+	card_cunningtrader.card_color_id = "color_{0}".format([color])
+	card_cunningtrader.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_cunningtrader.card_description = "Gains [ore_amount] Ore."
+	card_cunningtrader.card_type = CardData.CARD_TYPES.SKILL
+	card_cunningtrader.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_cunningtrader.card_requires_target = false
+	card_cunningtrader.card_energy_cost = 1
+	card_cunningtrader.card_values = {"card_influence": 1,"ore_amount": 2}
+	card_cunningtrader.card_upgrade_value_improvements = {"ore_amount": 1}
+	card_cunningtrader.card_influence = 3
+	card_cunningtrader.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {},
+		},
+		{
+		Scripts.ACTION_ADD_ORE: {},
+		}
+	]
+	
+	Global.register_rod(card_cunningtrader)
+	
+	var card_pearlemissary: CardData = CardData.new("card_pearlemissary")
+	card_pearlemissary.card_name = "Pearl Emissary"
+	card_pearlemissary.card_color_id = "color_{0}".format([color])
+	card_pearlemissary.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_pearlemissary.card_description = "Draws [draw_count] cards."
+	card_pearlemissary.card_type = CardData.CARD_TYPES.SKILL
+	card_pearlemissary.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_pearlemissary.card_requires_target = false
+	card_pearlemissary.card_energy_cost = 1
+	card_pearlemissary.card_values = {"card_influence": 1,"draw_count": 2}
+	card_pearlemissary.card_upgrade_value_improvements = {"draw_count": 1}
+	card_pearlemissary.card_influence = 3
+	card_pearlemissary.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {},
+		},
+		{
+		Scripts.ACTION_DRAW_GENERATOR: {},
+		}
+	]
+	
+	Global.register_rod(card_pearlemissary)
+	
+	var card_storiedspinner: CardData = CardData.new("card_storiedspinner")
+	card_storiedspinner.card_name = "Storied Spinner"
+	card_storiedspinner.card_color_id = "color_{0}".format([color])
+	card_storiedspinner.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_storiedspinner.card_description = "adds [number_of_cards] Divinations into your draw pile."
+	card_storiedspinner.card_type = CardData.CARD_TYPES.SKILL
+	card_storiedspinner.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_storiedspinner.card_requires_target = false
+	card_storiedspinner.card_energy_cost = 1
+	card_storiedspinner.card_values = {"card_influence": 1,"created_card_object_id": "card_divination",  "number_of_cards": 2}
+	card_storiedspinner.card_upgrade_value_improvements = {"number_of_cards": 1}
+	card_storiedspinner.card_influence = 3
+	card_storiedspinner.card_play_actions = [
+		{
+		Scripts.ACTION_ADD_CARDS_TO_DRAW: {},
+		}
+	]
+	
+	Global.register_rod(card_storiedspinner)
+	#endregion
+	
+	#region Generated Cards
+	var card_divination: CardData = CardData.new("card_divination")
+	card_divination.card_name = "Divination"
+	card_divination.card_color_id = "color_{0}".format([color])
+	card_divination.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_divination.card_description = "Draws [draw_count] cards."
+	card_divination.card_type = CardData.CARD_TYPES.SKILL
+	card_divination.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_divination.card_requires_target = false
+	card_divination.card_energy_cost = 0
+	card_divination.card_values = {"card_durability": -1,"draw_count": 2}
+	card_divination.card_upgrade_value_improvements = {"draw_count": 1}
+	card_divination.card_durability = 3
+	card_divination.card_play_actions = [
+		{
+			Scripts.ACTION_CHANGE_CARD_DURABILITY: {},
+			Scripts.ACTION_DRAW_GENERATOR: {}
+		}
+	]
+	
+	Global.register_rod(card_divination)
 	#endregion
 	
 func add_cards_orange() -> void:
