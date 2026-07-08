@@ -2388,7 +2388,7 @@ func add_card_basics() -> void:
 		card_basic_food.card_type = CardData.CARD_TYPES.SKILL
 		card_basic_food.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_food.card_keyword_object_ids = []
-		card_basic_food.card_values = {"food_amount": 2}
+		card_basic_food.card_values = {"food_amount": 1}
 		card_basic_food.card_upgrade_value_improvements = {"food_amount": 1}
 		card_basic_food.card_keyword_object_ids = ["keyword_food"]
 		card_basic_food.card_requires_target = false
@@ -2409,7 +2409,7 @@ func add_card_basics() -> void:
 		card_basic_ore.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_ore.card_requires_target = false
 		card_basic_ore.card_keyword_object_ids = ["keyword_ore"]
-		card_basic_ore.card_values = {"ore_amount": 2}
+		card_basic_ore.card_values = {"ore_amount": 1}
 		card_basic_ore.card_upgrade_value_improvements = {"ore_amount": 1}
 		card_basic_ore.card_play_actions = [{
 		Scripts.ACTION_GAIN_ORE: {}
@@ -2417,999 +2417,244 @@ func add_card_basics() -> void:
 		
 		Global.register_rod(card_basic_ore)
 
+#region generated
 ## Adds cards that have not yet been sorted into a color
 func add_cards_misc() -> void:
 	var color: String = "white"
 	# energy_next_turn
-	var card_energy_next_turn: CardData = CardData.new("card_energy_next_turn")
-	card_energy_next_turn.card_name = "Energy Next Turn"
-	card_energy_next_turn.card_color_id = "color_{0}".format([color])
-	card_energy_next_turn.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_energy_next_turn.card_description = "Gain [status_charge_amount] energy next turn."
-	card_energy_next_turn.card_type = CardData.CARD_TYPES.SKILL
-	card_energy_next_turn.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_energy_next_turn.card_requires_target = false
-	card_energy_next_turn.card_values = {"status_charge_amount": 3}
-	card_energy_next_turn.card_play_actions = [
+	var card_fish: CardData = CardData.new("card_fish")
+	card_fish.card_name = "Fish"
+	card_fish.card_color_id = "color_{0}".format([color])
+	card_fish.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_fish.card_description = "Gain [food_amount] Food. Exhaust. When it reaches the discard pile, improve 1 Food Value."
+	card_fish.card_type = CardData.CARD_TYPES.SKILL
+	card_fish.card_energy_cost = 0
+	card_fish.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_fish.card_requires_target = false
+	card_fish.card_play_destination = HandManager.EXHAUST_PILE
+	card_fish.card_values = {"food_amount": 1, "card_value_improvements": {"food_amount": 1}}
+	card_fish.card_play_actions = [
 		{
-			Scripts.ACTION_APPLY_STATUS: 
+			Scripts.ACTION_ADD_FOOD: 
 			{
-			"status_effect_object_id": "status_effect_energy_next_turn",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER
 			}
 		}
 		]
-		
-	Global.register_rod(card_energy_next_turn)
+	card_fish.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_IMPROVE_CARD_VALUES: {
+				"time_delay": 0.1,
+				"pick_played_card": true,
+				"modify_parent_card": false,
+			}
+		}
+		]		
+	card_fish.card_discard_actions = [
+		{
+			Scripts.ACTION_IMPROVE_CARD_VALUES: {
+				"time_delay": 0.1,
+				"pick_played_card": true,
+				"modify_parent_card": false,
+			}
+		}
+		]	
+	Global.register_rod(card_fish)
 	
+	var card_grain: CardData = CardData.new("card_grain")
+	card_grain.card_name = "Grain"
+	card_grain.card_color_id = "color_{0}".format([color])
+	card_grain.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_grain.card_description = "Gain [food_amount] Food. Exhaust. When it reaches the discard pile, improve 1 Food Value."
+	card_grain.card_type = CardData.CARD_TYPES.SKILL
+	card_grain.card_energy_cost = 0
+	card_grain.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_grain.card_requires_target = false
+	card_grain.card_play_destination = HandManager.EXHAUST_PILE
+	card_grain.card_values = {"food_amount": 1, "card_value_improvements": {"food_amount": 1}}
+	card_grain.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_FOOD: 
+			{
+			}
+		}
+		]
+	card_grain.card_end_of_turn_draw_pile_actions = [
+		{
+			Scripts.ACTION_IMPROVE_CARD_VALUES: {
+				"time_delay": 0.1,
+				"pick_played_card": true,
+				"modify_parent_card": false,
+			}
+		}
+		]		
 
-func add_cards_purple() -> void:
-	var color: String = "purple"
+	Global.register_rod(card_grain)
 	
-	#region Health and Self Damage
-	
-	# Blossom
-	var card_blossom: CardData = CardData.new("card_blossom")
-	card_blossom.card_name = "Blossom"
-	card_blossom.card_color_id = "color_{0}".format([color])
-	card_blossom.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_blossom.card_description = "Gain [health_amount] HP"
-	card_blossom.card_type = CardData.CARD_TYPES.SKILL
-	card_blossom.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_blossom.card_requires_target = false
-	card_blossom.card_play_destination = HandManager.EXHAUST_PILE
-	card_blossom.card_values = {"health_amount": 3}
-	card_blossom.card_upgrade_value_improvements = {"health_amount": 2}
-	card_blossom.card_play_actions = [{Scripts.ACTION_ADD_HEALTH: {"target_override": BaseAction.TARGET_OVERRIDES.PARENT}}]
-	
-	Global.register_rod(card_blossom)
-	
-	# Bud
-	var card_bud: CardData = CardData.new("card_bud")
-	card_bud.card_name = "Bud"
-	card_bud.card_color_id = "color_{0}".format([color])
-	card_bud.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_bud.card_description = "Gain [parent_status_charge_amount] Pointy and apply [target_status_charge_amount] Pointy. Exhaust."
-	card_bud.card_type = CardData.CARD_TYPES.SKILL
-	card_bud.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_bud.card_requires_target = true
-	card_bud.card_play_destination = HandManager.EXHAUST_PILE
-	card_bud.card_values = {"parent_status_charge_amount": 5, "target_status_charge_amount": 2}
-	card_bud.card_upgrade_value_improvements = {"parent_status_charge_amount": 3}
-	card_bud.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: 
-			{
-			"status_effect_object_id": "status_effect_pointy",
-			"custom_key_names": {"status_charge_amount": "target_status_charge_amount"},
-			}
-		},
-		{
-			Scripts.ACTION_APPLY_STATUS: 
-			{
-			"status_effect_object_id": "status_effect_pointy",
-			"custom_key_names": {"status_charge_amount": "parent_status_charge_amount"},
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER
-			}
-		}
-		]
-		
-	Global.register_rod(card_bud)
-	
-	# Cell Wall
-	var card_cell_wall: CardData = CardData.new("card_cell_wall")
-	card_cell_wall.card_name = "Cell Wall"
-	card_cell_wall.card_color_id = "color_{0}".format([color])
-	card_cell_wall.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_cell_wall.card_description = "Convert Block into Overshield"
-	card_cell_wall.card_type = CardData.CARD_TYPES.SKILL
-	card_cell_wall.card_rarity = CardData.CARD_RARITIES.BASIC
-	card_cell_wall.card_requires_target = false
-	card_cell_wall.card_values = {}
-	card_cell_wall.card_first_upgrade_property_changes = {"card_energy_cost": 0}
-	card_cell_wall.card_play_actions = [
-		{
-			Scripts.ACTION_BLOCK_TO_STATUS: 
-				{
-				"status_effect_object_id": "status_effect_overshield",
-				"target_override": BaseAction.TARGET_OVERRIDES.PARENT
-				}
-		}
-		]
-		
-	Global.register_rod(card_cell_wall)
-	
-	# Chloroplast
-	var card_chloroplast: CardData = CardData.new("card_chloroplast")
-	card_chloroplast.card_name = "Chloroplast"
-	card_chloroplast.card_color_id = "color_{0}".format([color])
-	card_chloroplast.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_chloroplast.card_description = "Do [damage] to all enemies. Ethereal. On exhaust, do 10 damage to everyone."
-	card_chloroplast.card_type = CardData.CARD_TYPES.ATTACK
-	card_chloroplast.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_chloroplast.card_energy_cost = 3
-	card_chloroplast.card_requires_target = false
-	card_chloroplast.card_end_of_turn_destination = HandManager.EXHAUST_PILE
-	card_chloroplast.card_values = {"damage": 35}
-	card_chloroplast.card_upgrade_value_improvements = {"damage": 10}
-	card_chloroplast.card_play_actions = [
-		{
-			Scripts.ACTION_ATTACK_GENERATOR: {
-					"number_of_attacks": 1,
-					"time_delay": 0.5,
-					"target_override": BaseAction.TARGET_OVERRIDES.ALL_ENEMIES
-					}
-			}
-		]
-	card_chloroplast.card_exhaust_actions = [
-		{
-			Scripts.ACTION_ATTACK_GENERATOR: {
-					"damage": 10,
-					"number_of_attacks": 1,
-					"time_delay": 0.5,
-					"target_override": BaseAction.TARGET_OVERRIDES.ALL_COMBATANTS
-					}
-			}
-		]
-	
-	Global.register_rod(card_chloroplast)
-	
-	# Clippers
-	var card_clippers: CardData = CardData.new("card_clippers")
-	card_clippers.card_name = "Clippers"
-	card_clippers.card_color_id = "color_{0}".format([color])
-	card_clippers.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_clippers.card_description = "Attack for [damage] damage [number_of_attacks] times. Gain [status_charge_amount] Strength. On pickup, Gain [health_amount] HP."
-	card_clippers.card_type = CardData.CARD_TYPES.ATTACK
-	card_clippers.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_clippers.card_keyword_object_ids = []
-	card_clippers.card_values = {"damage": 5, "number_of_attacks": 2, "health_amount": -5, "status_effect_object_id": "status_effect_damage_increase", "status_charge_amount": 2}
-	card_clippers.card_upgrade_value_improvements = {"damage": 2}
-	card_clippers.card_play_actions = [
-	{
-	Scripts.ACTION_APPLY_STATUS: {"time_delay": 0.5, "target_override": BaseAction.TARGET_OVERRIDES.PARENT}
-	},
-	{
-	Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.3}
-	}
-	]
-	card_clippers.card_add_to_deck_actions = [{
-	Scripts.ACTION_ADD_HEALTH: {"target_override": BaseAction.TARGET_OVERRIDES.PARENT}
-	}]
-	
-	Global.register_rod(card_clippers)
-	
-	# Differentiation
-	var card_differentiation: CardData = CardData.new("card_differentiation")
-	card_differentiation.card_name = "Differentiation"
-	card_differentiation.card_color_id = "color_{0}".format([color])
-	card_differentiation.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_differentiation.card_description = "Do [attack_damage]. Lose [self_damage] HP."
-	card_differentiation.card_type = CardData.CARD_TYPES.ATTACK
-	card_differentiation.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_differentiation.card_requires_target = true
-	card_differentiation.card_values = {"attack_damage": 12, "self_damage": 2}
-	card_differentiation.card_upgrade_value_improvements = {"attack_damage": 5}
-	card_differentiation.card_play_actions = [
-		{
-			Scripts.ACTION_DIRECT_DAMAGE: {
-				"custom_key_names": {"damage": "self_damage"},
-				"target_override": BaseAction.TARGET_OVERRIDES.PARENT,
-				"bypass_block": true,
-			}
-		},
-		{
-			Scripts.ACTION_ATTACK_GENERATOR: {
-					"custom_key_names": {"damage": "attack_damage"},
-					"number_of_attacks": 1,
-					"time_delay": 0.5,
-					"target_override": BaseAction.TARGET_OVERRIDES.SELECTED_TARGETS
-					}
-			}
-		]
-	
-	Global.register_rod(card_differentiation)
-	
-	# Fertilize
-	var card_fertilize: CardData = CardData.new("card_fertilize")
-	card_fertilize.card_name = "Fertilize"
-	card_fertilize.card_color_id = "color_{0}".format([color])
-	card_fertilize.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_fertilize.card_description = "Gain {0}{0}. Lose [self_damage] HP.".format([Card.ENERGY_ICON_KEYWORD])
-	card_fertilize.card_type = CardData.CARD_TYPES.SKILL
-	card_fertilize.card_rarity = CardData.CARD_RARITIES.RARE
-	card_fertilize.card_requires_target = false
-	card_fertilize.card_values = {"self_damage": 12, "energy_amount": 2}
-	card_fertilize.card_upgrade_value_improvements = {"self_damage": 3, "energy_amount": 1}
-	card_fertilize.card_first_upgrade_property_changes = {"card_description": "Gain {0}{0}. Lose [self_damage] HP.".format([Card.ENERGY_ICON_KEYWORD])}
-	card_fertilize.card_play_actions = [
-		{
-			Scripts.ACTION_DIRECT_DAMAGE: {
-				"custom_key_names": {"damage": "self_damage"},
-				"bypass_block": true,
-				"target_override": BaseAction.TARGET_OVERRIDES.PARENT,
-			}
-		},
-		{Scripts.ACTION_ADD_ENERGY: {}}
-		]
-	
-	Global.register_rod(card_fertilize)
-	
-	# Fruit
-	var card_fruit: CardData = CardData.new("card_fruit")
-	card_fruit.card_name = "Fruit"
-	card_fruit.card_color_id = "color_{0}".format([color])
-	card_fruit.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_fruit.card_description = "Randomly gain [small_max_health_amount] Max HP, [big_max_health_amount] Max HP, or {0}".format([Card.ENERGY_ICON_KEYWORD])
-	card_fruit.card_type = CardData.CARD_TYPES.SKILL
-	card_fruit.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_fruit.card_requires_target = false
-	card_fruit.card_play_destination = HandManager.EXHAUST_PILE
-	card_fruit.card_values = {"small_max_health_amount": 1, "big_max_health_amount": 3}
-	card_fruit.card_upgrade_value_improvements = {"small_max_health_amount": 1, "big_max_health_amount": 1}
-	card_fruit.card_play_actions = [
-		{
-			Scripts.ACTION_RANDOM_SELECTION: 
-				{
-				"weights": {"small_max_hp": 25, "big_max_hp": 25, "energy": 50},
-				"weighted_action_data": {
-					"small_max_hp": [{Scripts.ACTION_ADD_HEALTH: {"target_override": BaseAction.TARGET_OVERRIDES.PARENT, "health_amount": 0, "custom_key_names": {"health_max_amount": "small_max_health_amount"}}}],
-					"big_max_hp": [{Scripts.ACTION_ADD_HEALTH: {"target_override": BaseAction.TARGET_OVERRIDES.PARENT, "health_amount": 0, "custom_key_names": {"health_max_amount": "big_max_health_amount"}}}],
-					"energy": [{Scripts.ACTION_ADD_ENERGY: {"energy_amount": 1}}],
-					}
-				}
-		},
-	]
-	
-	Global.register_rod(card_fruit)
-	
-	# Growth
-	var card_growth: CardData = CardData.new("card_growth")
-	card_growth.card_name = "Growth"
-	card_growth.card_color_id = "color_{0}".format([color])
-	card_growth.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_growth.card_description = "Gain [status_charge_amount] Overshield and draw 1 card."
-	card_growth.card_type = CardData.CARD_TYPES.SKILL
-	card_growth.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_growth.card_requires_target = false
-	card_growth.card_play_destination = HandManager.EXHAUST_PILE
-	card_growth.card_values = {"status_charge_amount": 5, "draw_count": 1}
-	card_growth.card_upgrade_value_improvements = {"status_charge_amount": 3,}
-	card_growth.card_play_actions = [
-		{
-			Scripts.ACTION_DRAW_GENERATOR: {}
-		},
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overshield",
-			
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		}
-		]
-	
-	Global.register_rod(card_growth)
-	
-	# Lotus
-	var card_lotus: CardData = CardData.new("card_lotus")
-	card_lotus.card_name = "Lotus"
-	card_lotus.card_color_id = "color_{0}".format([color])
-	card_lotus.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_lotus.card_description = "Double Overshield charges."
-	card_lotus.card_type = CardData.CARD_TYPES.SKILL
-	card_lotus.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_lotus.card_requires_target = false
-	card_lotus.card_play_destination = HandManager.EXHAUST_PILE
-	card_lotus.card_values = {"status_effect_multiplier_amount": 2}
-	card_lotus.card_upgrade_value_improvements = {"status_effect_multiplier_amount": 1,}
-	card_lotus.card_first_upgrade_property_changes = {"card_description": "Triple Overshield charges."}
-	card_lotus.card_play_actions = [
-		{
-			Scripts.ACTION_MULTIPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overshield",
-			
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		}
-		]
-	
-	Global.register_rod(card_lotus)
-	
-	# Moss
-	var card_moss: CardData = CardData.new("card_moss")
-	card_moss.card_name = "Moss"
-	card_moss.card_color_id = "color_{0}".format([color])
-	card_moss.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_moss.card_description = "Gain [status_charge_amount]. Deal damage equal to Overshield."
-	card_moss.card_type = CardData.CARD_TYPES.ATTACK
-	card_moss.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_moss.card_energy_cost = 2
-	card_moss.card_requires_target = true
-	card_moss.card_values = {"status_charge_amount": 8}
-	card_moss.card_upgrade_value_improvements = {"status_charge_amount": 4,}
-	card_moss.card_play_actions = [
-		{
-		Scripts.ACTION_ATTACK_GENERATOR: 
-			{
-			"target_override": BaseAction.TARGET_OVERRIDES.SELECTED_TARGETS,
-			"forced_interceptor_ids": ["interceptor_damage_from_overshield"],
-			"time_delay": 0.3,
-			}
-		},
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overshield",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		}
-		]
-	
-	Global.register_rod(card_moss)
-	
-	# Pollen
-	var card_pollen: CardData = CardData.new("card_pollen")
-	card_pollen.card_name = "Pollen"
-	card_pollen.card_color_id = "color_{0}".format([color])
-	card_pollen.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_pollen.card_description = "Take [status_charge_amount] damage at the start of your turn and draw [status_secondary_charge_amount] cards"
-	card_pollen.card_type = CardData.CARD_TYPES.POWER
-	card_pollen.card_rarity = CardData.CARD_RARITIES.RARE
-	card_pollen.card_energy_cost = 3
-	card_pollen.card_requires_target = false
-	card_pollen.card_values = {"status_charge_amount": 5, "status_secondary_charge_amount": 2}
-	card_pollen.card_upgrade_value_improvements = {"status_secondary_charge_amount": 1}
-	card_pollen.card_play_actions = [
-			{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_pollen",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-			}
-		]
-	
-	Global.register_rod(card_pollen)
-	
-	# Petals
-	var card_petals: CardData = CardData.new("card_petals")
-	card_petals.card_name = "Petals"
-	card_petals.card_color_id = "color_{0}".format([color])
-	card_petals.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_petals.card_description = "Gain [block] block. Keep block for [status_charge_amount] turns. Exhaust. On pickup, gain [health_amount] HP."
-	card_petals.card_type = CardData.CARD_TYPES.SKILL
-	card_petals.card_rarity = CardData.CARD_RARITIES.RARE
-	card_petals.card_requires_target = false
-	card_petals.card_play_destination = HandManager.EXHAUST_PILE
-	card_petals.card_energy_cost = 3
-	card_petals.card_keyword_object_ids = []
-	card_petals.card_values = {"block": 20, "status_charge_amount": 2,  "health_amount": -10}
-	card_petals.card_upgrade_value_improvements = {"block": 5, "status_charge_amount": 1}
-	card_petals.card_play_actions = [
-	{
-	Scripts.ACTION_APPLY_STATUS: {
-		"time_delay": 0.5,
-		"status_effect_object_id": "status_effect_temp_preserve_block",
-		"target_override": BaseAction.TARGET_OVERRIDES.PARENT
-		}
-	},
-	{
-	Scripts.ACTION_BLOCK: {
-		"target_override": BaseAction.TARGET_OVERRIDES.PARENT
-	}
-	}
-	]
-	card_petals.card_add_to_deck_actions = [{
-	Scripts.ACTION_ADD_HEALTH: {"target_override": BaseAction.TARGET_OVERRIDES.PARENT}
-	}]
-	
-	Global.register_rod(card_petals)
-	
-	# Reap
-	var card_reap: CardData = CardData.new("card_reap")
-	card_reap.card_name = "Reap"
-	card_reap.card_color_id = "color_{0}".format([color])
-	card_reap.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_reap.card_description = "Attack for [damage] damage and gain Overshield for unblocked damage\nExhaust"
-	card_reap.card_type = CardData.CARD_TYPES.ATTACK
-	card_reap.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_reap.card_energy_cost = 2
-	card_reap.card_requires_target = true
-	card_reap.card_values = {"damage": 10}
-	card_reap.card_upgrade_value_improvements = {"damage": 4,}
-	card_reap.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overshield",
-			"custom_key_names":{"status_charge_amount": "unblocked_damage_capped"},
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		},
-		{
-		Scripts.ACTION_ATTACK_GENERATOR: 
-			{
-			"target_override": BaseAction.TARGET_OVERRIDES.SELECTED_TARGETS,
-			"time_delay": 0.3,
-			}
-		}
-		]
-	
-	Global.register_rod(card_reap)
-	
-	# Wildflower
-	var card_wildflower: CardData = CardData.new("card_wildflower")
-	card_wildflower.card_name = "Wildflower"
-	card_wildflower.card_color_id = "color_{0}".format([color])
-	card_wildflower.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_wildflower.card_energy_cost = 2
-	card_wildflower.card_description = "Attack for [damage] damage. Costs 0 if damage was taken this turn."
-	card_wildflower.card_type = CardData.CARD_TYPES.ATTACK
-	card_wildflower.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_wildflower.card_requires_target = true
-	card_wildflower.card_values = {"damage": 15, "number_of_attacks": 1}
-	card_wildflower.card_upgrade_value_improvements = {"damage": 5}
-	card_wildflower.card_play_actions = [
-		{
-		Scripts.ACTION_ATTACK_GENERATOR: {}
-		}
-	]
-	card_wildflower.add_card_decorator("card_decorator_dynamic_cost_modifier", {
-		"modifiy_card_energy_cost_until_combat": false,
-		"modifiy_card_energy_cost_until_played": false,
-		"modifiy_card_energy_cost_until_turn": true,
-		"stat_enum": CombatStatsData.STATS.PLAYER_DAMAGED_COUNT,
-		"is_turn_stat": true,
-		"energy_per_stat": -10
-		})
-
-	Global.register_rod(card_wildflower)
-	
-	# Symbiosis
-	var card_symbiosis: CardData = CardData.new("card_symbiosis")
-	card_symbiosis.card_name = "Symbiosis"
-	card_symbiosis.card_color_id = "color_{0}".format([color])
-	card_symbiosis.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_symbiosis.card_description = "Overshield no longer decays"
-	card_symbiosis.card_type = CardData.CARD_TYPES.POWER
-	card_symbiosis.card_rarity = CardData.CARD_RARITIES.RARE
-	card_symbiosis.card_energy_cost = 3
-	card_symbiosis.card_requires_target = false
-	card_symbiosis.card_values = {"status_charge_amount": 0}
-	card_symbiosis.card_upgrade_value_improvements = {"status_charge_amount": 20}
-	card_symbiosis.card_first_upgrade_property_changes = {
-		"card_description": "Overshield no longer decays. Gain [status_charge_amount] Overshield",
-		"card_play_actions": [
-			{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overshield",
-			"status_charge_amount": 20,
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-			},
-			{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_preserve_overshield",
-			"status_charge_amount": 1,
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-			}
-		]
-		}
-	card_symbiosis.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_preserve_overshield",
-			"status_charge_amount": 1,
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		}
-		]
-	
-	Global.register_rod(card_symbiosis)
-	
-	# Thorns
-	var card_thorns: CardData = CardData.new("card_thorns")
-	card_thorns.card_name = "Thorns"
-	card_thorns.card_color_id = "color_{0}".format([color])
-	card_thorns.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_thorns.card_description = "Gain [block] Block and [status_charge_amount] Pointy"
-	card_thorns.card_type = CardData.CARD_TYPES.SKILL
-	card_thorns.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_thorns.card_energy_cost = 1
-	card_thorns.card_requires_target = false
-	card_thorns.card_values = {"block": 5, "status_charge_amount": 1}
-	card_thorns.card_upgrade_value_improvements = {"block": 3, "status_charge_amount": 1}
-	card_thorns.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_pointy",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		},
-		{
-		Scripts.ACTION_BLOCK: 
-			{
-				"time_delay": 0.2,
-				"target_override": BaseAction.TARGET_OVERRIDES.PARENT
-			}
-		}
-		]
-	
-	Global.register_rod(card_thorns)
-	
-	# Verdant
-	var card_verdant: CardData = CardData.new("card_verdant")
-	card_verdant.card_name = "Verdant"
-	card_verdant.card_color_id = "color_{0}".format([color])
-	card_verdant.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_verdant.card_description = "When drawn, cap incoming damage to [status_secondary_charge_amount] for [status_charge_amount] and Exhaust."
-	card_verdant.card_type = CardData.CARD_TYPES.SKILL
-	card_verdant.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_verdant.card_requires_target = false
-	card_verdant.card_is_playable = false
-	card_verdant.card_play_destination = HandManager.EXHAUST_PILE
-	card_verdant.card_values = {"status_charge_amount": 1, "status_secondary_charge_amount": 7}
-	card_verdant.card_upgrade_value_improvements = {"status_secondary_charge_amount": -2,}
-	card_verdant.card_draw_actions = [
-		{
-			Scripts.ACTION_PICK_CARDS: {
-				"card_pick_type": ActionBasePickCards.PICK_PARENT_CARD,
-				"action_data": [
-					{
-						Scripts.ACTION_EXHAUST_CARDS: {}
-					}
-				]
-			}
-		},
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_cap_damage",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		}
-		]
-	
-	Global.register_rod(card_verdant)
-	
-	# Vines
-	var card_vines: CardData = CardData.new("card_vines")
-	card_vines.card_name = "Vines"
-	card_vines.card_color_id = "color_{0}".format([color])
-	card_vines.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_vines.card_description = "Do [damage] to all enemies [number_of_attacks] times. Not affected by Pointy"
-	card_vines.card_type = CardData.CARD_TYPES.ATTACK
-	card_vines.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_vines.card_requires_target = false
-	card_vines.card_values = {"damage": 8, "number_of_attacks": 2, "self_damage": 2}
-	card_vines.card_upgrade_value_improvements = {"damage": 5}
-	card_vines.card_play_actions = [
-		{
-			Scripts.ACTION_ATTACK_GENERATOR: {
-					"time_delay": 0.4,
-					"target_override": BaseAction.TARGET_OVERRIDES.ALL_ENEMIES,
-					"ignored_interceptor_ids": ["interceptor_pointy"]
-					}
-			}
-		]
-	
-	Global.register_rod(card_vines)
-	#endregion
-	#region Research Archetype
-	# Conclusion
-	var card_conclusion: CardData = CardData.new("card_conclusion")
-	card_conclusion.card_name = "Conclusion"
-	card_conclusion.card_color_id = "color_{0}".format([color])
-	card_conclusion.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_conclusion.card_description = "Retain. Do [damage]. Gain 4 damage for each unused energy at turn end. Exhaust"
-	card_conclusion.card_type = CardData.CARD_TYPES.ATTACK
-	card_conclusion.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_conclusion.card_energy_cost = 3
-	card_conclusion.card_requires_target = true
-	card_conclusion.card_is_retained = true
-	card_conclusion.card_play_destination = HandManager.EXHAUST_PILE
-	card_conclusion.card_values = {"damage": 12, "number_of_attacks": 1, "card_value_improvements":{"damage": 4}}
-	card_conclusion.card_first_upgrade_property_changes = {
-		"card_description": "Retain. Do [damage]. Gain 6 damage for each unused energy at turn end. Exhaust",
-		"card_value_improvements":{"damage": 6}
-		}
-	card_conclusion.card_play_actions = [
-		{
-			Scripts.ACTION_ATTACK_GENERATOR: {
-					"time_delay": 0.3,
-					"target_override": BaseAction.TARGET_OVERRIDES.SELECTED_TARGETS,
-					}
-			}
-		]
-	card_conclusion.card_end_of_turn_actions = [
-		{
-		Scripts.ACTION_IMPROVE_CARD_VALUES_UNUSED_ENERGY: 
-			{
-			"time_delay": 0.1,
-			"pick_played_card": true,
-			"modify_parent_card": false,
-			}
-		}
-	]
-	
-	Global.register_rod(card_conclusion)
-	
-	# Datum
-	var card_datum: CardData = CardData.new("card_datum")
-	card_datum.card_name = "Datum"
-	card_datum.card_color_id = "color_{0}".format([color])
-	card_datum.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_datum.card_description = "Gain [block] Block. Duplicates on draw. Exhaust."
-	card_datum.card_type = CardData.CARD_TYPES.SKILL
-	card_datum.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_datum.card_energy_cost = 3
-	card_datum.card_requires_target = false
-	card_datum.card_is_retained = false
-	card_datum.card_play_destination = HandManager.EXHAUST_PILE
-	card_datum.card_values = {"block": 6, "modified_energy_cost": card_datum.card_energy_cost, "card_value_improvements":{"modified_energy_cost": -1}}
-	card_datum.card_play_actions = [
-		{
-			Scripts.ACTION_BLOCK: {
-					"time_delay": 0.2,
-					"target_override": BaseAction.TARGET_OVERRIDES.PARENT,
-					}
-			}
-		]
-	card_datum.card_draw_actions = [
-		# pick this card and duplicate it then add the duplicate to hand
-		{
-			Scripts.ACTION_PICK_DUPLICATE_CARDS:{
-				"card_pick_type": ActionBasePickCards.PICK_PARENT_CARD,
-				"min_card_amount": 1,
-				"max_card_amount": 1,
-				"min_cards_are_required_for_action": true,
-				"random_selection": true,
-				"card_pick_text": "Choose {0} card(s) to add to hand. {1} cards selected",
-				"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {
-					# must alias the generated cards from ActionPickDuplicateCards
-					"custom_key_names": {"picked_cards": "generated_cards"}
-				}
-				}]
-			}
-		}
-	]
-	card_datum.card_end_of_turn_actions = [
-		# pick this card and then modify its energy_cost using an alias'ed  
-		{
-			Scripts.ACTION_PICK_CARDS:{
-				"card_pick_type": ActionBasePickCards.PICK_PARENT_CARD,
-				"min_card_amount": 1,
-				"max_card_amount": 1,
-				"min_cards_are_required_for_action": true,
-				"random_selection": true,
-				"action_data": [{Scripts.ACTION_CHANGE_CARD_ENERGIES: {
-					# must alias the generated cards from ActionPickDuplicateCards
-					"custom_key_names": {"card_energy_cost_until_combat": "modified_energy_cost"}
-				}
-				}]
-			}
-		},
-		# clamp the modified_energy value to 0
-		{
-		Scripts.ACTION_CLAMP_CARD_VALUES: 
-			{
-			"time_delay": 0.1,
-			"pick_played_card": true,
-			"modify_parent_card": false,
-			"clamp_card_values": {"modified_energy_cost": [0, 99]}
-			}
-		},
-		
-		# convert unused energy into changing a "modified_energy_cost" property
-		{
-		Scripts.ACTION_IMPROVE_CARD_VALUES_UNUSED_ENERGY: 
-			{
-			"time_delay": 0.1,
-			"pick_played_card": true,
-			"modify_parent_card": false,
-			
-			}
-		}
-	]
-	
-	Global.register_rod(card_datum)
-	
-	# Photoelectric Synthesis
-	var card_photoelectric_synthesis: CardData = CardData.new("card_photoelectric_synthesis")
-	card_photoelectric_synthesis.card_name = "Photoelectric Synthesis"
-	card_photoelectric_synthesis.card_color_id = "color_{0}".format([color])
-	card_photoelectric_synthesis.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_photoelectric_synthesis.card_description = "Gain 10 strength. Cannot be played unless it has Absorbed 5 energy. [card_absorbed_energy] Absorbed."
-	card_photoelectric_synthesis.card_type = CardData.CARD_TYPES.POWER
-	card_photoelectric_synthesis.card_rarity = CardData.CARD_RARITIES.RARE
-	card_photoelectric_synthesis.card_energy_cost = 0
-	card_photoelectric_synthesis.card_requires_target = false
-	card_photoelectric_synthesis.card_is_retained = true
-	card_photoelectric_synthesis.card_values = {
-		"card_absorbed_energy": 0,
-		"card_value_improvements": {"card_absorbed_energy": 1},
-		"status_effect_object_id": "status_effect_damage_increase",
-		"status_charge_amount": 10,
-		}
-	card_photoelectric_synthesis.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-				"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
-				}
-		}
-		]
-	card_photoelectric_synthesis.card_end_of_turn_actions = [
-		{
-		Scripts.ACTION_IMPROVE_CARD_VALUES_UNUSED_ENERGY: 
-			{
-			"time_delay": 0.1,
-			"pick_played_card": true,
-			"modify_parent_card": false,
-			}
-		}
-	]
-	card_photoelectric_synthesis.card_play_validators = [
-		{
-			Scripts.VALIDATOR_CARD_VALUES: {
-			"card_value_name": "card_absorbed_energy",
-			"operator": ">=",
-			"comparison_value": 5
-			}
-		}
-	]
-	
-	Global.register_rod(card_photoelectric_synthesis)
-	
-	#endregion
-	#region Critical Archetype
-	
-	# Big Boom
-	var card_big_boom: CardData = CardData.new("card_big_boom")
-	card_big_boom.card_name = "Big Boom"
-	card_big_boom.card_color_id = "color_{0}".format([color])
-	card_big_boom.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_big_boom.card_description = "Do [damage] damage to all enemies. Gain [status_charge_amount] Overheat."
-	card_big_boom.card_type = CardData.CARD_TYPES.ATTACK
-	card_big_boom.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_big_boom.card_requires_target = false
-	card_big_boom.card_energy_cost = 2
-	card_big_boom.card_values = {"damage": 12, "status_charge_amount": 5, "time_delay": 0.2,}
-	card_big_boom.card_upgrade_value_improvements = {"damage": 14,}
-	card_big_boom.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overheat",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		},
+	var card_sword: CardData = CardData.new("card_sword")
+	card_sword.card_name = "Sword"
+	card_sword.card_color_id = "color_{0}".format([color])
+	card_sword.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_sword.card_description = "Gain [ore_amount] Ore and [damage] Explore. Durability 2."
+	card_sword.card_type = CardData.CARD_TYPES.SKILL
+	card_sword.card_energy_cost = 0
+	card_sword.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_sword.card_durability = 2
+	card_sword.card_requires_target = true
+	card_sword.card_values = {"damage": 1, "number_of_attacks": 1, "ore_amount": 1, "card_durability": -1}
+	card_sword.card_play_actions = [
 		{
 			Scripts.ACTION_ATTACK_GENERATOR: 
-				{
-				"target_override": BaseAction.TARGET_OVERRIDES.ALL_ENEMIES,
-				}
-		}
-		]
-	
-	Global.register_rod(card_big_boom)
-	
-	# Creates cards and adds them to hand
-	var card_containment: CardData = CardData.new("card_containment")
-	card_containment.card_name = "Containment"
-	card_containment.card_color_id = "color_{0}".format([color])
-	card_containment.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_containment.card_description = "Gain [block] Block. Add [number_of_cards] Wastes to hand"
-	card_containment.card_type = CardData.CARD_TYPES.SKILL
-	card_containment.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_containment.card_requires_target = false
-	card_containment.card_keyword_object_ids = []
-	card_containment.card_values = {"target_override": BaseAction.TARGET_OVERRIDES.PARENT, "block": 15, "created_card_object_id": "card_waste",  "number_of_cards": 2}
-	card_containment.card_upgrade_value_improvements = {"block": 5}
-	card_containment.card_play_actions = [
-	{
-	Scripts.ACTION_CREATE_CARDS: {
-		"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {}}]
-		}
-	},
-	{
-		Scripts.ACTION_BLOCK: 
 			{
-			"time_delay": 0.3,
-			}
-		}
-	]
-	
-	Global.register_rod(card_containment)
-	
-	# Critical
-	var card_critical: CardData = CardData.new("card_critical")
-	card_critical.card_name = "Critical"
-	card_critical.card_color_id = "color_{0}".format([color])
-	card_critical.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_critical.card_description = "Gain [status_charge_amount] Overheat each turn."
-	card_critical.card_type = CardData.CARD_TYPES.POWER
-	card_critical.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_critical.card_requires_target = false
-	card_critical.card_energy_cost = 1
-	card_critical.card_values = {"status_charge_amount": 5, "time_delay": 0.2,}
-	card_critical.card_upgrade_value_improvements = {}
-	card_critical.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_critical",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		}
-		]
-	
-	Global.register_rod(card_critical)
-	
-	# Feedback Loop
-	var card_feedback_loop: CardData = CardData.new("card_feedback_loop")
-	card_feedback_loop.card_name = "Feedback Loop"
-	card_feedback_loop.card_color_id = "color_{0}".format([color])
-	card_feedback_loop.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_feedback_loop.card_description = "Gain {0} whenever you Overheat.".format([Card.ENERGY_ICON_KEYWORD])
-	card_feedback_loop.card_type = CardData.CARD_TYPES.POWER
-	card_feedback_loop.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_feedback_loop.card_requires_target = false
-	card_feedback_loop.card_energy_cost = 2
-	card_feedback_loop.card_values = {"status_charge_amount": 1, "time_delay": 0.2,}
-	card_feedback_loop.card_upgrade_value_improvements = {}
-	card_feedback_loop.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_feedback_loop",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		}
-		]
-	
-	Global.register_rod(card_feedback_loop)
-	
-	# Fusion Cannon
-	var card_fusion_cannon: CardData = CardData.new("card_fusion_cannon")
-	card_fusion_cannon.card_name = "Special Discard"
-	card_fusion_cannon.card_color_id = "color_{0}".format([color])
-	card_fusion_cannon.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_fusion_cannon.card_description = "Do [damage] damage for each Waste card in your exhaust pile. Add 1 Waste to your hand."
-	card_fusion_cannon.card_type = CardData.CARD_TYPES.ATTACK
-	card_fusion_cannon.card_rarity = CardData.CARD_RARITIES.RARE
-	card_fusion_cannon.card_energy_cost = 4
-	card_fusion_cannon.card_requires_target = true
-	card_fusion_cannon.card_values = {
-		"damage": 15,
-		"number_of_attacks": 1,
-		"created_card_object_id": "card_waste",  "number_of_cards": 1,
-		}
-	card_fusion_cannon.card_upgrade_value_improvements = {"damage": 5}
-	card_fusion_cannon.card_play_actions = [
-	{
-	Scripts.ACTION_PICK_CARDS: {
-		"min_card_amount": 99,
-		"max_card_amount": 99,
-		"min_cards_are_required_for_action": false,
-		"random_selection": true,
-		"card_pick_type": HandManager.EXHAUST_PILE,
-		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-		"validator_data": [
-			{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_waste"]}}
-		],
-		"action_data": [
-			{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
-				"multiplied_values": ["damage"],
-				"action_data": [{Scripts.ACTION_ATTACK_GENERATOR: {
-					"time_delay": 0.5
-					}}]
-			}},
-			]
-		}
-	},
-	]
-
-	Global.register_rod(card_fusion_cannon)
-	
-	# Meltdown
-	var card_meltdown: CardData = CardData.new("card_meltdown")
-	card_meltdown.card_name = "Meltdown"
-	card_meltdown.card_color_id = "color_{0}".format([color])
-	card_meltdown.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_meltdown.card_description = "Do [damage] damage. Gain [status_charge_amount] Overheat."
-	card_meltdown.card_type = CardData.CARD_TYPES.ATTACK
-	card_meltdown.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_meltdown.card_requires_target = true
-	card_meltdown.card_values = {"damage": 0, "status_charge_amount": 25}
-	card_meltdown.card_upgrade_value_improvements = {}
-	card_meltdown.card_play_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overheat",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		},
-		{
-			Scripts.ACTION_ATTACK_GENERATOR: {
-					"time_delay": 0.3,
-					"target_override": BaseAction.TARGET_OVERRIDES.SELECTED_TARGETS,
+				"time_delay": 0.0, "actions_on_lethal": []
+			},
+			Scripts.ACTION_ADD_ORE:
+				{
+					
+				},
+			Scripts.ACTION_CHANGE_CARD_DURABILITY:
+				{},
+			# check flag when drawn
+			Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_durability",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
 					}
+				],
+				# exhaust
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION: {
+						"card_destination": HandManager.EXHAUST_PILE,
+						"card_destination_strategy": HandManager.PILE_INSERTION_STRATEGIES.TOP
+						},
+					},
+				]
+			}
 		}
 		]
 	
-	Global.register_rod(card_meltdown)
+	Global.register_rod(card_sword)
 	
-	# Particle Accelerator
-	var card_particle_accelerator: CardData = CardData.new("card_particle_accelerator")
-	card_particle_accelerator.card_name = "Particle Accelerator"
-	card_particle_accelerator.card_color_id = "color_{0}".format([color])
-	card_particle_accelerator.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_particle_accelerator.card_description = "Gain [energy_amount] Energy. Add [number_of_cards] Wastes to discard pile."
-	card_particle_accelerator.card_type = CardData.CARD_TYPES.SKILL
-	card_particle_accelerator.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_particle_accelerator.card_requires_target = false
-	card_particle_accelerator.card_energy_cost = 0
-	card_particle_accelerator.card_keyword_object_ids = []
-	card_particle_accelerator.card_values = {
-		"energy_amount": 3,
-		"time_delay": 0.0,
-		"is_manual_discard": false,
-		"created_card_object_id": "card_waste",  "number_of_cards": 3,
-		"target_override": BaseAction.TARGET_OVERRIDES.PARENT}
-	card_particle_accelerator.card_upgrade_value_improvements = {"energy_amount": 1}
-	card_particle_accelerator.card_play_actions = [
-	{
-	Scripts.ACTION_CREATE_CARDS: {
-		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}
-	},
-	{
-		Scripts.ACTION_ADD_ENERGY: 
-		{
-		"time_delay": 0.1,
-		}
-	}
-	]
 	
-	Global.register_rod(card_particle_accelerator)
-	
-	# Unstable
-	var card_unstable: CardData = CardData.new("card_unstable")
-	card_unstable.card_name = "Unstable"
-	card_unstable.card_color_id = "color_{0}".format([color])
-	card_unstable.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_unstable.card_description = "Draw [draw_count] cards. Gain [status_charge_amount] Overheat"
-	card_unstable.card_type = CardData.CARD_TYPES.SKILL
-	card_unstable.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_unstable.card_requires_target = false
-	card_unstable.card_energy_cost = 0
-	card_unstable.card_values = {"status_charge_amount": 4, "draw_count": 3}
-	card_unstable.card_upgrade_value_improvements = {"draw_count": 1}
-	card_unstable.card_play_actions = [
+	var card_treasure: CardData = CardData.new("card_treasure")
+	card_treasure.card_name = "Treasure"
+	card_treasure.card_color_id = "color_{0}".format([color])
+	card_treasure.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_treasure.card_description = "Gain [money_amount] Money. Durability 3."
+	card_treasure.card_type = CardData.CARD_TYPES.SKILL
+	card_treasure.card_energy_cost = 0
+	card_treasure.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_treasure.card_durability = 3
+	card_treasure.card_requires_target = false
+	card_treasure.card_values = {"money_amount": 1, "card_durability": -1}
+	card_treasure.card_play_actions = [
 		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overheat",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		},
-		{
-		Scripts.ACTION_DRAW_GENERATOR: {},
-		}
-	]
-	
-	Global.register_rod(card_unstable)
-	
-	# Waste
-	var card_waste: CardData = CardData.new("card_waste")
-	card_waste.card_name = "Waste"
-	card_waste.card_color_id = "color_{0}".format([color])
-	card_waste.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_waste.card_description = "At end of turn gain [status_charge_amount] Overheat and do [damage] damage to a random enemy. Exhaust"
-	card_waste.card_type = CardData.CARD_TYPES.STATUS
-	card_waste.card_rarity = CardData.CARD_RARITIES.GENERATED
-	card_waste.card_requires_target = false
-	card_waste.card_play_destination = HandManager.EXHAUST_PILE
-	card_waste.card_energy_cost = 1
-	card_waste.card_upgrade_amount_max = 0 # cannot be upgraded
-	card_waste.card_values = {"damage": 3, "status_charge_amount": 2}
-	card_waste.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_APPLY_STATUS: {
-			"status_effect_object_id": "status_effect_overheat",
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		},
-		{
-			Scripts.ACTION_DIRECT_DAMAGE: {
-				"bypass_block": false,
-				"time_delay": 0.2,
-				"target_override": BaseAction.TARGET_OVERRIDES.RANDOM_ENEMY,
+			Scripts.ACTION_ADD_MONEY: 
+			{
+			},
+			Scripts.ACTION_CHANGE_CARD_DURABILITY:
+				{},
+			# check flag when drawn
+			Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_durability",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				# exhaust
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION: {
+						"card_destination": HandManager.EXHAUST_PILE,
+						"card_destination_strategy": HandManager.PILE_INSERTION_STRATEGIES.TOP
+						},
+					},
+				]
 			}
 		}
-	]
+		]
 	
-	Global.register_rod(card_waste)
+	Global.register_rod(card_treasure)
 	
-	#endregion
+		
+	var card_spice: CardData = CardData.new("card_spice")
+	card_spice.card_name = "Spice"
+	card_spice.card_color_id = "color_{0}".format([color])
+	card_spice.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_spice.card_description = "Gain [money_amount] Money. Durability 1."
+	card_spice.card_type = CardData.CARD_TYPES.SKILL
+	card_spice.card_energy_cost = 0
+	card_spice.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_spice.card_durability = 3
+	card_spice.card_requires_target = false
+	card_spice.card_values = {"money_amount": 1, "card_durability": -1, "card_value_improvements": {"money_amount": 1}}
+	card_spice.card_discard_actions = [
+		{
+			Scripts.ACTION_IMPROVE_CARD_VALUES: {
+				"time_delay": 0.1,
+				"pick_played_card": true,
+				"modify_parent_card": false,
+			}
+		}
+		]	
+	card_spice.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_MONEY: 
+			{
+			},
+			Scripts.ACTION_CHANGE_CARD_DURABILITY:
+				{},
+			# check flag when drawn
+			
+			Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_durability",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				# exhaust
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION: {
+						"card_destination": HandManager.EXHAUST_PILE,
+						"card_destination_strategy": HandManager.PILE_INSERTION_STRATEGIES.TOP
+						},
+					},
+				]
+			}
+		}
+		]
 	
+	Global.register_rod(card_spice)
+	
+#endregion
+func add_cards_purple() -> void:
+	var color: String = "purple"
+
 	#region Pearl
 	
 	var card_cunningtrader: CardData = CardData.new("card_cunningtrader")

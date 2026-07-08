@@ -111,6 +111,7 @@ const STANDARD_CARD_RARITIES: Array[int] = [CARD_RARITIES.COMMON, CARD_RARITIES.
 ]
 @export var card_discard_actions: Array[Dictionary] = []	# actions that trigger when card is manually discarded
 @export var card_end_of_turn_actions: Array[Dictionary] = []	# actions that trigger when the card is in hand end of turn
+@export var card_end_of_turn_draw_pile_actions: Array[Dictionary] = [] # actions that trigger when the card is in draw pile end of turn
 @export var card_exhaust_actions: Array[Dictionary] = []	# actions that trigger when card is exhausted
 @export var card_draw_actions: Array[Dictionary] = []	# actions that trigger when card is drawn and added to hand
 @export var card_retain_actions: Array[Dictionary] = []	# actions that trigger when card is retained at the end of turn

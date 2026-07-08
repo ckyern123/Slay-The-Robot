@@ -60,6 +60,10 @@ const ACTION_ADD_ARTIFACTS_FROM_POOL: String = "res://scripts/actions/combatant_
 const ACTION_SWAP_BOSS_ARTIFACT: String = "res://scripts/actions/combatant_actions/player_actions/ActionSwapBossArtifact.gd"
 const ACTION_ADD_ENERGY: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddEnergy.gd"
 const ACTION_ADD_MONEY: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddMoney.gd"
+const ACTION_ADD_FOOD: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddFood.gd"
+const ACTION_ADD_INSIGHT: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddInsight.gd"
+const ACTION_ADD_ORE: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddOre.gd"
+
 const ACTION_DRAW: String = "res://scripts/actions/combatant_actions/player_actions/ActionDraw.gd"
 const ACTION_DRAW_GENERATOR: String = "res://scripts/actions/combatant_actions/player_actions/ActionDrawGenerator.gd"
 const ACTION_RESET_ENERGY: String = "res://scripts/actions/combatant_actions/player_actions/ActionResetEnergy.gd"
@@ -103,6 +107,9 @@ const ACTION_CREATE_CARDS: String = "res://scripts/actions/card_actions/pick_car
 # 	cardset actions; these affect a list of picked cards
 const ACTION_IMPROVE_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveCardValues.gd"
 const ACTION_CHANGE_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardValues.gd"
+const ACTION_CHANGE_CARD_INFLUENCE: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardDurability.gd"
+const ACTION_CHANGE_CARD_DURABILITY: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardInfluence.gd"
+
 const ACTION_IMPROVE_CARD_VALUES_UNUSED_ENERGY: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveCardValuesUnusedEnergy.gd"
 const ACTION_CLAMP_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionClampCardValues.gd"
 const ACTION_DISCARD_CARDS: String = "res://scripts/actions/card_actions/cardset_actions/ActionDiscardCards.gd"
