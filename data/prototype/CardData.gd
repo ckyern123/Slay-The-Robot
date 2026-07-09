@@ -42,9 +42,10 @@ var parent_card: CardData = null	# the parent card in the player's true deck tha
 
 # Card Type
 enum CARD_TYPES {ATTACK, SKILL, POWER, STATUS, CURSE}
+enum CARD_SUBTYPES {NEUTRAL, FOOD, CRAFT, PEARL, JADE, ANISSEED, CENGKIH}
 const STANDARD_CARD_TYPES: Array[int] = [CARD_TYPES.ATTACK, CARD_TYPES.SKILL, CARD_TYPES.POWER]
 @export var card_type: int = CARD_TYPES.ATTACK
-
+@export var card_subtype: int = CARD_SUBTYPES.NEUTRAL
 # Card Rarity
 enum CARD_RARITIES {BASIC, COMMON, UNCOMMON, RARE, GENERATED}
 const STANDARD_CARD_RARITIES: Array[int] = [CARD_RARITIES.COMMON, CARD_RARITIES.UNCOMMON, CARD_RARITIES.RARE]

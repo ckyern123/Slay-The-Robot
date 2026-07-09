@@ -148,6 +148,7 @@ const VALIDATOR_CARD_RARITY: String = "res://scripts/validators/card/ValidatorCa
 const VALIDATOR_CARD_REMOVEABLE_FROM_DECK: String = "res://scripts/validators/card/ValidatorCardRemovableFromDeck.gd"
 const VALIDATOR_CARD_TRANSFORMABLE_FROM_DECK: String = "res://scripts/validators/card/ValidatorCardTransformableFromDeck.gd"
 const VALIDATOR_CARD_TYPE: String = "res://scripts/validators/card/ValidatorCardType.gd"
+const VALIDATOR_CARD_SUBTYPE: String = "res://scripts/validators/card/ValidatorCardSubtype.gd"
 const VALIDATOR_CARD_UPGRADEABLE: String = "res://scripts/validators/card/ValidatorCardUpgradeable.gd"
 
 # card play validators
@@ -165,6 +166,7 @@ const VALIDATOR_PILE_SIZE: String = "res://scripts/validators/deck/ValidatorPile
 # hand validators
 const VALIDATOR_CARD_TYPE_ADJACENT_IN_HAND: String = "res://scripts/validators/hand/ValidatorCardTypeAdjacentInHand.gd"
 const VALIDATOR_CARD_ID_ADJACENT_IN_HAND: String = "res://scripts/validators/hand/ValidatorCardIDAdjacentInHand.gd"
+const VALIDATOR_CARD_ID_IN_HAND: String = "res://scripts/validators/hand/ValidatorCardIDInHand.gd"
 const VALIDATOR_CARD_POSITION_IN_HAND: String = "res://scripts/validators/hand/ValidatorCardPositionInHand.gd"
 const VALIDATOR_CARD_TYPE_IN_HAND: String = "res://scripts/validators/hand/ValidatorCardTypeInHand.gd"
 
@@ -183,6 +185,8 @@ const VALIDATOR_ENEMY_ATTACKING: String = "res://scripts/validators/ValidatorEne
 const VALIDATOR_HAS_ARTIFACT: String = "res://scripts/validators/ValidatorHasArtifact.gd"
 const VALIDATOR_LOCATION_TYPE: String = "res://scripts/validators/ValidatorLocationType.gd"
 const VALIDATOR_MONEY: String = "res://scripts/validators/ValidatorMoney.gd"
+const VALIDATOR_ORE: String = "res://scripts/validators/ValidatorOre.gd"
+const VALIDATOR_FOOD: String = "res://scripts/validators/ValidatorFood.gd"
 const VALIDATOR_PLAYER_HEALTH: String = "res://scripts/validators/ValidatorPlayerHealth.gd"
 const VALIDATOR_PLAYER_CHARACTER: String = "res://scripts/validators/ValidatorPlayerCharacter.gd"
 const VALIDATOR_RNG: String = "res://scripts/validators/ValidatorRNG.gd"
