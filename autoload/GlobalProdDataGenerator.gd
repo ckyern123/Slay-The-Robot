@@ -3981,6 +3981,208 @@ func add_cards_black() -> void:
 func add_cards_green() -> void:
 	var color: String = "green"
 
+	var card_cofferskeeper: CardData = CardData.new("card_cofferskeeper")
+	card_cofferskeeper.card_name = "Coffers Keeper"
+	card_cofferskeeper.card_color_id = "color_{0}".format([color])
+	card_cofferskeeper.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_cofferskeeper.card_description = "Gain [ore_amount] Ore, [money_amount] Money, [food_amount] Food [min_card_amount]."
+	card_cofferskeeper.card_type = CardData.CARD_TYPES.SKILL
+	card_cofferskeeper.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_cofferskeeper.card_requires_target = false
+	card_cofferskeeper.card_energy_cost = 1
+	card_cofferskeeper.card_values = {"card_influence": 1,"ore_amount":1,"money_amount":1,"food_amount":1}
+	card_cofferskeeper.card_upgrade_value_improvements = {"food_amount":1}
+	card_cofferskeeper.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+		Scripts.ACTION_ADD_ORE: {}
+		},
+		{
+		Scripts.ACTION_ADD_MONEY: {}
+		},
+		{
+		Scripts.ACTION_ADD_FOOD: {}
+		}]
+
+	Global.register_rod(card_cofferskeeper)
+	
+	var card_youngmentor: CardData = CardData.new("card_youngmentor")
+	card_youngmentor.card_name = "Young Mentor"
+	card_youngmentor.card_color_id = "color_{0}".format([color])
+	card_youngmentor.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_youngmentor.card_description = "Create [number_of_cards] Fish, Discard up to 2 cards."
+	card_youngmentor.card_type = CardData.CARD_TYPES.SKILL
+	card_youngmentor.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_youngmentor.card_requires_target = false
+	card_youngmentor.card_energy_cost = 1
+	card_youngmentor.card_values = {"card_influence": 1,"card_object_ids":["card_fish"],"number_of_cards":2}
+	card_youngmentor.card_upgrade_value_improvements = {"number_of_cards":1}
+	card_youngmentor.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}
+		},
+		{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount": 0,
+		"max_card_amount": 2,
+		"min_cards_are_required_for_action": false,
+		"card_pick_type": HandManager.HAND,
+		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+		"action_data": [
+			{Scripts.ACTION_DISCARD_CARDS: {
+			}},
+			]
+		},
+
+		},]
+
+	Global.register_rod(card_youngmentor)
+	
+	var card_luckfinder: CardData = CardData.new("card_luckfinder")
+	card_luckfinder.card_name = "Luck Finder"
+	card_luckfinder.card_color_id = "color_{0}".format([color])
+	card_luckfinder.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_luckfinder.card_description = "Consume 2 Ore to Fertilise all Grains in deck. If not played, add [number_of_cards] Grain."
+	card_luckfinder.card_type = CardData.CARD_TYPES.SKILL
+	card_luckfinder.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_luckfinder.card_requires_target = false
+	card_luckfinder.card_energy_cost = 1
+	card_luckfinder.card_values = {"card_influence": 1,"card_object_ids":["card_grain"],"number_of_cards":1}
+	card_luckfinder.card_upgrade_value_improvements = {"number_of_cards":1}
+	card_luckfinder.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+		Scripts.ACTION_VALIDATOR: {
+			"validator_data": [{Scripts.VALIDATOR_ORE: {"ore_amount":2}}],
+			"passed_action_data": [{Scripts.ACTION_ADD_ORE:{"ore_amount":-2}},
+			{		
+			Scripts.ACTION_PICK_CARDS:
+			{
+				"min_card_amount": 99,
+				"max_card_amount": 99,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DRAW_PILE,
+				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_grain"]}}],
+				"action_data": [{Scripts.ACTION_IMPROVE_CARD_VALUES: {
+				"card_value_improvements":{"food_amount":1},
+				"time_delay": 0.1,
+				"pick_played_card": true,
+				"modify_parent_card": false,
+			}
+			}]
+		}}]
+		}
+		}
+	]
+	card_luckfinder.card_end_of_turn_actions = [
+		{
+		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DISCARD:{}}]}
+		}]
+
+	Global.register_rod(card_luckfinder)
+	
+	var card_greeninformant: CardData = CardData.new("card_greeninformant")
+	card_greeninformant.card_name = "Green Informant"
+	card_greeninformant.card_color_id = "color_{0}".format([color])
+	card_greeninformant.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_greeninformant.card_description = "Does nothing but gain [card_influence] influence when played. When discarded, lose 5 Influence to gain [insight_amount] Insight."
+	card_greeninformant.card_type = CardData.CARD_TYPES.SKILL
+	card_greeninformant.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_greeninformant.card_requires_target = false
+	card_greeninformant.card_energy_cost = 1
+	card_greeninformant.card_values = {"card_influence": 2,"insight_amount":1}
+	card_greeninformant.card_upgrade_value_improvements = {"card_influence":1}
+	card_greeninformant.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		}]
+	card_greeninformant.card_discard_actions = [
+		{
+			Scripts.ACTION_VALIDATOR:{
+				"validator_data":[{Scripts.VALIDATOR_CARD_PROPERTIES:{"card_property_name":"card_influence","comparison_value":5}}],
+				"action_data":[{Scripts.CHANGE_CARD_INFLUENCE:{"card_influence":-5,"pick_played_card":true,"modify_parent_card":false}},
+				{Scripts.ACTION_ADD_INSIGHT:{}}]
+			}
+		}]
+	Global.register_rod(card_greeninformant)
+	
+	var card_goldenconscript: CardData = CardData.new("card_goldenconscript")
+	card_goldenconscript.card_name = "Golden Conscript"
+	card_goldenconscript.card_color_id = "color_{0}".format([color])
+	card_goldenconscript.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_goldenconscript.card_description = "Draw [draw_count], Explore [damage]."
+	card_goldenconscript.card_type = CardData.CARD_TYPES.ATTACK
+	card_goldenconscript.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_goldenconscript.card_requires_target = true
+	card_goldenconscript.card_energy_cost = 1
+	card_goldenconscript.card_values = {"card_influence":1,"draw_count": 1,"damage":2,"number_of_attacks":1}
+	card_goldenconscript.card_upgrade_value_improvements = {"draw_count":1,"damage":1}
+	card_goldenconscript.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+		Scripts.ACTION_DRAW_GENERATOR:{}
+		},
+		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}}]
+	Global.register_rod(card_goldenconscript)
+	
+	var card_militantoutsourcer: CardData = CardData.new("card_militantoutsourcer")
+	card_militantoutsourcer.card_name = "Militant Outsourcer"
+	card_militantoutsourcer.card_color_id = "color_{0}".format([color])
+	card_militantoutsourcer.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_militantoutsourcer.card_description = "Explore [damage]. Return 1 card from your discard pile to your hand."
+	card_militantoutsourcer.card_type = CardData.CARD_TYPES.ATTACK
+	card_militantoutsourcer.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_militantoutsourcer.card_requires_target = true
+	card_militantoutsourcer.card_energy_cost = 1
+	card_militantoutsourcer.card_values = {"card_influence":1,"damage":2,"number_of_attacks":1}
+	card_militantoutsourcer.card_upgrade_value_improvements = {"damage":2}
+	card_militantoutsourcer.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}},
+		{
+		Scripts.ACTION_PICK_UPGRADE_CARDS: {
+		"min_card_amount": 1,
+		"max_card_amount": 1,
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose up to {0} card(s) to upgrade. {1} cards selected",
+		"action_data": [
+			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
+		}
+		}]
+	Global.register_rod(card_militantoutsourcer)
 func add_cards_gold() -> void:
 	var color: String = "gold"
 
