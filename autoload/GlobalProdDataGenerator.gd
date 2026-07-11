@@ -4251,41 +4251,277 @@ func add_cards_green() -> void:
 	card_everymanleader.card_name = "Everyman Leader"
 	card_everymanleader.card_color_id = "color_{0}".format([color])
 	card_everymanleader.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_everymanleader.card_description = "Add a Sword to discard pile. Consume Ore to Wield 2."
+	card_everymanleader.card_description = "Appease twice [min_card_amount] cards in discard pile. Return them to your hand."
 	card_everymanleader.card_type = CardData.CARD_TYPES.SKILL
 	card_everymanleader.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_everymanleader.card_requires_target = true
+	card_everymanleader.card_requires_target = false
 	card_everymanleader.card_energy_cost = 1
-	card_everymanleader.card_values = {"card_influence":1,"damage":2,"number_of_attacks":1}
-	card_everymanleader.card_upgrade_value_improvements = {"damage":1}
+	card_everymanleader.card_values = {"card_influence":1, "max_card_amount":2}
+	card_everymanleader.card_upgrade_value_improvements = {"max_card_amount":1}
 	card_everymanleader.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}},
+		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_cards_are_required_for_action": false,
+			"random_selection": false,
+			"card_pick_type": HandManager.DISCARD_PILE,
+			"card_pick_text": "Choose {0} card to appease and return. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"card_influence":2,
+			"time_delay": 0.1,
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}}]
+		}
+		}]
+	Global.register_rod(card_everymanleader)
+	
+	var card_inspiredgossipmonger: CardData = CardData.new("card_inspiredgossipmonger")
+	card_inspiredgossipmonger.card_name = "Inspired Gossipmonger"
+	card_inspiredgossipmonger.card_color_id = "color_{0}".format([color])
+	card_inspiredgossipmonger.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_inspiredgossipmonger.card_description = "Rattle all cards in draw pile to gain [insight_amount] Insight. Do this only if draw pile is at least [comparison_value]."
+	card_inspiredgossipmonger.card_type = CardData.CARD_TYPES.SKILL
+	card_inspiredgossipmonger.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_inspiredgossipmonger.card_requires_target = false
+	card_inspiredgossipmonger.card_energy_cost = 1
+	card_inspiredgossipmonger.card_values = {"insight_amount":1,"card_influence":1, "comparison_value":13}
+	card_inspiredgossipmonger.card_upgrade_value_improvements = {"comparison_value":-3}
+	card_inspiredgossipmonger.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}},
+				{
+		Scripts.ACTION_VALIDATOR: 
+			{
+			"validator_data": [
+			{Scripts.VALIDATOR_PILE_SIZE: {"card_pick_type": HandManager.DRAW_PILE, "operator":">="}}
+			],
+			"action_data": [
+			{Scripts.ACTION_ADD_INSIGHT: {
+			}},
+					{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":99,
+			"max_card_amount":99,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.DRAW_PILE,
+			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"card_influence":-1,
+			"time_delay": 0.1,
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}}]
+		}
+		}
+			]
+			}
+		}]
+	Global.register_rod(card_inspiredgossipmonger)
+	
+	var card_wizenedforager: CardData = CardData.new("card_wizenedforager")
+	card_wizenedforager.card_name = "Inspired Gossipmonger"
+	card_wizenedforager.card_color_id = "color_{0}".format([color])
+	card_wizenedforager.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_wizenedforager.card_description = "Create 3 Grain in discard pile. When discarded, create [number_of_cards] Fish in discard pile instead."
+	card_wizenedforager.card_type = CardData.CARD_TYPES.SKILL
+	card_wizenedforager.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_wizenedforager.card_requires_target = false
+	card_wizenedforager.card_energy_cost = 1
+	card_wizenedforager.card_values = {"card_influence":1, "card_object_ids":["card_fish"],"number_of_cards":1}
+	card_wizenedforager.card_upgrade_value_improvements = {"number_of_cards":1}
+	card_wizenedforager.card_play_actions = [
 		{
 		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"pick_played_card": true,
 			"modify_parent_card": false,
 		}
 		},
-		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}},
 		{
-		Scripts.ACTION_VALIDATOR:
+		Scripts.ACTION_CREATE_CARDS:
 			{
-				"validator_data":[{Scripts.VALIDATOR_FOOD:{"food_amount":2}}],
-				"passed_action_data":[{
-				Scripts.ACTION_PICK_CARDS: {
-					"min_card_amount": 3,
-					"max_card_amount": 3,
-					"min_cards_are_required_for_action": false,
-					"random_selection": true,
-					"card_pick_type": HandManager.DISCARD_PILE,
-					"card_pick_text": "Choose up to {0} card(s) to return. {1} cards selected",
-					"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:[{"card_subtypes":CardData.CARD_SUBTYPES.CRAFT}]}],
-					"action_data": [
-					{Scripts.ACTION_PLAY_CARDS:{}}]
-					}
-				}]
+				"card_object_ids":["card_grain"],
+				"number_of_cards":3,
+				"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 			}
 		}]
-	Global.register_rod(card_shockrider)
+	card_wizenedforager.card_discard_actions = [
+		{
+			Scripts.ACTION_CREATE_CARDS:
+				{
+					"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
+				}
+		}
+	]
+	Global.register_rod(card_wizenedforager)
+	
+	var card_hoardingstowaway: CardData = CardData.new("card_hoardingstowaway")
+	card_hoardingstowaway.card_name = "Hoarding Stowaway"
+	card_hoardingstowaway.card_color_id = "color_{0}".format([color])
+	card_hoardingstowaway.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_hoardingstowaway.card_description = "Consume [ore_amount] Ore to gain 2 Insight."
+	card_hoardingstowaway.card_type = CardData.CARD_TYPES.SKILL
+	card_hoardingstowaway.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_hoardingstowaway.card_requires_target = false
+	card_hoardingstowaway.card_energy_cost = 1
+	card_hoardingstowaway.card_values = {"card_influence":1, "ore_amount":-8, "insight_amount":2}
+	card_hoardingstowaway.card_upgrade_value_improvements = {"ore_amount":2}
+	card_hoardingstowaway.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+			Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data": [{
+				Scripts.VALIDATOR_ORE:{"ore_amount": -1 * card_hoardingstowaway.card_values["ore_amount"]}
+				}],
+				"passed_action_data": [{
+				Scripts.ACTION_ADD_ORE:{}
+				},
+				{Scripts.ACTION_ADD_INSIGHT:{}}]
+		}}]
+	Global.register_rod(card_hoardingstowaway)
+	
+	var card_supremerecaster: CardData = CardData.new("card_supremerecaster")
+	card_supremerecaster.card_name = "Supreme Recaster"
+	card_supremerecaster.card_color_id = "color_{0}".format([color])
+	card_supremerecaster.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_supremerecaster.card_description = "Consume 1 Grain and 1 Fish to Gain 2 Delicacies."
+	card_supremerecaster.card_type = CardData.CARD_TYPES.SKILL
+	card_supremerecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_supremerecaster.card_requires_target = false
+	card_supremerecaster.card_energy_cost = 1
+	card_supremerecaster.card_values = {"card_influence":1, "ore_amount":-8, "insight_amount":2}
+	card_supremerecaster.card_upgrade_value_improvements = {"ore_amount":2}
+	card_supremerecaster.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+			Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data": [{
+				Scripts.VALIDATOR_ORE:{"ore_amount": -1 * card_hoardingstowaway.card_values["ore_amount"]}
+				}],
+				"passed_action_data": [{
+				Scripts.ACTION_ADD_ORE:{}
+				},
+				{Scripts.ACTION_ADD_INSIGHT:{}}]
+		}}]
+	Global.register_rod(card_supremerecaster)
+	
+		
+	var card_villagehero: CardData = CardData.new("card_villagehero")
+	card_villagehero.card_name = "Supreme Recaster"
+	card_villagehero.card_color_id = "color_{0}".format([color])
+	card_villagehero.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_villagehero.card_description = "Gain 1 Explore for each Faction card."
+	card_villagehero.card_type = CardData.CARD_TYPES.ATTACK
+	card_villagehero.card_rarity = CardData.CARD_RARITIES.RARE
+	card_villagehero.card_requires_target = true
+	card_villagehero.card_energy_cost = 1
+	card_villagehero.card_values = {"card_influence":1, "damage":1, "number_of_attacks":1}
+	card_villagehero.card_upgrade_value_improvements = {"damage":1}
+	card_villagehero.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":99,
+			"max_card_amount":99,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.HAND,
+			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
+			"multiplied_values": ["damage"],
+			"action_data": [{Scripts.ACTION_ATTACK_GENERATOR: {
+				"time_delay": 0.5
+							}}]}
+			}]
+		}
+		}]
+	Global.register_rod(card_villagehero)
+	
+	var card_solverofriddles: CardData = CardData.new("card_solverofriddles")
+	card_solverofriddles.card_name = "Supreme Recaster"
+	card_solverofriddles.card_color_id = "color_{0}".format([color])
+	card_solverofriddles.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_solverofriddles.card_description = "Does nothing and is shuffled into deck. When it is drawn, loses 1 influence to appease others. When it is played with 5 influence, loses 3 influence to gain 2 Food, 2 Ore, 2 Money, 2 Insight"
+	card_solverofriddles.card_type = CardData.CARD_TYPES.SKILL
+	card_solverofriddles.card_rarity = CardData.CARD_RARITIES.RARE
+	card_solverofriddles.card_requires_target = false
+	card_solverofriddles.card_energy_cost = 1
+	card_solverofriddles.card_values = {"card_influence":1, "damage":1, "number_of_attacks":1}
+	card_solverofriddles.card_upgrade_value_improvements = {"damage":1}
+	card_solverofriddles.card_draw_actions = [{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"card_influence": -1,
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}},
+					{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":99,
+			"max_card_amount":99,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.HAND,
+			"card_pick_text": "Choose {0} card to appease. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"card_influence":1,
+			"time_delay": 0.1,
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}}]
+		}
+		}
+	]
+	card_solverofriddles.card_play_actions = [
+		{
+		Scripts.ACTION_VALIDATOR:
+			{"validator_data":[{Scripts.VALIDATOR_CARD_PROPERTIES:{"card_property_name":"card_influence","comparison_value":5}}],
+			"action_data":[{Scripts.ACTION_GAIN_FOOD:{"food_amount":2}},{Scripts.ACTION_GAIN_ORE:{"ore_amount":2}},{Scripts.ACTION_GAIN_MONEY:{"money_amount":2}},{Scripts.ACTION_GAIN_INSIGHT:{"insight_amount":2}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-5}}]
+			}
+		},
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{Scripts.ACTION_ADD_CARDS_TO_DRAW:
+			{
+				"pick_played_card": true
+			}}]
+	Global.register_rod(card_solverofriddles)
 func add_cards_gold() -> void:
 	var color: String = "gold"
 
