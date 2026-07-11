@@ -4171,18 +4171,121 @@ func add_cards_green() -> void:
 		},
 		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}},
 		{
-		Scripts.ACTION_PICK_UPGRADE_CARDS: {
+		Scripts.ACTION_PICK_CARDS: {
 		"min_card_amount": 1,
 		"max_card_amount": 1,
 		"min_cards_are_required_for_action": false,
 		"random_selection": false,
 		"card_pick_type": HandManager.DISCARD_PILE,
-		"card_pick_text": "Choose up to {0} card(s) to upgrade. {1} cards selected",
+		"card_pick_text": "Choose up to {0} card(s) to return. {1} cards selected",
 		"action_data": [
 			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
 		}
 		}]
 	Global.register_rod(card_militantoutsourcer)
+	
+	var card_facetrecaster: CardData = CardData.new("card_facetrecaster")
+	card_facetrecaster.card_name = "Facet Recaster"
+	card_facetrecaster.card_color_id = "color_{0}".format([color])
+	card_facetrecaster.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_facetrecaster.card_description = "Add [number_of_cards] Grain to your draw_pile."
+	card_facetrecaster.card_type = CardData.CARD_TYPES.SKILL
+	card_facetrecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_facetrecaster.card_requires_target = true
+	card_facetrecaster.card_energy_cost = 1
+	card_facetrecaster.card_values = {"card_influence": 1,"card_object_ids":["card_grain"],"number_of_cards":3}
+	card_facetrecaster.card_upgrade_value_improvements = {"number_of_cards":1}
+	card_facetrecaster.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+		Scripts.ACTION_CREATE_CARDS:{Scripts.ACTION_ADD_CARDS_TO_DRAW:{}}
+		}]
+	Global.register_rod(card_facetrecaster)
+	
+	var card_shockrider: CardData = CardData.new("card_shockrider")
+	card_shockrider.card_name = "Shock Rider"
+	card_shockrider.card_color_id = "color_{0}".format([color])
+	card_shockrider.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_shockrider.card_description = "Explore [damage]. Consume 2 Food to Wield 2."
+	card_shockrider.card_type = CardData.CARD_TYPES.ATTACK
+	card_shockrider.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_shockrider.card_requires_target = true
+	card_shockrider.card_energy_cost = 1
+	card_shockrider.card_values = {"card_influence":1,"damage":2,"number_of_attacks":1}
+	card_shockrider.card_upgrade_value_improvements = {"damage":1}
+	card_shockrider.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}},
+		{
+		Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data":[{Scripts.VALIDATOR_FOOD:{"food_amount":2}}],
+				"passed_action_data":[{
+				Scripts.ACTION_PICK_CARDS: {
+					"min_card_amount": 3,
+					"max_card_amount": 3,
+					"min_cards_are_required_for_action": false,
+					"random_selection": true,
+					"card_pick_type": HandManager.DISCARD_PILE,
+					"card_pick_text": "Choose up to {0} card(s) to return. {1} cards selected",
+					"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:[{"card_subtypes":CardData.CARD_SUBTYPES.CRAFT}]}],
+					"action_data": [
+					{Scripts.ACTION_PLAY_CARDS:{}}]
+					}
+				}]
+			}
+		}]
+	Global.register_rod(card_shockrider)
+	
+	var card_everymanleader: CardData = CardData.new("card_everymanleader")
+	card_everymanleader.card_name = "Everyman Leader"
+	card_everymanleader.card_color_id = "color_{0}".format([color])
+	card_everymanleader.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_everymanleader.card_description = "Add a Sword to discard pile. Consume Ore to Wield 2."
+	card_everymanleader.card_type = CardData.CARD_TYPES.SKILL
+	card_everymanleader.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_everymanleader.card_requires_target = true
+	card_everymanleader.card_energy_cost = 1
+	card_everymanleader.card_values = {"card_influence":1,"damage":2,"number_of_attacks":1}
+	card_everymanleader.card_upgrade_value_improvements = {"damage":1}
+	card_everymanleader.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}},
+		{
+		Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data":[{Scripts.VALIDATOR_FOOD:{"food_amount":2}}],
+				"passed_action_data":[{
+				Scripts.ACTION_PICK_CARDS: {
+					"min_card_amount": 3,
+					"max_card_amount": 3,
+					"min_cards_are_required_for_action": false,
+					"random_selection": true,
+					"card_pick_type": HandManager.DISCARD_PILE,
+					"card_pick_text": "Choose up to {0} card(s) to return. {1} cards selected",
+					"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:[{"card_subtypes":CardData.CARD_SUBTYPES.CRAFT}]}],
+					"action_data": [
+					{Scripts.ACTION_PLAY_CARDS:{}}]
+					}
+				}]
+			}
+		}]
+	Global.register_rod(card_shockrider)
 func add_cards_gold() -> void:
 	var color: String = "gold"
 
