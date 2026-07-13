@@ -226,10 +226,12 @@ func _on_combat_ended():
 ## the turn logic if either player or enemies are dead.
 func _end_combat_check() -> bool:
 	var combat_is_ended: bool = false
-	if not Global.are_remaining_enemies():
+	#if not Global.are_remaining_enemies():
+	#	end_combat()
+	if HandManager.player_draw.size() >= 100:
 		end_combat()
 		combat_is_ended = true
-	if not player.is_alive():
+	if Global.player_data.player_food < 0:
 		player.play_death_animation()
 		combat_is_ended = true
 	return combat_is_ended

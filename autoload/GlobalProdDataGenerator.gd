@@ -44,7 +44,7 @@ func add_artifacts() -> void:
 	var artifact_add_money: ArtifactData = ArtifactData.new("artifact_add_money")
 	artifact_add_money.artifact_name = "Artifact Add Money"
 	artifact_add_money.artifact_description = "Adds money when obtained"
-	artifact_add_money.artifact_add_actions = [{Scripts.ACTION_ADD_MONEY: {"money_amount": 200}}]
+	artifact_add_money.artifact_add_actions = [{Scripts.ACTION_ADD_MONEY: {"money_amount": 20}}]
 	
 	Global.register_rod(artifact_add_money)
 	
@@ -73,18 +73,18 @@ func add_artifacts() -> void:
 	
 	Global.register_rod(artifact_heal_on_combat_ended)
 	
-	var artifact_full_heal: ArtifactData = ArtifactData.new("artifact_full_heal")
-	artifact_full_heal.artifact_name = "Artifact Full Heal"
-	artifact_full_heal.artifact_description = "Fully heals player when obtained"
-	artifact_full_heal.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.RARE
-	artifact_full_heal.artifact_add_actions = [{
+	var artifact_discard_appease: ArtifactData = ArtifactData.new("artifact_discard_appease")
+	artifact_discard_appease.artifact_name = "Artifact Waiting Bench"
+	artifact_discard_appease.artifact_description = "When a Faction card is discarded, appease that card"
+	artifact_discard_appease.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.RARE
+	artifact_discard_appease.artifact_add_actions = [{
 			Scripts.ACTION_HEAL_PERCENT: {
 				"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
 				"percentage_heal_amount": 1.0
 				}
 			}]
 	
-	Global.register_rod(artifact_full_heal)
+	Global.register_rod(artifact_discard_appease)
 	
 	var artifact_draw_on_kill: ArtifactData = ArtifactData.new("artifact_draw_on_kill")
 	artifact_draw_on_kill.artifact_name = "Artifact Draw on Kill"
@@ -1680,21 +1680,21 @@ func add_characters() -> void:
 	character_green.character_starting_artifact_pack_ids = ["artifact_pack_white", "artifact_pack_{0}".format([character_color])]
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
-		"card_basic_attack_green", "card_basic_attack_green", "card_basic_attack_green", "card_basic_attack_green",
-		"card_basic_block_green", "card_basic_block_green", "card_basic_block_green", "card_basic_block_green",
+		"card_basic_food_green", "card_basic_food_green", "card_basic_food_green", "card_basic_food_green",
+		"card_basic_ore_green", "card_basic_ore_green", "card_basic_ore_green", "card_basic_ore_green",
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
 		#"card_clippers", "card_petals",
-		"card_particle_accelerator", "card_particle_accelerator",
+		#"card_particle_accelerator", "card_particle_accelerator",
 		#"card_fusion_cannon", "card_fusion_cannon",
 		#"card_verdant", "card_verdant",
 		#"card_containment", "card_containment",
-		"card_critical",
-		"card_wildflower", "card_wildflower", "card_wildflower", "card_wildflower", 
+		#"card_critical",
+		#"card_wildflower", "card_wildflower", "card_wildflower", "card_wildflower", 
 		#"card_energy_next_turn", "card_energy_next_turn",
-		"card_meltdown", "card_meltdown",
-		"card_photoelectric_synthesis", "card_photoelectric_synthesis",
+		#"card_meltdown", "card_meltdown",
+		#"card_photoelectric_synthesis", "card_photoelectric_synthesis",
 		#"card_feedback_loop",
 		#"card_pollen",
 		#"card_symbiosis",
@@ -2009,239 +2009,236 @@ func add_enemies() -> void:
 	# enemy that negates the first damage instance against it
 	var enemy_1: EnemyData = EnemyData.new("enemy_1")
 	enemy_1.enemy_name = "Red Enemy"
-	enemy_1.add_health_bounds(17, 20)
-	enemy_1.add_health_bounds(25, 30, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	enemy_1.add_health_bounds(5, 7)
+	enemy_1.add_health_bounds(8, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	enemy_1.enemy_initial_status_effects = {"status_effect_negate_damage": 1}
 	enemy_1.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	enemy_1.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
 		])
+	enemy_1.enemy_actions_on_death = [{Scripts.ACTION_ADD_MONEY: {"money_amount":5}}]
 	# an attack that hits harder on higher difficulties
 	enemy_1.add_intent_state([
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 5, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_STANDARD_ENEMIES_HARDER, 6, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-	enemy_1.add_intent_state([
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 3, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 4, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, ""),
+	])
 		
 	var _enemy_1_anim: AnimationData = enemy_1.add_standard_animations(
 		["external/sprites/enemies/enemy_red_small.png"]
 	)
 
 	Global.register_rod(enemy_1)
-	
-	# enemy that negates the first debuff against it
-	var enemy_2: EnemyData = EnemyData.new("enemy_2")
-	enemy_2.enemy_name = "Blue Enemy"
-	enemy_2.add_health_bounds(5, 7)
-	enemy_2.add_health_bounds(8, 12, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	enemy_2.enemy_initial_status_effects = {"status_effect_negate_debuff": 1}
-	enemy_2.enemy_texture_path = "external/sprites/enemies/enemy_blue_small.png"
-	enemy_2.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1})
-		])
-	enemy_2.add_intent_state([
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 5, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_STANDARD_ENEMIES_HARDER, 6, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-	enemy_2.add_intent_state([
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 3, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 4, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-		
-	var _enemy_2_anim: AnimationData = enemy_2.add_standard_animations(
-		["external/sprites/enemies/enemy_blue_small.png"]
-	)
-	
-	Global.register_rod(enemy_2)
-	
-	# enemy that applies poison to everyone on death
-	var enemy_3: EnemyData = EnemyData.new("enemy_3")
-	enemy_3.add_health_bounds(15, 25)
-	enemy_3.add_health_bounds(25, 35, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	enemy_3.enemy_name = "Green Enemy"
-	enemy_3.enemy_texture_path = "external/sprites/enemies/enemy_green_small.png"
-	enemy_3.enemy_actions_on_death = [
-		{
-		Scripts.ACTION_APPLY_STATUS: {"status_charge_amount": 5, "status_effect_object_id": "status_effect_corrosion", "time_delay": 0.5, "target_override": BaseAction.TARGET_OVERRIDES.ALL_COMBATANTS}
-		}
-	]
-	enemy_3.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-	enemy_3.add_intent_state([
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 5, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_STANDARD_ENEMIES_HARDER, 7, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-	enemy_3.add_intent_state([
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 3, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 3, 3, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-	])
-	
-	var _enemy_3_anim: AnimationData = enemy_3.add_standard_animations(
-		["external/sprites/enemies/enemy_green_small.png"]
-	)
-	
-	Global.register_rod(enemy_3)
-	
-	# enemy that applies vulnerable to player
-	var enemy_4: EnemyData = EnemyData.new("enemy_4")
-	enemy_4.add_health_bounds(37, 43)
-	enemy_4.add_health_bounds(47, 53, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	enemy_4.enemy_name = "Big Attack Enemy"
-	enemy_4.enemy_texture_path = "external/sprites/enemies/enemy_purple_medium.png"
-	enemy_4.enemy_actions_on_death = [
-	{
-	Scripts.ACTION_APPLY_STATUS: {"status_charge_amount": 5, "status_effect_object_id": "status_effect_corrosion", "time_delay": 0.5, "target_override": BaseAction.TARGET_OVERRIDES.ALL_COMBATANTS}
-	}
-	]
-	enemy_4.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_vulnerable": 1})
-		])
-	var enemy_4_status_charge_1: int = 2
-	var enemy_4_status_actions_1: Array[Dictionary] = [{Scripts.ACTION_APPLY_STATUS: {"status_effect_object_id": "status_effect_vulnerable", "status_charge_amount": enemy_4_status_charge_1, "target_override": BaseAction.TARGET_OVERRIDES.PLAYER}}]
-	var enemy_4_status_charge_2: int = 4
-	var enemy_4_status_actions_2: Array[Dictionary] = [{Scripts.ACTION_APPLY_STATUS: {"status_effect_object_id": "status_effect_vulnerable", "status_charge_amount": enemy_4_status_charge_2, "target_override": BaseAction.TARGET_OVERRIDES.PLAYER}}]
-	enemy_4.add_intent_state([
-		EnemyIntentData.new("intent_attack_vulnerable", DIFFICULTY_STARTING, 10, 1, "", 0, "", {"intent_attack_multi": 1}, enemy_4_status_actions_1),
-		EnemyIntentData.new("intent_attack_vulnerable", DIFFICULTY_STANDARD_ENEMIES_HARDER, 12, 1, "", 0, "", {"intent_attack_multi": 1}, enemy_4_status_actions_2),
-	])
-	enemy_4.add_intent_state([
-		EnemyIntentData.new("intent_attack_multi", DIFFICULTY_STARTING, 5, 2, "", 0, "", {"intent_block": 1}),
-		EnemyIntentData.new("intent_attack_multi", DIFFICULTY_STANDARD_ENEMIES_HARDER, 6, 2, "", 0, "", {"intent_block": 1}),
-		])
-	enemy_4.add_intent_state([
-		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 10, "", {"intent_attack_vulnerable": 1}),
-		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 12, "", {"intent_attack_vulnerable": 1}),
-	])
-	
-	var _enemy_4_anim: AnimationData = enemy_4.add_standard_animations(
-		["external/sprites/enemies/enemy_purple_medium.png"]
-	)
-	
-	Global.register_rod(enemy_4)
-	
-	var enemy_act_1_miniboss_1: EnemyData = EnemyData.new("enemy_act_1_miniboss_1")
-	enemy_act_1_miniboss_1.add_health_bounds(100,100)
-	enemy_act_1_miniboss_1.add_health_bounds(120,120, DIFFICULTY_MINIBOSS_ENEMIES_HARDER) # gets more health on later difficulty
-	enemy_act_1_miniboss_1.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
-	enemy_act_1_miniboss_1.enemy_name = "Act 1 Miniboss"
-	enemy_act_1_miniboss_1.enemy_texture_path = "external/sprites/enemies/enemy_green_medium.png"
-	enemy_act_1_miniboss_1.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1})
-	])
-	enemy_act_1_miniboss_1.add_intent_state([
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 18, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_MINIBOSS_ENEMIES_HARDER, 22, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-	enemy_act_1_miniboss_1.add_intent_state([
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 8, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_MINIBOSS_ENEMIES_HARDER, 10, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-	
-	var _enemy_act_1_miniboss_1_anim: AnimationData = enemy_act_1_miniboss_1.add_standard_animations(
-		["external/sprites/enemies/enemy_green_medium.png"]
-	)
-	
-	Global.register_rod(enemy_act_1_miniboss_1)
-	
-	var enemy_act_1_miniboss_2: EnemyData = EnemyData.new("enemy_act_1_miniboss_2")
-	enemy_act_1_miniboss_2.add_health_bounds(45, 55)
-	enemy_act_1_miniboss_2.add_health_bounds(70, 80, DIFFICULTY_MINIBOSS_ENEMIES_HARDER) # gets more health on later difficulty
-	enemy_act_1_miniboss_2.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
-	enemy_act_1_miniboss_2.enemy_name = "Act 1 Miniboss"
-	enemy_act_1_miniboss_2.enemy_texture_path = "external/sprites/enemies/enemy_red_medium.png"
-	enemy_act_1_miniboss_2.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1})
-		])
-	enemy_act_1_miniboss_2.add_intent_state([
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 8, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_1", DIFFICULTY_MINIBOSS_ENEMIES_HARDER, 10, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-	enemy_act_1_miniboss_2.add_intent_state([
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 4, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		EnemyIntentData.new("intent_attack_2", DIFFICULTY_MINIBOSS_ENEMIES_HARDER, 5, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-		])
-	
-	var _enemy_act_1_miniboss_2_anim: AnimationData = enemy_act_1_miniboss_2.add_standard_animations(
-		["external/sprites/enemies/enemy_red_medium.png"]
-	)
-	
-	Global.register_rod(enemy_act_1_miniboss_2)
-	
-	# boss that summons minions
-	var enemy_act_1_boss_1: EnemyData = EnemyData.new("enemy_act_1_boss_1")
-	enemy_act_1_boss_1.add_health_bounds(200, 200)
-	enemy_act_1_boss_1.add_health_bounds(250, 250, DIFFICULTY_BOSS_ENEMIES_HARDER)
-	enemy_act_1_boss_1.enemy_type = EnemyData.ENEMY_TYPES.BOSS
-	enemy_act_1_boss_1.enemy_name = "Act 1 Boss"
-	enemy_act_1_boss_1.enemy_texture_path =  "external/sprites/enemies/enemy_red_large.png"
-	enemy_act_1_boss_1.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_summon": 1})
-		])
-	var enemy_act_1_boss_1_summon_actions: Array[Dictionary] = [
-				{
-				Scripts.ACTION_SUMMON_ENEMIES: {"number_of_spawns": 2, "spawn_slots": [1,2], "time_delay": 0.5, "random_enemy_object_ids": ["enemy_minion_1", "enemy_minion_2"], "target_override": BaseAction.TARGET_OVERRIDES.PARENT}
-				}
-			]
-	enemy_act_1_boss_1.add_intent_state([
-		EnemyIntentData.new("intent_summon", DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack": 1}, enemy_act_1_boss_1_summon_actions)
-		])
-	enemy_act_1_boss_1.add_intent_state([
-		EnemyIntentData.new("intent_attack", DIFFICULTY_STARTING, 3, 2, "", 7, "", {"intent_attack": 1}),
-		EnemyIntentData.new("intent_attack", DIFFICULTY_BOSS_ENEMIES_HARDER, 5, 2, "", 7, "", {"intent_attack": 1}),
-	])
-	
-	var _enemy_act_1_boss_1_anim: AnimationData = enemy_act_1_boss_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_large.png"]
-	)
-	
-	Global.register_rod(enemy_act_1_boss_1)
-	
-	# example of minion enemy
-	var enemy_minion_1: EnemyData = EnemyData.new("enemy_minion_1")
-	enemy_minion_1.add_health_bounds(4, 4)
-	enemy_minion_1.add_health_bounds(7, 7, DIFFICULTY_BOSS_ENEMIES_HARDER)
-	enemy_minion_1.enemy_name = "Minion 1"
-	enemy_minion_1.enemy_texture_path = "external/sprites/enemies/enemy_purple_small.png"
-	enemy_minion_1.enemy_is_minion = true
-	enemy_minion_1.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack": 1})
-	])
-	enemy_minion_1.add_intent_state([
-		EnemyIntentData.new("intent_attack", DIFFICULTY_STARTING, 5, 1, "", 0, "", {"intent_attack": 1}),
-		EnemyIntentData.new("intent_attack", DIFFICULTY_BOSS_ENEMIES_HARDER, 8, 1, "", 5, "", {"intent_attack": 1}),
-		])
-	
-	var _enemy_minion_1_anim: AnimationData = enemy_minion_1.add_standard_animations(
-		["external/sprites/enemies/enemy_purple_small.png"]
-	)
-	
-	Global.register_rod(enemy_minion_1)
-	
-	# example of minion enemy
-	var enemy_minion_2: EnemyData = EnemyData.new("enemy_minion_2")
-	enemy_minion_2.add_health_bounds(3, 5)
-	enemy_minion_2.add_health_bounds(6, 8, DIFFICULTY_BOSS_ENEMIES_HARDER)
-	enemy_minion_2.enemy_name = "Minion 2"
-	enemy_minion_2.enemy_texture_path = "external/sprites/enemies/enemy_green_small.png"
-	enemy_minion_2.enemy_is_minion = true
-	enemy_minion_2.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack": 1})
-		])
-	enemy_minion_2.add_intent_state([
-		EnemyIntentData.new("intent_attack", DIFFICULTY_STARTING, 3, 1, "", 5, "", {"intent_attack": 1}),
-		EnemyIntentData.new("intent_attack", DIFFICULTY_BOSS_ENEMIES_HARDER, 5, 1, "", 5, "", {"intent_attack": 1}),
-		])
-	
-	var _enemy_minion_2_anim: AnimationData = enemy_minion_2.add_standard_animations(
-		["external/sprites/enemies/enemy_green_small.png"]
-	)
-	
-	Global.register_rod(enemy_minion_2)
+	#
+	## enemy that negates the first debuff against it
+	#var enemy_2: EnemyData = EnemyData.new("enemy_2")
+	#enemy_2.enemy_name = "Blue Enemy"
+	#enemy_2.add_health_bounds(5, 7)
+	#enemy_2.add_health_bounds(8, 12, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	#enemy_2.enemy_initial_status_effects = {"status_effect_negate_debuff": 1}
+	#enemy_2.enemy_texture_path = "external/sprites/enemies/enemy_blue_small.png"
+	#enemy_2.add_intent_state([
+		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1})
+		#])
+	#enemy_2.add_intent_state([
+		#EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 5, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#EnemyIntentData.new("intent_attack_1", DIFFICULTY_STANDARD_ENEMIES_HARDER, 6, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#])
+	#enemy_2.add_intent_state([
+		#EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 3, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#EnemyIntentData.new("intent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 4, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#])
+		#
+	#var _enemy_2_anim: AnimationData = enemy_2.add_standard_animations(
+		#["external/sprites/enemies/enemy_blue_small.png"]
+	#)
+	#
+	#Global.register_rod(enemy_2)
+	#
+	## enemy that applies poison to everyone on death
+	#var enemy_3: EnemyData = EnemyData.new("enemy_3")
+	#enemy_3.add_health_bounds(15, 25)
+	#enemy_3.add_health_bounds(25, 35, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	#enemy_3.enemy_name = "Green Enemy"
+	#enemy_3.enemy_texture_path = "external/sprites/enemies/enemy_green_small.png"
+	#enemy_3.enemy_actions_on_death = [
+		#{
+		#Scripts.ACTION_APPLY_STATUS: {"status_charge_amount": 5, "status_effect_object_id": "status_effect_corrosion", "time_delay": 0.5, "target_override": BaseAction.TARGET_OVERRIDES.ALL_COMBATANTS}
+		#}
+	#]
+	#enemy_3.add_intent_state([
+		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#])
+	#enemy_3.add_intent_state([
+		#EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 5, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#EnemyIntentData.new("intent_attack_1", DIFFICULTY_STANDARD_ENEMIES_HARDER, 7, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#])
+	#enemy_3.add_intent_state([
+		#EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 3, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#EnemyIntentData.new("intent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 3, 3, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+	#])
+	#
+	#var _enemy_3_anim: AnimationData = enemy_3.add_standard_animations(
+		#["external/sprites/enemies/enemy_green_small.png"]
+	#)
+	#
+	#Global.register_rod(enemy_3)
+	#
+	## enemy that applies vulnerable to player
+	#var enemy_4: EnemyData = EnemyData.new("enemy_4")
+	#enemy_4.add_health_bounds(37, 43)
+	#enemy_4.add_health_bounds(47, 53, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	#enemy_4.enemy_name = "Big Attack Enemy"
+	#enemy_4.enemy_texture_path = "external/sprites/enemies/enemy_purple_medium.png"
+	#enemy_4.enemy_actions_on_death = [
+	#{
+	#Scripts.ACTION_APPLY_STATUS: {"status_charge_amount": 5, "status_effect_object_id": "status_effect_corrosion", "time_delay": 0.5, "target_override": BaseAction.TARGET_OVERRIDES.ALL_COMBATANTS}
+	#}
+	#]
+	#enemy_4.add_intent_state([
+		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_vulnerable": 1})
+		#])
+	#var enemy_4_status_charge_1: int = 2
+	#var enemy_4_status_actions_1: Array[Dictionary] = [{Scripts.ACTION_APPLY_STATUS: {"status_effect_object_id": "status_effect_vulnerable", "status_charge_amount": enemy_4_status_charge_1, "target_override": BaseAction.TARGET_OVERRIDES.PLAYER}}]
+	#var enemy_4_status_charge_2: int = 4
+	#var enemy_4_status_actions_2: Array[Dictionary] = [{Scripts.ACTION_APPLY_STATUS: {"status_effect_object_id": "status_effect_vulnerable", "status_charge_amount": enemy_4_status_charge_2, "target_override": BaseAction.TARGET_OVERRIDES.PLAYER}}]
+	#enemy_4.add_intent_state([
+		#EnemyIntentData.new("intent_attack_vulnerable", DIFFICULTY_STARTING, 10, 1, "", 0, "", {"intent_attack_multi": 1}, enemy_4_status_actions_1),
+		#EnemyIntentData.new("intent_attack_vulnerable", DIFFICULTY_STANDARD_ENEMIES_HARDER, 12, 1, "", 0, "", {"intent_attack_multi": 1}, enemy_4_status_actions_2),
+	#])
+	#enemy_4.add_intent_state([
+		#EnemyIntentData.new("intent_attack_multi", DIFFICULTY_STARTING, 5, 2, "", 0, "", {"intent_block": 1}),
+		#EnemyIntentData.new("intent_attack_multi", DIFFICULTY_STANDARD_ENEMIES_HARDER, 6, 2, "", 0, "", {"intent_block": 1}),
+		#])
+	#enemy_4.add_intent_state([
+		#EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 10, "", {"intent_attack_vulnerable": 1}),
+		#EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 12, "", {"intent_attack_vulnerable": 1}),
+	#])
+	#
+	#var _enemy_4_anim: AnimationData = enemy_4.add_standard_animations(
+		#["external/sprites/enemies/enemy_purple_medium.png"]
+	#)
+	#
+	#Global.register_rod(enemy_4)
+	#
+	#var enemy_act_1_miniboss_1: EnemyData = EnemyData.new("enemy_act_1_miniboss_1")
+	#enemy_act_1_miniboss_1.add_health_bounds(100,100)
+	#enemy_act_1_miniboss_1.add_health_bounds(120,120, DIFFICULTY_MINIBOSS_ENEMIES_HARDER) # gets more health on later difficulty
+	#enemy_act_1_miniboss_1.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
+	#enemy_act_1_miniboss_1.enemy_name = "Act 1 Miniboss"
+	#enemy_act_1_miniboss_1.enemy_texture_path = "external/sprites/enemies/enemy_green_medium.png"
+	#enemy_act_1_miniboss_1.add_intent_state([
+		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1})
+	#])
+	#enemy_act_1_miniboss_1.add_intent_state([
+		#EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 18, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#EnemyIntentData.new("intent_attack_1", DIFFICULTY_MINIBOSS_ENEMIES_HARDER, 22, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#])
+	#enemy_act_1_miniboss_1.add_intent_state([
+		#EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 8, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#EnemyIntentData.new("intent_attack_2", DIFFICULTY_MINIBOSS_ENEMIES_HARDER, 10, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#])
+	#
+	#var _enemy_act_1_miniboss_1_anim: AnimationData = enemy_act_1_miniboss_1.add_standard_animations(
+		#["external/sprites/enemies/enemy_green_medium.png"]
+	#)
+	#
+	#Global.register_rod(enemy_act_1_miniboss_1)
+	#
+	#var enemy_act_1_miniboss_2: EnemyData = EnemyData.new("enemy_act_1_miniboss_2")
+	#enemy_act_1_miniboss_2.add_health_bounds(45, 55)
+	#enemy_act_1_miniboss_2.add_health_bounds(70, 80, DIFFICULTY_MINIBOSS_ENEMIES_HARDER) # gets more health on later difficulty
+	#enemy_act_1_miniboss_2.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
+	#enemy_act_1_miniboss_2.enemy_name = "Act 1 Miniboss"
+	#enemy_act_1_miniboss_2.enemy_texture_path = "external/sprites/enemies/enemy_red_medium.png"
+	#enemy_act_1_miniboss_2.add_intent_state([
+		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1})
+		#])
+	#enemy_act_1_miniboss_2.add_intent_state([
+		#EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 8, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#EnemyIntentData.new("intent_attack_1", DIFFICULTY_MINIBOSS_ENEMIES_HARDER, 10, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#])
+	#enemy_act_1_miniboss_2.add_intent_state([
+		#EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 4, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#EnemyIntentData.new("intent_attack_2", DIFFICULTY_MINIBOSS_ENEMIES_HARDER, 5, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		#])
+	#
+	#var _enemy_act_1_miniboss_2_anim: AnimationData = enemy_act_1_miniboss_2.add_standard_animations(
+		#["external/sprites/enemies/enemy_red_medium.png"]
+	#)
+	#
+	#Global.register_rod(enemy_act_1_miniboss_2)
+	#
+	## boss that summons minions
+	#var enemy_act_1_boss_1: EnemyData = EnemyData.new("enemy_act_1_boss_1")
+	#enemy_act_1_boss_1.add_health_bounds(200, 200)
+	#enemy_act_1_boss_1.add_health_bounds(250, 250, DIFFICULTY_BOSS_ENEMIES_HARDER)
+	#enemy_act_1_boss_1.enemy_type = EnemyData.ENEMY_TYPES.BOSS
+	#enemy_act_1_boss_1.enemy_name = "Act 1 Boss"
+	#enemy_act_1_boss_1.enemy_texture_path =  "external/sprites/enemies/enemy_red_large.png"
+	#enemy_act_1_boss_1.add_intent_state([
+		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_summon": 1})
+		#])
+	#var enemy_act_1_boss_1_summon_actions: Array[Dictionary] = [
+				#{
+				#Scripts.ACTION_SUMMON_ENEMIES: {"number_of_spawns": 2, "spawn_slots": [1,2], "time_delay": 0.5, "random_enemy_object_ids": ["enemy_minion_1", "enemy_minion_2"], "target_override": BaseAction.TARGET_OVERRIDES.PARENT}
+				#}
+			#]
+	#enemy_act_1_boss_1.add_intent_state([
+		#EnemyIntentData.new("intent_summon", DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack": 1}, enemy_act_1_boss_1_summon_actions)
+		#])
+	#enemy_act_1_boss_1.add_intent_state([
+		#EnemyIntentData.new("intent_attack", DIFFICULTY_STARTING, 3, 2, "", 7, "", {"intent_attack": 1}),
+		#EnemyIntentData.new("intent_attack", DIFFICULTY_BOSS_ENEMIES_HARDER, 5, 2, "", 7, "", {"intent_attack": 1}),
+	#])
+	#
+	#var _enemy_act_1_boss_1_anim: AnimationData = enemy_act_1_boss_1.add_standard_animations(
+		#["external/sprites/enemies/enemy_red_large.png"]
+	#)
+	#
+	#Global.register_rod(enemy_act_1_boss_1)
+	#
+	## example of minion enemy
+	#var enemy_minion_1: EnemyData = EnemyData.new("enemy_minion_1")
+	#enemy_minion_1.add_health_bounds(4, 4)
+	#enemy_minion_1.add_health_bounds(7, 7, DIFFICULTY_BOSS_ENEMIES_HARDER)
+	#enemy_minion_1.enemy_name = "Minion 1"
+	#enemy_minion_1.enemy_texture_path = "external/sprites/enemies/enemy_purple_small.png"
+	#enemy_minion_1.enemy_is_minion = true
+	#enemy_minion_1.add_intent_state([
+		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack": 1})
+	#])
+	#enemy_minion_1.add_intent_state([
+		#EnemyIntentData.new("intent_attack", DIFFICULTY_STARTING, 5, 1, "", 0, "", {"intent_attack": 1}),
+		#EnemyIntentData.new("intent_attack", DIFFICULTY_BOSS_ENEMIES_HARDER, 8, 1, "", 5, "", {"intent_attack": 1}),
+		#])
+	#
+	#var _enemy_minion_1_anim: AnimationData = enemy_minion_1.add_standard_animations(
+		#["external/sprites/enemies/enemy_purple_small.png"]
+	#)
+	#
+	#Global.register_rod(enemy_minion_1)
+	#
+	## example of minion enemy
+	#var enemy_minion_2: EnemyData = EnemyData.new("enemy_minion_2")
+	#enemy_minion_2.add_health_bounds(3, 5)
+	#enemy_minion_2.add_health_bounds(6, 8, DIFFICULTY_BOSS_ENEMIES_HARDER)
+	#enemy_minion_2.enemy_name = "Minion 2"
+	#enemy_minion_2.enemy_texture_path = "external/sprites/enemies/enemy_green_small.png"
+	#enemy_minion_2.enemy_is_minion = true
+	#enemy_minion_2.add_intent_state([
+		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack": 1})
+		#])
+	#enemy_minion_2.add_intent_state([
+		#EnemyIntentData.new("intent_attack", DIFFICULTY_STARTING, 3, 1, "", 5, "", {"intent_attack": 1}),
+		#EnemyIntentData.new("intent_attack", DIFFICULTY_BOSS_ENEMIES_HARDER, 5, 1, "", 5, "", {"intent_attack": 1}),
+		#])
+	#
+	#var _enemy_minion_2_anim: AnimationData = enemy_minion_2.add_standard_animations(
+		#["external/sprites/enemies/enemy_green_small.png"]
+	#)
+	#
+	#Global.register_rod(enemy_minion_2)
 
 #endregion
 
@@ -2675,6 +2672,36 @@ func add_cards_misc() -> void:
 			}
 		}
 		]
+	
+	Global.register_rod(card_spice)
+	
+	var card_blueprint: CardData = CardData.new("card_blueprint")
+	card_blueprint.card_name = "Blueprint"
+	card_blueprint.card_color_id = "color_{0}".format([color])
+	card_blueprint.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_blueprint.card_description = "Spend 8 Ore to draft 1 Artifact."
+	card_blueprint.card_type = CardData.CARD_TYPES.SKILL
+	card_blueprint.card_energy_cost = 0
+	card_blueprint.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_blueprint.card_play_destination = HandManager.EXHAUST_PILE
+	card_blueprint.card_requires_target = false
+	card_blueprint.card_values = {"ore_amount": -8}
+	card_spice.card_play_actions = [
+		{
+			Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data":[{Scripts.VALIDATOR_ORE:{"ore_amount":8}}],
+				"action_data":[{Scripts.ACTION_ADD_ORE:{"ore_amount":-8}},
+				{
+				Scripts.ACTION_ADD_ARTIFACTS_FROM_POOL:
+				{
+					"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
+					"artifact_count": 1,
+					"artifact_rarities": [ArtifactData.ARTIFACT_RARITIES.COMMON]
+				}
+				}]
+			},
+		}]
 	
 	Global.register_rod(card_spice)
 	
