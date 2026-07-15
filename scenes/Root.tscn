@@ -1731,9 +1731,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -528.0
+offset_left = -320.0
 offset_top = -278.0
-offset_right = 536.0
+offset_right = 544.0
 offset_bottom = 18.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -1755,18 +1755,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
-[node name="ConsumableContainer" type="VBoxContainer" parent="RunScreen/ShopOverlay" unique_id=1859136117]
-visible = false
+[node name="TradeContainer" type="VBoxContainer" parent="RunScreen/ShopOverlay" unique_id=1859136117]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -216.0
-offset_top = 34.0
-offset_right = 64.0
-offset_bottom = 282.0
+offset_left = -550.0
+offset_top = -278.0
+offset_right = -269.96997
+offset_bottom = -30.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
