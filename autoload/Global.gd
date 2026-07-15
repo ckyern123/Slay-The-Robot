@@ -237,11 +237,12 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	
 	# money and health
 	player_data.player_money = character_data.character_starting_money
+	player_data.player_food = 20
 	player_data.player_health_max = character_data.character_starting_health
 	player_data.player_health = character_data.character_starting_health
 	
 	# location, act, and difficult
-	player_data.player_location_id = "location_0" # hardcoded starting location
+	player_data.player_location_id = "enemy_1" # hardcoded starting location
 	player_data.player_act = 1
 	player_data.player_run_difficulty_level = difficulty_level
 	
@@ -282,6 +283,7 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	FileLoader.autosave()
 	
 	Signals.run_started.emit()
+	
 	Signals.map_location_selected.emit(get_player_location_data())	# simulate visiting the first location
 	
 	# simulate a win
