@@ -189,8 +189,8 @@ func _complete_run(is_victory: bool) -> void:
 	current_run_stats.run_seed = Global.player_data.player_run_seed
 	current_run_stats.run_character_id = character_id
 	current_run_stats.run_difficulty_level = Global.player_data.player_run_difficulty_level
-	current_run_stats.run_player_health = Global.player_data.player_health
-	current_run_stats.run_player_health_max = Global.player_data.player_health_max
+	current_run_stats.run_player_food = Global.player_data.player_food
+	current_run_stats.run_player_food_max = Global.player_data.player_food_max
 	current_run_stats.run_player_money = Global.player_data.player_money
 	# completion time/date
 	current_run_stats.run_completion_timestamp = int(Time.get_unix_time_from_system())
@@ -428,6 +428,39 @@ func _on_player_money_changed(money_delta: int) -> void:
 	if money_delta < 0:
 		var abs_money_delta: int = abs(money_delta)
 		current_run_stats.add_to_enum_stat(RunStatsData.STATS.MONEY_SPENT_AMOUNT, abs_money_delta)
+
+func _on_player_food_changed(food_delta: int) -> void:
+	if current_run_stats == null:
+		return
+	# gained food
+	if food_delta > 0:
+		current_run_stats.add_to_enum_stat(RunStatsData.STATS.FOOD_GAINED_AMOUNT, food_delta)
+	# lost money
+	if food_delta < 0:
+		var abs_food_delta: int = abs(food_delta)
+		current_run_stats.add_to_enum_stat(RunStatsData.STATS.FOOD_SPENT_AMOUNT, abs_food_delta)
+
+func _on_player_ore_changed(ore_delta: int) -> void:
+	if current_run_stats == null:
+		return
+	# gained money
+	if ore_delta > 0:
+		current_run_stats.add_to_enum_stat(RunStatsData.STATS.ORE_GAINED_AMOUNT, ore_delta)
+	# lost money
+	if ore_delta < 0:
+		var abs_ore_delta: int = abs(ore_delta)
+		current_run_stats.add_to_enum_stat(RunStatsData.STATS.ORE_SPENT_AMOUNT, abs_ore_delta)
+
+func _on_player_insight_changed(insight_delta: int) -> void:
+	if current_run_stats == null:
+		return
+	# gained money
+	if insight_delta > 0:
+		current_run_stats.add_to_enum_stat(RunStatsData.STATS.INSIGHT_GAINED_AMOUNT, insight_delta)
+	# lost money
+	if insight_delta < 0:
+		var abs_insight_delta: int = abs(insight_delta)
+		current_run_stats.add_to_enum_stat(RunStatsData.STATS.INSIGHT_SPENT_AMOUNT, abs_insight_delta)
 
 func _on_rest_action_ended(rest_action_id: String) -> void:
 	if current_run_stats == null:

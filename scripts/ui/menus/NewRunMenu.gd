@@ -2,8 +2,10 @@
 extends BaseMenu
 
 @onready var character_name_label = %CharacterNameLabel
-@onready var character_health_label = %CharacterHealthLabel
+@onready var character_food_label = %CharacterFoodLabel
 @onready var character_money_label = %CharacterMoneyLabel
+@onready var character_ore_label = %CharacterOreLabel
+@onready var character_insight_label = %CharacterInsightLabel
 @onready var character_description_label = %CharacterDescriptionLabel
 
 @onready var character_artifact_texture_rect = %CharacterArtifactTextureRect
@@ -84,8 +86,10 @@ func populate_character_info(character_object_id: String) -> void:
 	var character_data: CharacterData = Global.get_character_data(character_object_id)
 	if character_data != null:
 		character_name_label.text = character_data.character_name
-		character_health_label.text = "HP: {0}".format([character_data.character_starting_health])
-		character_money_label.text = "Money: {0}".format([character_data.character_starting_money])
+		character_food_label.text = "Food: {0}".format([character_data.character_starting_food])
+		character_ore_label.text = "Ore: {0}".format([character_data.character_starting_money])
+		character_money_label.text = "Money: {0}".format([character_data.character_starting_ore])
+		character_insight_label.text = "Insight: {0}".format([character_data.character_starting_insight])
 		character_description_label.text = character_data.character_description
 		
 		# TODO potentially update ui to support multiple starter artifacts displayed

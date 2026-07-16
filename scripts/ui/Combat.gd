@@ -2,7 +2,9 @@
 extends Control
 
 @onready var money_label: Label = $%MoneyLabel
-@onready var health_label: Label = $%HealthLabel
+@onready var food_label: Label = $%FoodLabel
+@onready var ore_label: Label = $%OreLabel
+@onready var insight_label: Label = $%InsightLabel
 
 @onready var energy_count: Label = $Energy/EnergyCount
 @onready var energy: TextureButton = $Energy
@@ -31,10 +33,12 @@ extends Control
 var end_turn_object: CombatEndTurn = null
 
 func _ready():
-	Signals.shop_opened.emit()
+	#Signals.shop_opened.emit()
 	Signals.player_money_changed.connect(_on_player_money_changed)
-	Signals.player_health_changed.connect(_on_player_health_changed)
-	
+	Signals.player_food_changed.connect(_on_player_food_changed)
+	Signals.player_ore_changed.connect(_on_player_ore_changed)
+	Signals.player_insight_changed.connect(_on_player_insight_changed)
+		
 	Signals.enemy_killed.connect(_on_enemy_killed)
 	Signals.enemy_death_animation_finished.connect(_on_enemy_death_animation_finished)
 	
@@ -106,7 +110,9 @@ func update_combat_display():
 	draw_count.text = str(len(HandManager.player_draw))
 	discard_count.text = str(len(HandManager.player_discard))
 	exhaust_count.text = str(len(HandManager.player_exhaust))
-	_on_player_health_changed()
+	_on_player_food_changed()
+	_on_player_ore_changed()
+	_on_player_insight_changed()
 	_on_player_money_changed()
 
 func _update_background() -> void:
@@ -165,8 +171,14 @@ func _on_card_queue_refunded():
 func _on_player_money_changed(_delta: int = 0):
 	money_label.text = "$%s" % Global.player_data.player_money
 
-func _on_player_health_changed():
-	health_label.text = "%s / %s" % [Global.player_data.player_health, Global.player_data.player_health_max]
+func _on_player_ore_changed(_delta: int = 0):
+	ore_label.text = "ORE%s" % Global.player_data.player_ore
+	
+func _on_player_insight_changed(_delta: int = 0):
+	insight_label.text = "INSIGHT%s" % Global.player_data.player_insight
+	
+func _on_player_food_changed():
+	food_label.text = "FOOD%s / %s" % [Global.player_data.player_food, HandManager.player_draw.size()]
 
 ### Deck Buttons
 
@@ -529,7 +541,9 @@ func _reset_turn_end_queue() -> void:
 
 func _on_run_started():
 	visible = true
-	_on_player_health_changed()
+	_on_player_food_changed()
+	_on_player_ore_changed()
+	_on_player_insight_changed()
 	_on_player_money_changed()
 	
 	# load energy

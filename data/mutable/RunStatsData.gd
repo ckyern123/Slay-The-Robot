@@ -7,8 +7,14 @@ class_name RunStatsData
 ## Stats specific to a run
 ## NOTE: This is not all tracked stats. See run_total_stats comment.
 enum STATS {
+	FOOD_GAINED_AMOUNT,
+	FOOD_SPENT_AMOUNT,
+	ORE_GAINED_AMOUNT,
+	ORE_SPENT_AMOUNT,
 	MONEY_GAINED_AMOUNT,
 	MONEY_SPENT_AMOUNT,
+	INSIGHT_GAINED_AMOUNT,
+	INSIGHT_SPENT_AMOUNT,
 	# combat victories against certain
 	COMBAT_STANDARD_COUNT,
 	COMBAT_MINIBOSS_COUNT,
@@ -37,13 +43,18 @@ enum STATS {
 @export var run_difficulty_level: int = 0
 
 ## Health the player finished the run at
-@export var run_player_health: int = 0
+@export var run_player_food: int = 0
 ## Max health the player finished the run at
-@export var run_player_health_max: int = 0
+@export var run_player_food_max: int = 0
 
 ## Money the player finished the run at
 @export var run_player_money: int = 0
 
+## Ore the player finished the run at
+@export var run_player_ore: int = 0
+
+## Insight the player finished the run at
+@export var run_player_insight: int = 0
 
 ## Stores tuples of [card_object_id, upgrade_level] for the cards the player
 ## finished the run at.
