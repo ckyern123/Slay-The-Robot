@@ -172,11 +172,11 @@ func _ready():
 	FileLoader.load_user_settings()
 	
 	### Production data generation
-	#GlobalProdDataGenerator.generate_production_data()
+	GlobalProdDataGenerator.generate_production_data()
 	#ProfileData.ENABLE_ALL_DIFFICULTIES = false
 	
 	### Test data generation
-	GlobalTestDataGenerator.generate_test_data()
+	#GlobalTestDataGenerator.generate_test_data()
 	
 	### Testing flags
 	ProfileData.ENABLE_ALL_DIFFICULTIES = true

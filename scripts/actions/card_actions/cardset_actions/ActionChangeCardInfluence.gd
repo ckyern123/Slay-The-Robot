@@ -12,8 +12,8 @@ func perform_action() -> void:
 		var picked_cards: Array[CardData] = _get_picked_cards()
 		
 		for card_data in picked_cards:
-			if card_influence > -1:
-				card_data.add_card_influence(card_influence)
+			#if card_influence > -1:
+			card_data.add_card_influence(card_influence)
 			#if card_energy_cost_until_combat > -1:
 			#	card_data.set_card_energy_cost_until_combat(card_energy_cost_until_combat)
 			#if card_energy_cost_until_played > -1:

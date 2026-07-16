@@ -1702,6 +1702,7 @@ func add_characters() -> void:
 		#"card_moss", "card_moss",
 	]
 	
+	Global.register_rod(character_green)
 	# green character animations
 	var animation_character_green: AnimationData = AnimationData.new("animation_character_{0}".format([character_color]))
 	character_green.character_animation_id = animation_character_green.object_id
@@ -1711,7 +1712,7 @@ func add_characters() -> void:
 		["external/sprites/characters/character_{0}/character_{0}.png".format([character_color])],
 		)
 	
-	Global.register_rod(character_green)
+	Global.register_rod(animation_character_green)
 
 #endregion
 
@@ -2390,7 +2391,7 @@ func add_card_basics() -> void:
 		card_basic_food.card_keyword_object_ids = ["keyword_food"]
 		card_basic_food.card_requires_target = false
 		card_basic_food.card_play_actions = [{
-		Scripts.ACTION_GAIN_FOOD: {},
+		Scripts.ACTION_ADD_FOOD: {},
 		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/slash.wav"},
 		}]
 		
@@ -2409,7 +2410,7 @@ func add_card_basics() -> void:
 		card_basic_ore.card_values = {"ore_amount": 1}
 		card_basic_ore.card_upgrade_value_improvements = {"ore_amount": 1}
 		card_basic_ore.card_play_actions = [{
-		Scripts.ACTION_GAIN_ORE: {}
+		Scripts.ACTION_ADD_ORE: {}
 		}]
 		
 		Global.register_rod(card_basic_ore)
@@ -2771,7 +2772,7 @@ func add_cards_purple() -> void:
 		"min_card_amount": 1,
 		"max_card_amount": 1,
 		"min_cards_are_required_for_action": true,
-		"card_pick_type": HandManager.HAND,
+		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 		"action_data": [
 			{Scripts.ACTION_DISCARD_CARDS: {
@@ -2822,7 +2823,7 @@ func add_cards_purple() -> void:
 			},
 		},
 		{
-		Scripts.DRAW_GENERATOR: {}
+		Scripts.ACTION_DRAW_GENERATOR: {}
 		},
 		{
 		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
@@ -2998,7 +2999,7 @@ func add_cards_purple() -> void:
 				}
 				},
 				{
-				Scripts.ACTION_GAIN_INSIGHT:
+				Scripts.ACTION_ADD_INSIGHT:
 				{
 				}
 				}
@@ -3015,10 +3016,10 @@ func add_cards_purple() -> void:
 					"max_card_amount": 1,
 					"min_cards_are_required_for_action": true,
 					"random_selection": false,
-					"card_pick_type": HandManager.HAND,
+					"card_pick_type": HandManager.HAND_PILE,
 					"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
 					"validator_data": [
-					{Scripts.VALIDATOR_CARD_UPGRADABLE: {}},
+					{Scripts.VALIDATOR_CARD_UPGRADEABLE: {}},
 					],
 					"action_data": [
 						{Scripts.ACTION_ADD_INSIGHT: {"insight_amount":-1}}
@@ -3133,7 +3134,7 @@ func add_cards_purple() -> void:
 			"max_card_amount": 2,
 			"min_cards_are_required_for_action": true,
 			"random_selection": false,
-			"card_pick_type": HandManager.HAND,
+			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 			"action_data": [
 			{Scripts.ACTION_DISCARD_CARDS: {}
@@ -3194,7 +3195,7 @@ func add_cards_purple() -> void:
 			"max_card_amount": 99,
 			"min_cards_are_required_for_action": false,
 			"random_selection": true,
-			"card_pick_type": HandManager.HAND,
+			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 			"validator_data": [{
 				Scripts.VALIDATOR_CARD_RARITY: {Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.GENERATED]}}
@@ -3673,7 +3674,7 @@ func add_cards_black() -> void:
 			"min_card_amount": 1,
 			"max_card_amount": 1,
 			"min_cards_are_required_for_action": true,
-			"card_pick_type": HandManager.HAND,
+			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
 			"random_selection": false,
 			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {
@@ -3811,7 +3812,7 @@ func add_cards_black() -> void:
 		Scripts.ACTION_RESHUFFLE: {}
 		},
 		{
-		Scripts.PICK_CARDS: {
+		Scripts.ACTION_PICK_CARDS: {
 			"min_card_amount": 99,
 			"max_card_amount": 99,
 			"min_cards_are_required_for_action": false,
@@ -3929,10 +3930,10 @@ func add_cards_black() -> void:
 					"max_card_amount": 2,
 					"min_cards_are_required_for_action": false,
 					"random_selection": false,
-					"card_pick_type": HandManager.HAND,
+					"card_pick_type": HandManager.HAND_PILE,
 					"card_pick_text": "Choose up to {0} card(s) to upgrade. {1} cards selected",
 					"validator_data": [
-					{Scripts.VALIDATOR_CARD_UPGRADABLE: {}},
+					{Scripts.VALIDATOR_CARD_UPGRADEABLE: {}},
 					],
 					"action_data": [
 						{Scripts.ACTION_ADD_INSIGHT: {"insight_amount":-1}}
@@ -4064,7 +4065,7 @@ func add_cards_green() -> void:
 		"min_card_amount": 0,
 		"max_card_amount": 2,
 		"min_cards_are_required_for_action": false,
-		"card_pick_type": HandManager.HAND,
+		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 		"action_data": [
 			{Scripts.ACTION_DISCARD_CARDS: {
@@ -4121,7 +4122,7 @@ func add_cards_green() -> void:
 	]
 	card_luckfinder.card_end_of_turn_actions = [
 		{
-		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DISCARD:{}}]}
+		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
 		}]
 
 	Global.register_rod(card_luckfinder)
@@ -4148,7 +4149,7 @@ func add_cards_green() -> void:
 		{
 			Scripts.ACTION_VALIDATOR:{
 				"validator_data":[{Scripts.VALIDATOR_CARD_PROPERTIES:{"card_property_name":"card_influence","comparison_value":5}}],
-				"action_data":[{Scripts.CHANGE_CARD_INFLUENCE:{"card_influence":-5,"pick_played_card":true,"modify_parent_card":false}},
+				"action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-5,"pick_played_card":true,"modify_parent_card":false}},
 				{Scripts.ACTION_ADD_INSIGHT:{}}]
 			}
 		}]
@@ -4482,7 +4483,7 @@ func add_cards_green() -> void:
 			"max_card_amount":99,
 			"min_cards_are_required_for_action": false,
 			"random_selection": true,
-			"card_pick_type": HandManager.HAND,
+			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
 			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
 			"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
@@ -4519,7 +4520,7 @@ func add_cards_green() -> void:
 			"max_card_amount":99,
 			"min_cards_are_required_for_action": false,
 			"random_selection": true,
-			"card_pick_type": HandManager.HAND,
+			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to appease. {1} cards selected",
 			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
 			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
@@ -4535,7 +4536,7 @@ func add_cards_green() -> void:
 		{
 		Scripts.ACTION_VALIDATOR:
 			{"validator_data":[{Scripts.VALIDATOR_CARD_PROPERTIES:{"card_property_name":"card_influence","comparison_value":5}}],
-			"action_data":[{Scripts.ACTION_GAIN_FOOD:{"food_amount":2}},{Scripts.ACTION_GAIN_ORE:{"ore_amount":2}},{Scripts.ACTION_GAIN_MONEY:{"money_amount":2}},{Scripts.ACTION_GAIN_INSIGHT:{"insight_amount":2}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-5}}]
+			"action_data":[{Scripts.ACTION_ADD_FOOD:{"food_amount":2}},{Scripts.ACTION_ADD_ORE:{"ore_amount":2}},{Scripts.ACTION_ADD_MONEY:{"money_amount":2}},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":2}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-5}}]
 			}
 		},
 		{

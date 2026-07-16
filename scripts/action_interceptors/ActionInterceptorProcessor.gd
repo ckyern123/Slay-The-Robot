@@ -23,6 +23,7 @@ func _init(_parent_action: BaseAction, _target: BaseCombatant):
 ## iterates over all interceptors, returning if the chain was accepted or rejected for further processing the action
 ## preview_mode flag is used for things like displaying cards in hand after modifiers or hovering cards over enemies. This tells interceptors to not create actual side effects
 func process_interceptor_chain(preview_mode: bool = false) -> bool:
+	print(parent_action.parent_combatant)
 	var action_interceptors: Array[BaseActionInterceptor] = _get_action_interceptors_modifying_pair(parent_action, parent_action.parent_combatant, target)
 	for action_interceptor in action_interceptors:
 		var result: int = action_interceptor.process_action_interception(self, preview_mode)

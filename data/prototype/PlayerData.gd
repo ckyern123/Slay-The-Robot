@@ -10,6 +10,7 @@ class_name PlayerData
 
 @export var player_money: int = 0
 @export var player_food: int = 0
+@export var player_food_max: int = 0
 @export var player_ore: int = 0
 @export var player_influence: int = 0
 @export var player_insight: int = 0

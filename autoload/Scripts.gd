@@ -187,6 +187,7 @@ const VALIDATOR_LOCATION_TYPE: String = "res://scripts/validators/ValidatorLocat
 const VALIDATOR_MONEY: String = "res://scripts/validators/ValidatorMoney.gd"
 const VALIDATOR_ORE: String = "res://scripts/validators/ValidatorOre.gd"
 const VALIDATOR_FOOD: String = "res://scripts/validators/ValidatorFood.gd"
+const VALIDATOR_INSIGHT: String = "res://scripts/validators/ValidatorInsight.gd"
 const VALIDATOR_PLAYER_HEALTH: String = "res://scripts/validators/ValidatorPlayerHealth.gd"
 const VALIDATOR_PLAYER_CHARACTER: String = "res://scripts/validators/ValidatorPlayerCharacter.gd"
 const VALIDATOR_RNG: String = "res://scripts/validators/ValidatorRNG.gd"
