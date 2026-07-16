@@ -1123,34 +1123,9 @@ func add_status_effects() -> void:
 func add_acts() -> void:
 	var act_1: ActData = ActData.new("act_1")
 	act_1.act_name = "Act 1"
-	act_1.act_next_act_ids = ["act_2"]
 	act_1.act_easy_combat_event_pool_object_id = "event_pool_act_1_easy"
 	act_1.act_hard_combat_event_pool_object_id = "event_pool_act_1_hard"
-	act_1.act_miniboss_event_pool_object_id = "event_pool_act_1_miniboss"
-	act_1.act_non_combat_event_pool_object_id = "event_pool_act_1_easy"
-	act_1.act_boss_event_pool_object_id = "event_pool_act_1_boss"
-	
 	Global.register_rod(act_1)
-	
-	var act_2: ActData = ActData.new("act_2")
-	act_2.act_name = "Act 2"
-	act_2.act_next_act_ids = ["act_3"]
-	act_2.act_easy_combat_event_pool_object_id = "event_pool_act_1_easy"
-	act_2.act_hard_combat_event_pool_object_id = "event_pool_act_1_easy"
-	act_2.act_miniboss_event_pool_object_id = "event_pool_act_1_miniboss"
-	act_2.act_non_combat_event_pool_object_id = "event_pool_act_1_dialogue"
-	act_2.act_boss_event_pool_object_id = "event_pool_act_1_boss"
-	Global.register_rod(act_2)
-	
-	var act_3: ActData = ActData.new("act_3")
-	act_3.act_name = "Act 3"
-	act_3.act_next_act_ids = ["act_1"] # only works in endless
-	act_3.act_easy_combat_event_pool_object_id = "event_pool_act_1_easy"
-	act_3.act_hard_combat_event_pool_object_id = "event_pool_act_1_easy"
-	act_3.act_miniboss_event_pool_object_id = "event_pool_act_1_miniboss"
-	act_3.act_non_combat_event_pool_object_id = "event_pool_act_1_dialogue"
-	act_3.act_boss_event_pool_object_id = "event_pool_act_1_boss"
-	Global.register_rod(act_3)
 
 #endregion
 	
@@ -1190,37 +1165,6 @@ func add_events() -> void:
 	
 	Global.register_rod(event_act_1_easy_combat_4)
 	
-	var event_act_1_miniboss_1: EventData = EventData.new("event_act_1_miniboss_1")
-	event_act_1_miniboss_1.event_weighted_enemy_object_ids = [
-		{"enemy_act_1_miniboss_1": 1},
-		]
-	
-	Global.register_rod(event_act_1_miniboss_1)
-	
-	var event_act_1_miniboss_2: EventData = EventData.new("event_act_1_miniboss_2")
-	event_act_1_miniboss_2.event_weighted_enemy_object_ids = [
-		{"enemy_act_1_miniboss_2": 1},
-		{"enemy_act_1_miniboss_2": 1},
-		]
-	
-	Global.register_rod(event_act_1_miniboss_2)
-	
-	var event_act_1_miniboss_3: EventData = EventData.new("event_act_1_miniboss_3")
-	event_act_1_miniboss_3.event_weighted_enemy_object_ids = [
-		{"enemy_act_1_miniboss_1": 1},
-		]
-	
-	Global.register_rod(event_act_1_miniboss_3)
-	
-	var event_act_1_boss_1: EventData = EventData.new("event_act_1_boss_1")
-	event_act_1_boss_1.event_weighted_enemy_object_ids = [
-		{"enemy_act_1_boss_1": 1},
-		]
-	event_act_1_boss_1.event_enemy_placement_is_automatic = false
-	event_act_1_boss_1.event_enemy_placement_positions = [[0,0], [180,0], [360,0]]
-	event_act_1_boss_1.event_death_message_bbcode = "Bosses are tough"
-	
-	Global.register_rod(event_act_1_boss_1)
 	
 	## Act 1 Dialogue Events
 	# see add_test_dialogue()
@@ -1267,26 +1211,6 @@ func add_events() -> void:
 		])
 	
 	Global.register_rod(event_pool_act_1_dialogue)
-	
-	# act 1 miniboss pool
-	var event_pool_act_1_miniboss: EventPoolData = EventPoolData.new("event_pool_act_1_miniboss")
-	event_pool_act_1_miniboss.add_events_to_pool(
-		event_act_1_miniboss_1,
-		[
-		event_act_1_miniboss_1,
-		event_act_1_miniboss_2,
-		])
-	Global.register_rod(event_pool_act_1_miniboss)
-	
-	# act 1 boss pool
-	var event_pool_act_1_boss: EventPoolData = EventPoolData.new("event_pool_act_1_boss")
-	event_pool_act_1_boss.add_events_to_pool(
-		event_act_1_boss_1,
-		[
-		event_act_1_boss_1,
-		])
-	
-	Global.register_rod(event_pool_act_1_boss)
 
 #endregion
 

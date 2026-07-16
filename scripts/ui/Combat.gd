@@ -11,6 +11,7 @@ extends Control
 @onready var draw_count: Label = $DrawPile/DrawCount
 @onready var discard_count: Label = $DiscardPile/DiscardCount
 @onready var exhaust_count: Label = $ExhaustPile/ExhaustCount
+@onready var shop_overlay: Control = %ShopOverlay
 
 @onready var deck_button: TextureButton = %DeckButton
 @onready var draw_pile_button: TextureButton = %DrawPile
@@ -465,6 +466,8 @@ func _on_player_turn_started():
 	if _end_combat_check():
 		return
 	
+	if (StatsHandler.get_turn_count() % 5 == 0):
+		shop_overlay.populate_shop()
 	# unlock and update hand
 	HandManager.set_disable_hand(false)
 	hand.update_hand_card_display()

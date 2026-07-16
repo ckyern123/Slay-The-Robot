@@ -3,7 +3,7 @@ extends Control
 
 @onready var card_container: HBoxContainer = $CardContainer
 @onready var artifact_container: VBoxContainer = $ArtifactContainer
-@onready var consumable_container: VBoxContainer = $ConsumableContainer
+@onready var trade_container: VBoxContainer = $TradeContainer
 
 @onready var continue_button: Button = $ContinueButton
 
@@ -85,8 +85,8 @@ func populate_shop() -> void:
 		### populate shop consumables
 		for consumable_slot_index in shop_data.shop_consumable_slot_to_consumable_object_id.keys():
 			# create consumable button asset
-			var consumable_shop_button: BaseShopButton = Scenes.CONSUMABLE_SHOP_BUTTON.instantiate()
-			consumable_container.add_child(consumable_shop_button)
+			var trade_shop_button: BaseShopButton = Scenes.TRADE_SHOP_BUTTON.instantiate()
+			trade_container.add_child(trade_shop_button)
 			
 			# generate action payload
 			var consumable_object_id: String = shop_data.shop_consumable_slot_to_consumable_object_id[consumable_slot_index]
@@ -105,7 +105,7 @@ func populate_shop() -> void:
 			var purchase_consumable_action: BaseAction = ActionGenerator.create_actions(null, null, [], purchase_consumable_action_data, null)[0]
 			
 			# initialize button with payload
-			consumable_shop_button.init(purchase_consumable_action)
+			trade_shop_button.init(purchase_consumable_action)
 		
 
 func clear_shop():
@@ -113,7 +113,7 @@ func clear_shop():
 		child.queue_free()
 	for child in artifact_container.get_children():
 		child.queue_free()
-	for child in consumable_container.get_children():
+	for child in trade_container.get_children():
 		child.queue_free()
 
 #func _on_combat_started(_event_id: String):
