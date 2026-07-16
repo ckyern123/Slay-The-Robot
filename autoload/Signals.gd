@@ -47,6 +47,7 @@ signal card_upgraded(card: CardData) # whenever a card is successfully upgraded
 signal card_created(card: CardData) # whenever a card is created either from nothing or duplication
 signal card_properties_changed(card: CardData)	# general signal for when a card's card_values or other properties have been altered, usually requiring a rerender of Card object
 signal card_turn_energy_changed(card: CardData)	# special signal for when a card's per turn energy property has been changed, which requires tracking
+signal card_turn_influence_changed(card: CardData)
 signal card_transformed(card: CardData)	# general signal for when a card is transformed. See also: card_transformed_in_deck
 signal card_decorators_changed(card: CardData)	# when the decorators in a card have been modified
 signal card_hand_limit_reached	# hand is full
@@ -80,10 +81,10 @@ signal reward_clear_requested(reward_group: int) # -1 for clear all rewards
 # player stats
 signal player_money_changed(money_delta: int)
 signal player_health_changed(money_delta: int)
-signal player_food_changed(money_delta: int)
-signal player_ore_changed(money_delta: int)
-signal player_influence_changed(money_delta: int)
-signal player_insight_changed(money_delta: int)
+signal player_food_changed(food_delta: int)
+signal player_ore_changed(ore_delta: int)
+signal player_influence_changed(influence_delta: int)
+signal player_insight_changed(insight_delta: int)
 
 signal player_artifacts_changed # used for updating the ui
 signal player_artifact_added(artifact_data: ArtifactData)

@@ -236,6 +236,7 @@ func add_food(amount: int) -> void:
 	player_food = max(player_food + amount, 0)
 	var delta: int = player_food - old_player_food_amount
 	Signals.player_food_changed.emit(delta)
+	print(player_food)
 	
 ## Adds or subtracts ore from the player
 ## If goes into negative amounts, the proper delta will be calculated 

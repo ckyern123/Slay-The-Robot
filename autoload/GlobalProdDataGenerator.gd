@@ -1502,7 +1502,7 @@ func add_keywords() -> void:
 	keyword_block.keyword_name = "Block"
 	keyword_block.keyword_text_bb_code = "Prevents Damage"
 	Global.register_rod(keyword_block)
-	
+		
 	var keyword_corrosion: KeywordData = KeywordData.new("keyword_corrosion")
 	keyword_corrosion.keyword_name = "Corrosion"
 	keyword_corrosion.keyword_status_effect_id = "status_effect_corrosion"
@@ -1605,7 +1605,7 @@ func add_characters() -> void:
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
 		"card_basic_food_green", "card_basic_food_green", "card_basic_food_green", "card_basic_food_green",
-		"card_basic_ore_green", "card_basic_ore_green", "card_basic_ore_green", "card_basic_ore_green",
+		"card_youngmentor", "card_facetrecaster", "card_pearlemissary", "card_basic_ore_green",
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -2320,7 +2320,7 @@ func add_card_basics() -> void:
 		card_basic_food.card_keyword_object_ids = []
 		card_basic_food.card_values = {"food_amount": 1}
 		card_basic_food.card_upgrade_value_improvements = {"food_amount": 1}
-		card_basic_food.card_keyword_object_ids = ["keyword_food"]
+		#card_basic_food.card_keyword_object_ids = ["keyword_food"]
 		card_basic_food.card_requires_target = false
 		card_basic_food.card_play_actions = [{
 		Scripts.ACTION_ADD_FOOD: {},
@@ -2338,7 +2338,7 @@ func add_card_basics() -> void:
 		card_basic_ore.card_type = CardData.CARD_TYPES.SKILL
 		card_basic_ore.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_ore.card_requires_target = false
-		card_basic_ore.card_keyword_object_ids = ["keyword_ore"]
+		#card_basic_ore.card_keyword_object_ids = ["keyword_ore"]
 		card_basic_ore.card_values = {"ore_amount": 1}
 		card_basic_ore.card_upgrade_value_improvements = {"ore_amount": 1}
 		card_basic_ore.card_play_actions = [{
@@ -2607,6 +2607,26 @@ func add_cards_misc() -> void:
 		]
 	
 	Global.register_rod(card_spice)
+			
+	var card_rebel: CardData = CardData.new("card_rebel")
+	card_rebel.card_name = "Rebel"
+	card_rebel.card_color_id = "color_{0}".format([color])
+	card_rebel.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_rebel.card_description = "Lose [food_amount] Food."
+	card_rebel.card_type = CardData.CARD_TYPES.SKILL
+	card_rebel.card_energy_cost = 0
+	card_rebel.card_durability = 0
+	card_rebel.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_rebel.card_requires_target = false
+	card_rebel.card_is_playable = false
+	card_rebel.card_values = {"food_amount": -1, "card_durability":-1}
+	card_rebel.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_ADD_FOOD: 
+			{
+			}}]
+	
+	Global.register_rod(card_rebel)
 	
 	var card_blueprint: CardData = CardData.new("card_blueprint")
 	card_blueprint.card_name = "Blueprint"
@@ -2680,15 +2700,15 @@ func add_cards_purple() -> void:
 	var card_pearlemissary: CardData = CardData.new("card_pearlemissary")
 	card_pearlemissary.card_name = "Pearl Emissary"
 	card_pearlemissary.card_color_id = "color_{0}".format([color])
-	card_pearlemissary.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_pearlemissary.card_texture_path = "external/sprites/cards/{0}/card_pearlemissary.png".format([color])
 	card_pearlemissary.card_description = "Draws [draw_count] cards. Appeases 2 random cards in discard piles when discarded."
 	card_pearlemissary.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlemissary.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_pearlemissary.card_requires_target = false
 	card_pearlemissary.card_energy_cost = 1
-	card_pearlemissary.card_values = {"card_influence": -1,"draw_count": 2}
+	card_pearlemissary.card_values = {"card_influence": 1,"draw_count": 2}
 	card_pearlemissary.card_upgrade_value_improvements = {"draw_count": 1}
-	card_pearlemissary.card_influence = 3
+	card_pearlemissary.card_influence = 1
 	card_pearlemissary.card_play_actions = [
 		{
 		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
@@ -2698,22 +2718,41 @@ func add_cards_purple() -> void:
 		},
 		{
 		Scripts.ACTION_DRAW_GENERATOR: {},
-		},
-		{
-		Scripts.ACTION_PICK_CARDS: {
-		"min_card_amount": 1,
-		"max_card_amount": 1,
-		"min_cards_are_required_for_action": true,
-		"card_pick_type": HandManager.HAND_PILE,
-		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-		"action_data": [
-			{Scripts.ACTION_DISCARD_CARDS: {
-			}},
-			]
-		},
-
-		}
-	]
+		}]
+	card_pearlemissary.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	card_pearlemissary.card_discard_actions = [{
 		Scripts.ACTION_PICK_CARDS: {
 		"min_card_amount": 2,
@@ -2723,7 +2762,7 @@ func add_cards_purple() -> void:
 		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 		"validator_data": [
-			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.SKILL]}}
+			{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
 		],
 		"action_data": [
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
@@ -2770,7 +2809,40 @@ func add_cards_purple() -> void:
 			}
 		}
 	]
-	
+	card_joyfulsailor.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_joyfulsailor)	
 	
 	var card_storiedspinner: CardData = CardData.new("card_storiedspinner")
@@ -2801,7 +2873,40 @@ func add_cards_purple() -> void:
 			}
 		}
 	]
-	
+	card_storiedspinner.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]	
 	Global.register_rod(card_storiedspinner)
 	
 	
@@ -2855,7 +2960,40 @@ func add_cards_purple() -> void:
 
 		}
 	]
-	
+	card_recklessenvoy.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	Global.register_rod(card_recklessenvoy)
 	
 	var card_pearldiplomat: CardData = CardData.new("card_pearldiplomat")
@@ -2894,7 +3032,40 @@ func add_cards_purple() -> void:
 		}
 		}
 	]
-	
+	card_pearldiplomat.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	Global.register_rod(card_pearldiplomat)
 	
 	var card_pearlregaler: CardData = CardData.new("card_pearlregaler")
@@ -2961,6 +3132,40 @@ func add_cards_purple() -> void:
 			}
 		}
 	]
+	card_pearlregaler.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	Global.register_rod(card_pearlregaler)
 	
 		
@@ -3001,6 +3206,40 @@ func add_cards_purple() -> void:
 			}
 		}
 	]
+	card_flintlockaccountant.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	Global.register_rod(card_flintlockaccountant)
 	
 	var card_pearlscribe: CardData = CardData.new("card_pearlscribe")
@@ -3035,6 +3274,40 @@ func add_cards_purple() -> void:
 			}
 		}
 	]
+	card_pearlscribe.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	Global.register_rod(card_pearlscribe)
 	
 	var card_pearlsmuggler: CardData = CardData.new("card_pearlsmuggler")
@@ -3096,6 +3369,40 @@ func add_cards_purple() -> void:
 			}	
 		}
 	]
+	card_pearlsmuggler.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	Global.register_rod(card_pearlsmuggler)
 	
 	var card_pearlseer: CardData = CardData.new("card_pearlseer")
@@ -3138,6 +3445,40 @@ func add_cards_purple() -> void:
 			]
 		}}
 	]
+	card_pearlseer.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	Global.register_rod(card_pearlseer)
 	
 	
@@ -3179,6 +3520,40 @@ func add_cards_purple() -> void:
 				"action_data": [{Scripts.ACTION_PLAY_CARDS:{}}]
 		}}
 	]
+	card_mastertactician.card_end_of_turn_actions = [
+			{
+				Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES: 
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				"passed_action_data": 
+				[
+					{
+					Scripts.ACTION_TRANSFORM_CARDS: {
+						"transform_into_card_object_id": "card_rebel",
+						"pick_played_card": true
+						},
+					},
+				]
+				}
+			},
+			{
+				Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+					{
+						"pick_played_card": true,
+						"card_influence": -1
+					}
+			}
+		]
 	Global.register_rod(card_mastertactician)
 	
 	var card_schemingplanner: CardData = CardData.new("card_schemingplanner")
@@ -3203,6 +3578,40 @@ func add_cards_purple() -> void:
 		{
 		Scripts.ACTION_ADD_MONEY: {
 		}
+		}
+	]
+	card_schemingplanner.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
 		}
 	]
 	Global.register_rod(card_schemingplanner)
@@ -3231,6 +3640,40 @@ func add_cards_purple() -> void:
 			{
 				"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}]
 			}
+		}
+	]
+	card_courthand.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
 		}
 	]
 	Global.register_rod(card_courthand)
@@ -3272,7 +3715,41 @@ func add_cards_purple() -> void:
 			}]
 		}}
 	]
-	Global.register_rod(card_courthand)
+	card_wizenedcommander.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
+	Global.register_rod(card_wizenedcommander)
 	
 #endregion
 
@@ -3341,7 +3818,7 @@ func add_cards_black() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock"]}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_rock"}}],
 				"action_data": [{
 				Scripts.ACTION_VALIDATOR:
 				{
@@ -3378,7 +3855,41 @@ func add_cards_black() -> void:
 					}]
 				}
 		}]}
-					}]
+		}]
+	card_anisseedemissary.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 
 	Global.register_rod(card_anisseedemissary)
 		
@@ -3403,7 +3914,40 @@ func add_cards_black() -> void:
 		{
 		Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5},
 		}]
-
+	card_eagersailor.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_eagersailor)
 
 		
@@ -3435,7 +3979,40 @@ func add_cards_black() -> void:
 			"card_tortype_maximum":99}}],
 			"passed_action_data":[{Scripts.ACTION_ADD_FOOD:{}}]}
 		}]
-
+	card_fishwrangler.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_fishwrangler)
 	
 	var card_spicepicker: CardData = CardData.new("card_spicepicker")
@@ -3469,7 +4046,40 @@ func add_cards_black() -> void:
 				"number_of_cards": 2,
 				"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}}]}
 		}]
-
+	card_spicepicker.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_spicepicker)
 	
 	var card_reveredcraftsworker: CardData = CardData.new("card_reveredcraftsworker")
@@ -3504,7 +4114,7 @@ func add_cards_black() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock"]}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_rock"}}],
 				"action_data": [{
 				Scripts.ACTION_VALIDATOR:
 				{
@@ -3541,7 +4151,40 @@ func add_cards_black() -> void:
 					}]
 				}
 		}]}}]
-
+	card_reveredcraftsworker.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_reveredcraftsworker)
 	
 	var card_cartographersassistant: CardData = CardData.new("card_cartographersassistant")
@@ -3573,7 +4216,40 @@ func add_cards_black() -> void:
 			"passed_action_data":[{Scripts.ACTION_ADD_ORE:{
 				"ore_amount":-3}},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]}
 		}]
-
+	card_cartographersassistant.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_cartographersassistant)
 	
 	var card_flintlockmage: CardData = CardData.new("card_flintlockmage")
@@ -3614,7 +4290,40 @@ func add_cards_black() -> void:
 			}]
 			}}
 		]
-
+	card_flintlockmage.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_flintlockmage)
 	
 	var card_anisseedscribe: CardData = CardData.new("card_anisseedscribe")
@@ -3646,7 +4355,40 @@ func add_cards_black() -> void:
 			}}]
 			}
 		}]
-
+	card_anisseedscribe.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_anisseedscribe)
 	
 	var card_peddlerveteran: CardData = CardData.new("card_peddlerveteran")
@@ -3670,7 +4412,40 @@ func add_cards_black() -> void:
 		{
 		Scripts.ACTION_ADD_MONEY: {}
 		}]
-
+	card_peddlerveteran.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_peddlerveteran)
 	
 	var card_intrepidsailor: CardData = CardData.new("card_intrepidsailor")
@@ -3719,7 +4494,40 @@ func add_cards_black() -> void:
 				}]
 		}
 		}]
-
+	card_intrepidsailor.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_intrepidsailor)
 		
 	var card_keeneyedbuccaneer: CardData = CardData.new("card_keeneyedbuccaneer")
@@ -3751,7 +4559,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.DRAW_PILE,
 			"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-			"validator_data":[{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
+			"validator_data":[{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_sword"}}],
 			"action_data": [
 				{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
 				"multiplied_values": ["damage"],
@@ -3761,6 +4569,40 @@ func add_cards_black() -> void:
 				}}]
 		}
 		}]
+	card_keeneyedbuccaneer.card_end_of_turn_actions = [
+	{
+		Scripts.ACTION_VALIDATOR: {
+		"validator_data":
+		[
+			{
+			Scripts.VALIDATOR_CARD_PROPERTIES: 
+				{
+				"card_property_name": "card_influence",
+				"operator": "<=",
+				"comparison_value": 0,
+				"invert_validation": false,
+				}
+			}
+		],
+		"passed_action_data": 
+		[
+			{
+			Scripts.ACTION_TRANSFORM_CARDS: {
+				"transform_into_card_object_id": "card_rebel",
+				"pick_played_card": true
+				},
+			},
+		]
+		}
+	},
+	{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+			{
+				"pick_played_card": true,
+				"card_influence": -1
+			}
+	}
+	]
 	Global.register_rod(card_keeneyedbuccaneer)
 	
 	
@@ -3789,7 +4631,7 @@ func add_cards_black() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock"]}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_rock"}}],
 				"action_data": [{
 				Scripts.ACTION_VALIDATOR:
 				{
@@ -3828,7 +4670,41 @@ func add_cards_black() -> void:
 					}]
 				}
 		}]}
-					}]
+		}]
+	card_anisseedtaxcollector.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_anisseedtaxcollector)
 
 	var card_peddlerinformant: CardData = CardData.new("card_peddlerinformant")
@@ -3874,6 +4750,40 @@ func add_cards_black() -> void:
 				}]
 			}
 		}]
+	card_peddlerinformant.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_peddlerinformant)
 	
 	var card_taxfarmer: CardData = CardData.new("card_taxfarmer")
@@ -3897,6 +4807,40 @@ func add_cards_black() -> void:
 		{
 		Scripts.ACTION_ADD_MONEY:{}
 		}]
+	card_taxfarmer.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_taxfarmer)
 	
 	var card_swashbucklingchamp: CardData = CardData.new("card_swashbucklingchamp")
@@ -3924,7 +4868,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to wield. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_sword"}}],
 			"action_data": [{
 			Scripts.ACTION_PLAY_CARDS: {}},
 			{
@@ -3935,6 +4879,40 @@ func add_cards_black() -> void:
 				"modify_parent_card": false,
 			}}]
 		}}]
+	card_swashbucklingchamp.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 
 	Global.register_rod(card_swashbucklingchamp)
 #endregion
@@ -3968,7 +4946,40 @@ func add_cards_green() -> void:
 		{
 		Scripts.ACTION_ADD_FOOD: {}
 		}]
-
+	card_cofferskeeper.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_cofferskeeper)
 	
 	var card_youngmentor: CardData = CardData.new("card_youngmentor")
@@ -3980,7 +4991,7 @@ func add_cards_green() -> void:
 	card_youngmentor.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_youngmentor.card_requires_target = false
 	card_youngmentor.card_energy_cost = 1
-	card_youngmentor.card_values = {"card_influence": 1,"card_object_ids":["card_fish"],"number_of_cards":2}
+	card_youngmentor.card_values = {"card_influence": 1,"created_card_object_id":"card_fish","number_of_cards":2}
 	card_youngmentor.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_youngmentor.card_play_actions = [
 		{
@@ -3988,11 +4999,7 @@ func add_cards_green() -> void:
 			"pick_played_card": true,
 			"modify_parent_card": false,
 		}
-		},
-		{
-		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}
-		},
-		{
+		},		{
 		Scripts.ACTION_PICK_CARDS: {
 		"min_card_amount": 0,
 		"max_card_amount": 2,
@@ -4005,8 +5012,44 @@ func add_cards_green() -> void:
 			]
 		},
 
-		},]
-
+		},
+		{
+		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}
+		}]
+	card_youngmentor.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_youngmentor)
 	
 	var card_luckfinder: CardData = CardData.new("card_luckfinder")
@@ -4018,7 +5061,7 @@ func add_cards_green() -> void:
 	card_luckfinder.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_luckfinder.card_requires_target = false
 	card_luckfinder.card_energy_cost = 1
-	card_luckfinder.card_values = {"card_influence": 1,"card_object_ids":["card_grain"],"number_of_cards":1}
+	card_luckfinder.card_values = {"card_influence": 1,"created_card_object_id":"card_grain","number_of_cards":1}
 	card_luckfinder.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_luckfinder.card_play_actions = [
 		{
@@ -4040,7 +5083,7 @@ func add_cards_green() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DRAW_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_grain"]}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_grain"}}],
 				"action_data": [{Scripts.ACTION_IMPROVE_CARD_VALUES: {
 				"card_value_improvements":{"food_amount":1},
 				"time_delay": 0.1,
@@ -4055,8 +5098,40 @@ func add_cards_green() -> void:
 	card_luckfinder.card_end_of_turn_actions = [
 		{
 		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
-		}]
-
+		},
+		{
+		Scripts.ACTION_VALIDATOR: {
+		"validator_data":
+		[
+			{
+			Scripts.VALIDATOR_CARD_PROPERTIES: 
+				{
+				"card_property_name": "card_influence",
+				"operator": "<=",
+				"comparison_value": 0,
+				"invert_validation": false,
+				}
+			}
+		],
+		"passed_action_data": 
+		[
+			{
+			Scripts.ACTION_TRANSFORM_CARDS: {
+				"transform_into_card_object_id": "card_rebel",
+				"pick_played_card": true
+				},
+			},
+		]
+		}
+	},
+	{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+			{
+				"pick_played_card": true,
+				"card_influence": -1
+			}
+	}
+	]
 	Global.register_rod(card_luckfinder)
 	
 	var card_greeninformant: CardData = CardData.new("card_greeninformant")
@@ -4085,6 +5160,40 @@ func add_cards_green() -> void:
 				{Scripts.ACTION_ADD_INSIGHT:{}}]
 			}
 		}]
+	card_greeninformant.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_greeninformant)
 	
 	var card_goldenconscript: CardData = CardData.new("card_goldenconscript")
@@ -4109,6 +5218,40 @@ func add_cards_green() -> void:
 		Scripts.ACTION_DRAW_GENERATOR:{}
 		},
 		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}}]
+	card_goldenconscript.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_goldenconscript)
 	
 	var card_militantoutsourcer: CardData = CardData.new("card_militantoutsourcer")
@@ -4142,6 +5285,40 @@ func add_cards_green() -> void:
 			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
 		}
 		}]
+	card_militantoutsourcer.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_militantoutsourcer)
 	
 	var card_facetrecaster: CardData = CardData.new("card_facetrecaster")
@@ -4151,20 +5328,60 @@ func add_cards_green() -> void:
 	card_facetrecaster.card_description = "Add [number_of_cards] Grain to your draw_pile."
 	card_facetrecaster.card_type = CardData.CARD_TYPES.SKILL
 	card_facetrecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_facetrecaster.card_requires_target = true
+	card_facetrecaster.card_requires_target = false
 	card_facetrecaster.card_energy_cost = 1
-	card_facetrecaster.card_values = {"card_influence": 1,"card_object_ids":["card_grain"],"number_of_cards":3}
+	card_facetrecaster.card_values = {"card_influence": 1,"created_card_object_id":"card_grain","number_of_cards":3}
 	card_facetrecaster.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_facetrecaster.card_play_actions = [
 		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		}
+			Scripts.ACTION_PICK_CARDS:{
+				"card_pick_type": ActionBasePickCards.PICK_PARENT_CARD,
+				"min_card_amount": 1,
+				"max_card_amount": 1,
+				"min_cards_are_required_for_action": true,
+				"random_selection": true,
+				"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {"card_influence":1
+				}
+				}]
+			}
 		},
 		{
-		Scripts.ACTION_CREATE_CARDS:{Scripts.ACTION_ADD_CARDS_TO_DRAW:{}}
-		}]
+		Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DRAW:{}}]
+		}}]
+	card_facetrecaster.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_facetrecaster)
 	
 	var card_shockrider: CardData = CardData.new("card_shockrider")
@@ -4205,6 +5422,40 @@ func add_cards_green() -> void:
 				}]
 			}
 		}]
+	card_shockrider.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_shockrider)
 	
 	var card_everymanleader: CardData = CardData.new("card_everymanleader")
@@ -4240,6 +5491,40 @@ func add_cards_green() -> void:
 		}}]
 		}
 		}]
+	card_everymanleader.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_everymanleader)
 	
 	var card_inspiredgossipmonger: CardData = CardData.new("card_inspiredgossipmonger")
@@ -4289,6 +5574,40 @@ func add_cards_green() -> void:
 			]
 			}
 		}]
+	card_inspiredgossipmonger.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_inspiredgossipmonger)
 	
 	var card_wizenedforager: CardData = CardData.new("card_wizenedforager")
@@ -4300,7 +5619,7 @@ func add_cards_green() -> void:
 	card_wizenedforager.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_wizenedforager.card_requires_target = false
 	card_wizenedforager.card_energy_cost = 1
-	card_wizenedforager.card_values = {"card_influence":1, "card_object_ids":["card_fish"],"number_of_cards":1}
+	card_wizenedforager.card_values = {"card_influence":1, "created_card_object_id":"card_fish","number_of_cards":1}
 	card_wizenedforager.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_wizenedforager.card_play_actions = [
 		{
@@ -4312,7 +5631,7 @@ func add_cards_green() -> void:
 		{
 		Scripts.ACTION_CREATE_CARDS:
 			{
-				"card_object_ids":["card_grain"],
+				"created_card_object_id":"card_grain",
 				"number_of_cards":3,
 				"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 			}
@@ -4322,6 +5641,40 @@ func add_cards_green() -> void:
 			Scripts.ACTION_CREATE_CARDS:
 				{
 					"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
+				}
+		}
+	]
+	card_wizenedforager.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
 				}
 		}
 	]
@@ -4356,6 +5709,40 @@ func add_cards_green() -> void:
 				},
 				{Scripts.ACTION_ADD_INSIGHT:{}}]
 		}}]
+	card_hoardingstowaway.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_hoardingstowaway)
 	
 	var card_supremerecaster: CardData = CardData.new("card_supremerecaster")
@@ -4387,6 +5774,40 @@ func add_cards_green() -> void:
 				},
 				{Scripts.ACTION_ADD_INSIGHT:{}}]
 		}}]
+	card_supremerecaster.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_supremerecaster)
 	
 		
@@ -4426,6 +5847,40 @@ func add_cards_green() -> void:
 			}]
 		}
 		}]
+	card_villagehero.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_villagehero)
 	
 	var card_solverofriddles: CardData = CardData.new("card_solverofriddles")
@@ -4481,6 +5936,40 @@ func add_cards_green() -> void:
 			{
 				"pick_played_card": true
 			}}]
+	card_solverofriddles.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
 	Global.register_rod(card_solverofriddles)
 func add_cards_gold() -> void:
 	var color: String = "gold"

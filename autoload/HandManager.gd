@@ -96,6 +96,7 @@ var card_destination_to_ui_elements: Dictionary[String, Control] = {
 func _ready() -> void:
 	Signals.card_played.connect(_on_card_played)
 	Signals.card_turn_energy_changed.connect(_on_card_turn_energy_changed)
+	Signals.card_turn_influence_changed.connect(_on_card_turn_influence_changed)
 	
 	Signals.combat_started.connect(_on_combat_started)
 	Signals.combat_ended.connect(_on_combat_ended)
@@ -603,6 +604,12 @@ func _on_card_turn_energy_changed(card_data: CardData):
 		if not HandManager.cards_with_modified_turn_energy.has(card_data):
 			HandManager.cards_with_modified_turn_energy.append(card_data)
 
+func _on_card_turn_influence_changed(card_data: CardData):
+	pass
+	# track cards with turn energy shadowing
+#	if card_data.card_energy_cost_until_turn > -1:
+#		if not HandManager.cards_with_modified_turn_energy.has(card_data):
+#			HandManager.cards_with_modified_turn_energy.append(card_data)
 #endregion
 
 #region Convenient Pile Management

@@ -107,8 +107,8 @@ const ACTION_CREATE_CARDS: String = "res://scripts/actions/card_actions/pick_car
 # 	cardset actions; these affect a list of picked cards
 const ACTION_IMPROVE_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveCardValues.gd"
 const ACTION_CHANGE_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardValues.gd"
-const ACTION_CHANGE_CARD_INFLUENCE: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardDurability.gd"
-const ACTION_CHANGE_CARD_DURABILITY: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardInfluence.gd"
+const ACTION_CHANGE_CARD_INFLUENCE: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardInfluence.gd"
+const ACTION_CHANGE_CARD_DURABILITY: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardDurability.gd"
 
 const ACTION_IMPROVE_CARD_VALUES_UNUSED_ENERGY: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveCardValuesUnusedEnergy.gd"
 const ACTION_CLAMP_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionClampCardValues.gd"

@@ -25,7 +25,7 @@ var parent_card: CardData = null	# the parent card in the player's true deck tha
 @export var card_energy_cost_variable_upper_bound: int = -1	# allows an upper bound on energy input into an X cost card. -1 for no limit
 
 ## A card's influence. If influence reaches 0, does something.
-@export var card_influence: int = 0
+@export var card_influence: int = 3
 @export var card_durability: int = 0
 
 ## Determines how a card should be shuffled in the deck on combat start.
@@ -225,8 +225,11 @@ func set_card_energy_cost(energy_cost: int) -> void:
 
 func add_card_influence(card_inf: int) -> void:
 	card_influence = card_influence + card_inf
-	Signals.card_properties_changed.emit(self)
+	Signals.card_turn_influence_changed.emit(self)
 	
+func get_card_influence() -> int:
+	return card_influence
+
 func add_card_durability(card_inf: int) -> void:
 	card_durability = card_durability + card_inf
 	Signals.card_properties_changed.emit(self)

@@ -32,6 +32,8 @@ var tooltip_left_side: bool = false # if tooltip should display to the left of t
 @onready var card_description: RichLabelAutoSizer = %CardDescription
 @onready var card_energy_sprite: TextureRect = %EnergySprite
 @onready var card_energy_cost_label: Label = %EnergyCost
+@onready var card_sprite: TextureRect = %InfluenceSprite
+@onready var card_influence_label: Label = %InfluenceLabel
 @onready var card_color: ColorRect = %ColorBackground
 @onready var card_decorator_container: VBoxContainer = %CardDecoratorContainer
 
@@ -61,6 +63,7 @@ func init(_card_data: CardData, angular_offset: float, connect_combat_signals: b
 		Signals.card_added_to_draw.connect(_on_card_added_to_draw)
 		Signals.card_properties_changed.connect(_on_card_properties_changed)
 		Signals.card_turn_energy_changed.connect(_on_card_turn_energy_changed)
+		Signals.card_turn_influence_changed.connect(_on_card_turn_influence_changed)
 		Signals.card_upgraded.connect(_on_card_upgraded)
 		Signals.card_transformed.connect(_on_card_transformed)
 		Signals.card_decorators_changed.connect(_on_card_decorators_changed)
@@ -97,7 +100,11 @@ func update_card_display(selected_enemy: Enemy = null) -> void:
 	
 	# update energy
 	_update_energy_display(selected_enemy)
-
+	#var card_play_intercepted_action_results: Dictionary[String, Variant] = card_data.get_card_play_intercepted_action_results(selected_enemy)
+	#var card_influence: int = card_play_intercepted_action_results.get("card_influence", card_data.get_card_influence())
+	var card_influence = card_data.card_influence
+	card_influence_label.text = str(card_influence)
+	
 ## Specifically updates the energy cost display of the card. This is seperated from  because it
 ## can be messed with depending on interception and card play validation
 func _update_energy_display(selected_enemy: Enemy = null) -> void:
@@ -301,6 +308,10 @@ func _on_card_properties_changed(_card_data: CardData):
 		update_card_display()
 
 func _on_card_turn_energy_changed(_card_data: CardData):
+	if card_data == _card_data:
+		update_card_display()
+		
+func _on_card_turn_influence_changed(_card_data: CardData):
 	if card_data == _card_data:
 		update_card_display()
 
