@@ -34,7 +34,7 @@ extends Control
 var end_turn_object: CombatEndTurn = null
 
 func _ready():
-	#Signals.shop_opened.emit()
+
 	Signals.player_money_changed.connect(_on_player_money_changed)
 	Signals.player_food_changed.connect(_on_player_food_changed)
 	Signals.player_ore_changed.connect(_on_player_ore_changed)
@@ -178,7 +178,7 @@ func _on_player_ore_changed(_delta: int = 0):
 func _on_player_insight_changed(_delta: int = 0):
 	insight_label.text = "INSIGHT%s" % Global.player_data.player_insight
 	
-func _on_player_food_changed():
+func _on_player_food_changed(_delta: int = 0):
 	food_label.text = "FOOD%s / %s" % [Global.player_data.player_food, HandManager.player_draw.size()]
 
 ### Deck Buttons
@@ -230,6 +230,7 @@ func _on_combat_started(event_id: String):
 	
 	Global.player_data.player_energy = Global.player_data.player_energy_max
 	set_combat_display_visibility(true)
+
 	update_combat_display()
 	
 func _on_combat_ended():
@@ -439,6 +440,7 @@ func _on_player_turn_started():
 		# if player is dead stop
 		if _end_combat_check():
 			return
+		Signals.shop_opened.emit()
 	
 	# reset energy
 	ActionGenerator.generate_start_of_turn_energy_actions()
@@ -467,6 +469,8 @@ func _on_player_turn_started():
 		return
 	
 	if (StatsHandler.get_turn_count() % 5 == 0):
+		var shop_data: ShopData = Global.get_shop_at_player_location()
+		shop_data.shop_is_visited = false
 		shop_overlay.populate_shop()
 	# unlock and update hand
 	HandManager.set_disable_hand(false)

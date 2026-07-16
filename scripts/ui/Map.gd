@@ -110,7 +110,7 @@ func _on_chest_opened():
 	can_travel = true
 
 func _on_shop_opened():
-	can_travel = true
+	can_travel = false
 
 func _on_dialogue_ended():
 	var player: Player = Global.get_player()

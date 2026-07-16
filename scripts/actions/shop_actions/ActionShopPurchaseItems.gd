@@ -25,6 +25,7 @@ func perform_action():
 					# generate action data for buying card
 					action_data.append({Scripts.ACTION_ADD_MONEY: {"money_amount": -card_price}})
 					action_data.append({Scripts.ACTION_ADD_CARDS_TO_DECK: {"picked_cards": [card_data]}})
+					action_data.append({Scripts.ACTION_DISCARD_CARDS: {"picked_cards": [card_data]}})
 					var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], action_data, null)
 					ActionHandler.add_actions(generated_actions)
 					# remove card from shop

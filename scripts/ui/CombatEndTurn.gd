@@ -21,7 +21,7 @@ func wait() -> void:
 			# forces the turn to instantly end, removing all remaining card plays and actions
 			HandManager.refund_card_queue()
 			ActionHandler.clear_all_actions()
-			var food_count: int = 0 - Global.player_data.player_deck.size()
+			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			if Global.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
@@ -34,7 +34,7 @@ func wait() -> void:
 			HandManager.set_disable_hand(true)
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
-			var food_count: int = 0 - Global.player_data.player_deck.size()
+			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			if Global.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
@@ -47,11 +47,12 @@ func wait() -> void:
 			HandManager.set_disable_hand(true)
 			while len(HandManager.card_play_queue) > 0 or ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
-			var food_count: int = 0 - Global.player_data.player_deck.size()
+			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			if Global.player_data.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
-			if Global.player_data.player_deck.size() >= 100:
+			var deck_total = (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
+			if deck_total >= 100:
 				Global.end_run(Global.RUN_ENDS.VICTORY)
 			end_turn()
 
