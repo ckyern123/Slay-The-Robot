@@ -49,7 +49,7 @@ func wait() -> void:
 				await ActionHandler.actions_ended
 			var food_count: int = 0 - Global.player_data.player_deck.size()
 			Global.player_data.add_food(food_count/10)
-			if Global.player_food <= 0:
+			if Global.player_data.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
 			if Global.player_data.player_deck.size() >= 100:
 				Global.end_run(Global.RUN_ENDS.VICTORY)

@@ -439,28 +439,28 @@ func add_test_consumables() -> void:
 	# Uses force_dead_targets to work even on a dead player.
 	# Uses an automatic run modifier and interceptor to intercept ActionDeath.
 	# See InterceptorConsumableAutoRevive and interceptor_consumable_auto_revive RunModifierData for more
-	var consumable_auto_revive: ConsumableData = ConsumableData.new("consumable_auto_revive")
-	consumable_auto_revive.consumable_name = "Auto Revive Item"
-	consumable_auto_revive.consumable_color_id = "color_white"
-	consumable_auto_revive.consumable_description = "Heals 20% on player death"
-	consumable_auto_revive.consumable_use_text = "Use"
-	consumable_auto_revive.consumable_requires_target = false
-	consumable_auto_revive.consumable_use_disabled = true # cannot be manually used
-	consumable_auto_revive.consumable_rarity = ConsumableData.CONSUMABLE_RARITIES.COMMON
-	consumable_auto_revive.consumable_texture_path = "external/sprites/consumables/consumable_red.png"
-	consumable_auto_revive.consumable_values = {
-		"percentage_heal_amount": 0.20,
-		"force_dead_targets": true # will work even if the target is dead
-	}
-	consumable_auto_revive.consumable_actions = [
-		{
-		Scripts.ACTION_HEAL_PERCENT: {
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
-		}
-		}
-	]
-	
-	Global.register_rod(consumable_auto_revive)
+	#var consumable_auto_revive: ConsumableData = ConsumableData.new("consumable_auto_revive")
+	#consumable_auto_revive.consumable_name = "Auto Revive Item"
+	#consumable_auto_revive.consumable_color_id = "color_white"
+	#consumable_auto_revive.consumable_description = "Heals 20% on player death"
+	#consumable_auto_revive.consumable_use_text = "Use"
+	#consumable_auto_revive.consumable_requires_target = false
+	#consumable_auto_revive.consumable_use_disabled = true # cannot be manually used
+	#consumable_auto_revive.consumable_rarity = ConsumableData.CONSUMABLE_RARITIES.COMMON
+	#consumable_auto_revive.consumable_texture_path = "external/sprites/consumables/consumable_red.png"
+	#consumable_auto_revive.consumable_values = {
+		#"percentage_heal_amount": 0.20,
+		#"force_dead_targets": true # will work even if the target is dead
+	#}
+	#consumable_auto_revive.consumable_actions = [
+		#{
+		#Scripts.ACTION_HEAL_PERCENT: {
+			#"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
+		#}
+		#}
+	#]
+	#
+	#Global.register_rod(consumable_auto_revive)
 
 #endregion
 
@@ -1498,14 +1498,14 @@ func add_test_action_interceptors() -> void:
 	
 	Global.register_rod(interceptor_duplicate_attacks)
 	
-	# uses a consumable to prevent player death
-	var interceptor_consumable_auto_revive: ActionInterceptorData = ActionInterceptorData.new("interceptor_consumable_auto_revive")
-	interceptor_consumable_auto_revive.action_interceptor_priority = 10000
-	interceptor_consumable_auto_revive.action_interceptor_modifies_parent = true
-	interceptor_consumable_auto_revive.action_interceptor_script_path = Scripts.INTERCEPTOR_CONSUMABLE_AUTO_REVIVE
-	interceptor_consumable_auto_revive.action_intercepted_action_paths = [Scripts.ACTION_DEATH]
-	
-	Global.register_rod(interceptor_consumable_auto_revive)
+	## uses a consumable to prevent player death
+	#var interceptor_consumable_auto_revive: ActionInterceptorData = ActionInterceptorData.new("interceptor_consumable_auto_revive")
+	#interceptor_consumable_auto_revive.action_interceptor_priority = 10000
+	#interceptor_consumable_auto_revive.action_interceptor_modifies_parent = true
+	#interceptor_consumable_auto_revive.action_interceptor_script_path = Scripts.INTERCEPTOR_CONSUMABLE_AUTO_REVIVE
+	#interceptor_consumable_auto_revive.action_intercepted_action_paths = [Scripts.ACTION_DEATH]
+	#
+	#Global.register_rod(interceptor_consumable_auto_revive)
 	
 	# prevents gaining money
 	var interceptor_negate_add_money: ActionInterceptorData = ActionInterceptorData.new("interceptor_negate_add_money")
@@ -1924,14 +1924,14 @@ func add_test_run_modifiers() -> void:
 	### Automatic Modifiers
 	
 	# this allows for auto revive consumables to work each run
-	var run_modifier_consumable_auto_revive: RunModifierData = RunModifierData.new("run_modifier_draft_all_colors")
-	run_modifier_consumable_auto_revive.run_modifier_name = "Auto Revive"
-	run_modifier_consumable_auto_revive.run_modifier_description = "Uses auto revive consumables"
-	run_modifier_consumable_auto_revive.run_modifier_is_automatic = true # registered regardless of difficulty
-	run_modifier_consumable_auto_revive.run_modifier_modifier_script_path = Scripts.BASE_RUN_MODIFIER # does nothing
-	run_modifier_consumable_auto_revive.run_modifier_interceptor_ids = ["interceptor_consumable_auto_revive"] # ensures auto revive always active
+	#var run_modifier_consumable_auto_revive: RunModifierData = RunModifierData.new("run_modifier_draft_all_colors")
+	#run_modifier_consumable_auto_revive.run_modifier_name = "Auto Revive"
+	#run_modifier_consumable_auto_revive.run_modifier_description = "Uses auto revive consumables"
+	#run_modifier_consumable_auto_revive.run_modifier_is_automatic = true # registered regardless of difficulty
+	#run_modifier_consumable_auto_revive.run_modifier_modifier_script_path = Scripts.BASE_RUN_MODIFIER # does nothing
+	#run_modifier_consumable_auto_revive.run_modifier_interceptor_ids = ["interceptor_consumable_auto_revive"] # ensures auto revive always active
 	
-	Global.register_rod(run_modifier_consumable_auto_revive)
+	#Global.register_rod(run_modifier_consumable_auto_revive)
 	
 #endregion
 

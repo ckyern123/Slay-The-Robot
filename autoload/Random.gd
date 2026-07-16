@@ -92,8 +92,6 @@ func test_weighted_selection(weights: Dictionary[Variant, int]) -> void:
 		var weight: int = weight_results.get(selected_object, 0)
 		weight += 1
 		weight_results[selected_object] = weight
-	
-	print(weight_results)
 
 ### Drafting Cards
 

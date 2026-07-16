@@ -1136,16 +1136,16 @@ func add_events() -> void:
 	var event_act_1_easy_combat_1: EventData = EventData.new("event_act_1_easy_combat_1")
 	event_act_1_easy_combat_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_combat_1.event_weighted_enemy_object_ids = [
-		{"enemy_1": 1, "enemy_2": 1, "enemy_3": 1},
-		{"enemy_1": 1, "enemy_2": 1, "enemy_3": 1},
-		{"enemy_1": 1, "enemy_2": 1, "enemy_3": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
 		]
 	
 	Global.register_rod(event_act_1_easy_combat_1)
 	
 	var event_act_1_easy_combat_2: EventData = EventData.new("event_act_1_easy_combat_2")
 	event_act_1_easy_combat_2.event_weighted_enemy_object_ids = [
-		{"enemy_3": 1}
+		{"enemy_1": 1}
 		]
 	
 	Global.register_rod(event_act_1_easy_combat_2)
@@ -1153,14 +1153,14 @@ func add_events() -> void:
 	var event_act_1_easy_combat_3: EventData = EventData.new("event_act_1_easy_combat_3")
 	event_act_1_easy_combat_3.event_weighted_enemy_object_ids = [
 		{"enemy_1": 1},
-		{"enemy_2": 1},
+		{"enemy_1": 1},
 		]
 	
 	Global.register_rod(event_act_1_easy_combat_3)
 	
 	var event_act_1_easy_combat_4: EventData = EventData.new("event_act_1_easy_combat_4")
 	event_act_1_easy_combat_4.event_weighted_enemy_object_ids = [
-		{"enemy_4": 1},
+		{"enemy_1": 1},
 		]
 	
 	Global.register_rod(event_act_1_easy_combat_4)
@@ -1739,14 +1739,14 @@ func add_run_modifiers() -> void:
 	### Automatic Modifiers
 	
 	# this allows for auto revive consumables to work each run
-	var run_modifier_consumable_auto_revive: RunModifierData = RunModifierData.new("run_modifier_draft_all_colors")
-	run_modifier_consumable_auto_revive.run_modifier_name = "Auto Revive"
-	run_modifier_consumable_auto_revive.run_modifier_description = "Uses auto revive consumables"
-	run_modifier_consumable_auto_revive.run_modifier_is_automatic = true # registered regardless of difficulty
-	run_modifier_consumable_auto_revive.run_modifier_modifier_script_path = Scripts.BASE_RUN_MODIFIER # does nothing
-	run_modifier_consumable_auto_revive.run_modifier_interceptor_ids = ["interceptor_consumable_auto_revive"] # ensures auto revive always active
+	#var run_modifier_consumable_auto_revive: RunModifierData = RunModifierData.new("run_modifier_draft_all_colors")
+	#run_modifier_consumable_auto_revive.run_modifier_name = "Auto Revive"
+	#run_modifier_consumable_auto_revive.run_modifier_description = "Uses auto revive consumables"
+	#run_modifier_consumable_auto_revive.run_modifier_is_automatic = true # registered regardless of difficulty
+	#run_modifier_consumable_auto_revive.run_modifier_modifier_script_path = Scripts.BASE_RUN_MODIFIER # does nothing
+	#run_modifier_consumable_auto_revive.run_modifier_interceptor_ids = ["interceptor_consumable_auto_revive"] # ensures auto revive always active
 	
-	Global.register_rod(run_modifier_consumable_auto_revive)
+	#Global.register_rod(run_modifier_consumable_auto_revive)
 	
 #endregion
 
@@ -1940,13 +1940,21 @@ func add_enemies() -> void:
 	enemy_1.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	enemy_1.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1,"intent_attack_1":1}),
 		])
 	enemy_1.enemy_actions_on_death = [{Scripts.ACTION_ADD_MONEY: {"money_amount":5}}]
 	# an attack that hits harder on higher difficulties
 	enemy_1.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, ""),
+	])
+	enemy_1.add_intent_state([
+	EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 0, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+	EnemyIntentData.new("intent_attack_1", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+	])
+	enemy_1.add_intent_state([
+	EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+	EnemyIntentData.new("intent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
 	])
 		
 	var _enemy_1_anim: AnimationData = enemy_1.add_standard_animations(

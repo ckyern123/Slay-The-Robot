@@ -242,7 +242,7 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	player_data.player_health = character_data.character_starting_health
 	
 	# location, act, and difficult
-	player_data.player_location_id = "enemy_1" # hardcoded starting location
+	player_data.player_location_id = "location_0" # hardcoded starting location
 	player_data.player_act = 1
 	player_data.player_run_difficulty_level = difficulty_level
 	
