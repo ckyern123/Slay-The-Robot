@@ -29,7 +29,7 @@ class_name LocationData
 ## A path to an external texture file to use when at this location. Overrides the act background
 @export var location_background_texture_path: String = ""
 
-enum LOCATION_TYPES {STARTING, COMBAT, MINIBOSS, BOSS, EVENT, TREASURE, SHOP, REST_SITE}
+enum LOCATION_TYPES {STARTING, COMBAT, MINIBOSS, BOSS, EVENT, TREASURE, SHOP, REST_SITE, PLAINS, FOREST, DESERT, SWAMP, COASTS}
 ## The type of the location. Determines behavior of what to do when the location is visited.
 @export var location_type: int = LOCATION_TYPES.COMBAT
 

@@ -89,18 +89,18 @@ func _on_map_location_selected(location_data: LocationData):
 	# determine what to do when the player visits a new location
 	var location_type: int = location_data.location_type
 	
-	chest.visible = false
-	shop.visible = false
+	#chest.visible = false
+	#shop.visible = false
 	
-	set_combat_display_visibility(false)
+	#set_combat_display_visibility(false)
 	
-	match location_type:
-		LocationData.LOCATION_TYPES.COMBAT, LocationData.LOCATION_TYPES.MINIBOSS, LocationData.LOCATION_TYPES.BOSS:
-			ActionGenerator.generate_combat_start("") # emit empty event to get location's combat event
-		LocationData.LOCATION_TYPES.TREASURE:
-			chest.visible = true
-		LocationData.LOCATION_TYPES.SHOP:
-			shop.visible = true
+	#match location_type:
+	#	LocationData.LOCATION_TYPES.COMBAT, LocationData.LOCATION_TYPES.MINIBOSS, LocationData.LOCATION_TYPES.BOSS:
+	#		ActionGenerator.generate_combat_start("") # emit empty event to get location's combat event
+	#	LocationData.LOCATION_TYPES.TREASURE:
+	#		chest.visible = true
+	#	LocationData.LOCATION_TYPES.SHOP:
+	#		shop.visible = true
 	
 	_update_background()
 	

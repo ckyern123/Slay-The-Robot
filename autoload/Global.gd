@@ -242,7 +242,7 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	player_data.player_health = character_data.character_starting_health
 	
 	# location, act, and difficult
-	player_data.player_location_id = "location_0" # hardcoded starting location
+	player_data.player_location_id = "event_act_1_easy_combat_4" # hardcoded starting location
 	player_data.player_act = 1
 	player_data.player_run_difficulty_level = difficulty_level
 	
@@ -285,7 +285,7 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	Signals.run_started.emit()
 	
 	Signals.map_location_selected.emit(get_player_location_data())	# simulate visiting the first location
-	
+	ActionGenerator.generate_combat_start("event_act_1_easy_combat_4")
 	# simulate a win
 	#await get_tree().create_timer(5).timeout
 	#Signals.run_victory.emit()

@@ -75,7 +75,7 @@ func clear_locations() -> void:
 
 func show_map():
 	populate_locations()
-	visible = true
+	#visible = true
 
 func hide_map():
 	visible = false
