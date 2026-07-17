@@ -2282,7 +2282,6 @@ script = ExtResource("30_plfau")
 [node name="ShopOverlay" type="Control" parent="RunScreen" unique_id=1618705129]
 unique_name_in_owner = true
 process_mode = 1
-visible = false
 z_index = 10
 anchors_preset = 0
 offset_right = 1200.0

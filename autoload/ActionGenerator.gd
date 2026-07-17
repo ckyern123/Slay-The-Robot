@@ -169,13 +169,15 @@ func generate_add_location_rewards() -> void:
 
 ## Generates and processes an action to populate a shop with given items and their parallel prices.
 ## Called from ShopData.visit_shop().
-func generate_populate_shop_items(shop_cards: Array[CardData], shop_card_prices: Array[int],
+func generate_populate_shop_items(shop_cards: Array[CardData], shop_card_prices: Array[int], shop_trade: Array[CardData], shop_trade_prices: Array[int],
 shop_artifact_ids: Array[String], shop_artifact_prices: Array[int], 
 shop_consumable_ids: Array[String], shop_consumable_prices: Array[int]) -> void:
 	var action_data: Array[Dictionary] = [{
 		Scripts.ACTION_SHOP_POPULATE_ITEMS: {
 			"shop_cards": shop_cards,
 			"shop_card_prices": shop_card_prices,
+			"shop_trade": shop_trade,
+			"shop_trade_prices": shop_trade_prices,
 			"shop_artifact_ids": shop_artifact_ids,
 			"shop_artifact_prices": shop_artifact_prices,
 			"shop_consumable_ids": shop_consumable_ids,

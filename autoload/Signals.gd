@@ -62,6 +62,7 @@ signal card_removed_from_deck(card_data: CardData) # card was removed from playe
 signal card_transformed_in_deck(card_data: CardData) # card was transformed player's permanent deck (card_data will be in updated state)
 signal card_draft_skipped(card_pick_action)
 signal card_purchased(card_data: CardData)
+signal trade_purchased(card_data: CardData)
 #endregion
 
 signal game_paused

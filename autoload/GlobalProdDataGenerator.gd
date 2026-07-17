@@ -1494,6 +1494,17 @@ func add_colors() -> void:
 	color_purple.color_energy_icon_texture_path = "external/sprites/colors/purple_energy_icon.png"
 	Global.register_rod(color_purple)
 
+	var color_black: ColorData = ColorData.new("color_black")
+	color_black.color = Color.BLACK
+	color_black.color_name = "Black"
+	color_black.color_energy_icon_texture_path = "external/sprites/colors/white_energy_icon.png"
+	Global.register_rod(color_black)
+	
+	var color_grey: ColorData = ColorData.new("color_grey")
+	color_grey.color = Color.WEB_GRAY
+	color_grey.color_name = "Grey"
+	color_grey.color_energy_icon_texture_path = "external/sprites/colors/white_energy_icon.png"
+	Global.register_rod(color_grey)
 #endregion
 
 #region Keywords
@@ -2297,6 +2308,7 @@ func add_card_decorators() -> void:
 func add_cards() -> void:
 	add_card_basics()
 	add_cards_misc()
+	add_cards_trade()
 	add_cards_black()
 	add_cards_green()
 	add_cards_purple()
@@ -2497,7 +2509,6 @@ func add_cards_misc() -> void:
 	
 	Global.register_rod(card_sword)
 	
-	
 	var card_treasure: CardData = CardData.new("card_treasure")
 	card_treasure.card_name = "Treasure"
 	card_treasure.card_color_id = "color_{0}".format([color])
@@ -2639,7 +2650,7 @@ func add_cards_misc() -> void:
 	card_blueprint.card_play_destination = HandManager.EXHAUST_PILE
 	card_blueprint.card_requires_target = false
 	card_blueprint.card_values = {"ore_amount": -8}
-	card_spice.card_play_actions = [
+	card_blueprint.card_play_actions = [
 		{
 			Scripts.ACTION_VALIDATOR:
 			{
@@ -2657,7 +2668,34 @@ func add_cards_misc() -> void:
 		}]
 	
 	Global.register_rod(card_spice)
-	
+#endregion
+
+func add_cards_trade() -> void:
+#region Trade
+	var color: String = "grey"
+	var card_trade1: CardData = CardData.new("card_trade1")
+	card_trade1.card_name = "Trade1"
+	card_trade1.card_color_id = "color_{0}".format([color])
+	card_trade1.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_trade1.card_description = "Lose [ore_amount] Ore. Gain 4 Money."
+	card_trade1.card_type = CardData.CARD_TYPES.SKILL
+	card_trade1.card_energy_cost = 0
+	card_trade1.card_rarity = CardData.CARD_RARITIES.TRADE
+	card_trade1.card_requires_target = false
+	card_trade1.card_play_destination = HandManager.EXHAUST_PILE
+	card_trade1.card_values = {"ore_amount": 2,"money_amount":4}
+	card_trade1.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_ORE: 
+			{
+			}
+		},
+		{
+			Scripts.ACTION_ADD_MONEY:
+			{				
+			}
+		}]
+	Global.register_rod(card_trade1)
 #endregion
 func add_cards_purple() -> void:
 	var color: String = "purple"
@@ -5987,6 +6025,12 @@ func add_card_packs() -> void:
 	# all draftable cards, ignoring non-standard types and rarities
 	var card_pack_prismatic: CardPackData = CardPackData.new("card_pack_prismatic")
 	Global.register_rod(card_pack_prismatic)
+
+	var card_pack_grey: CardPackData = CardPackData.new("card_pack_grey")
+	card_pack_grey.card_pack_color_id = "color_grey"
+	card_pack_grey.exclude_non_standard_rarities = false
+	card_pack_grey.exclude_non_standard_types = false
+	Global.register_rod(card_pack_grey)
 	
 	var card_pack_black: CardPackData = CardPackData.new("card_pack_black")
 	card_pack_black.card_pack_color_id = "color_black"

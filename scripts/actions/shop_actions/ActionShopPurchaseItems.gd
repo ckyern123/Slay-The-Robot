@@ -20,18 +20,31 @@ func perform_action():
 			
 			# purchasing cards
 			if card_data != null:
-				var card_price: int = shop_data.get_shop_card_price(card_data)
-				if player_money >= card_price:
-					# generate action data for buying card
-					action_data.append({Scripts.ACTION_ADD_MONEY: {"money_amount": -card_price}})
-					action_data.append({Scripts.ACTION_ADD_CARDS_TO_DECK: {"picked_cards": [card_data]}})
-					action_data.append({Scripts.ACTION_DISCARD_CARDS: {"picked_cards": [card_data]}})
-					var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], action_data, null)
-					ActionHandler.add_actions(generated_actions)
-					# remove card from shop
-					shop_data.remove_shop_card(card_data)
-					Signals.card_purchased.emit(card_data)
-				return
+				if card_data.card_color_id != "color_grey":
+					var card_price: int = shop_data.get_shop_card_price(card_data)
+					if player_money >= card_price:
+						# generate action data for buying card
+						action_data.append({Scripts.ACTION_ADD_MONEY: {"money_amount": -card_price}})
+						action_data.append({Scripts.ACTION_ADD_CARDS_TO_DECK: {"picked_cards": [card_data]}})
+						action_data.append({Scripts.ACTION_DISCARD_CARDS: {"picked_cards": [card_data]}})
+						var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], action_data, null)
+						ActionHandler.add_actions(generated_actions)
+						# remove card from shop
+						shop_data.remove_shop_card(card_data)
+						Signals.card_purchased.emit(card_data)
+					return
+				else:
+					var card_price: int = shop_data.get_shop_trade_price(card_data)
+					if player_money >= card_price:
+						# generate action data for buying card
+						action_data.append({Scripts.ACTION_ADD_MONEY: {"money_amount": -card_price}})
+						action_data.append({Scripts.ACTION_ADD_CARDS_TO_DECK: {"picked_cards": [card_data]}})
+						action_data.append({Scripts.ACTION_DISCARD_CARDS: {"picked_cards": [card_data]}})
+						var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], action_data, null)
+						ActionHandler.add_actions(generated_actions)
+						# remove card from shop
+						shop_data.remove_shop_trade(card_data)
+						Signals.trade_purchased.emit(card_data)
 			
 			# purchasing artifacts
 			if artifact_id != "":

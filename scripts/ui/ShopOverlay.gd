@@ -18,6 +18,7 @@ func _ready():
 	Signals.player_killed.connect(_on_player_killed)
 	
 	Signals.card_purchased.connect(_on_card_purchased)
+	Signals.trade_purchased.connect(_on_trade_purchased)
 	Signals.artifact_purchased.connect(_on_artifact_purchased)
 	Signals.consumable_purchased.connect(_on_consumable_purchased)
 	
@@ -56,7 +57,31 @@ func populate_shop() -> void:
 			
 			# initialize button with payload
 			card_shop_button.init(purchase_card_action)
-		
+
+		### populate shop trade
+		var shop_trade: Array[CardData] = shop_data.shop_trade
+		for trade_data in shop_trade:
+			# create card button asset
+			var card_shop_button: BaseShopButton = Scenes.CARD_SHOP_BUTTON.instantiate()
+			trade_container.add_child(card_shop_button)
+			
+			# generate action payload
+			var card_price: int = shop_data.get_shop_card_price(trade_data)
+			
+			var purchase_card_action_data: Array[Dictionary] = [
+				{
+				Scripts.ACTION_SHOP_PURCHASE_ITEMS: {
+					"card_data": trade_data,
+					"money_amount": card_price,
+					}
+				}
+			]
+			
+			var purchase_card_action: BaseAction = ActionGenerator.create_actions(null, null, [], purchase_card_action_data, null)[0]
+			
+			# initialize button with payload
+			card_shop_button.init(purchase_card_action)
+			
 		### populate shop artifacts
 		var shop_artifacts: Array[ArtifactData] = shop_data.get_shop_artifact_options()
 		for artifact_data in shop_artifacts:
@@ -127,6 +152,9 @@ func _on_shop_opened():
 func _on_card_purchased(_card_data: CardData):
 	_repopulate_shop_after_actions_ended()
 
+func _on_trade_purchased(_card_data: CardData):
+	_repopulate_shop_after_actions_ended()
+	
 func _on_artifact_purchased(_artifact_data: ArtifactData):
 	_repopulate_shop_after_actions_ended()
 

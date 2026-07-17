@@ -17,6 +17,9 @@ func perform_action():
 		var shop_cards: Array[CardData] = action_interceptor_processor.get_shadowed_action_values("shop_cards", [] as Array[CardData])
 		var shop_card_prices: Array[int] = action_interceptor_processor.get_shadowed_action_values("shop_card_prices", [] as Array[int])
 		
+		var shop_trade: Array[CardData] = action_interceptor_processor.get_shadowed_action_values("shop_trade", [] as Array[CardData])
+		var shop_trade_prices: Array[int] = action_interceptor_processor.get_shadowed_action_values("shop_trade_prices", [] as Array[int])
+		
 		#var shop_artifact_ids: Array[String] = action_interceptor_processor.get_shadowed_action_values("shop_artifact_ids", [] as Array[String])
 		#var shop_artifact_prices: Array[int] = action_interceptor_processor.get_shadowed_action_values("shop_artifact_prices", [] as Array[int])
 
@@ -29,7 +32,10 @@ func perform_action():
 			var card_price: int = shop_card_prices[i]
 			shop_data.add_shop_card(card_data, card_price)
 		# add artifacts
-		#for i: int in len(shop_artifact_ids):
+		for i: int in len(shop_trade):
+			var trade_data: CardData = shop_trade[i]
+			var trade_price: int = shop_trade_prices[i]
+			shop_data.add_shop_trade(trade_data, trade_price)
 		#	var shop_artifact_id: String = shop_artifact_ids[i]
 		#	var shop_artifact_price: int = shop_artifact_prices[i]
 		#	shop_data.add_shop_artifact(shop_artifact_id, shop_artifact_price)

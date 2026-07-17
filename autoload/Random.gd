@@ -326,6 +326,16 @@ func get_shop_card_prices(cards: Array[CardData], rng: RandomNumberGenerator = G
 		returned_prices.append(card_price)
 	return returned_prices
 
+## Generates initial prices for given cards in a shop. This will be used in parallel to the cards.
+func get_shop_trade_prices(cards: Array[CardData], rng: RandomNumberGenerator = Global.player_data.get_player_rng("rng_shop")) -> Array[int]:
+	var returned_prices: Array[int] = []
+	for card_data: CardData in cards:
+		#var card_price_range_values: Array = ShopData.CARD_RARITY_TO_PRICE_RANGE.get(card_data.card_rarity, [0,1])
+		#var item_price_range: int = card_price_range_values[1] - card_price_range_values[0]
+		var card_price: int = 0
+		returned_prices.append(card_price)
+	return returned_prices
+	
 ## Generates initial prices for given artifacts in a shop. This will be used in parallel to the artifacts.
 func get_shop_artifact_prices(artifact_object_ids: Array[String], rng: RandomNumberGenerator = Global.player_data.get_player_rng("rng_shop")) -> Array[int]:
 	var returned_prices: Array[int] = []

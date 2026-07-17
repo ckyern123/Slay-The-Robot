@@ -11,24 +11,26 @@ class_name ShopData
 
 # items for purchase
 @export var shop_cards: Array[CardData] = [] # array of CardData prototype instances
+@export var shop_trade: Array[CardData] = [] 
 @export var shop_artifact_ids: Array[String] = []
 @export var shop_consumable_slot_to_consumable_object_id: Dictionary = {}	# maps a numerical slot index to a consumable id. 0 indexed
 
 # prices; parallel to the items
 @export var shop_card_prices: Array[int] = []
+@export var shop_trade_prices: Array[int] = []
 @export var shop_artifact_prices: Array[int] = []
 @export var shop_consumable_slot_to_consumable_price: Dictionary = {}
 
-const GENERATED_CARD_COUNT: int = 6
+const GENERATED_CARD_COUNT: int = 3
 const GENERATED_ARTIFACT_COUNT: int = 2
 const GENERATED_SHOP_SPECIFIC_ARTIFACT_COUNT: int = 1
 const GENERATED_CONSUMABLE_COUNT: int = 3
 
 # price ranges
 const CARD_RARITY_TO_PRICE_RANGE: Dictionary = {
-	CardData.CARD_RARITIES.COMMON: [50,80],
-	CardData.CARD_RARITIES.UNCOMMON: [85,115],
-	CardData.CARD_RARITIES.RARE: [120,140],
+	CardData.CARD_RARITIES.COMMON: [3,8],
+	CardData.CARD_RARITIES.UNCOMMON: [5,11],
+	CardData.CARD_RARITIES.RARE: [8,15],
 }
 
 const ARTIFACT_RARITY_TO_PRICE_RANGE: Dictionary = {
@@ -56,8 +58,11 @@ func visit_shop() -> void:
 		
 		### Generate Items
 		# generates shop cards
-		var generated_cards: Array[CardData] = Random.generate_rarity_weighted_card_draft(rng_shop, ShopData.GENERATED_CARD_COUNT, Random.CARD_DRAFT_TABLE_TYPES.SHOP, false)
-		
+		var generated_cards: Array[CardData] = Random.generate_rarity_weighted_card_draft(rng_shop, ShopData.GENERATED_CARD_COUNT - shop_cards.size(), Random.CARD_DRAFT_TABLE_TYPES.SHOP, false)
+		### Generate Items
+		# generates shop cards
+		var generated_trade: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_grey",ShopData.GENERATED_CARD_COUNT - shop_trade.size())
+				
 		# generate regular artifacts from player artifact pool
 		var artifact_ids: Array[String] = Global.player_data.get_next_shop_standard_artifacts_from_pool(GENERATED_ARTIFACT_COUNT, true)
 		
@@ -73,11 +78,12 @@ func visit_shop() -> void:
 		
 		### Generate Prices
 		var card_prices: Array[int] = Random.get_shop_card_prices(generated_cards, rng_shop)
+		var trade_prices: Array[int] = Random.get_shop_trade_prices(generated_trade, rng_shop)
 		var artifact_prices: Array[int] = Random.get_shop_artifact_prices(artifact_ids, rng_shop)
 		var consumable_prices: Array[int] = Random.get_shop_consumable_prices(consumable_ids, rng_shop)
 		
 		### Generate Population Action
-		ActionGenerator.generate_populate_shop_items(generated_cards, card_prices, artifact_ids, artifact_prices, consumable_ids, consumable_prices)
+		ActionGenerator.generate_populate_shop_items(generated_cards, card_prices, generated_trade, trade_prices, artifact_ids, artifact_prices, consumable_ids, consumable_prices)
 		
 		### First Time Visit
 		shop_is_visited = true # flags shop, ensuring this method can only be called once
@@ -116,6 +122,34 @@ func get_shop_card_price(card_data: CardData) -> int:
 		return shop_card_prices[shop_cards.find(card_data)]
 	return 0
 
+### Shop Trade ###
+
+func add_shop_trade(card_data: CardData, price: int = -1):
+	# adds a card and randomizes the price, if no price is given
+	if card_data != null:
+		#var card_price_range_values: Array = CARD_RARITY_TO_PRICE_RANGE.get(card_data.card_rarity)
+		#var item_price_range: int = card_price_range_values[1] - card_price_range_values[0]
+		var card_price: int = 0
+#		if price < 0:
+#			var rng_shop: RandomNumberGenerator = Global.player_data.get_player_rng("rng_shop")
+#			card_price = card_price_range_values[0] + (rng_shop.randi() % item_price_range)
+		
+		shop_trade_prices.append(card_price)
+		shop_trade.append(card_data)
+	else:
+		breakpoint
+
+func remove_shop_trade(card_data: CardData) -> void:
+	var index: int = shop_trade.find(card_data)
+	if index != -1:
+		shop_trade.remove_at(index)
+		shop_trade_prices.remove_at(index)
+
+func get_shop_trade_price(card_data: CardData) -> int:
+	if shop_trade.has(card_data):
+		return shop_trade_prices[shop_trade.find(card_data)]
+	return 0
+	
 ### Shop Artifacts ###
 
 func add_shop_artifact(artifact_id: String, price: int = -1) -> void:
