@@ -1616,7 +1616,7 @@ func add_characters() -> void:
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
 		"card_basic_food_green", "card_basic_food_green", "card_basic_food_green", "card_basic_food_green",
-		"card_youngmentor", "card_facetrecaster", "card_pearlemissary", "card_basic_ore_green",
+		"card_youngmentor", "card_facetrecaster", "card_pearlemissary", "card_joyfulsailor",
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -2677,13 +2677,13 @@ func add_cards_trade() -> void:
 	card_trade1.card_name = "Trade1"
 	card_trade1.card_color_id = "color_{0}".format([color])
 	card_trade1.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_trade1.card_description = "Lose [ore_amount] Ore. Gain 4 Money."
+	card_trade1.card_description = "Lose [ore_amount] Ore. Gain [money_amount] Money."
 	card_trade1.card_type = CardData.CARD_TYPES.SKILL
 	card_trade1.card_energy_cost = 0
 	card_trade1.card_rarity = CardData.CARD_RARITIES.TRADE
 	card_trade1.card_requires_target = false
 	card_trade1.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade1.card_values = {"ore_amount": 2,"money_amount":4}
+	card_trade1.card_values = {"ore_amount": randi_range(-2, -3),"money_amount":randi_range(4, 6)}
 	card_trade1.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_ORE: 
@@ -2696,6 +2696,54 @@ func add_cards_trade() -> void:
 			}
 		}]
 	Global.register_rod(card_trade1)
+	
+	var card_trade2: CardData = CardData.new("card_trade2")
+	card_trade2.card_name = "Trade2"
+	card_trade2.card_color_id = "color_{0}".format([color])
+	card_trade2.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_trade2.card_description = "Lose [food_amount] Food. Gain [money_amount] Money."
+	card_trade2.card_type = CardData.CARD_TYPES.SKILL
+	card_trade2.card_energy_cost = 0
+	card_trade2.card_rarity = CardData.CARD_RARITIES.TRADE
+	card_trade2.card_requires_target = false
+	card_trade2.card_play_destination = HandManager.EXHAUST_PILE
+	card_trade2.card_values = {"food_amount": randi_range(-4, -8),"money_amount":randi_range(9, 12)}
+	card_trade2.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_FOOD: 
+			{
+			}
+		},
+		{
+			Scripts.ACTION_ADD_MONEY:
+			{				
+			}
+		}]
+	Global.register_rod(card_trade2)
+	
+	var card_trade3: CardData = CardData.new("card_trade3")
+	card_trade3.card_name = "Trade3"
+	card_trade3.card_color_id = "color_{0}".format([color])
+	card_trade3.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_trade3.card_description = "Lose [insight_amount] Insight. Gain [money_amount] Money."
+	card_trade3.card_type = CardData.CARD_TYPES.SKILL
+	card_trade3.card_energy_cost = 0
+	card_trade3.card_rarity = CardData.CARD_RARITIES.TRADE
+	card_trade3.card_requires_target = false
+	card_trade3.card_play_destination = HandManager.EXHAUST_PILE
+	card_trade3.card_values = {"insight_amount": randi_range(-2, -3),"money_amount":randi_range(9, 15)}
+	card_trade3.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_INSIGHT: 
+			{
+			}
+		},
+		{
+			Scripts.ACTION_ADD_MONEY:
+			{				
+			}
+		}]
+	Global.register_rod(card_trade3)
 #endregion
 func add_cards_purple() -> void:
 	var color: String = "purple"
@@ -2805,6 +2853,7 @@ func add_cards_purple() -> void:
 		"action_data": [
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 				"card_influence": 1,
+				"pick_played_card": true
 			}},
 			]
 		}
@@ -5649,7 +5698,7 @@ func add_cards_green() -> void:
 	Global.register_rod(card_inspiredgossipmonger)
 	
 	var card_wizenedforager: CardData = CardData.new("card_wizenedforager")
-	card_wizenedforager.card_name = "Inspired Gossipmonger"
+	card_wizenedforager.card_name = "Wizened Forager"
 	card_wizenedforager.card_color_id = "color_{0}".format([color])
 	card_wizenedforager.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
 	card_wizenedforager.card_description = "Create 3 Grain in discard pile. When discarded, create [number_of_cards] Fish in discard pile instead."

@@ -3,7 +3,7 @@ extends Control
 
 @onready var card_container: HBoxContainer = $CardContainer
 @onready var artifact_container: VBoxContainer = $ArtifactContainer
-@onready var trade_container: VBoxContainer = $TradeContainer
+@onready var trade_container: HBoxContainer = $TradeContainer
 
 @onready var continue_button: Button = $ContinueButton
 

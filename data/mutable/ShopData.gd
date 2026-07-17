@@ -145,6 +145,10 @@ func remove_shop_trade(card_data: CardData) -> void:
 		shop_trade.remove_at(index)
 		shop_trade_prices.remove_at(index)
 
+func clear_shop_trade() -> void:
+	shop_trade.clear()
+	shop_trade_prices.clear()
+		
 func get_shop_trade_price(card_data: CardData) -> int:
 	if shop_trade.has(card_data):
 		return shop_trade_prices[shop_trade.find(card_data)]

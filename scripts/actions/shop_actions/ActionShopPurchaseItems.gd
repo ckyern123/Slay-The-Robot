@@ -44,6 +44,7 @@ func perform_action():
 						ActionHandler.add_actions(generated_actions)
 						# remove card from shop
 						shop_data.remove_shop_trade(card_data)
+						shop_data.clear_shop_trade()
 						Signals.trade_purchased.emit(card_data)
 			
 			# purchasing artifacts

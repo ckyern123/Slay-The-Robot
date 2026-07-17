@@ -196,8 +196,8 @@ func _on_combat_started(event_object_id: String):
 		DebugLogger.log_error("No event with id of {0} found to populate rewards".format(event_object_id))
 		return
 	
-	if event_data.event_has_combat_rewards:
-		ActionGenerator.generate_add_location_rewards()
+	#if event_data.event_has_combat_rewards:
+	#	ActionGenerator.generate_add_location_rewards()
 
 func _on_combat_ended():
 	if ActionHandler.actions_being_performed:

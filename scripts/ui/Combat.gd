@@ -213,7 +213,7 @@ func _on_enemy_death_animation_finished(_enemy: Enemy):
 		# wait for actions to finish and end combat
 		if ActionHandler.actions_being_performed:
 			await ActionHandler.actions_ended
-		end_combat()
+		#end_combat()
 
 func _on_combat_started(event_id: String):
 	var current_event: EventData = null
@@ -242,7 +242,7 @@ func _end_combat_check() -> bool:
 	var combat_is_ended: bool = false
 	#if not Global.are_remaining_enemies():
 	#	end_combat()
-	if HandManager.player_draw.size() >= 100:
+	if (HandManager.player_draw.size() + HandManager.player_hand.size() + HandManager.player_discard.size())>= 100:
 		end_combat()
 		combat_is_ended = true
 	if Global.player_data.player_food < 0:
@@ -472,6 +472,9 @@ func _on_player_turn_started():
 		var shop_data: ShopData = Global.get_shop_at_player_location()
 		shop_data.shop_is_visited = false
 		shop_overlay.populate_shop()
+		
+		var current_event = Global.get_player_event_data()
+		enemy_container.populate_enemies_from_event(current_event)
 	# unlock and update hand
 	HandManager.set_disable_hand(false)
 	hand.update_hand_card_display()
