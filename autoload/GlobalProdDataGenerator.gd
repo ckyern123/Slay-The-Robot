@@ -1951,7 +1951,7 @@ func add_enemies() -> void:
 	enemy_1.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	enemy_1.add_intent_state([
-		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1,"intent_attack_1":1}),
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
 	enemy_1.enemy_actions_on_death = [{Scripts.ACTION_ADD_MONEY: {"money_amount":5}}]
 	# an attack that hits harder on higher difficulties
@@ -1973,7 +1973,434 @@ func add_enemies() -> void:
 	)
 
 	Global.register_rod(enemy_1)
-	#
+	
+#region enemies plains
+	# enemy that negates the first damage instance against it
+	var field_patch: EnemyData = EnemyData.new("field_patch")
+	field_patch.enemy_name = "Field Patch"
+	field_patch.add_health_bounds(5, 7)
+	field_patch.add_health_bounds(8, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	field_patch.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	field_patch.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	field_patch.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_grain",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	field_patch.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _field_patch_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(field_patch)
+	
+	# enemy that negates the first damage instance against it
+	var mound: EnemyData = EnemyData.new("mound")
+	mound.enemy_name = "Mound"
+	mound.add_health_bounds(12, 15)
+	mound.add_health_bounds(16, 18, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	mound.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	mound.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	mound.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_grain",
+		"number_of_cards":3,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	mound.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _mound_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(mound)
+	
+	# enemy that negates the first damage instance against it
+	var rock: EnemyData = EnemyData.new("rock")
+	rock.enemy_name = "Rock"
+	rock.add_health_bounds(5, 7)
+	rock.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	rock.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	rock.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	rock.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_rock",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	rock.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _rock_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(rock)
+	
+	# enemy that negates the first damage instance against it
+	var pond: EnemyData = EnemyData.new("pond")
+	pond.enemy_name = "Pond"
+	pond.add_health_bounds(5, 7)
+	pond.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	pond.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	pond.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	pond.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_fish",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	pond.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _pond_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(pond)
+	
+#endregion
+
+#region enemies desert
+	# enemy that negates the first damage instance against it
+	var boulder: EnemyData = EnemyData.new("boulder")
+	boulder.enemy_name = "Boulder"
+	boulder.add_health_bounds(5, 7)
+	boulder.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	boulder.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	boulder.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	boulder.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_rock",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	boulder.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _boulder_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(boulder)
+	
+	# enemy that negates the first damage instance against it
+	var bigboulder: EnemyData = EnemyData.new("bigboulder")
+	bigboulder.enemy_name = "Big Boulder"
+	bigboulder.add_health_bounds(9, 11)
+	bigboulder.add_health_bounds(14, 19, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	bigboulder.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	bigboulder.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	bigboulder.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_rock",
+		"number_of_cards":4,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	bigboulder.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _bigboulder_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(bigboulder)
+#endregion
+
+#region enemies coast
+	# enemy that negates the first damage instance against it
+	var shore: EnemyData = EnemyData.new("shore")
+	shore.enemy_name = "Shore"
+	shore.add_health_bounds(5, 7)
+	shore.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	shore.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	shore.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	shore.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_fish",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	shore.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _shore_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(shore)
+
+	# enemy that negates the first damage instance against it
+	var cave: EnemyData = EnemyData.new("cave")
+	cave.enemy_name = "Cave"
+	cave.add_health_bounds(25, 32)
+	cave.add_health_bounds(35, 40, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	cave.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	cave.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	cave.enemy_actions_on_death = [{Scripts.ACTION_ADD_ARTIFACTS_FROM_POOL:
+		{
+		"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
+		"artifact_count": 1,
+		"artifact_rarities": [ArtifactData.ARTIFACT_RARITIES.COMMON]
+		}
+		}]
+	# an attack that hits harder on higher difficulties
+	cave.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _cave_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(cave)
+
+	# enemy that negates the first damage instance against it
+	var sandbed: EnemyData = EnemyData.new("sandbed")
+	sandbed.enemy_name = "Sandbed"
+	sandbed.add_health_bounds(15,17)
+	sandbed.add_health_bounds(19, 21, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	sandbed.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	sandbed.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	sandbed.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_treasure",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	var sandbed_status_actions: Array[Dictionary] = [{Scripts.ACTION_ADD_HEALTH: {"health_amount":2, "target_override":BaseAction.TARGET_OVERRIDES.PARENT}}]
+	# an attack that hits harder on higher difficulties
+	sandbed.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},sandbed_status_actions),
+	])
+	
+	var _sandbed_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(sandbed)
+#endregion
+
+#region enemies forest
+	# enemy that negates the first damage instance against it
+	var forestfloor: EnemyData = EnemyData.new("forestfloor")
+	forestfloor.enemy_name = "Forest Floor"
+	forestfloor.add_health_bounds(5, 7)
+	forestfloor.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	forestfloor.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	forestfloor.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	forestfloor.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_spice",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	forestfloor.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _forestfloor_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(forestfloor)
+	
+		# enemy that negates the first damage instance against it
+	var den: EnemyData = EnemyData.new("den")
+	den.enemy_name = "Den"
+	den.add_health_bounds(25, 27)
+	den.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	den.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	var den_status_actions: Array[Dictionary] = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount": 1,
+		"max_card_amount": 1,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+		"validator_data": [
+			{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+		],
+		"action_data": [
+			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+				"card_influence": -1,
+				"pick_played_card": true
+			}},
+			]
+		}
+	}]
+	
+	den.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	den.enemy_actions_on_death = [{	Scripts.ACTION_GAIN_MONEY: {"money_amount": 8}}]
+	# an attack that hits harder on higher difficulties
+	den.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},den_status_actions),
+	])
+		
+	var _den_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(den)
+	
+		# enemy that negates the first damage instance against it
+	var hideout: EnemyData = EnemyData.new("hideout")
+	hideout.enemy_name = "hideout"
+	hideout.add_health_bounds(25, 27)
+	hideout.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	hideout.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	var hideout_status_actions: Array[Dictionary] = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount": 2,
+		"max_card_amount": 2,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+		"validator_data": [
+			{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+		],
+		"action_data": [
+			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+				"card_influence": -1,
+				"pick_played_card": true
+			}},
+			]
+		}
+	}]
+	
+	hideout.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	hideout.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_spice",
+		"number_of_cards":3,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	hideout.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},hideout_status_actions),
+	])
+		
+	var _hideout_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(hideout)
+#endregion
+
+#region enemies swamp
+	# enemy that negates the first damage instance against it
+	var dryfield: EnemyData = EnemyData.new("dryfield")
+	dryfield.enemy_name = "Dry Field"
+	dryfield.add_health_bounds(5, 7)
+	dryfield.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	dryfield.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	dryfield.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	dryfield.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_grain",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	dryfield.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _dryfield_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(dryfield)
+	
+		# enemy that negates the first damage instance against it
+	var hut: EnemyData = EnemyData.new("hut")
+	hut.enemy_name = "Hut"
+	hut.add_health_bounds(15, 17)
+	hut.add_health_bounds(19, 21, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	hut.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	hut.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
+		])
+	hut.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_spice",
+		"number_of_cards":2,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
+	# an attack that hits harder on higher difficulties
+	hut.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _hut_anim: AnimationData = enemy_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_small.png"]
+	)
+
+	Global.register_rod(hut)
+#endregion
 	## enemy that negates the first debuff against it
 	#var enemy_2: EnemyData = EnemyData.new("enemy_2")
 	#enemy_2.enemy_name = "Blue Enemy"
