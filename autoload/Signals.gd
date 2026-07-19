@@ -84,7 +84,7 @@ signal player_money_changed(money_delta: int)
 signal player_health_changed(money_delta: int)
 signal player_food_changed(food_delta: int)
 signal player_ore_changed(ore_delta: int)
-signal player_influence_changed(influence_delta: int)
+signal player_size_changed(influence_delta: int)
 signal player_insight_changed(insight_delta: int)
 
 signal player_artifacts_changed # used for updating the ui

@@ -22,6 +22,36 @@ class_name ActData
 ## The event pool for this act's hard combats. Used for generation of locations in this act.
 @export var act_hard_combat_event_pool_object_id: String = ""
 
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_plains_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_desert_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_coast_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_swamp_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_forest_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_plains_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_desert_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_coast_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_swamp_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_forest_event_pool_object_id: String = ""
+
 ## The event pool for non combat events. Used for generation of locations in this act.
 @export var act_non_combat_event_pool_object_id: String = ""
 

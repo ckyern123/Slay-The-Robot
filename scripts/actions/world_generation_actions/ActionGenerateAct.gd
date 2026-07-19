@@ -23,8 +23,8 @@ func perform_action() -> void:
 		Global.player_data.player_act = act_number
 		
 		### parameters of grid
-		var floors_per_act: int = action_interceptor_processor.get_shadowed_action_values("floors_per_act", 2)
-		var locations_per_floor: int = action_interceptor_processor.get_shadowed_action_values("locations_per_floor", 1)
+		var floors_per_act: int = action_interceptor_processor.get_shadowed_action_values("floors_per_act", 10)
+		var locations_per_floor: int = action_interceptor_processor.get_shadowed_action_values("locations_per_floor", 3)
 		var location_obfuscation_rate: float = action_interceptor_processor.get_shadowed_action_values("location_obfuscation_rate", 0) # how often locations will be obfuscated
 		var location_non_combat_event_rate: float = action_interceptor_processor.get_shadowed_action_values("location_non_combat_event_rate", 0) # how often locations will be a non combat event
 		
@@ -65,7 +65,7 @@ func perform_action() -> void:
 			# assign a type
 			starting_location.location_type = LocationData.LOCATION_TYPES.STARTING
 			# assign a random event
-			starting_location.location_event_object_id = "event_act_1_easy_combat_1"
+			starting_location.location_event_object_id = "event_act_1_easy_plains_1"
 			# add node to layer
 			starting_floor.append(starting_location)
 			floors.append(starting_floor)
@@ -104,39 +104,62 @@ func perform_action() -> void:
 				location.location_position = location_position
 				location.location_floor = floor_counter
 				
-				if k == 4:
-					location.location_type = LocationData.LOCATION_TYPES.MINIBOSS
-					location.location_event_pool_object_id = act_data.act_miniboss_event_pool_object_id
-				elif k == 6:
-					location.location_type = LocationData.LOCATION_TYPES.REST_SITE
-					#location.location_event_object_id = "event_act_1_easy_combat_1"
-				elif k == 5:
-					location.location_type = LocationData.LOCATION_TYPES.TREASURE
-					# location.location_event_object_id = "event_act_1_easy_combat_1"
-					location.location_event_pool_object_id = act_data.act_easy_combat_event_pool_object_id
-				elif k == 3:
-					location.location_type = LocationData.LOCATION_TYPES.SHOP
-				elif k < 3:
-					# easy pool
-					location.location_type = LocationData.LOCATION_TYPES.COMBAT
-					location.location_event_pool_object_id = act_data.act_easy_combat_event_pool_object_id
-				else:
+				#if k == 4:
+					#location.location_type = LocationData.LOCATION_TYPES.MINIBOSS
+					#location.location_event_pool_object_id = act_data.act_miniboss_event_pool_object_id
+				#elif k == 6:
+					#location.location_type = LocationData.LOCATION_TYPES.REST_SITE
+					##location.location_event_object_id = "event_act_1_easy_combat_1"
+				#elif k == 5:
+					#location.location_type = LocationData.LOCATION_TYPES.TREASURE
+					## location.location_event_object_id = "event_act_1_easy_combat_1"
+					#location.location_event_pool_object_id = act_data.act_easy_combat_event_pool_object_id
+				#elif k == 3:
+					#location.location_type = LocationData.LOCATION_TYPES.SHOP
+				#elif k < 3:
+					## easy pool
+					#location.location_type = LocationData.LOCATION_TYPES.COMBAT
+					#location.location_event_pool_object_id = act_data.act_easy_combat_event_pool_object_id
+				#else:
 					# hard pool
-					location.location_type = LocationData.LOCATION_TYPES.COMBAT
-					location.location_event_pool_object_id = act_data.act_hard_combat_event_pool_object_id
-				
-				# randomly obfuscate some location types
-				if [LocationData.LOCATION_TYPES.TREASURE, LocationData.LOCATION_TYPES.COMBAT].has(location.location_type):
-					if rng_world_generation.randf() < location_obfuscation_rate:
-						location.location_obfuscated = true
-				
-				# randomly convert some to dialogue events
-				if [LocationData.LOCATION_TYPES.COMBAT].has(location.location_type):
-					if rng_world_generation.randf() < location_non_combat_event_rate:
-						location.location_obfuscated = true
-						location.location_type = LocationData.LOCATION_TYPES.EVENT
-						location.location_event_pool_object_id = act_data.act_non_combat_event_pool_object_id
-				
+				var chance_array: Array = LocationData.LOCATION_TYPES.values()
+				chance_array.pop_back()
+				location.location_type = chance_array.pick_random()					
+				if k < 3:
+					if location.location_type == LocationData.LOCATION_TYPES.PLAINS:
+						location.location_event_pool_object_id = act_data.act_easy_plains_event_pool_object_id
+					elif location.location_type == LocationData.LOCATION_TYPES.FOREST:
+						location.location_event_pool_object_id = act_data.act_easy_forest_event_pool_object_id
+					elif location.location_type == LocationData.LOCATION_TYPES.COAST:
+						location.location_event_pool_object_id = act_data.act_easy_coast_event_pool_object_id
+					elif location.location_type == LocationData.LOCATION_TYPES.SWAMP:
+						location.location_event_pool_object_id = act_data.act_easy_swamp_event_pool_object_id
+					elif location.location_type == LocationData.LOCATION_TYPES.DESERT:
+						location.location_event_pool_object_id = act_data.act_easy_desert_event_pool_object_id
+				else:
+					if location.location_type == LocationData.LOCATION_TYPES.PLAINS:
+						location.location_event_pool_object_id = act_data.act_hard_plains_event_pool_object_id
+					elif location.location_type == LocationData.LOCATION_TYPES.FOREST:
+						location.location_event_pool_object_id = act_data.act_hard_forest_event_pool_object_id
+					elif location.location_type == LocationData.LOCATION_TYPES.COAST:
+						location.location_event_pool_object_id = act_data.act_hard_coast_event_pool_object_id
+					elif location.location_type == LocationData.LOCATION_TYPES.SWAMP:
+						location.location_event_pool_object_id = act_data.act_hard_swamp_event_pool_object_id
+					elif location.location_type == LocationData.LOCATION_TYPES.DESERT:
+						location.location_event_pool_object_id = act_data.act_hard_desert_event_pool_object_id
+
+				## randomly obfuscate some location types
+				#if [LocationData.LOCATION_TYPES.TREASURE, LocationData.LOCATION_TYPES.COMBAT].has(location.location_type):
+					#if rng_world_generation.randf() < location_obfuscation_rate:
+						#location.location_obfuscated = true
+				#
+				## randomly convert some to dialogue events
+				#if [LocationData.LOCATION_TYPES.COMBAT].has(location.location_type):
+					#if rng_world_generation.randf() < location_non_combat_event_rate:
+						#location.location_obfuscated = true
+						#location.location_type = LocationData.LOCATION_TYPES.EVENT
+						#location.location_event_pool_object_id = act_data.act_non_combat_event_pool_object_id
+				#
 				# add node to floor
 				current_floor.append(location)
 				
@@ -181,7 +204,7 @@ func perform_action() -> void:
 		boss_location.location_position = location_position
 		boss_location.location_floor = floor_counter
 		# assign a type
-		boss_location.location_type = LocationData.LOCATION_TYPES.BOSS
+		boss_location.location_type = LocationData.LOCATION_TYPES.PLAINS
 		# assign a boss pool
 		boss_location.location_event_pool_object_id = act_data.act_boss_event_pool_object_id
 		

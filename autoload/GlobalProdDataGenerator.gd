@@ -1125,46 +1125,330 @@ func add_acts() -> void:
 	act_1.act_name = "Act 1"
 	act_1.act_easy_combat_event_pool_object_id = "event_pool_act_1_easy"
 	act_1.act_hard_combat_event_pool_object_id = "event_pool_act_1_hard"
+	act_1.act_easy_plains_event_pool_object_id = "event_pool_act_1_plains_easy"
+	act_1.act_easy_forest_event_pool_object_id = "event_pool_act_1_forest_easy"
+	act_1.act_easy_desert_event_pool_object_id = "event_pool_act_1_desert_easy"
+	act_1.act_easy_coast_event_pool_object_id = "event_pool_act_1_coast_easy"
+	act_1.act_easy_swamp_event_pool_object_id = "event_pool_act_1_swamp_easy"
+	act_1.act_hard_plains_event_pool_object_id = "event_pool_act_1_plains_hard"
+	act_1.act_hard_forest_event_pool_object_id = "event_pool_act_1_forest_hard"
+	act_1.act_hard_desert_event_pool_object_id = "event_pool_act_1_desert_hard"
+	act_1.act_hard_coast_event_pool_object_id = "event_pool_act_1_coast_hard"
+	act_1.act_hard_swamp_event_pool_object_id = "event_pool_act_1_swamp_hard"
 	Global.register_rod(act_1)
-
 #endregion
 	
 #region Events and Event Pools
 func add_events() -> void:
+	## Plains
+	# has an equal chance of spawning 1 of 3 enemies in each slot
+	var event_act_1_easy_plains_1: EventData = EventData.new("event_act_1_easy_plains_1")
+	event_act_1_easy_plains_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_plains_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_plains_1)
+	
+	var event_act_1_easy_plains_2: EventData = EventData.new("event_act_1_easy_plains_2")
+	event_act_1_easy_plains_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_plains_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_plains_2)
+	
+	var event_act_1_easy_plains_3: EventData = EventData.new("event_act_1_easy_plains_3")
+	event_act_1_easy_plains_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_plains_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_plains_3)
+	
+	var event_act_1_hard_plains_1: EventData = EventData.new("event_act_1_hard_plains_1")
+	event_act_1_hard_plains_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_plains_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_plains_1)
+	
+	var event_act_1_hard_plains_2: EventData = EventData.new("event_act_1_hard_plains_2")
+	event_act_1_hard_plains_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_plains_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_plains_2)
+	
+	var event_act_1_hard_plains_3: EventData = EventData.new("event_act_1_hard_plains_3")
+	event_act_1_hard_plains_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_plains_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_plains_3)
+	
+		## Act 1 Combat
+	# has an equal chance of spawning 1 of 3 enemies in each slot
+	var event_act_1_easy_desert_1: EventData = EventData.new("event_act_1_easy_desert_1")
+	event_act_1_easy_desert_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_desert_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_plains_1)
+	
+	var event_act_1_easy_desert_2: EventData = EventData.new("event_act_1_easy_desert_2")
+	event_act_1_easy_desert_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_desert_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_desert_2)
+	
+	var event_act_1_easy_desert_3: EventData = EventData.new("event_act_1_easy_desert_3")
+	event_act_1_easy_desert_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_desert_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_desert_3)
+	
+	var event_act_1_hard_desert_1: EventData = EventData.new("event_act_1_hard_desert_1")
+	event_act_1_hard_desert_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_desert_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_desert_1)
+	
+	var event_act_1_hard_desert_2: EventData = EventData.new("event_act_1_hard_desert_2")
+	event_act_1_hard_desert_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_desert_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_plains_2)
+	
+	var event_act_1_hard_desert_3: EventData = EventData.new("event_act_1_hard_desert_3")
+	event_act_1_hard_desert_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_desert_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_desert_3)
+	
 	## Act 1 Combat
 	# has an equal chance of spawning 1 of 3 enemies in each slot
-	var event_act_1_easy_combat_1: EventData = EventData.new("event_act_1_easy_combat_1")
-	event_act_1_easy_combat_1.event_death_message_bbcode = "Died to easy event"
-	event_act_1_easy_combat_1.event_weighted_enemy_object_ids = [
+	var event_act_1_easy_forest_1: EventData = EventData.new("event_act_1_easy_forest_1")
+	event_act_1_easy_forest_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_forest_1.event_weighted_enemy_object_ids = [
 		{"enemy_1": 1},
 		{"enemy_1": 1},
 		{"enemy_1": 1},
 		]
 	
-	Global.register_rod(event_act_1_easy_combat_1)
+	Global.register_rod(event_act_1_easy_forest_1)
 	
-	var event_act_1_easy_combat_2: EventData = EventData.new("event_act_1_easy_combat_2")
-	event_act_1_easy_combat_2.event_weighted_enemy_object_ids = [
-		{"enemy_1": 1}
-		]
-	
-	Global.register_rod(event_act_1_easy_combat_2)
-	
-	var event_act_1_easy_combat_3: EventData = EventData.new("event_act_1_easy_combat_3")
-	event_act_1_easy_combat_3.event_weighted_enemy_object_ids = [
+	var event_act_1_easy_forest_2: EventData = EventData.new("event_act_1_easy_forest_2")
+	event_act_1_easy_forest_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_forest_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
 		{"enemy_1": 1},
 		{"enemy_1": 1},
 		]
 	
-	Global.register_rod(event_act_1_easy_combat_3)
+	Global.register_rod(event_act_1_easy_forest_2)
 	
-	var event_act_1_easy_combat_4: EventData = EventData.new("event_act_1_easy_combat_4")
-	event_act_1_easy_combat_4.event_weighted_enemy_object_ids = [
+	var event_act_1_easy_forest_3: EventData = EventData.new("event_act_1_easy_forest_3")
+	event_act_1_easy_forest_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_forest_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
 		{"enemy_1": 1},
 		]
 	
-	Global.register_rod(event_act_1_easy_combat_4)
+	Global.register_rod(event_act_1_easy_forest_3)
 	
+	var event_act_1_hard_forest_1: EventData = EventData.new("event_act_1_hard_forest_1")
+	event_act_1_hard_forest_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_forest_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_forest_1)
+	
+	var event_act_1_hard_forest_2: EventData = EventData.new("event_act_1_hard_forest_2")
+	event_act_1_hard_forest_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_forest_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_forest_2)
+	
+	var event_act_1_hard_forest_3: EventData = EventData.new("event_act_1_hard_forest_3")
+	event_act_1_hard_forest_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_forest_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_forest_3)
+	
+	## Act 1 Combat
+	# has an equal chance of spawning 1 of 3 enemies in each slot
+	var event_act_1_easy_coast_1: EventData = EventData.new("event_act_1_easy_coast_1")
+	event_act_1_easy_coast_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_coast_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_coast_1)
+	
+	var event_act_1_easy_coast_2: EventData = EventData.new("event_act_1_easy_coast_2")
+	event_act_1_easy_coast_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_coast_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_coast_2)
+	
+	var event_act_1_easy_coast_3: EventData = EventData.new("event_act_1_easy_coast_3")
+	event_act_1_easy_coast_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_coast_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_coast_3)
+	
+	var event_act_1_hard_coast_1: EventData = EventData.new("event_act_1_hard_coast_1")
+	event_act_1_hard_coast_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_coast_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_coast_1)
+	
+	var event_act_1_hard_coast_2: EventData = EventData.new("event_act_1_hard_coast_2")
+	event_act_1_hard_coast_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_coast_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_coast_2)
+	
+	var event_act_1_hard_coast_3: EventData = EventData.new("event_act_1_hard_coast_3")
+	event_act_1_hard_coast_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_coast_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_coast_3)
+	
+	## Act 1 Combat
+	# has an equal chance of spawning 1 of 3 enemies in each slot
+	var event_act_1_easy_swamp_1: EventData = EventData.new("event_act_1_easy_swamp_1")
+	event_act_1_easy_swamp_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_swamp_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_swamp_1)
+	
+	var event_act_1_easy_swamp_2: EventData = EventData.new("event_act_1_easy_swamp_2")
+	event_act_1_easy_swamp_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_swamp_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_swamp_2)
+	
+	var event_act_1_easy_swamp_3: EventData = EventData.new("event_act_1_easy_swamp_3")
+	event_act_1_easy_swamp_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_easy_swamp_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_easy_swamp_3)
+	
+	var event_act_1_hard_swamp_1: EventData = EventData.new("event_act_1_hard_swamp_1")
+	event_act_1_hard_swamp_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_swamp_1.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_swamp_1)
+	
+	var event_act_1_hard_swamp_2: EventData = EventData.new("event_act_1_hard_swamp_2")
+	event_act_1_hard_swamp_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_swamp_2.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_swamp_2)
+	
+	var event_act_1_hard_swamp_3: EventData = EventData.new("event_act_1_hard_swamp_3")
+	event_act_1_hard_swamp_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_hard_swamp_3.event_weighted_enemy_object_ids = [
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		{"enemy_1": 1},
+		]
+	
+	Global.register_rod(event_act_1_hard_swamp_3)
 	
 	## Act 1 Dialogue Events
 	# see add_test_dialogue()
@@ -1177,41 +1461,110 @@ func add_events() -> void:
 	
 	### Event Pools
 	# act 1 easy pool
-	var event_pool_act_1_easy: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
-	event_pool_act_1_easy.add_events_to_pool(
-		event_act_1_easy_combat_1,
+	var event_pool_act_1_easy_plains: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	event_pool_act_1_easy_plains.add_events_to_pool(
+		event_act_1_easy_plains_1,
 		[
-		event_act_1_easy_combat_1,
-		event_act_1_easy_combat_2,
-		event_act_1_easy_combat_3,
-		event_act_1_easy_combat_4,
+		event_act_1_easy_plains_1,
+		event_act_1_easy_plains_2,
+		event_act_1_easy_plains_3,
 		])
+	Global.register_rod(event_pool_act_1_easy_plains)
 	
-	Global.register_rod(event_pool_act_1_easy)
-	
-	# act 1 hard pool
-	var event_pool_act_1_hard: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
-	event_pool_act_1_hard.add_events_to_pool(
-		event_act_1_easy_combat_1,
+	var event_pool_act_1_hard_plains: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	event_pool_act_1_hard_plains.add_events_to_pool(
+		event_act_1_hard_plains_1,
 		[
-		event_act_1_easy_combat_1,
-		event_act_1_easy_combat_2,
-		event_act_1_easy_combat_3,
-		event_act_1_easy_combat_4,
+		event_act_1_hard_plains_1,
+		event_act_1_hard_plains_2,
+		event_act_1_hard_plains_3,
 		])
+		
+	Global.register_rod(event_pool_act_1_hard_plains)
 	
-	Global.register_rod(event_pool_act_1_hard)
-	
-	# act 1 dialogue event pool
-	var event_pool_act_1_dialogue: EventPoolData = EventPoolData.new("event_pool_act_1_dialogue")
-	event_pool_act_1_dialogue.add_events_to_pool(
-		event_pick_something,
+	var event_pool_act_1_easy_forest: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	event_pool_act_1_easy_forest.add_events_to_pool(
+		event_act_1_easy_forest_1,
 		[
-		event_pick_something,
+		event_act_1_easy_forest_1,
+		event_act_1_easy_forest_2,
+		event_act_1_easy_forest_3,
 		])
+	Global.register_rod(event_pool_act_1_easy_forest)
 	
-	Global.register_rod(event_pool_act_1_dialogue)
+	var event_pool_act_1_hard_forest: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	event_pool_act_1_hard_forest.add_events_to_pool(
+		event_act_1_hard_forest_1,
+		[
+		event_act_1_hard_forest_1,
+		event_act_1_hard_forest_2,
+		event_act_1_hard_forest_3,
+		])
+		
+	Global.register_rod(event_pool_act_1_hard_forest)
+	
+	var event_pool_act_1_easy_desert: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	event_pool_act_1_easy_desert.add_events_to_pool(
+		event_act_1_easy_desert_1,
+		[
+		event_act_1_easy_desert_1,
+		event_act_1_easy_desert_2,
+		event_act_1_easy_desert_3,
+		])
+	Global.register_rod(event_pool_act_1_easy_desert)
+	
+	var event_pool_act_1_hard_desert: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	event_pool_act_1_hard_desert.add_events_to_pool(
+		event_act_1_hard_desert_1,
+		[
+		event_act_1_hard_desert_1,
+		event_act_1_hard_desert_2,
+		event_act_1_hard_desert_3,
+		])
+		
+	Global.register_rod(event_pool_act_1_hard_desert)
 
+	var event_pool_act_1_easy_coast: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	event_pool_act_1_easy_coast.add_events_to_pool(
+		event_act_1_easy_coast_1,
+		[
+		event_act_1_easy_coast_1,
+		event_act_1_easy_coast_2,
+		event_act_1_easy_coast_3,
+		])
+	Global.register_rod(event_pool_act_1_easy_coast)
+	
+	var event_pool_act_1_hard_coast: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	event_pool_act_1_hard_coast.add_events_to_pool(
+		event_act_1_hard_coast_1,
+		[
+		event_act_1_hard_coast_1,
+		event_act_1_hard_coast_2,
+		event_act_1_hard_coast_3,
+		])
+		
+	Global.register_rod(event_pool_act_1_hard_coast)
+
+	var event_pool_act_1_easy_swamp: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	event_pool_act_1_easy_swamp.add_events_to_pool(
+		event_act_1_easy_swamp_1,
+		[
+		event_act_1_easy_swamp_1,
+		event_act_1_easy_swamp_2,
+		event_act_1_easy_swamp_3,
+		])
+	Global.register_rod(event_pool_act_1_easy_swamp)
+	
+	var event_pool_act_1_hard_swamp: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	event_pool_act_1_hard_swamp.add_events_to_pool(
+		event_act_1_hard_swamp_1,
+		[
+		event_act_1_hard_swamp_1,
+		event_act_1_hard_swamp_2,
+		event_act_1_hard_swamp_3,
+		])
+		
+	Global.register_rod(event_pool_act_1_hard_swamp)
 #endregion
 
 #region Dialogue

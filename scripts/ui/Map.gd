@@ -52,8 +52,8 @@ func populate_locations(locations: Array[LocationData] = Global.get_all_act_loca
 				map_location.flash_location()
 				current_map_location = map_location
 		
-		#if location_data == Global.get_player_location_data():
-			#current_map_location = map_location
+		if location_data == Global.get_player_location_data():
+			current_map_location = map_location
 	
 	# set the size of the container to make scrolling posible
 	location_container.custom_minimum_size.y = max_y + MAP_Y_MARGIN
@@ -75,7 +75,7 @@ func clear_locations() -> void:
 
 func show_map():
 	populate_locations()
-	#visible = true
+	visible = true
 
 func hide_map():
 	visible = false

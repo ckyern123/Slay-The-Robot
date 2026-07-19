@@ -335,29 +335,24 @@ func generate_location_music_action() -> void:
 				return
 	# otherwise use location type
 	match location_data.location_type:
-		LocationData.LOCATION_TYPES.STARTING, LocationData.LOCATION_TYPES.TREASURE:
+		LocationData.LOCATION_TYPES.STARTING:
 			ActionGenerator.generate_music_action(FileLoader.MUSIC_DEFAULT_AMBIENT_AUDIO_PATH)
-		LocationData.LOCATION_TYPES.REST_SITE:
+		LocationData.LOCATION_TYPES.PLAINS:
 			ActionGenerator.generate_music_action(FileLoader.MUSIC_REST_SITE_AUDIO_PATH)
-		LocationData.LOCATION_TYPES.EVENT:
+		LocationData.LOCATION_TYPES.COAST:
 			if act_data.act_music_ambient_file_path != "":
 				ActionGenerator.generate_music_action(act_data.act_music_ambient_file_path)
 			else:
 				ActionGenerator.generate_music_action(FileLoader.MUSIC_DEFAULT_AMBIENT_AUDIO_PATH)
-		LocationData.LOCATION_TYPES.SHOP:
+		LocationData.LOCATION_TYPES.FOREST:
 			ActionGenerator.generate_music_action(FileLoader.MUSIC_SHOP_AUDIO_PATH)
-		LocationData.LOCATION_TYPES.COMBAT:
+		LocationData.LOCATION_TYPES.DESERT:
 			if act_data.act_music_combat_file_path != "":
 				ActionGenerator.generate_music_action(act_data.act_music_combat_file_path)
 			else:
 				ActionGenerator.generate_music_action(FileLoader.MUSIC_DEFAULT_COMBAT_AUDIO_PATH)
-		LocationData.LOCATION_TYPES.MINIBOSS:
+		LocationData.LOCATION_TYPES.SWAMP:
 			if act_data.act_music_miniboss_file_path != "":
 				ActionGenerator.generate_music_action(act_data.act_music_miniboss_file_path)
 			else:
 				ActionGenerator.generate_music_action(FileLoader.MUSIC_DEFAULT_MINIBOSS_AUDIO_PATH)
-		LocationData.LOCATION_TYPES.BOSS:
-			if act_data.act_music_boss_file_path != "":
-				ActionGenerator.generate_music_action(act_data.act_music_boss_file_path)
-			else:
-				ActionGenerator.generate_music_action(FileLoader.MUSIC_DEFAULT_BOSS_AUDIO_PATH)
