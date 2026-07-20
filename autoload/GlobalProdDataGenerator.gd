@@ -1789,7 +1789,7 @@ func add_action_interceptors() -> void:
 	# duplicates incoming attack card plays
 	var interceptor_duplicate_attacks: ActionInterceptorData = ActionInterceptorData.new("interceptor_duplicate_attacks")
 	interceptor_duplicate_attacks.action_interceptor_priority = 10000
-	interceptor_duplicate_attacks.action_interceptor_modifies_parent = truee
+	interceptor_duplicate_attacks.action_interceptor_modifies_parent = true
 	interceptor_duplicate_attacks.action_interceptor_script_path = Scripts.INTERCEPTOR_DUPLICATE_ATTACKS
 	interceptor_duplicate_attacks.action_intercepted_action_paths = [Scripts.ACTION_CARD_PLAY]
 	
