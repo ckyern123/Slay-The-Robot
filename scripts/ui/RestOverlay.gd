@@ -16,11 +16,11 @@ func _ready():
 	continue_button.button_up.connect(_on_continue_button_up)
 
 func _on_map_location_selected(_location_data: LocationData):
-	if _location_data.location_type == LocationData.LOCATION_TYPES.REST_SITE:
-		visible = true
-		populate_rest_actions()
-	else:
-		visible = false
+#	if _location_data.location_type == LocationData.LOCATION_TYPES.REST_SITE:
+#		visible = true
+#		populate_rest_actions()
+#	else:
+#		visible = false
 		clear_rest_actions()
 
 func populate_rest_actions() -> void:

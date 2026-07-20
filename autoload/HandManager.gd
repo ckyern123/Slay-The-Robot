@@ -37,6 +37,8 @@ var player_draw: Array[CardData] = []
 var player_discard: Array[CardData] = []
 var player_exhaust: Array[CardData] = []
 
+var first_time: bool = false
+
 # magic strings for the various pile names. Used for HandManager.get_pile(), card pick actions, and CardData destinations.
 const HAND_PILE: String = "HAND"
 const DRAW_PILE: String = "DRAW" 
@@ -569,7 +571,9 @@ func _on_combat_started(_event_id: String):
 	HandManager.cards_retained_this_turn.clear()
 	HandManager.cards_with_modified_turn_energy.clear()
 	HandManager.clear_card_queue()
-	HandManager.reset_deck()
+	if !first_time:
+		HandManager.reset_deck()
+		first_time = true
 	
 func _on_combat_ended():
 	HandManager.cards_retained_this_turn.clear()
@@ -585,7 +589,7 @@ func _on_run_ended():
 	HandManager.cards_retained_this_turn.clear()
 	HandManager.cards_with_modified_turn_energy.clear()
 	HandManager.clear_card_queue()
-	
+	first_time = false
 	# remove cards in hand
 	hand.clear_hand_cards()
 	reset_deck()

@@ -89,19 +89,20 @@ func _on_map_location_selected(location_data: LocationData):
 	# determine what to do when the player visits a new location
 	var location_type: int = location_data.location_type
 	
-	chest.visible = false
-	shop.visible = false
+	#chest.visible = false
+	#shop.visible = false
 	
-	set_combat_display_visibility(false)
+	#set_combat_display_visibility(false)
 	
-	match location_type:
-		LocationData.LOCATION_TYPES.COMBAT, LocationData.LOCATION_TYPES.MINIBOSS, LocationData.LOCATION_TYPES.BOSS:
-			ActionGenerator.generate_combat_start("") # emit empty event to get location's combat event
-		LocationData.LOCATION_TYPES.TREASURE:
-			chest.visible = true
-		LocationData.LOCATION_TYPES.SHOP:
-			shop.visible = true
-	
+	#match location_type:
+	#	LocationData.LOCATION_TYPES.COMBAT, LocationData.LOCATION_TYPES.MINIBOSS, LocationData.LOCATION_TYPES.BOSS:
+	#		ActionGenerator.generate_combat_start("") # emit empty event to get location's combat event
+	#	LocationData.LOCATION_TYPES.TREASURE:
+	#		chest.visible = true
+	#	LocationData.LOCATION_TYPES.SHOP:
+	#		shop.visible = true
+	if (location_type != LocationData.LOCATION_TYPES.STARTING):
+		ActionGenerator.generate_combat_start("")
 	_update_background()
 	
 	ActionGenerator.generate_location_music_action()
@@ -240,8 +241,8 @@ func _on_combat_ended():
 ## the turn logic if either player or enemies are dead.
 func _end_combat_check() -> bool:
 	var combat_is_ended: bool = false
-	#if not Global.are_remaining_enemies():
-	#	end_combat()
+	if not Global.are_remaining_enemies():
+		end_combat()
 	if (HandManager.player_draw.size() + HandManager.player_hand.size() + HandManager.player_discard.size())>= 100:
 		end_combat()
 		combat_is_ended = true
@@ -575,8 +576,8 @@ func end_combat() -> void:
 	var event_data: EventData = Global.get_player_event_data()
 	if event_data != null:
 		# perform event initial actions
-		var event_post_combat_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], event_data.event_post_combat_actions, null)
-		ActionHandler.add_actions(event_post_combat_actions)
+		#var event_post_combat_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], event_data.event_post_combat_actions, null)
+		#ActionHandler.add_actions(event_post_combat_actions)
 
 		if ActionHandler.actions_being_performed:
 			await ActionHandler.actions_ended

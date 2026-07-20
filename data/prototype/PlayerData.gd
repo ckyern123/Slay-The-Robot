@@ -12,7 +12,7 @@ class_name PlayerData
 @export var player_food: int = 0
 @export var player_food_max: int = 0
 @export var player_ore: int = 0
-@export var player_influence: int = 0
+@export var player_size: int = 0
 @export var player_insight: int = 0
 
 var player_energy: int = 3 # in combat energy. Not saved.
@@ -255,11 +255,11 @@ func add_insight(amount: int) -> void:
 	
 		## Adds or subtracts money from the player
 ## If goes into negative amounts, the proper delta will be calculated 
-func add_influence(amount: int) -> void:
-	var old_player_influence_amount: int = player_influence
-	player_influence = max(player_influence + amount, 0)
-	var delta: int = player_influence - old_player_influence_amount
-	Signals.player_influence_changed.emit(delta)
+func add_size(amount: int) -> void:
+	var old_player_size_amount: int = player_size
+	player_size = max(player_size + amount, 0)
+	var delta: int = player_size - old_player_size_amount
+	Signals.player_size_changed.emit(delta)
 	
 ## Gets an rng track for the run. If it does not exist create one.
 func get_player_rng(rng_name: String) -> RandomNumberGenerator:

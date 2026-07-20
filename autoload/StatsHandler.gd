@@ -271,13 +271,13 @@ func _on_combat_ended() -> void:
 	# track combat victories in run stats
 	if current_run_stats != null:
 		var location_data: LocationData = Global.get_player_location_data()
-		match location_data.location_type:
-			LocationData.LOCATION_TYPES.COMBAT:
-				current_run_stats.add_to_enum_stat(RunStatsData.STATS.COMBAT_STANDARD_COUNT, 1)
-			LocationData.LOCATION_TYPES.MINIBOSS:
-				current_run_stats.add_to_enum_stat(RunStatsData.STATS.COMBAT_MINIBOSS_COUNT, 1)
-			LocationData.LOCATION_TYPES.BOSS:
-				current_run_stats.add_to_enum_stat(RunStatsData.STATS.COMBAT_BOSS_COUNT, 1)
+#		match location_data.location_type:
+#			LocationData.LOCATION_TYPES.COMBAT:
+#				current_run_stats.add_to_enum_stat(RunStatsData.STATS.COMBAT_STANDARD_COUNT, 1)
+#			LocationData.LOCATION_TYPES.MINIBOSS:
+#				current_run_stats.add_to_enum_stat(RunStatsData.STATS.COMBAT_MINIBOSS_COUNT, 1)
+#			LocationData.LOCATION_TYPES.BOSS:
+#				current_run_stats.add_to_enum_stat(RunStatsData.STATS.COMBAT_BOSS_COUNT, 1)
 				
 
 func _on_player_turn_started():

@@ -22,6 +22,36 @@ class_name ActData
 ## The event pool for this act's hard combats. Used for generation of locations in this act.
 @export var act_hard_combat_event_pool_object_id: String = ""
 
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_plains_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_desert_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_coast_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_swamp_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_hard_forest_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_plains_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_desert_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_coast_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_swamp_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_easy_forest_event_pool_object_id: String = ""
+
 ## The event pool for non combat events. Used for generation of locations in this act.
 @export var act_non_combat_event_pool_object_id: String = ""
 
@@ -46,19 +76,36 @@ class_name ActData
 ## Gets all combat EventData object ids for this act
 func get_act_all_combat_event_ids() -> Array[String]:
 	var combat_event_id_list: Array[String] = []
-	if act_easy_combat_event_pool_object_id != "":
-		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_combat_event_pool_object_id)
+	if act_easy_plains_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_plains_event_pool_object_id)
 		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
-	if act_hard_combat_event_pool_object_id != "":
-		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_hard_combat_event_pool_object_id)
+	if act_hard_plains_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_plains_event_pool_object_id)
 		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
-	if act_miniboss_event_pool_object_id != "":
-		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_miniboss_event_pool_object_id)
+	if act_easy_forest_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_forest_event_pool_object_id)
 		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
-	if act_boss_event_pool_object_id != "":
-		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_boss_event_pool_object_id)
+	if act_hard_forest_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_forest_event_pool_object_id)
 		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
-	
+	if act_easy_swamp_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_swamp_event_pool_object_id)
+		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
+	if act_hard_swamp_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_swamp_event_pool_object_id)
+		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
+	if act_easy_desert_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_desert_event_pool_object_id)
+		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
+	if act_hard_desert_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_desert_event_pool_object_id)
+		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
+	if act_easy_coast_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_coast_event_pool_object_id)
+		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)
+	if act_hard_coast_event_pool_object_id != "":
+		var event_pool_data: EventPoolData = Global.get_event_pool_data(act_easy_coast_event_pool_object_id)
+		combat_event_id_list.append_array(event_pool_data.event_pool_event_object_ids)					
 	return combat_event_id_list
 
 ## Gets all enemies that appear in this act.

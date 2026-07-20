@@ -238,6 +238,7 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	# money and health
 	player_data.player_money = character_data.character_starting_money
 	player_data.player_food = 20
+	player_data.player_size = 20
 	player_data.player_health_max = character_data.character_starting_health
 	player_data.player_health = character_data.character_starting_health
 	
@@ -283,9 +284,8 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	FileLoader.autosave()
 	
 	Signals.run_started.emit()
-	
 	Signals.map_location_selected.emit(get_player_location_data())	# simulate visiting the first location
-	
+#	ActionGenerator.generate_combat_start("event_act_1_easy_plains_1")
 	# simulate a win
 	#await get_tree().create_timer(5).timeout
 	#Signals.run_victory.emit()

@@ -263,10 +263,10 @@ func get_location_card_rewards(location_data: LocationData = Global.get_player_l
 	
 	# determine the loot table to use for the reward
 	var card_draft_table_type: int = CARD_DRAFT_TABLE_TYPES.STANDARD
-	if location_data.location_type == LocationData.LOCATION_TYPES.MINIBOSS:
-		card_draft_table_type = CARD_DRAFT_TABLE_TYPES.MINIBOSS
-	if location_data.location_type == LocationData.LOCATION_TYPES.BOSS:
-		card_draft_table_type = CARD_DRAFT_TABLE_TYPES.BOSS
+#	if location_data.location_type == LocationData.LOCATION_TYPES.MINIBOSS:
+#		card_draft_table_type = CARD_DRAFT_TABLE_TYPES.MINIBOSS
+#	if location_data.location_type == LocationData.LOCATION_TYPES.BOSS:
+#		card_draft_table_type = CARD_DRAFT_TABLE_TYPES.BOSS
 	
 	var rng_reward_card_drafts: RandomNumberGenerator = Global.player_data.get_player_rng("rng_reward_card_drafts")
 	for i in number_of_drafts:
@@ -296,21 +296,21 @@ func get_location_artifact_rewards(location_data: LocationData = Global.get_play
 	var location_type: int = location_data.location_type
 	var returned_artifact_ids: Array[String] = []
 	var rng_artifact_rewards: RandomNumberGenerator = Global.player_data.get_player_rng("rng_artifact_rewards")
-	match location_type:
-		LocationData.LOCATION_TYPES.TREASURE:
-			var weights: Dictionary[Variant, int] = ARTIFACT_CHEST_RARITY_WEIGHTS
-			for _i: int in artifact_count:
-				var random_artifact_rarity: int = Random.get_weighted_selection(rng_artifact_rewards, weights)
-				var artifact_ids: Array[String] = Global.player_data.get_next_artifacts_from_pool(artifact_count, [random_artifact_rarity], false, false, true)
-				returned_artifact_ids.append_array(artifact_ids)
-		LocationData.LOCATION_TYPES.MINIBOSS:
-			var weights: Dictionary[Variant, int] = ARTIFACT_MINIBOSS_RARITY_WEIGHTS
-			for _i: int in artifact_count:
-				var random_artifact_rarity: int = Random.get_weighted_selection(rng_artifact_rewards, weights)
-				var artifact_ids: Array[String] = Global.player_data.get_next_artifacts_from_pool(artifact_count, [random_artifact_rarity], false, false, true)
-				returned_artifact_ids.append_array(artifact_ids)
-		LocationData.LOCATION_TYPES.BOSS:
-			return Global.player_data.get_next_boss_artifacts_from_pool(artifact_count, true)
+#	match location_type:
+#		LocationData.LOCATION_TYPES.TREASURE:
+#			var weights: Dictionary[Variant, int] = ARTIFACT_CHEST_RARITY_WEIGHTS
+#			for _i: int in artifact_count:
+#				var random_artifact_rarity: int = Random.get_weighted_selection(rng_artifact_rewards, weights)
+#				var artifact_ids: Array[String] = Global.player_data.get_next_artifacts_from_pool(artifact_count, [random_artifact_rarity], false, false, true)
+#				returned_artifact_ids.append_array(artifact_ids)
+#		LocationData.LOCATION_TYPES.MINIBOSS:
+#			var weights: Dictionary[Variant, int] = ARTIFACT_MINIBOSS_RARITY_WEIGHTS
+#			for _i: int in artifact_count:
+#				var random_artifact_rarity: int = Random.get_weighted_selection(rng_artifact_rewards, weights)
+#				var artifact_ids: Array[String] = Global.player_data.get_next_artifacts_from_pool(artifact_count, [random_artifact_rarity], false, false, true)
+#				returned_artifact_ids.append_array(artifact_ids)
+#		LocationData.LOCATION_TYPES.BOSS:
+#			return Global.player_data.get_next_boss_artifacts_from_pool(artifact_count, true)
 	
 	return returned_artifact_ids
 
