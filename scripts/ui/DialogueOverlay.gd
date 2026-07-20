@@ -175,6 +175,6 @@ func _on_player_killed(_player: Player):
 
 func _on_map_location_selected(_location_data: LocationData):
 #	if _location_data.location_type != LocationData.LOCATION_TYPES.EVENT:
-#		reset_dialogue()
+	reset_dialogue()
 #	else:
-		start_dialogue()
+#		start_dialogue()

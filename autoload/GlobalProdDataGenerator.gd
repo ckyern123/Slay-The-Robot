@@ -1461,7 +1461,7 @@ func add_events() -> void:
 	
 	### Event Pools
 	# act 1 easy pool
-	var event_pool_act_1_easy_plains: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	var event_pool_act_1_easy_plains: EventPoolData = EventPoolData.new("event_pool_act_1_plains_easy")
 	event_pool_act_1_easy_plains.add_events_to_pool(
 		event_act_1_easy_plains_1,
 		[
@@ -1471,7 +1471,7 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_plains)
 	
-	var event_pool_act_1_hard_plains: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	var event_pool_act_1_hard_plains: EventPoolData = EventPoolData.new("event_pool_act_1_plains_hard")
 	event_pool_act_1_hard_plains.add_events_to_pool(
 		event_act_1_hard_plains_1,
 		[
@@ -1482,7 +1482,7 @@ func add_events() -> void:
 		
 	Global.register_rod(event_pool_act_1_hard_plains)
 	
-	var event_pool_act_1_easy_forest: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	var event_pool_act_1_easy_forest: EventPoolData = EventPoolData.new("event_pool_act_1_forest_easy")
 	event_pool_act_1_easy_forest.add_events_to_pool(
 		event_act_1_easy_forest_1,
 		[
@@ -1492,7 +1492,7 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_forest)
 	
-	var event_pool_act_1_hard_forest: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	var event_pool_act_1_hard_forest: EventPoolData = EventPoolData.new("event_pool_act_1_forest_hard")
 	event_pool_act_1_hard_forest.add_events_to_pool(
 		event_act_1_hard_forest_1,
 		[
@@ -1503,7 +1503,7 @@ func add_events() -> void:
 		
 	Global.register_rod(event_pool_act_1_hard_forest)
 	
-	var event_pool_act_1_easy_desert: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	var event_pool_act_1_easy_desert: EventPoolData = EventPoolData.new("event_pool_act_1_desert_easy")
 	event_pool_act_1_easy_desert.add_events_to_pool(
 		event_act_1_easy_desert_1,
 		[
@@ -1513,7 +1513,7 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_desert)
 	
-	var event_pool_act_1_hard_desert: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	var event_pool_act_1_hard_desert: EventPoolData = EventPoolData.new("event_pool_act_1_desert_hard")
 	event_pool_act_1_hard_desert.add_events_to_pool(
 		event_act_1_hard_desert_1,
 		[
@@ -1524,7 +1524,7 @@ func add_events() -> void:
 		
 	Global.register_rod(event_pool_act_1_hard_desert)
 
-	var event_pool_act_1_easy_coast: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	var event_pool_act_1_easy_coast: EventPoolData = EventPoolData.new("event_pool_act_1_coast_easy")
 	event_pool_act_1_easy_coast.add_events_to_pool(
 		event_act_1_easy_coast_1,
 		[
@@ -1534,7 +1534,7 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_coast)
 	
-	var event_pool_act_1_hard_coast: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	var event_pool_act_1_hard_coast: EventPoolData = EventPoolData.new("event_pool_act_1_coast_hard")
 	event_pool_act_1_hard_coast.add_events_to_pool(
 		event_act_1_hard_coast_1,
 		[
@@ -1545,7 +1545,7 @@ func add_events() -> void:
 		
 	Global.register_rod(event_pool_act_1_hard_coast)
 
-	var event_pool_act_1_easy_swamp: EventPoolData = EventPoolData.new("event_pool_act_1_easy")
+	var event_pool_act_1_easy_swamp: EventPoolData = EventPoolData.new("event_pool_act_1_swamp_easy")
 	event_pool_act_1_easy_swamp.add_events_to_pool(
 		event_act_1_easy_swamp_1,
 		[
@@ -1555,7 +1555,7 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_swamp)
 	
-	var event_pool_act_1_hard_swamp: EventPoolData = EventPoolData.new("event_pool_act_1_hard")
+	var event_pool_act_1_hard_swamp: EventPoolData = EventPoolData.new("event_pool_act_1_swamp_hard")
 	event_pool_act_1_hard_swamp.add_events_to_pool(
 		event_act_1_hard_swamp_1,
 		[
@@ -2313,8 +2313,8 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, ""),
 	])
 	enemy_1.add_intent_state([
-	EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 0, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-	EnemyIntentData.new("intent_attack_1", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 1, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+	EnemyIntentData.new("intent_attack_1", DIFFICULTY_STARTING, 0, 1, "", 0, "", {"intent_attack_1": 1, "intent_block": 1}),
+	EnemyIntentData.new("intent_attack_1", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 1, "", 0, "", {"nt_attack_1": 1, "intent_block": 1}),
 	])
 	enemy_1.add_intent_state([
 	EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),

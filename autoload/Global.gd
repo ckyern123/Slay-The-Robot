@@ -284,7 +284,6 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	FileLoader.autosave()
 	
 	Signals.run_started.emit()
-	
 	Signals.map_location_selected.emit(get_player_location_data())	# simulate visiting the first location
 #	ActionGenerator.generate_combat_start("event_act_1_easy_plains_1")
 	# simulate a win

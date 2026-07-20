@@ -101,7 +101,8 @@ func _on_map_location_selected(location_data: LocationData):
 	#		chest.visible = true
 	#	LocationData.LOCATION_TYPES.SHOP:
 	#		shop.visible = true
-	
+	if (location_type != LocationData.LOCATION_TYPES.STARTING):
+		ActionGenerator.generate_combat_start("")
 	_update_background()
 	
 	ActionGenerator.generate_location_music_action()
@@ -240,8 +241,8 @@ func _on_combat_ended():
 ## the turn logic if either player or enemies are dead.
 func _end_combat_check() -> bool:
 	var combat_is_ended: bool = false
-	#if not Global.are_remaining_enemies():
-	#	end_combat()
+	if not Global.are_remaining_enemies():
+		end_combat()
 	if (HandManager.player_draw.size() + HandManager.player_hand.size() + HandManager.player_discard.size())>= 100:
 		end_combat()
 		combat_is_ended = true
@@ -575,8 +576,8 @@ func end_combat() -> void:
 	var event_data: EventData = Global.get_player_event_data()
 	if event_data != null:
 		# perform event initial actions
-		var event_post_combat_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], event_data.event_post_combat_actions, null)
-		ActionHandler.add_actions(event_post_combat_actions)
+		#var event_post_combat_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], event_data.event_post_combat_actions, null)
+		#ActionHandler.add_actions(event_post_combat_actions)
 
 		if ActionHandler.actions_being_performed:
 			await ActionHandler.actions_ended
