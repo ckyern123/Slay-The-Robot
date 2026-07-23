@@ -27,12 +27,13 @@ var tooltip_left_side: bool = false # if tooltip should display to the left of t
 @onready var card_visual: Control = $Pivot/CardVisual # container for all visuals in card, after pivot offsets applied
 
 @onready var card_texture = %CardTexture
+@onready var texture_bg = %TextureBackground
 @onready var card_name: RichLabelAutoSizer = %CardName
 @onready var card_type: Label = %CardType
 @onready var card_description: RichLabelAutoSizer = %CardDescription
 @onready var card_energy_sprite: TextureRect = %EnergySprite
 @onready var card_energy_cost_label: Label = %EnergyCost
-@onready var card_sprite: TextureRect = %InfluenceSprite
+@onready var card_influence_sprite: TextureRect = %InfluenceSprite
 @onready var card_influence_label: Label = %InfluenceLabel
 @onready var card_color: ColorRect = %ColorBackground
 @onready var card_decorator_container: VBoxContainer = %CardDecoratorContainer
@@ -91,10 +92,14 @@ func update_card_display(selected_enemy: Enemy = null) -> void:
 		_card_is_rerendering = false
 	
 	# update visuals
+	if (card_data.texture_bg_path == ""):
+		texture_bg.texture = FileLoader.load_texture("external/sprites/cards/frames/basicframe.png")
+	else:
+		texture_bg.texture = FileLoader.load_texture(card_data.texture_bg_path)
 	card_texture.texture = FileLoader.load_texture(card_data.card_texture_path)
 	
 	# updates the card's display
-	card_name.set_bbcode("[center]" + card_data.get_card_name() + "[/center]")
+	card_name.set_bbcode("[outline_size=3][outline_color=black][font_size=14][center]" + card_data.get_card_name() + "[/center][/font_size][/outline_color][/outline_size]")
 	card_description.set_bbcode(get_card_description(selected_enemy))
 	card_type.text = CardData.CARD_RARITIES.keys()[card_data.card_rarity] + " " + CardData.CARD_TYPES.keys()[card_data.card_type]
 	

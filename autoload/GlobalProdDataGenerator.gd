@@ -1135,6 +1135,7 @@ func add_acts() -> void:
 	act_1.act_hard_desert_event_pool_object_id = "event_pool_act_1_desert_hard"
 	act_1.act_hard_coast_event_pool_object_id = "event_pool_act_1_coast_hard"
 	act_1.act_hard_swamp_event_pool_object_id = "event_pool_act_1_swamp_hard"
+	act_1.act_boss_event_pool_object_id = "event_pool_act_1_boss"
 	Global.register_rod(act_1)
 #endregion
 	
@@ -1563,6 +1564,16 @@ func add_events() -> void:
 		])
 		
 	Global.register_rod(event_pool_act_1_hard_swamp)
+	
+	var event_act_1_boss_1: EventData = EventData.new("event_act_1_boss_1")
+	event_act_1_boss_1.event_weighted_enemy_object_ids = [
+		{"enemy_act_1_boss_1": 1},
+		]
+	event_act_1_boss_1.event_enemy_placement_is_automatic = false
+	event_act_1_boss_1.event_enemy_placement_positions = [[0,0], [180,0], [360,0]]
+	event_act_1_boss_1.event_death_message_bbcode = "Bosses are tough"
+	
+	Global.register_rod(event_act_1_boss_1)
 #endregion
 
 #region Dialogue
@@ -1961,7 +1972,7 @@ func add_characters() -> void:
 	character_green.character_description = "A former thermonuclear botanist seeking employment after being fired for their previous experiments."
 	character_green.character_color_id = "color_{0}".format([character_color])
 	character_green.character_starting_health = 75
-	character_green.character_starting_card_draft_card_pack_ids = ["card_pack_{0}".format([character_color])]
+	character_green.character_starting_card_draft_card_pack_ids = ["card_pack_prismatic".format([character_color])]
 	character_green.character_starting_artifact_ids = ["artifact_draw_on_combat_start"]
 	character_green.character_starting_artifact_pack_ids = ["artifact_pack_white", "artifact_pack_{0}".format([character_color])]
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
@@ -2331,7 +2342,7 @@ func add_enemies() -> void:
 	field_patch.enemy_name = "Field Patch"
 	field_patch.add_health_bounds(5, 7)
 	field_patch.add_health_bounds(8, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	field_patch.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	field_patch.enemy_texture_path = "external/sprites/enemies/grass.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	field_patch.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2347,18 +2358,19 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _field_patch_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _field_patch_anim: AnimationData = field_patch.add_standard_animations(
+		["external/sprites/enemies/grass.png"]
 	)
 
 	Global.register_rod(field_patch)
+	Global.register_rod(_field_patch_anim)
 	
 	# enemy that negates the first damage instance against it
 	var mound: EnemyData = EnemyData.new("mound")
 	mound.enemy_name = "Mound"
 	mound.add_health_bounds(12, 15)
 	mound.add_health_bounds(16, 18, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	mound.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	mound.enemy_texture_path = "external/sprites/enemies/hills.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	mound.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2374,18 +2386,19 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _mound_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _mound_anim: AnimationData = mound.add_standard_animations(
+		["external/sprites/enemies/hills.png"]
 	)
 
 	Global.register_rod(mound)
+	Global.register_rod(_mound_anim)
 	
 	# enemy that negates the first damage instance against it
 	var rock: EnemyData = EnemyData.new("rock")
 	rock.enemy_name = "Rock"
 	rock.add_health_bounds(5, 7)
 	rock.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	rock.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	rock.enemy_texture_path = "external/sprites/enemies/stone-pile.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	rock.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2401,18 +2414,19 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _rock_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _rock_anim: AnimationData = rock.add_standard_animations(
+		["external/sprites/enemies/stone-pile.png"]
 	)
 
 	Global.register_rod(rock)
+	Global.register_rod(_rock_anim)
 	
 	# enemy that negates the first damage instance against it
 	var pond: EnemyData = EnemyData.new("pond")
 	pond.enemy_name = "Pond"
 	pond.add_health_bounds(5, 7)
 	pond.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	pond.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	pond.enemy_texture_path = "external/sprites/enemies/lily-pads.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	pond.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2428,11 +2442,12 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _pond_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _pond_anim: AnimationData = pond.add_standard_animations(
+		["external/sprites/enemies/lily-pads.png"]
 	)
 
 	Global.register_rod(pond)
+	Global.register_rod(_pond_anim)
 	
 #endregion
 
@@ -2442,7 +2457,7 @@ func add_enemies() -> void:
 	boulder.enemy_name = "Boulder"
 	boulder.add_health_bounds(5, 7)
 	boulder.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	boulder.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	boulder.enemy_texture_path = "external/sprites/enemies/rock.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	boulder.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2458,18 +2473,18 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _boulder_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _boulder_anim: AnimationData = boulder.add_standard_animations(
+		["external/sprites/enemies/rock.png"]
 	)
-
 	Global.register_rod(boulder)
+	Global.register_rod(_boulder_anim)
 	
 	# enemy that negates the first damage instance against it
 	var bigboulder: EnemyData = EnemyData.new("bigboulder")
 	bigboulder.enemy_name = "Big Boulder"
 	bigboulder.add_health_bounds(9, 11)
 	bigboulder.add_health_bounds(14, 19, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	bigboulder.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	bigboulder.enemy_texture_path = "external/sprites/enemies/boulder-dash.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	bigboulder.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2485,11 +2500,12 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _bigboulder_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _bigboulder_anim: AnimationData = bigboulder.add_standard_animations(
+		["external/sprites/enemies/boulder-dash.png"]
 	)
 
 	Global.register_rod(bigboulder)
+	Global.register_rod(_bigboulder_anim)
 #endregion
 
 #region enemies coast
@@ -2498,7 +2514,7 @@ func add_enemies() -> void:
 	shore.enemy_name = "Shore"
 	shore.add_health_bounds(5, 7)
 	shore.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	shore.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	shore.enemy_texture_path = "external/sprites/enemies/fish-escape.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	shore.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2514,10 +2530,11 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _shore_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _shore_anim: AnimationData = shore.add_standard_animations(
+		["external/sprites/enemies/fish-escape.png"]
 	)
-
+	
+	Global.register_rod(_shore_anim)
 	Global.register_rod(shore)
 
 	# enemy that negates the first damage instance against it
@@ -2525,7 +2542,7 @@ func add_enemies() -> void:
 	cave.enemy_name = "Cave"
 	cave.add_health_bounds(25, 32)
 	cave.add_health_bounds(35, 40, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	cave.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	cave.enemy_texture_path = "external/sprites/enemies/cave-entrance.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	cave.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2543,18 +2560,19 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _cave_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _cave_anim: AnimationData = cave.add_standard_animations(
+		["external/sprites/enemies/cave-entrance.png"]
 	)
 
 	Global.register_rod(cave)
+	Global.register_rod(_cave_anim)
 
 	# enemy that negates the first damage instance against it
 	var sandbed: EnemyData = EnemyData.new("sandbed")
 	sandbed.enemy_name = "Sandbed"
 	sandbed.add_health_bounds(15,17)
 	sandbed.add_health_bounds(19, 21, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	sandbed.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	sandbed.enemy_texture_path = "external/sprites/enemies/powder.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	sandbed.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2571,11 +2589,12 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},sandbed_status_actions),
 	])
 	
-	var _sandbed_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _sandbed_anim: AnimationData = sandbed.add_standard_animations(
+		["external/sprites/enemies/powder.png"]
 	)
 
 	Global.register_rod(sandbed)
+	Global.register_rod(_sandbed_anim)
 #endregion
 
 #region enemies forest
@@ -2584,7 +2603,7 @@ func add_enemies() -> void:
 	forestfloor.enemy_name = "Forest Floor"
 	forestfloor.add_health_bounds(5, 7)
 	forestfloor.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	forestfloor.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	forestfloor.enemy_texture_path = "external/sprites/enemies/forest.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	forestfloor.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2600,18 +2619,19 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _forestfloor_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _forestfloor_anim: AnimationData = forestfloor.add_standard_animations(
+		["external/sprites/enemies/forest.png"]
 	)
 
 	Global.register_rod(forestfloor)
+	Global.register_rod(_forestfloor_anim)
 	
 		# enemy that negates the first damage instance against it
 	var den: EnemyData = EnemyData.new("den")
 	den.enemy_name = "Den"
 	den.add_health_bounds(25, 27)
 	den.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	den.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	den.enemy_texture_path = "external/sprites/enemies/hobbit-dwelling.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var den_status_actions: Array[Dictionary] = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -2636,25 +2656,26 @@ func add_enemies() -> void:
 	den.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	den.enemy_actions_on_death = [{	Scripts.ACTION_GAIN_MONEY: {"money_amount": 8}}]
+	den.enemy_actions_on_death = [{	Scripts.ACTION_ADD_MONEY: {"money_amount": 8}}]
 	# an attack that hits harder on higher difficulties
 	den.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},den_status_actions),
 	])
 		
-	var _den_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _den_anim: AnimationData = den.add_standard_animations(
+		["external/sprites/enemies/hobbit-dwelling.png"]
 	)
 
 	Global.register_rod(den)
+	Global.register_rod(_den_anim)
 	
 		# enemy that negates the first damage instance against it
 	var hideout: EnemyData = EnemyData.new("hideout")
 	hideout.enemy_name = "hideout"
 	hideout.add_health_bounds(25, 27)
 	hideout.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	hideout.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	hideout.enemy_texture_path = "external/sprites/enemies/castle.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var hideout_status_actions: Array[Dictionary] = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -2690,11 +2711,12 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},hideout_status_actions),
 	])
 		
-	var _hideout_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _hideout_anim: AnimationData = hideout.add_standard_animations(
+		["external/sprites/enemies/castle.png"]
 	)
 
 	Global.register_rod(hideout)
+	Global.register_rod(_hideout_anim)
 #endregion
 
 #region enemies swamp
@@ -2703,7 +2725,7 @@ func add_enemies() -> void:
 	dryfield.enemy_name = "Dry Field"
 	dryfield.add_health_bounds(5, 7)
 	dryfield.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	dryfield.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	dryfield.enemy_texture_path = "external/sprites/enemies/agave.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	dryfield.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2719,18 +2741,19 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _dryfield_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _dryfield_anim: AnimationData = dryfield.add_standard_animations(
+		["external/sprites/enemies/agave.png"]
 	)
 
 	Global.register_rod(dryfield)
+	Global.register_rod(_dryfield_anim)
 	
 		# enemy that negates the first damage instance against it
 	var hut: EnemyData = EnemyData.new("hut")
 	hut.enemy_name = "Hut"
 	hut.add_health_bounds(15, 17)
 	hut.add_health_bounds(19, 21, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	hut.enemy_texture_path = "external/sprites/enemies/enemy_red_small.png"
+	hut.enemy_texture_path = "external/sprites/enemies/hut.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	hut.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -2746,11 +2769,12 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
-	var _hut_anim: AnimationData = enemy_1.add_standard_animations(
-		["external/sprites/enemies/enemy_red_small.png"]
+	var _hut_anim: AnimationData = hut.add_standard_animations(
+		["external/sprites/enemies/hut.png"]
 	)
 
 	Global.register_rod(hut)
+	Global.register_rod(_hut_anim)
 #endregion
 	## enemy that negates the first debuff against it
 	#var enemy_2: EnemyData = EnemyData.new("enemy_2")
@@ -2892,33 +2916,38 @@ func add_enemies() -> void:
 	#Global.register_rod(enemy_act_1_miniboss_2)
 	#
 	## boss that summons minions
-	#var enemy_act_1_boss_1: EnemyData = EnemyData.new("enemy_act_1_boss_1")
-	#enemy_act_1_boss_1.add_health_bounds(200, 200)
-	#enemy_act_1_boss_1.add_health_bounds(250, 250, DIFFICULTY_BOSS_ENEMIES_HARDER)
-	#enemy_act_1_boss_1.enemy_type = EnemyData.ENEMY_TYPES.BOSS
-	#enemy_act_1_boss_1.enemy_name = "Act 1 Boss"
-	#enemy_act_1_boss_1.enemy_texture_path =  "external/sprites/enemies/enemy_red_large.png"
-	#enemy_act_1_boss_1.add_intent_state([
-		#EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_summon": 1})
-		#])
+	var enemy_act_1_boss_1: EnemyData = EnemyData.new("enemy_act_1_boss_1")
+	enemy_act_1_boss_1.add_health_bounds(9998, 9999)
+	enemy_act_1_boss_1.add_health_bounds(9998, 9999, DIFFICULTY_BOSS_ENEMIES_HARDER)
+	enemy_act_1_boss_1.enemy_type = EnemyData.ENEMY_TYPES.BOSS
+	enemy_act_1_boss_1.enemy_name = "Act 1 Boss"
+	enemy_act_1_boss_1.enemy_texture_path =  "external/sprites/enemies/enemy_red_large.png"
+	enemy_act_1_boss_1.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block": 1})
+		])
 	#var enemy_act_1_boss_1_summon_actions: Array[Dictionary] = [
-				#{
-				#Scripts.ACTION_SUMMON_ENEMIES: {"number_of_spawns": 2, "spawn_slots": [1,2], "time_delay": 0.5, "random_enemy_object_ids": ["enemy_minion_1", "enemy_minion_2"], "target_override": BaseAction.TARGET_OVERRIDES.PARENT}
-				#}
-			#]
+	#			{
+	#			Scripts.ACTION_SUMMON_ENEMIES: {"number_of_spawns": 2, "spawn_slots": [1,2], "time_delay": 0.5, "random_enemy_object_ids": ["enemy_minion_1", "enemy_minion_2"], "target_override": BaseAction.TARGET_OVERRIDES.PARENT}
+	#			}
+	#		]
+	enemy_act_1_boss_1.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
 	#enemy_act_1_boss_1.add_intent_state([
-		#EnemyIntentData.new("intent_summon", DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack": 1}, enemy_act_1_boss_1_summon_actions)
-		#])
+	#	EnemyIntentData.new("intent_summon", DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_attack": 1}, enemy_act_1_boss_1_summon_actions)
+	#	])
 	#enemy_act_1_boss_1.add_intent_state([
 		#EnemyIntentData.new("intent_attack", DIFFICULTY_STARTING, 3, 2, "", 7, "", {"intent_attack": 1}),
 		#EnemyIntentData.new("intent_attack", DIFFICULTY_BOSS_ENEMIES_HARDER, 5, 2, "", 7, "", {"intent_attack": 1}),
 	#])
 	#
-	#var _enemy_act_1_boss_1_anim: AnimationData = enemy_act_1_boss_1.add_standard_animations(
-		#["external/sprites/enemies/enemy_red_large.png"]
-	#)
+	var _enemy_act_1_boss_1_anim: AnimationData = enemy_act_1_boss_1.add_standard_animations(
+		["external/sprites/enemies/enemy_red_large.png"]
+	)
 	#
-	#Global.register_rod(enemy_act_1_boss_1)
+	Global.register_rod(enemy_act_1_boss_1)
+	Global.register_rod(_enemy_act_1_boss_1_anim)
 	#
 	## example of minion enemy
 	#var enemy_minion_1: EnemyData = EnemyData.new("enemy_minion_1")
@@ -3125,6 +3154,7 @@ func add_card_basics() -> void:
 		card_basic_ore.card_color_id = "color_{0}".format([colors[i]])
 		card_basic_ore.card_description = "Gain [ore_amount] Ore"
 		card_basic_ore.card_texture_path = "external/sprites/cards/{0}/card_basic_block_{0}.png".format([colors[i]])
+		card_basic_ore.texture_bg_path = "external/sprites/cards/frames/basicframe.png"
 		card_basic_ore.card_type = CardData.CARD_TYPES.SKILL
 		card_basic_ore.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_ore.card_requires_target = false
@@ -3531,7 +3561,8 @@ func add_cards_purple() -> void:
 	var card_cunningtrader: CardData = CardData.new("card_cunningtrader")
 	card_cunningtrader.card_name = "Cunning Trader"
 	card_cunningtrader.card_color_id = "color_{0}".format([color])
-	card_cunningtrader.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_cunningtrader.card_texture_path = "external/sprites/cards/pearl/02_cunningtrader.png"
+	card_cunningtrader.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_cunningtrader.card_description = "Gains [ore_amount] Ore."
 	card_cunningtrader.card_type = CardData.CARD_TYPES.SKILL
 	card_cunningtrader.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -3564,7 +3595,8 @@ func add_cards_purple() -> void:
 	var card_pearlemissary: CardData = CardData.new("card_pearlemissary")
 	card_pearlemissary.card_name = "Pearl Emissary"
 	card_pearlemissary.card_color_id = "color_{0}".format([color])
-	card_pearlemissary.card_texture_path = "external/sprites/cards/{0}/card_pearlemissary.png".format([color])
+	card_pearlemissary.card_texture_path = "external/sprites/cards/pearl/01_pearlemissary.png"
+	card_pearlemissary.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlemissary.card_description = "Draws [draw_count] cards. Appeases 2 random cards in discard piles when discarded."
 	card_pearlemissary.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlemissary.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -3642,7 +3674,8 @@ func add_cards_purple() -> void:
 	var card_joyfulsailor: CardData = CardData.new("card_joyfulsailor")
 	card_joyfulsailor.card_name = "Joyful Sailor"
 	card_joyfulsailor.card_color_id = "color_{0}".format([color])
-	card_joyfulsailor.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_joyfulsailor.card_texture_path = "external/sprites/cards/pearl/03_joyfulsailor.png"
+	card_joyfulsailor.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_joyfulsailor.card_description = "Explore [damage], Draw [draw_count], Create a Fish."
 	card_joyfulsailor.card_type = CardData.CARD_TYPES.SKILL
 	card_joyfulsailor.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -3713,7 +3746,8 @@ func add_cards_purple() -> void:
 	var card_storiedspinner: CardData = CardData.new("card_storiedspinner")
 	card_storiedspinner.card_name = "Storied Spinner"
 	card_storiedspinner.card_color_id = "color_{0}".format([color])
-	card_storiedspinner.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_storiedspinner.card_texture_path = "external/sprites/cards/pearl/04_storiedspinner.png"
+	card_storiedspinner.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_storiedspinner.card_description = "Draw [draw_count]. Create [number_of_cards] Spice."
 	card_storiedspinner.card_type = CardData.CARD_TYPES.SKILL
 	card_storiedspinner.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -3778,7 +3812,8 @@ func add_cards_purple() -> void:
 	var card_recklessenvoy: CardData = CardData.new("card_recklessenvoy")
 	card_recklessenvoy.card_name = "Reckless Envoy"
 	card_recklessenvoy.card_color_id = "color_{0}".format([color])
-	card_recklessenvoy.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_recklessenvoy.card_texture_path = "external/sprites/cards/pearl/05_recklessenvoy.png"
+	card_recklessenvoy.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_recklessenvoy.card_description = "Explore [damage] Divinations into your draw pile."
 	card_recklessenvoy.card_type = CardData.CARD_TYPES.ATTACK
 	card_recklessenvoy.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -3864,7 +3899,8 @@ func add_cards_purple() -> void:
 	var card_pearldiplomat: CardData = CardData.new("card_pearldiplomat")
 	card_pearldiplomat.card_name = "Pearl Diplomat"
 	card_pearldiplomat.card_color_id = "color_{0}".format([color])
-	card_pearldiplomat.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_pearldiplomat.card_texture_path = "external/sprites/cards/pearl/06_pearldiplomat.png"
+	card_pearldiplomat.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Appease [number_of_cards] Cards in discard pile."
 	card_pearldiplomat.card_type = CardData.CARD_TYPES.SKILL
 	card_pearldiplomat.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -3936,7 +3972,8 @@ func add_cards_purple() -> void:
 	var card_pearlregaler: CardData = CardData.new("card_pearlregaler")
 	card_pearlregaler.card_name = "Pearl Regaler"
 	card_pearlregaler.card_color_id = "color_{0}".format([color])
-	card_pearlregaler.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_pearlregaler.card_texture_path = "external/sprites/cards/pearl/07_pearlregalerpng"
+	card_pearlregaler.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlregaler.card_description = "Consume [money_amount] Money to gain 1 Insight. Upgrade 1 card."
 	card_pearlregaler.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlregaler.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -4037,7 +4074,8 @@ func add_cards_purple() -> void:
 	var card_flintlockaccountant: CardData = CardData.new("card_flintlockaccountant")
 	card_flintlockaccountant.card_name = "Flintlock Accountant"
 	card_flintlockaccountant.card_color_id = "color_{0}".format([color])
-	card_flintlockaccountant.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_flintlockaccountant.card_texture_path = "external/sprites/cards/pearl/08_flintlockaccountant.png"
+	card_flintlockaccountant.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_flintlockaccountant.card_description = "Return 2 Crafts from your discard pile to your hand. Increase 2 Durability to selected cards."
 	card_flintlockaccountant.card_type = CardData.CARD_TYPES.SKILL
 	card_flintlockaccountant.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -4110,7 +4148,8 @@ func add_cards_purple() -> void:
 	var card_pearlscribe: CardData = CardData.new("card_pearlscribe")
 	card_pearlscribe.card_name = "Pearl Scribe"
 	card_pearlscribe.card_color_id = "color_{0}".format([color])
-	card_pearlscribe.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_pearlscribe.card_texture_path = "external/sprites/cards/pearl/09_pearlscribe"
+	card_pearlscribe.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlscribe.card_description = "If you have draw pile 20 or more, gain [insight_amount] Insight."
 	card_pearlscribe.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -4178,7 +4217,8 @@ func add_cards_purple() -> void:
 	var card_pearlsmuggler: CardData = CardData.new("card_pearlsmuggler")
 	card_pearlsmuggler.card_name = "Pearl Scribe"
 	card_pearlsmuggler.card_color_id = "color_{0}".format([color])
-	card_pearlsmuggler.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_pearlsmuggler.card_texture_path = "external/sprites/cards/pearl/10_pearlsmuggler.png"
+	card_pearlsmuggler.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlsmuggler.card_description = "Draw [draw_count], discard 2. Wield 3"
 	card_pearlsmuggler.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlsmuggler.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -4273,7 +4313,8 @@ func add_cards_purple() -> void:
 	var card_pearlseer: CardData = CardData.new("card_pearlseer")
 	card_pearlseer.card_name = "Pearl Seer"
 	card_pearlseer.card_color_id = "color_{0}".format([color])
-	card_pearlseer.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_pearlseer.card_texture_path = "external/sprites/cards/pearl/11_pearlseer.png"
+	card_pearlseer.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlseer.card_description = "Draw [draw_count], then gain [money_amount] Money for each generated card in hand."
 	card_pearlseer.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlseer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -4350,7 +4391,8 @@ func add_cards_purple() -> void:
 	var card_mastertactician: CardData = CardData.new("card_mastertactician")
 	card_mastertactician.card_name = "Master Tactician"
 	card_mastertactician.card_color_id = "color_{0}".format([color])
-	card_mastertactician.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_mastertactician.card_texture_path = "external/sprites/cards/pearl/12_mastertactician.png"
+	card_mastertactician.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_mastertactician.card_description = "Create [number_of_cards] Swords. Wield [min_card_amount]."
 	card_mastertactician.card_type = CardData.CARD_TYPES.SKILL
 	card_mastertactician.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -4424,7 +4466,8 @@ func add_cards_purple() -> void:
 	var card_schemingplanner: CardData = CardData.new("card_schemingplanner")
 	card_schemingplanner.card_name = "Scheming Planner"
 	card_schemingplanner.card_color_id = "color_{0}".format([color])
-	card_schemingplanner.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_schemingplanner.card_texture_path = "external/sprites/cards/13_schemingplanner.png"
+	card_schemingplanner.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_schemingplanner.card_description = "Gain [money_amount] Money. Refresh Shop."
 	card_schemingplanner.card_type = CardData.CARD_TYPES.SKILL
 	card_schemingplanner.card_rarity = CardData.CARD_RARITIES.RARE
@@ -4484,7 +4527,8 @@ func add_cards_purple() -> void:
 	var card_courthand: CardData = CardData.new("card_courthand")
 	card_courthand.card_name = "Court Hand"
 	card_courthand.card_color_id = "color_{0}".format([color])
-	card_courthand.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_courthand.card_texture_path = "external/sprites/cards/pearl/14_courthand.png"
+	card_courthand.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_courthand.card_description = "Create 1 Performance."
 	card_courthand.card_type = CardData.CARD_TYPES.SKILL
 	card_courthand.card_rarity = CardData.CARD_RARITIES.RARE
@@ -4546,7 +4590,8 @@ func add_cards_purple() -> void:
 	var card_wizenedcommander: CardData = CardData.new("card_wizenedcommander")
 	card_wizenedcommander.card_name = "Court Hand"
 	card_wizenedcommander.card_color_id = "color_{0}".format([color])
-	card_wizenedcommander.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_wizenedcommander.card_texture_path = "external/sprites/cards/pearl/15_wizenedcommander.png"
+	card_pearlemissary.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_wizenedcommander.card_description = "Create 1 Performance."
 	card_wizenedcommander.card_type = CardData.CARD_TYPES.SKILL
 	card_wizenedcommander.card_rarity = CardData.CARD_RARITIES.RARE
@@ -4648,23 +4693,24 @@ func add_cards_purple() -> void:
 	Global.register_rod(card_performance)
 	#endregion
 	
-	#region Anisseed
+	#region aniseed
 func add_cards_black() -> void:
 	var color: String = "black"
 	
-	var card_anisseedemissary: CardData = CardData.new("card_anisseedemissary")
-	card_anisseedemissary.card_name = "Anisseed Emissary"
-	card_anisseedemissary.card_color_id = "color_{0}".format([color])
-	card_anisseedemissary.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_anisseedemissary.card_description = "Gains [ore_amount] Ore. Inspect."
-	card_anisseedemissary.card_type = CardData.CARD_TYPES.SKILL
-	card_anisseedemissary.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_anisseedemissary.card_requires_target = false
-	card_anisseedemissary.card_energy_cost = 1
-	card_anisseedemissary.card_values = {"card_influence": -3,"ore_amount": 3}
-	card_anisseedemissary.card_upgrade_value_improvements = {"ore_amount": 2}
-	card_anisseedemissary.card_influence = 3
-	card_anisseedemissary.card_play_actions = [
+	var card_aniseedemissary: CardData = CardData.new("card_aniseedemissary")
+	card_aniseedemissary.card_name = "aniseed Emissary"
+	card_aniseedemissary.card_color_id = "color_{0}".format([color])
+	card_aniseedemissary.card_texture_path = "external/sprites/cards/aniseed/01_aniseedemissary.png"
+	card_aniseedemissary.card_description = "Gains [ore_amount] Ore. Inspect."
+	card_aniseedemissary.card_type = CardData.CARD_TYPES.SKILL
+	card_aniseedemissary.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_aniseedemissary.card_requires_target = false
+	card_aniseedemissary.card_energy_cost = 1
+	card_aniseedemissary.card_values = {"card_influence": -3,"ore_amount": 3}
+	card_aniseedemissary.card_upgrade_value_improvements = {"ore_amount": 2}
+	card_aniseedemissary.card_influence = 3
+	card_aniseedemissary.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
+	card_aniseedemissary.card_play_actions = [
 		{
 		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"pick_played_card": true,
@@ -4721,7 +4767,7 @@ func add_cards_black() -> void:
 				}
 		}]}
 		}]
-	card_anisseedemissary.card_end_of_turn_actions = [
+	card_aniseedemissary.card_end_of_turn_actions = [
 		{
 			Scripts.ACTION_VALIDATOR: {
 			"validator_data":
@@ -4756,12 +4802,13 @@ func add_cards_black() -> void:
 		}
 	]
 
-	Global.register_rod(card_anisseedemissary)
+	Global.register_rod(card_aniseedemissary)
 		
 	var card_eagersailor: CardData = CardData.new("card_eagersailor")
 	card_eagersailor.card_name = "Eager Sailor"
 	card_eagersailor.card_color_id = "color_{0}".format([color])
-	card_eagersailor.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_eagersailor.card_texture_path = "external/sprites/cards/aniseed/02_eagersailor.png"
+	card_eagersailor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_eagersailor.card_description = "Explore [damage]."
 	card_eagersailor.card_type = CardData.CARD_TYPES.ATTACK
 	card_eagersailor.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -4819,7 +4866,8 @@ func add_cards_black() -> void:
 	var card_fishwrangler: CardData = CardData.new("card_fishwrangler")
 	card_fishwrangler.card_name = "Fish Wrangler"
 	card_fishwrangler.card_color_id = "color_{0}".format([color])
-	card_fishwrangler.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_fishwrangler.card_texture_path = "external/sprites/cards/aniseed/03_fishwrangler.png"
+	card_fishwrangler.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_fishwrangler.card_description = "Create Fish. If you have 3 or more Fishes in hand, gain 2 Food."
 	card_fishwrangler.card_type = CardData.CARD_TYPES.SKILL
 	card_fishwrangler.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -4883,7 +4931,8 @@ func add_cards_black() -> void:
 	var card_spicepicker: CardData = CardData.new("card_spicepicker")
 	card_spicepicker.card_name = "Spice Picker"
 	card_spicepicker.card_color_id = "color_{0}".format([color])
-	card_spicepicker.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_spicepicker.card_texture_path = "external/sprites/cards/aniseed/04_spicepicker.png"
+	card_spicepicker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_spicepicker.card_description = "Create [number_of_cards] Spice. If you have 3 or more Spice cards in hand, create 2 Grains."
 	card_spicepicker.card_type = CardData.CARD_TYPES.SKILL
 	card_spicepicker.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -4950,7 +4999,8 @@ func add_cards_black() -> void:
 	var card_reveredcraftsworker: CardData = CardData.new("card_reveredcraftsworker")
 	card_reveredcraftsworker.card_name = "Revered Craftsworker"
 	card_reveredcraftsworker.card_color_id = "color_{0}".format([color])
-	card_reveredcraftsworker.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_reveredcraftsworker.card_texture_path = "external/sprites/cards/aniseed/05_reveredcraftsworker.png"
+	card_reveredcraftsworker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_reveredcraftsworker.card_description = "Consume 1 Ore to Craft [number_of_cards] Treasure. If you have 3 or more Spice cards in hand, create 2 Grains."
 	card_reveredcraftsworker.card_type = CardData.CARD_TYPES.SKILL
 	card_reveredcraftsworker.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5055,7 +5105,8 @@ func add_cards_black() -> void:
 	var card_cartographersassistant: CardData = CardData.new("card_cartographersassistant")
 	card_cartographersassistant.card_name = "Cartographer's Assistant"
 	card_cartographersassistant.card_color_id = "color_{0}".format([color])
-	card_cartographersassistant.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_cartographersassistant.card_texture_path = "external/sprites/cards/aniseed/06_cartographersassistant.png"
+	card_cartographersassistant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_cartographersassistant.card_description = "Explore [damage]. Consume 3 Ore to gain 1 Insight."
 	card_cartographersassistant.card_type = CardData.CARD_TYPES.ATTACK
 	card_cartographersassistant.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5120,7 +5171,8 @@ func add_cards_black() -> void:
 	var card_flintlockmage: CardData = CardData.new("card_flintlockmage")
 	card_flintlockmage.card_name = "Flintlock Mage"
 	card_flintlockmage.card_color_id = "color_{0}".format([color])
-	card_flintlockmage.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_flintlockmage.card_texture_path = "external/sprites/cards/aniseed/07_flintlockmage.png"
+	card_flintlockmage.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_flintlockmage.card_description = "Craft [number_of_cards] Sword. Draw [draw_count], then discard a card."
 	card_flintlockmage.card_type = CardData.CARD_TYPES.SKILL
 	card_flintlockmage.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5191,18 +5243,19 @@ func add_cards_black() -> void:
 	]
 	Global.register_rod(card_flintlockmage)
 	
-	var card_anisseedscribe: CardData = CardData.new("card_anisseedscribe")
-	card_anisseedscribe.card_name = "Anisseed Scribe"
-	card_anisseedscribe.card_color_id = "color_{0}".format([color])
-	card_anisseedscribe.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_anisseedscribe.card_description = "Draw [draw_count]. If discard pile is empty, gain 1 Insight."
-	card_anisseedscribe.card_type = CardData.CARD_TYPES.SKILL
-	card_anisseedscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_anisseedscribe.card_requires_target = false
-	card_anisseedscribe.card_energy_cost = 1
-	card_anisseedscribe.card_values = {"card_influence":1,"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":1}
-	card_anisseedscribe.card_upgrade_value_improvements = {"number_of_cards": 1}
-	card_anisseedscribe.card_play_actions = [
+	var card_aniseedscribe: CardData = CardData.new("card_aniseedscribe")
+	card_aniseedscribe.card_name = "aniseed Scribe"
+	card_aniseedscribe.card_color_id = "color_{0}".format([color])
+	card_aniseedscribe.card_texture_path = "external/sprites/cards/aniseed/08_aniseedscribe.png"
+	card_aniseedscribe.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
+	card_aniseedscribe.card_description = "Draw [draw_count]. If discard pile is empty, gain 1 Insight."
+	card_aniseedscribe.card_type = CardData.CARD_TYPES.SKILL
+	card_aniseedscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_aniseedscribe.card_requires_target = false
+	card_aniseedscribe.card_energy_cost = 1
+	card_aniseedscribe.card_values = {"card_influence":1,"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":1}
+	card_aniseedscribe.card_upgrade_value_improvements = {"number_of_cards": 1}
+	card_aniseedscribe.card_play_actions = [
 		{
 		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"pick_played_card": true,
@@ -5220,7 +5273,7 @@ func add_cards_black() -> void:
 			}}]
 			}
 		}]
-	card_anisseedscribe.card_end_of_turn_actions = [
+	card_aniseedscribe.card_end_of_turn_actions = [
 		{
 			Scripts.ACTION_VALIDATOR: {
 			"validator_data":
@@ -5254,12 +5307,13 @@ func add_cards_black() -> void:
 				}
 		}
 	]
-	Global.register_rod(card_anisseedscribe)
+	Global.register_rod(card_aniseedscribe)
 	
 	var card_peddlerveteran: CardData = CardData.new("card_peddlerveteran")
 	card_peddlerveteran.card_name = "Peddler Veteran"
 	card_peddlerveteran.card_color_id = "color_{0}".format([color])
-	card_peddlerveteran.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_peddlerveteran.card_texture_path = "external/sprites/cards/aniseed/09_peddlerveteran.png"
+	card_peddlerveteran.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_peddlerveteran.card_description = "Gain [money_amount] Money. Refresh Shop."
 	card_peddlerveteran.card_type = CardData.CARD_TYPES.SKILL
 	card_peddlerveteran.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5316,7 +5370,8 @@ func add_cards_black() -> void:
 	var card_intrepidsailor: CardData = CardData.new("card_intrepidsailor")
 	card_intrepidsailor.card_name = "Intrepid Sailor"
 	card_intrepidsailor.card_color_id = "color_{0}".format([color])
-	card_intrepidsailor.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_intrepidsailor.card_texture_path = "external/sprites/cards/aniseed/10_intrepidsailor.png"
+	card_intrepidsailor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_intrepidsailor.card_description = "Explore [damage]. Consume 2 Food to Wield [min_card_amount]."
 	card_intrepidsailor.card_type = CardData.CARD_TYPES.ATTACK
 	card_intrepidsailor.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5398,7 +5453,8 @@ func add_cards_black() -> void:
 	var card_keeneyedbuccaneer: CardData = CardData.new("card_keeneyedbuccaneer")
 	card_keeneyedbuccaneer.card_name = "Keen-Eyed Buccaneer"
 	card_keeneyedbuccaneer.card_color_id = "color_{0}".format([color])
-	card_keeneyedbuccaneer.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_keeneyedbuccaneer.card_texture_path = "external/sprites/cards/aniseed/11_keeneyedbuccaneer.png"
+	card_keeneyedbuccaneer.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_keeneyedbuccaneer.card_description = "Shuffle your discard pile into your draw pile. Gain 1 Explore for each Sword in your draw pile."
 	card_keeneyedbuccaneer.card_type = CardData.CARD_TYPES.ATTACK
 	card_keeneyedbuccaneer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5471,18 +5527,19 @@ func add_cards_black() -> void:
 	Global.register_rod(card_keeneyedbuccaneer)
 	
 	
-	var card_anisseedtaxcollector: CardData = CardData.new("card_anisseedtaxcollector")
-	card_anisseedtaxcollector.card_name = "Anisseed Tax Collector"
-	card_anisseedtaxcollector.card_color_id = "color_{0}".format([color])
-	card_anisseedtaxcollector.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_anisseedtaxcollector.card_description = "Inspect [min_number_amount]. Gain 1 Glass for each card Inspected."
-	card_anisseedtaxcollector.card_type = CardData.CARD_TYPES.SKILL
-	card_anisseedtaxcollector.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_anisseedtaxcollector.card_requires_target = false
-	card_anisseedtaxcollector.card_energy_cost = 1
-	card_anisseedtaxcollector.card_values = {"card_influence":1,"min_card_amount":2,"max_card_amount":2}
-	card_anisseedtaxcollector.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
-	card_anisseedtaxcollector.card_play_actions = [
+	var card_aniseedtaxcollector: CardData = CardData.new("card_aniseedtaxcollector")
+	card_aniseedtaxcollector.card_name = "aniseed Tax Collector"
+	card_aniseedtaxcollector.card_color_id = "color_{0}".format([color])
+	card_aniseedtaxcollector.card_texture_path = "external/sprites/cards/aniseed/12_aniseedtaxcollector.png"
+	card_aniseedtaxcollector.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
+	card_aniseedtaxcollector.card_description = "Inspect [min_number_amount]. Gain 1 Glass for each card Inspected."
+	card_aniseedtaxcollector.card_type = CardData.CARD_TYPES.SKILL
+	card_aniseedtaxcollector.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_aniseedtaxcollector.card_requires_target = false
+	card_aniseedtaxcollector.card_energy_cost = 1
+	card_aniseedtaxcollector.card_values = {"card_influence":1,"min_card_amount":2,"max_card_amount":2}
+	card_aniseedtaxcollector.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
+	card_aniseedtaxcollector.card_play_actions = [
 		{
 		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"pick_played_card": true,
@@ -5536,7 +5593,7 @@ func add_cards_black() -> void:
 				}
 		}]}
 		}]
-	card_anisseedtaxcollector.card_end_of_turn_actions = [
+	card_aniseedtaxcollector.card_end_of_turn_actions = [
 		{
 			Scripts.ACTION_VALIDATOR: {
 			"validator_data":
@@ -5570,12 +5627,13 @@ func add_cards_black() -> void:
 				}
 		}
 	]
-	Global.register_rod(card_anisseedtaxcollector)
+	Global.register_rod(card_aniseedtaxcollector)
 
 	var card_peddlerinformant: CardData = CardData.new("card_peddlerinformant")
 	card_peddlerinformant.card_name = "Peddler Informant"
 	card_peddlerinformant.card_color_id = "color_{0}".format([color])
-	card_peddlerinformant.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_peddlerinformant.card_texture_path = "external/sprites/cards/aniseed/card_peddlerinformant.png"
+	card_peddlerinformant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_peddlerinformant.card_description = "Upgrade 2 cards."
 	card_peddlerinformant.card_type = CardData.CARD_TYPES.SKILL
 	card_peddlerinformant.card_rarity = CardData.CARD_RARITIES.RARE
@@ -5654,7 +5712,8 @@ func add_cards_black() -> void:
 	var card_taxfarmer: CardData = CardData.new("card_taxfarmer")
 	card_taxfarmer.card_name = "Tax Farmer"
 	card_taxfarmer.card_color_id = "color_{0}".format([color])
-	card_taxfarmer.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_taxfarmer.card_texture_path = "external/sprites/cards/aniseed/14_taxfarmer.png"
+	card_taxfarmer.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_taxfarmer.card_description = "Gain 1 money for every 5 cards in draw pile. ([money_amount] Money)."
 	card_taxfarmer.card_type = CardData.CARD_TYPES.SKILL
 	card_taxfarmer.card_rarity = CardData.CARD_RARITIES.RARE
@@ -5711,7 +5770,8 @@ func add_cards_black() -> void:
 	var card_swashbucklingchamp: CardData = CardData.new("card_swashbucklingchamp")
 	card_swashbucklingchamp.card_name = "Swashbuckling Champ"
 	card_swashbucklingchamp.card_color_id = "color_{0}".format([color])
-	card_swashbucklingchamp.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_swashbucklingchamp.card_texture_path = "external/sprites/cards/aniseed/15_swashbucklingchamp.png"
+	card_swashbucklingchamp.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_swashbucklingchamp.card_description = "Wield [min_card_amount]. Improve wielded cards."
 	card_swashbucklingchamp.card_type = CardData.CARD_TYPES.SKILL
 	card_swashbucklingchamp.card_rarity = CardData.CARD_RARITIES.RARE
@@ -5787,7 +5847,8 @@ func add_cards_green() -> void:
 	var card_cofferskeeper: CardData = CardData.new("card_cofferskeeper")
 	card_cofferskeeper.card_name = "Coffers Keeper"
 	card_cofferskeeper.card_color_id = "color_{0}".format([color])
-	card_cofferskeeper.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_cofferskeeper.card_texture_path = "external/sprites/cards/jade/01_cofferskeeper.png"
+	card_cofferskeeper.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_cofferskeeper.card_description = "Gain [ore_amount] Ore, [money_amount] Money, [food_amount] Food [min_card_amount]."
 	card_cofferskeeper.card_type = CardData.CARD_TYPES.SKILL
 	card_cofferskeeper.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5850,7 +5911,8 @@ func add_cards_green() -> void:
 	var card_youngmentor: CardData = CardData.new("card_youngmentor")
 	card_youngmentor.card_name = "Young Mentor"
 	card_youngmentor.card_color_id = "color_{0}".format([color])
-	card_youngmentor.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_youngmentor.card_texture_path = "external/sprites/cards/jade/02_youngmentor.png"
+	card_youngmentor.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_youngmentor.card_description = "Create [number_of_cards] Fish, Discard up to 2 cards."
 	card_youngmentor.card_type = CardData.CARD_TYPES.SKILL
 	card_youngmentor.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5920,7 +5982,8 @@ func add_cards_green() -> void:
 	var card_luckfinder: CardData = CardData.new("card_luckfinder")
 	card_luckfinder.card_name = "Luck Finder"
 	card_luckfinder.card_color_id = "color_{0}".format([color])
-	card_luckfinder.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_luckfinder.card_texture_path = "external/sprites/cards/jade/luckfinder.png"
+	card_luckfinder.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_luckfinder.card_description = "Consume 2 Ore to Fertilise all Grains in deck. If not played, add [number_of_cards] Grain."
 	card_luckfinder.card_type = CardData.CARD_TYPES.SKILL
 	card_luckfinder.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6002,7 +6065,8 @@ func add_cards_green() -> void:
 	var card_greeninformant: CardData = CardData.new("card_greeninformant")
 	card_greeninformant.card_name = "Green Informant"
 	card_greeninformant.card_color_id = "color_{0}".format([color])
-	card_greeninformant.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_greeninformant.card_texture_path = "external/sprites/cards/jade/04_greeninformant.png"
+	card_greeninformant.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_greeninformant.card_description = "Does nothing but gain [card_influence] influence when played. When discarded, lose 5 Influence to gain [insight_amount] Insight."
 	card_greeninformant.card_type = CardData.CARD_TYPES.SKILL
 	card_greeninformant.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6064,7 +6128,8 @@ func add_cards_green() -> void:
 	var card_goldenconscript: CardData = CardData.new("card_goldenconscript")
 	card_goldenconscript.card_name = "Golden Conscript"
 	card_goldenconscript.card_color_id = "color_{0}".format([color])
-	card_goldenconscript.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_goldenconscript.card_texture_path = "external/sprites/cards/jade/05_goldenconscript.png"
+	card_goldenconscript.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_goldenconscript.card_description = "Draw [draw_count], Explore [damage]."
 	card_goldenconscript.card_type = CardData.CARD_TYPES.ATTACK
 	card_goldenconscript.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6122,7 +6187,8 @@ func add_cards_green() -> void:
 	var card_militantoutsourcer: CardData = CardData.new("card_militantoutsourcer")
 	card_militantoutsourcer.card_name = "Militant Outsourcer"
 	card_militantoutsourcer.card_color_id = "color_{0}".format([color])
-	card_militantoutsourcer.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_militantoutsourcer.card_texture_path = "external/sprites/cards/jade/06_militantoutsourcer.png"
+	card_militantoutsourcer.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_militantoutsourcer.card_description = "Explore [damage]. Return 1 card from your discard pile to your hand."
 	card_militantoutsourcer.card_type = CardData.CARD_TYPES.ATTACK
 	card_militantoutsourcer.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6189,7 +6255,8 @@ func add_cards_green() -> void:
 	var card_facetrecaster: CardData = CardData.new("card_facetrecaster")
 	card_facetrecaster.card_name = "Facet Recaster"
 	card_facetrecaster.card_color_id = "color_{0}".format([color])
-	card_facetrecaster.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_facetrecaster.card_texture_path = "external/sprites/cards/jade/07_facetrecaster.png"
+	card_facetrecaster.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_facetrecaster.card_description = "Add [number_of_cards] Grain to your draw_pile."
 	card_facetrecaster.card_type = CardData.CARD_TYPES.SKILL
 	card_facetrecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6252,7 +6319,8 @@ func add_cards_green() -> void:
 	var card_shockrider: CardData = CardData.new("card_shockrider")
 	card_shockrider.card_name = "Shock Rider"
 	card_shockrider.card_color_id = "color_{0}".format([color])
-	card_shockrider.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_shockrider.card_texture_path = "external/sprites/cards/jade/08_shockrider.png"
+	card_shockrider.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_shockrider.card_description = "Explore [damage]. Consume 2 Food to Wield 2."
 	card_shockrider.card_type = CardData.CARD_TYPES.ATTACK
 	card_shockrider.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6326,7 +6394,8 @@ func add_cards_green() -> void:
 	var card_everymanleader: CardData = CardData.new("card_everymanleader")
 	card_everymanleader.card_name = "Everyman Leader"
 	card_everymanleader.card_color_id = "color_{0}".format([color])
-	card_everymanleader.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_everymanleader.card_texture_path = "external/sprites/cards/jade/09_everymanleader.png"
+	card_everymanleader.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_everymanleader.card_description = "Appease twice [min_card_amount] cards in discard pile. Return them to your hand."
 	card_everymanleader.card_type = CardData.CARD_TYPES.SKILL
 	card_everymanleader.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6395,7 +6464,8 @@ func add_cards_green() -> void:
 	var card_inspiredgossipmonger: CardData = CardData.new("card_inspiredgossipmonger")
 	card_inspiredgossipmonger.card_name = "Inspired Gossipmonger"
 	card_inspiredgossipmonger.card_color_id = "color_{0}".format([color])
-	card_inspiredgossipmonger.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_inspiredgossipmonger.card_texture_path = "external/sprites/cards/jade/10_inspiredgossipmonger.png"
+	card_inspiredgossipmonger.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_inspiredgossipmonger.card_description = "Rattle all cards in draw pile to gain [insight_amount] Insight. Do this only if draw pile is at least [comparison_value]."
 	card_inspiredgossipmonger.card_type = CardData.CARD_TYPES.SKILL
 	card_inspiredgossipmonger.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6478,7 +6548,8 @@ func add_cards_green() -> void:
 	var card_wizenedforager: CardData = CardData.new("card_wizenedforager")
 	card_wizenedforager.card_name = "Wizened Forager"
 	card_wizenedforager.card_color_id = "color_{0}".format([color])
-	card_wizenedforager.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_wizenedforager.card_texture_path = "external/sprites/cards/jade/11_wizenedforager.png"
+	card_wizenedforager.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_wizenedforager.card_description = "Create 3 Grain in discard pile. When discarded, create [number_of_cards] Fish in discard pile instead."
 	card_wizenedforager.card_type = CardData.CARD_TYPES.SKILL
 	card_wizenedforager.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6548,7 +6619,8 @@ func add_cards_green() -> void:
 	var card_hoardingstowaway: CardData = CardData.new("card_hoardingstowaway")
 	card_hoardingstowaway.card_name = "Hoarding Stowaway"
 	card_hoardingstowaway.card_color_id = "color_{0}".format([color])
-	card_hoardingstowaway.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_hoardingstowaway.card_texture_path = "external/sprites/cards/jade/12_hoardingstowaway.png"
+	card_hoardingstowaway.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_hoardingstowaway.card_description = "Consume [ore_amount] Ore to gain 2 Insight."
 	card_hoardingstowaway.card_type = CardData.CARD_TYPES.SKILL
 	card_hoardingstowaway.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6613,7 +6685,8 @@ func add_cards_green() -> void:
 	var card_supremerecaster: CardData = CardData.new("card_supremerecaster")
 	card_supremerecaster.card_name = "Supreme Recaster"
 	card_supremerecaster.card_color_id = "color_{0}".format([color])
-	card_supremerecaster.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_supremerecaster.card_texture_path = "external/sprites/cards/jade/13_supremerecaster.png"
+	card_supremerecaster.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_supremerecaster.card_description = "Consume 1 Grain and 1 Fish to Gain 2 Delicacies."
 	card_supremerecaster.card_type = CardData.CARD_TYPES.SKILL
 	card_supremerecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6679,7 +6752,8 @@ func add_cards_green() -> void:
 	var card_villagehero: CardData = CardData.new("card_villagehero")
 	card_villagehero.card_name = "Supreme Recaster"
 	card_villagehero.card_color_id = "color_{0}".format([color])
-	card_villagehero.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_villagehero.card_texture_path = "external/sprites/cards/jade/villagehero.png"
+	card_villagehero.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_villagehero.card_description = "Gain 1 Explore for each Faction card."
 	card_villagehero.card_type = CardData.CARD_TYPES.ATTACK
 	card_villagehero.card_rarity = CardData.CARD_RARITIES.RARE
@@ -6751,7 +6825,8 @@ func add_cards_green() -> void:
 	var card_solverofriddles: CardData = CardData.new("card_solverofriddles")
 	card_solverofriddles.card_name = "Supreme Recaster"
 	card_solverofriddles.card_color_id = "color_{0}".format([color])
-	card_solverofriddles.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_solverofriddles.card_texture_path = "external/sprites/cards/jade/15_solverofriddles.png"
+	card_solverofriddles.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_solverofriddles.card_description = "Does nothing and is shuffled into deck. When it is drawn, loses 1 influence to appease others. When it is played with 5 influence, loses 3 influence to gain 2 Food, 2 Ore, 2 Money, 2 Insight"
 	card_solverofriddles.card_type = CardData.CARD_TYPES.SKILL
 	card_solverofriddles.card_rarity = CardData.CARD_RARITIES.RARE

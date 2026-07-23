@@ -102,13 +102,21 @@ offset_right = 140.0
 offset_bottom = 180.0
 color = Color(0.207843, 0.207843, 0.207843, 1)
 
+[node name="TextureBackground" type="TextureRect" parent="Pivot/CardVisual" unique_id=2057717682]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 1.0
+offset_right = 144.0
+offset_bottom = 185.0
+expand_mode = 1
+
 [node name="CardDescription" type="RichTextLabel" parent="Pivot/CardVisual" unique_id=1982061738]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 8.0
-offset_top = 112.0
+offset_top = 122.0
 offset_right = 136.0
-offset_bottom = 184.0
+offset_bottom = 194.0
 theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
 text = "If you can see this something is wrong"
@@ -180,25 +188,25 @@ expand_mode = 1
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -16.0
-offset_top = -4.0
+offset_top = -8.0
 offset_right = 112.0
-offset_bottom = 12.0
-theme_override_font_sizes/normal_font_size = 11
+offset_bottom = 24.0
+theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
 text = "Card Name"
 scroll_active = false
 script = ExtResource("3_8gkbw")
 _max_size = 12
-_current_font_size = 11
+_current_font_size = 12
 _editor_defaults_set = true
 
 [node name="CardType" type="Label" parent="Pivot/CardVisual" unique_id=1220224152]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 8.0
-offset_top = 95.0
+offset_top = 105.0
 offset_right = 136.0
-offset_bottom = 112.0
+offset_bottom = 122.0
 theme_override_constants/line_spacing = -3
 theme_override_font_sizes/font_size = 12
 text = "Card Type"

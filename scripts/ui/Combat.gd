@@ -180,7 +180,7 @@ func _on_player_insight_changed(_delta: int = 0):
 	insight_label.text = "INSIGHT%s" % Global.player_data.player_insight
 	
 func _on_player_food_changed(_delta: int = 0):
-	food_label.text = "FOOD%s / %s" % [Global.player_data.player_food, HandManager.player_draw.size()]
+	food_label.text = "FOOD%s , %s / %s" % [Global.player_data.player_food, HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size(), Global.player_data.player_size]
 
 ### Deck Buttons
 
@@ -474,8 +474,8 @@ func _on_player_turn_started():
 		shop_data.shop_is_visited = false
 		shop_overlay.populate_shop()
 		
-		var current_event = Global.get_player_event_data()
-		enemy_container.populate_enemies_from_event(current_event)
+		#var current_event = Global.get_player_event_data()
+		#enemy_container.populate_enemies_from_event(current_event)
 	# unlock and update hand
 	HandManager.set_disable_hand(false)
 	hand.update_hand_card_display()

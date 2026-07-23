@@ -6,6 +6,7 @@ var parent_card: CardData = null	# the parent card in the player's true deck tha
 @export var card_name: String = ""
 @export var card_description: String = ""
 @export var card_texture_path: String = ""
+@export var texture_bg_path: String = ""
 @export var card_keyword_object_ids: Array[String] = [] # keywords (mechanics with tooltips) displayed when this card is hovered over
 @export var card_color_id: String = "color_green"
 
