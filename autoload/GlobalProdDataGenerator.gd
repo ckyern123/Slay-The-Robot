@@ -2327,7 +2327,7 @@ func add_enemies() -> void:
 	])
 	enemy_1.add_intent_state([
 	EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-	EnemyIntentData.new("intent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+	EnemyIntentData.new("intrtent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
 	])
 		
 	var _enemy_1_anim: AnimationData = enemy_1.add_standard_animations(
@@ -3484,7 +3484,7 @@ func add_cards_trade() -> void:
 	var card_trade1: CardData = CardData.new("card_trade1")
 	card_trade1.card_name = "Trade1"
 	card_trade1.card_color_id = "color_{0}".format([color])
-	card_trade1.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_trade1.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade1.card_description = "Lose [ore_amount] Ore. Gain [money_amount] Money."
 	card_trade1.card_type = CardData.CARD_TYPES.SKILL
 	card_trade1.card_energy_cost = 0
@@ -3508,7 +3508,7 @@ func add_cards_trade() -> void:
 	var card_trade2: CardData = CardData.new("card_trade2")
 	card_trade2.card_name = "Trade2"
 	card_trade2.card_color_id = "color_{0}".format([color])
-	card_trade2.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_trade2.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade2.card_description = "Lose [food_amount] Food. Gain [money_amount] Money."
 	card_trade2.card_type = CardData.CARD_TYPES.SKILL
 	card_trade2.card_energy_cost = 0
@@ -3532,7 +3532,7 @@ func add_cards_trade() -> void:
 	var card_trade3: CardData = CardData.new("card_trade3")
 	card_trade3.card_name = "Trade3"
 	card_trade3.card_color_id = "color_{0}".format([color])
-	card_trade3.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_trade3.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade3.card_description = "Lose [insight_amount] Insight. Gain [money_amount] Money."
 	card_trade3.card_type = CardData.CARD_TYPES.SKILL
 	card_trade3.card_energy_cost = 0
@@ -4729,7 +4729,7 @@ func add_cards_black() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_rock"}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock"]}}],
 				"action_data": [{
 				Scripts.ACTION_VALIDATOR:
 				{
@@ -5029,7 +5029,7 @@ func add_cards_black() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_rock"}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock"]}}],
 				"action_data": [{
 				Scripts.ACTION_VALIDATOR:
 				{
@@ -5480,7 +5480,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.DRAW_PILE,
 			"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-			"validator_data":[{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_sword"}}],
+			"validator_data":[{Scripts.VALIDATOR_CARD_ID: {"card_ids": ["card_sword"]}}],
 			"action_data": [
 				{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
 				"multiplied_values": ["damage"],
@@ -5553,7 +5553,7 @@ func add_cards_black() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_rock"}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_ids": ["card_rock"]}}],
 				"action_data": [{
 				Scripts.ACTION_VALIDATOR:
 				{
@@ -5793,7 +5793,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to wield. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_sword"}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_ids": ["card_sword"]}}],
 			"action_data": [{
 			Scripts.ACTION_PLAY_CARDS: {}},
 			{
@@ -6011,7 +6011,7 @@ func add_cards_green() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DRAW_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"created_card_object_id": "card_grain"}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_grain"]}}],
 				"action_data": [{Scripts.ACTION_IMPROVE_CARD_VALUES: {
 				"card_value_improvements":{"food_amount":1},
 				"time_delay": 0.1,
@@ -6823,9 +6823,9 @@ func add_cards_green() -> void:
 	Global.register_rod(card_villagehero)
 	
 	var card_solverofriddles: CardData = CardData.new("card_solverofriddles")
-	card_solverofriddles.card_name = "Supreme Recaster"
+	card_solverofriddles.card_name = "Solver of Riddles"
 	card_solverofriddles.card_color_id = "color_{0}".format([color])
-	card_solverofriddles.card_texture_path = "external/sprites/cards/jade/15_solverofriddles.png"
+	card_solverofriddles.card_texture_path = "external/sprites/cards/cengkih/15_solverofriddles.png"
 	card_solverofriddles.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_solverofriddles.card_description = "Does nothing and is shuffled into deck. When it is drawn, loses 1 influence to appease others. When it is played with 5 influence, loses 3 influence to gain 2 Food, 2 Ore, 2 Money, 2 Insight"
 	card_solverofriddles.card_type = CardData.CARD_TYPES.SKILL
@@ -6913,8 +6913,434 @@ func add_cards_green() -> void:
 	Global.register_rod(card_solverofriddles)
 func add_cards_gold() -> void:
 	var color: String = "gold"
+	
+	var card_spiceguard: CardData = CardData.new("card_spiceguard")
+	card_spiceguard.card_name = "Spice Guard"
+	card_spiceguard.card_color_id = "color_{0}".format([color])
+	card_spiceguard.card_texture_path = "external/sprites/cards/cengkih/01_spiceguard.png"
+	card_spiceguard.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_spiceguard.card_description = "Gain 3 Food. Rattle 2 random cards in discard pile."
+	card_spiceguard.card_type = CardData.CARD_TYPES.SKILL
+	card_spiceguard.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_spiceguard.card_requires_target = false
+	card_spiceguard.card_energy_cost = 1
+	card_spiceguard.card_values = {"card_influence":1, "food_amount": 3}
+	card_spiceguard.card_upgrade_value_improvements = {"food_amount": 1}
+	card_spiceguard.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+			Scripts.ACTION_ADD_FOOD: {
+			}
+		},
+		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":2,
+			"max_card_amount":2,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.DISCARD_PILE,
+			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"card_influence":-1,
+			"time_delay": 0.1,
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}}]
+		}
+		}
+	]
+	card_spiceguard.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
+	Global.register_rod(card_spiceguard)
 
-
+	
+	var card_cengkihemissary: CardData = CardData.new("card_cengkihemissary")
+	card_cengkihemissary.card_name = "Cengkih Emissary"
+	card_cengkihemissary.card_color_id = "color_{0}".format([color])
+	card_cengkihemissary.card_texture_path = "external/sprites/cards/cengkih/02_cengkihemissary.png"
+	card_cengkihemissary.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_cengkihemissary.card_description = "Appease 4 random cards in discard pile."
+	card_cengkihemissary.card_type = CardData.CARD_TYPES.SKILL
+	card_cengkihemissary.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_cengkihemissary.card_requires_target = false
+	card_cengkihemissary.card_energy_cost = 1
+	card_cengkihemissary.card_values = {"card_influence":1}
+	card_cengkihemissary.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
+	card_cengkihemissary.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}
+		},
+		{
+			Scripts.ACTION_ADD_FOOD: {
+			}
+		},
+		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":4,
+			"max_card_amount":4,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.DISCARD_PILE,
+			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"card_influence":1,
+			"time_delay": 0.1,
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		}}]
+		}
+		}
+	]
+	card_cengkihemissary.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
+	Global.register_rod(card_cengkihemissary)
+	
+	var card_happysailor: CardData = CardData.new("card_happysailor")
+	card_happysailor.card_name = "Happy Sailor"
+	card_happysailor.card_color_id = "color_{0}".format([color])
+	card_happysailor.card_texture_path = "external/sprites/cards/cengkih/03_happysailor.png"
+	card_happysailor.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_happysailor.card_description = "Explore [damage]. Draw [draw_count]."
+	card_happysailor.card_type = CardData.CARD_TYPES.ATTACK
+	card_happysailor.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_happysailor.card_requires_target = true
+	card_happysailor.card_energy_cost = 1
+	card_happysailor.card_values = {"card_influence":1,"damage": 2, "number_of_attacks": 1, "draw_count":1}
+	card_happysailor.card_upgrade_value_improvements = {"damage": 1,"draw_count": 1}
+	card_happysailor.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		},
+		},
+		{Scripts.ACTION_DRAW_GENERATOR:{}},
+		{
+		Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5},
+		},
+	]
+	card_happysailor.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
+	Global.register_rod(card_happysailor)
+	
+	var card_shucker: CardData = CardData.new("card_shucker")
+	card_shucker.card_name = "Shucker"
+	card_shucker.card_color_id = "color_{0}".format([color])
+	card_shucker.card_texture_path = "external/sprites/cards/cengkih/04_shucker.png"
+	card_shucker.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_shucker.card_description = "Create 1 Fish. Gain [money_amount] Money"
+	card_shucker.card_type = CardData.CARD_TYPES.SKILL
+	card_shucker.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_shucker.card_requires_target = false
+	card_shucker.card_energy_cost = 1
+	card_shucker.card_values = {"card_influence":1,"money_amount":1,"created_card_object_id":"card_fish"}
+	card_shucker.card_upgrade_value_improvements = {"money_amount": 2}
+	card_shucker.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		},
+		},
+		{Scripts.ACTION_ADD_MONEY:{}},
+		{Scripts.CREATE_CARDS: {
+			"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
+		}}
+		]
+	card_shucker.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
+	Global.register_rod(card_shucker)
+	
+	var card_foresttracker: CardData = CardData.new("card_foresttracker")
+	card_foresttracker.card_name = "Forest Tracker"
+	card_foresttracker.card_color_id = "color_{0}".format([color])
+	card_foresttracker.card_texture_path = "external/sprites/cards/cengkih/05_foresttracker.png"
+	card_foresttracker.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_foresttracker.card_description = "Create 1 Grain. If you have 3 or more Insight, Fertilise all Grains in draw pile."
+	card_foresttracker.card_type = CardData.CARD_TYPES.SKILL
+	card_foresttracker.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_foresttracker.card_requires_target = false
+	card_foresttracker.card_energy_cost = 1
+	card_foresttracker.card_values = {"card_influence":1,"created_card_object_id":"card_grain","number_of_cards":1}
+	card_foresttracker.card_upgrade_value_improvements = {"number_of_cards": 1}
+	card_foresttracker.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		},
+		},
+		{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_INSIGHT:{"insight_amount":3}}]
+			,"action_data":[{Scripts.ACTION_PICK_CARDS:
+				{
+					"min_card_amount":99,
+					"max_card_amount":99,
+					"min_cards_are_required_for_action": false,
+					"random_selection": true,
+					"card_pick_type": HandManager.DRAW_PILE,
+					"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
+					"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"cards_object_ids": ["card_grain"]}}],
+					"time_delay": 0.1,
+					"pick_played_card": true,
+					"modify_parent_card": false,
+					"action_data":[	{
+						Scripts.ACTION_IMPROVE_CARD_VALUES: {
+						"card_value_improvements": {"food_amount": 1},
+						"time_delay": 0.1,
+						"pick_played_card": true,
+						"modify_parent_card": false,
+						}
+				}]
+				}}]}},
+		{Scripts.CREATE_CARDS: {
+			"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
+		}}
+		]
+	card_foresttracker.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
+	Global.register_rod(card_foresttracker)
+	
+	var card_flintlockschooner: CardData = CardData.new("card_flintlockschooner")
+	card_flintlockschooner.card_name = "Flintlock Schooner"
+	card_flintlockschooner.card_color_id = "color_{0}".format([color])
+	card_flintlockschooner.card_texture_path = "external/sprites/cards/cengkih/06_flintlockschooner.png"
+	card_flintlockschooner.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_flintlockschooner.card_description = "Explore [damage]. Wield [number_of_cards]."
+	card_flintlockschooner.card_type = CardData.CARD_TYPES.ATTACK
+	card_flintlockschooner.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_flintlockschooner.card_requires_target = true
+	card_flintlockschooner.card_energy_cost = 1
+	card_flintlockschooner.card_values = {"card_influence":1,"damage": 3, "number_of_attacks": 1, "min_card_amount":2,"max_card_amount":2}
+	card_flintlockschooner.card_upgrade_value_improvements = {"min_card_amount":2,"max_card_amount":2}
+	card_flintlockschooner.card_play_actions = [
+		{
+		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+			"pick_played_card": true,
+			"modify_parent_card": false,
+		},
+		},
+		{
+				Scripts.ACTION_PICK_CARDS: {
+					"min_cards_are_required_for_action": false,
+					"random_selection": true,
+					"card_pick_type": HandManager.DISCARD_PILE,
+					"card_pick_text": "Choose up to {0} card(s) to return. {1} cards selected",
+					"validator_data":[{Scripts.VALIDATOR_CARD_ID:[{"card_object_ids":["card_sword"]}]}],
+					"action_data": [
+					{Scripts.ACTION_PLAY_CARDS:{}}]
+					}
+				},
+		{
+		Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5},
+		},
+	]
+	card_flintlockschooner.card_end_of_turn_actions = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES: 
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data": 
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		{
+			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+				{
+					"pick_played_card": true,
+					"card_influence": -1
+				}
+		}
+	]
+	Global.register_rod(card_flintlockschooner)
 #region Card Packs
 
 func add_card_packs() -> void:
