@@ -12,7 +12,7 @@ func _ready():
 
 func populate_enemies_from_event(event_data: EventData = Global.get_player_event_data()):
 	# populates initial enemies from an event
-	#clear_enemies()
+	clear_enemies()
 	
 	# determine which container to use
 	var enemy_container: Control = automatic_enemy_container

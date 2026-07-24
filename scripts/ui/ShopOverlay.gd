@@ -140,7 +140,16 @@ func clear_shop():
 		child.queue_free()
 	for child in trade_container.get_children():
 		child.queue_free()
-
+	var shop_data: ShopData = Global.get_shop_at_player_location()
+	if shop_data != null and shop_data.refresh_shop == true:
+		#for i in shop_data.shop_cards:
+		#	i.queue_free()
+		shop_data.shop_cards.clear()
+		#for j in shop_data.shop_trade:
+		#	j.queue_free()
+		shop_data.shop_trade.clear()
+		shop_data.refresh_shop = false
+			# ensure the shop is populated
 #func _on_combat_started(_event_id: String):
 #	visible = false
 #	clear_shop()

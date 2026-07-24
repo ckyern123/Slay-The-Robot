@@ -4,6 +4,7 @@ extends SerializableData
 class_name ShopData
 
 @export var shop_is_visited: bool = false	# determines whether to perform actions for the first time
+@export var refresh_shop: bool = false
 
 ## The location this shop belongs to. Used to validate if the shop actually belongs to the player's
 ## current location
@@ -58,7 +59,7 @@ func visit_shop() -> void:
 		
 		### Generate Items
 		# generates shop cards
-		var generated_cards: Array[CardData] = Random.generate_rarity_weighted_card_draft(rng_shop, ShopData.GENERATED_CARD_COUNT - shop_cards.size(), Random.CARD_DRAFT_TABLE_TYPES.SHOP, false)
+		var generated_cards: Array[CardData] = Random.generate_rarity_weighted_card_draft(rng_shop, ShopData.GENERATED_CARD_COUNT, Random.CARD_DRAFT_TABLE_TYPES.SHOP, false)
 		### Generate Items
 		# generates shop cards
 		var generated_trade: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_grey",ShopData.GENERATED_CARD_COUNT - shop_trade.size())

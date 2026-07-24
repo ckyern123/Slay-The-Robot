@@ -107,8 +107,12 @@ func update_card_display(selected_enemy: Enemy = null) -> void:
 	_update_energy_display(selected_enemy)
 	#var card_play_intercepted_action_results: Dictionary[String, Variant] = card_data.get_card_play_intercepted_action_results(selected_enemy)
 	#var card_influence: int = card_play_intercepted_action_results.get("card_influence", card_data.get_card_influence())
-	var card_influence = card_data.card_influence
-	card_influence_label.text = str(card_influence)
+	if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
+		var card_durability = card_data.card_durability
+		card_influence_label.text = str(card_durability)
+	else:
+		var card_influence = card_data.card_influence
+		card_influence_label.text = str(card_influence)
 	
 ## Specifically updates the energy cost display of the card. This is seperated from  because it
 ## can be messed with depending on interception and card play validation

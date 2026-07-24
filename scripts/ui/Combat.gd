@@ -31,6 +31,8 @@ extends Control
 @onready var background_button: TextureButton = %BackgroundButton
 
 @onready var end_turn_button: Button = $EndTurnButton
+@onready var combat_end_button: TextureButton = $CombatEndButton
+
 var end_turn_object: CombatEndTurn = null
 
 func _ready():
@@ -54,7 +56,7 @@ func _ready():
 	Signals.end_turn_requested.connect(_on_end_turn_requested)
 	
 	end_turn_button.button_up.connect(_on_end_turn_button_up)
-	
+	combat_end_button.button_up.connect(_on_combat_end_button_up)
 	update_combat_display()
 	player.update_player_display(Global.player_data)
 	
@@ -198,7 +200,10 @@ func _on_exhaust_pile_button_up():
 func _on_enemy_killed(enemy: Enemy):
 	var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(enemy, null, [], enemy.enemy_data.enemy_actions_on_death, null)
 	ActionHandler.add_actions(generated_actions)
-	
+	if ActionHandler.actions_being_performed:
+		await ActionHandler.actions_ended
+	if (combat_end_button.visible == false):
+		combat_end_button.visible = true
 	
 func _on_enemy_death_animation_finished(_enemy: Enemy):
 	# determine if all non minion enemies killed and end combat
@@ -214,7 +219,7 @@ func _on_enemy_death_animation_finished(_enemy: Enemy):
 		# wait for actions to finish and end combat
 		if ActionHandler.actions_being_performed:
 			await ActionHandler.actions_ended
-		#end_combat()
+		end_combat()
 
 func _on_combat_started(event_id: String):
 	var current_event: EventData = null
@@ -472,6 +477,7 @@ func _on_player_turn_started():
 	if (StatsHandler.get_turn_count() % 5 == 0):
 		var shop_data: ShopData = Global.get_shop_at_player_location()
 		shop_data.shop_is_visited = false
+		shop_data.refresh_shop = true
 		shop_overlay.populate_shop()
 		
 		#var current_event = Global.get_player_event_data()
@@ -530,6 +536,10 @@ func _on_enemy_turn_ended():
 func _on_end_turn_button_up():
 	queue_end_turn(CombatEndTurn.END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS)
 
+func _on_combat_end_button_up():
+	queue_end_turn(CombatEndTurn.END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS)
+	end_combat()
+	
 func _on_end_turn_requested(immediacy: int):
 	queue_end_turn(immediacy)
 
@@ -567,6 +577,7 @@ func _on_run_started():
 func _on_run_ended():
 	visible = false
 	_reset_turn_end_queue()
+	combat_end_button.visible = false
 
 func start_combat() -> void:
 	_reset_turn_end_queue()
@@ -576,13 +587,14 @@ func end_combat() -> void:
 	var event_data: EventData = Global.get_player_event_data()
 	if event_data != null:
 		# perform event initial actions
-		#var event_post_combat_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], event_data.event_post_combat_actions, null)
-		#ActionHandler.add_actions(event_post_combat_actions)
+		var event_post_combat_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], event_data.event_post_combat_actions, null)
+		ActionHandler.add_actions(event_post_combat_actions)
 
 		if ActionHandler.actions_being_performed:
 			await ActionHandler.actions_ended
 	
 	_reset_turn_end_queue()
+	combat_end_button.visible = false
 	Signals.combat_ended.emit()
 
 func end_turn():
