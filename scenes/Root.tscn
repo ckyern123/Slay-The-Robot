@@ -1741,7 +1741,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1886,12 +1885,11 @@ script = ExtResource("5_a7j3r")
 
 [node name="Player" parent="RunScreen/Combat" unique_id=524412048 instance=ExtResource("5_7crh0")]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
-offset_left = 200.0
-offset_top = 336.0
-offset_right = 400.0
-offset_bottom = 480.0
+offset_left = 59.0
+offset_top = 121.0
+offset_right = 259.0
+offset_bottom = 282.0
 
 [node name="EnemyContainer" type="Control" parent="RunScreen/Combat" unique_id=754159237]
 anchors_preset = 0

@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://c0sxkaemtqb5x"]
+[gd_scene format=3 uid="uid://c0sxkaemtqb5x"]
 
 [ext_resource type="Script" uid="uid://bu5jx208ipx8i" path="res://scripts/combatants/Player.gd" id="1_hkgmy"]
 [ext_resource type="AnimationLibrary" uid="uid://c6xlbg8p1y2er" path="res://animations/Player.res" id="2_6d0fj"]
 [ext_resource type="AnimationLibrary" uid="uid://dvbwuh87t2tha" path="res://animations/Combatant.res" id="2_p0uf2"]
-[ext_resource type="Texture2D" uid="uid://nh32y87hcke5" path="res://icon.svg" id="2_snepv"]
+[ext_resource type="Texture2D" uid="uid://d33u8m744fh03" path="res://icon.svg" id="2_snepv"]
 [ext_resource type="PackedScene" uid="uid://b0qk0vn81d0kp" path="res://scenes/combatants/LayeredHealthBar.tscn" id="3_ef7si"]
 [ext_resource type="Texture2D" uid="uid://dw4k1k81ap581" path="res://sprites/missing_texture.png" id="4_m3o5b"]
 [ext_resource type="PackedScene" uid="uid://d3ay0q2ywlmkj" path="res://scenes/combatants/SpeechBubble.tscn" id="6_jg3sr"]
@@ -18,7 +18,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7in10")
 }],
-"loop": true,
+"loop": 1,
 "name": &"attack",
 "speed": 5.0
 }, {
@@ -26,7 +26,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7in10")
 }],
-"loop": true,
+"loop": 1,
 "name": &"death",
 "speed": 5.0
 }, {
@@ -34,12 +34,12 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7in10")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle",
 "speed": 5.0
 }]
 
-[node name="Player" type="Control" groups=["players"]]
+[node name="Player" type="Control" unique_id=1150835586 groups=["players"]]
 custom_minimum_size = Vector2(200, 144)
 layout_mode = 3
 anchors_preset = 0
@@ -47,27 +47,26 @@ offset_right = 200.0
 offset_bottom = 144.0
 script = ExtResource("1_hkgmy")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"Combatant": ExtResource("2_p0uf2"),
-&"Player": ExtResource("2_6d0fj")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1510400301]
+libraries/Combatant = ExtResource("2_p0uf2")
+libraries/Player = ExtResource("2_6d0fj")
 
-[node name="Visible" type="Control" parent="."]
+[node name="Visible" type="Control" parent="." unique_id=837606984]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visible"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visible" unique_id=1304224126]
 unique_name_in_owner = true
 position = Vector2(64, 48)
 sprite_frames = SubResource("SpriteFrames_e5l7p")
 animation = &"idle"
 
-[node name="LayeredHealthBar" parent="Visible/AnimatedSprite2D" instance=ExtResource("3_ef7si")]
+[node name="LayeredHealthBar" parent="Visible/AnimatedSprite2D" unique_id=2073839150 instance=ExtResource("3_ef7si")]
 unique_name_in_owner = true
+visible = false
 
-[node name="SelectionButton" type="Button" parent="Visible/AnimatedSprite2D"]
+[node name="SelectionButton" type="Button" parent="Visible/AnimatedSprite2D" unique_id=1153728447]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 offset_left = -67.0
@@ -75,19 +74,18 @@ offset_top = -64.0
 offset_right = 69.0
 offset_bottom = 64.0
 
-[node name="ImageFadeContainer" type="Node2D" parent="Visible/AnimatedSprite2D"]
+[node name="ImageFadeContainer" type="Node2D" parent="Visible/AnimatedSprite2D" unique_id=1404480979]
 unique_name_in_owner = true
 
-[node name="IncomingDamage" type="Control" parent="Visible"]
+[node name="IncomingDamage" type="Control" parent="Visible" unique_id=866411373]
 visible = false
-layout_mode = 3
 anchors_preset = 0
 offset_left = -40.0
 offset_top = -64.0
 offset_right = 168.0
 offset_bottom = -40.0
 
-[node name="TextureRect" type="TextureRect" parent="Visible/IncomingDamage"]
+[node name="TextureRect" type="TextureRect" parent="Visible/IncomingDamage" unique_id=1531663322]
 layout_mode = 0
 offset_left = 80.0
 offset_top = -16.0
@@ -96,7 +94,7 @@ offset_bottom = 32.0
 texture = ExtResource("2_snepv")
 expand_mode = 1
 
-[node name="IncomingDamageAmount" type="Label" parent="Visible/IncomingDamage"]
+[node name="IncomingDamageAmount" type="Label" parent="Visible/IncomingDamage" unique_id=1504986502]
 layout_mode = 0
 offset_left = 104.0
 offset_top = 16.0
@@ -104,17 +102,17 @@ offset_right = 144.0
 offset_bottom = 39.0
 text = "15"
 
-[node name="FadeContainer" type="Node2D" parent="Visible"]
+[node name="FadeContainer" type="Node2D" parent="Visible" unique_id=947886725]
 position = Vector2(64, -96)
 
-[node name="Block" type="Sprite2D" parent="Visible"]
+[node name="Block" type="Sprite2D" parent="Visible" unique_id=1378163627]
 visible = false
 self_modulate = Color(0.188235, 0.188235, 0.188235, 1)
 position = Vector2(128, 88)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_snepv")
 
-[node name="BlockAmount" type="Label" parent="Visible/Block"]
+[node name="BlockAmount" type="Label" parent="Visible/Block" unique_id=1941712708]
 offset_left = -64.0
 offset_top = -64.0
 offset_right = 64.0
@@ -124,7 +122,7 @@ text = "999"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StatusContainer" type="GridContainer" parent="Visible"]
+[node name="StatusContainer" type="GridContainer" parent="Visible" unique_id=2077107685]
 layout_mode = 0
 offset_left = -16.0
 offset_top = 144.0
@@ -132,7 +130,7 @@ offset_right = 24.0
 offset_bottom = 184.0
 columns = 6
 
-[node name="SpeechBubble" parent="Visible" instance=ExtResource("6_jg3sr")]
+[node name="SpeechBubble" parent="Visible" unique_id=1405905900 instance=ExtResource("6_jg3sr")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 152.0
@@ -140,8 +138,7 @@ offset_top = -16.0
 offset_right = 280.0
 offset_bottom = 48.0
 
-[node name="CustomUIContainer" type="Control" parent="Visible"]
-layout_mode = 3
+[node name="CustomUIContainer" type="Control" parent="Visible" unique_id=211154888]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0

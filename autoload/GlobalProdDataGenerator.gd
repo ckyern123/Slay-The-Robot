@@ -10,6 +10,36 @@ var influence_action: Dictionary = 		{
 			"card_influence":1,
 		},
 		}
+
+var durability_action_data: Array[Dictionary] = [
+			# check flag when drawn	
+		{Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES:
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				# exhaust
+				"passed_action_data":
+				[
+					{
+					Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION: {
+						"card_destination": HandManager.EXHAUST_PILE
+						},
+					},
+				]
+			}
+		},
+		{Scripts.ACTION_CHANGE_CARD_DURABILITY:{}},
+	]
+
 var inspect_action: Dictionary = {
 		Scripts.ACTION_PICK_CARDS:
 			{
@@ -55,7 +85,86 @@ var inspect_action: Dictionary = {
 				}
 		}]}
 		}
-		
+
+var cook_action: Dictionary = {
+		Scripts.ACTION_VALIDATOR:{
+			"validator_data": [{Scripts.VALIDATOR_ORE:{ "food_amount": 3}}],
+			"passed_action_data": [
+				{
+				Scripts.ACTION_CREATE_CARDS: {
+					"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DISCARD:{}}]
+					}
+					},
+			{
+				Scripts.ACTION_ADD_FOOD:{"food_amount":-3}
+				}
+				]
+				}
+			}
+			
+var forge_action: Dictionary = {
+		Scripts.ACTION_VALIDATOR:{
+			"validator_data": [{Scripts.VALIDATOR_ORE:{ "ore_amount": 1}}],
+			"passed_action_data": [
+				{
+				Scripts.ACTION_CREATE_CARDS: {
+					"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DISCARD:{}}]
+					}
+					},
+			{
+				Scripts.ACTION_ADD_ORE:{"ore_amount":-1}
+				}
+				]
+				}
+			}
+			
+var weave_action: Dictionary = {
+		Scripts.ACTION_VALIDATOR:{
+			"validator_data": [{Scripts.VALIDATOR_INSIGHT:{ "insight_amount": 1}}],
+			"passed_action_data": [
+				{
+				Scripts.ACTION_CREATE_CARDS: {
+					"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DISCARD:{}}]
+					}
+					},
+			{
+				Scripts.ACTION_ADD_ORE:{"insight_amount":-1}
+				}
+				]
+				}
+			}
+			
+var wield_action: Dictionary = {
+		Scripts.ACTION_PICK_CARDS:
+				{
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
+				"action_data": [{Scripts.ACTION_PLAY_CARDS:{}}]
+		}
+		}
+
+var influence_upgrade_action: Dictionary = {
+	Scripts.ACTION_VALIDATOR:
+	{
+		"validator_data": [{
+			Scripts.VALIDATOR_CARD_PROPERTIES:
+				{
+					"card_property_name": "card_influence",
+					"operator": ">=",
+					"comparison_value": 8,
+					"invert_validation": false,
+				}
+		},{Scripts.VALIDATOR_CARD_UPGRADEABLE:
+			{
+			}}],
+		"action_data": [{
+			Scripts.ACTION_UPGRADE_CARDS: {"pick_played_card": true}
+		}, {Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"pick_played_card":true,"card_infuence":-5}}]
+	}
+	}
 var end_action_data: Array[Dictionary] = [
 		{
 			Scripts.ACTION_VALIDATOR: {
@@ -186,21 +295,25 @@ func add_artifacts() -> void:
 	
 	var artifact_draw_on_combat_start: ArtifactData = ArtifactData.new("artifact_draw_on_combat_start")
 	artifact_draw_on_combat_start.artifact_name = "Artifact Draw on Combat"
-	artifact_draw_on_combat_start.artifact_description = "Draws 2 extra cards on the first turn"
+	artifact_draw_on_combat_start.artifact_description = "Every 3 Crafts you play, draw a card."
 	artifact_draw_on_combat_start.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.UNCOMMON
 	artifact_draw_on_combat_start.artifact_color_id = "color_green"
 	artifact_draw_on_combat_start.artifact_texture_path = "external/sprites/artifacts/artifact_green.png"
-	artifact_draw_on_combat_start.artifact_first_turn_actions = [{Scripts.ACTION_DRAW_GENERATOR: {"draw_count": 2}}]
-	
+	artifact_draw_on_combat_start.artifact_script_path = "res://scripts/artifacts/ArtifactDrawOnPlays.gd"
+	artifact_draw_on_combat_start.artifact_counter_max = 3
+	artifact_draw_on_combat_start.artifact_max_counter_actions = [{Scripts.ACTION_DRAW_GENERATOR:{"draw_count":1}}]
 	Global.register_rod(artifact_draw_on_combat_start)
 	
 	var artifact_energy_on_combat_start: ArtifactData = ArtifactData.new("artifact_energy_on_combat_start")
 	artifact_energy_on_combat_start.artifact_name = "Artifact Energy On Combat Start"
-	artifact_energy_on_combat_start.artifact_description = "Gain 1 energy on the first turn"
+	artifact_energy_on_combat_start.artifact_description = "Gain 1 energy every 3 turns"
 	artifact_energy_on_combat_start.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.UNCOMMON
 	artifact_energy_on_combat_start.artifact_color_id = "color_white"
 	artifact_energy_on_combat_start.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
-	artifact_energy_on_combat_start.artifact_first_turn_actions = [{Scripts.ACTION_ADD_ENERGY: {"energy_amount": 1}}]
+	artifact_energy_on_combat_start.artifact_counter_wraparound = true
+	artifact_energy_on_combat_start.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
+	artifact_energy_on_combat_start.artifact_counter_max = 3
+	artifact_energy_on_combat_start.artifact_max_counter_actions = [{Scripts.ACTION_ADD_ENERGY: {"energy_amount": 1}}]
 	
 	Global.register_rod(artifact_energy_on_combat_start)
 	
@@ -233,6 +346,23 @@ func add_artifacts() -> void:
 		}]
 	
 	Global.register_rod(artifact_block_on_attacks)
+	
+	var artifact_check_scroll: ArtifactData = ArtifactData.new("artifact_check_scroll")
+	artifact_check_scroll.artifact_name = "Artifact Check Scroll"
+	artifact_check_scroll.artifact_description = "Grants 1 Insight after 3 Scroll plays in a turn"
+	artifact_check_scroll.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.COMMON
+	artifact_check_scroll.artifact_color_id = "color_red"
+	artifact_check_scroll.artifact_texture_path = "external/sprites/artifacts/artifact_red.png"
+	artifact_check_scroll.artifact_script_path = "res://scripts/artifacts/ArtifactBlockOnAttacks.gd"
+	artifact_check_scroll.artifact_counter_max = 3
+	artifact_check_scroll.artifact_counter_wraparound = true
+	artifact_check_scroll.artifact_counter_reset_on_turn_start = 0
+	artifact_check_scroll.artifact_counter_reset_on_combat_end = 0
+	artifact_check_scroll.artifact_max_counter_actions = [{
+		Scripts.ACTION_ADD_INSIGHT: {"insight_amount":1}
+		}]
+	
+	Global.register_rod(artifact_check_scroll)
 	
 	var artifact_retain_hand: ArtifactData = ArtifactData.new("artifact_retain_hand")
 	artifact_retain_hand.artifact_name = "Artifact Retain Hand"
@@ -985,6 +1115,17 @@ func add_status_effects() -> void:
 	status_effect_damage_increase.status_effect_interceptor_ids = ["interceptor_damage_increase"]
 	
 	Global.register_rod(status_effect_damage_increase)
+	
+		# increases attack damage by charge amount
+	# uses an interceptor
+	var status_effect_temp_damage_increase: StatusEffectData = StatusEffectData.new("status_effect_temp_damage_increase")
+	status_effect_temp_damage_increase.status_effect_name = "Temp Damage Increase"
+	status_effect_temp_damage_increase.status_effect_texture_path = "external/sprites/status_effects/status_effect_green.png"
+	status_effect_temp_damage_increase.status_effect_decay_rate = -99
+	status_effect_temp_damage_increase.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_temp_damage_increase.status_effect_interceptor_ids = ["interceptor_temp_damage_increase"]
+	
+	Global.register_rod(status_effect_temp_damage_increase)
 	
 	# decreases damage done by attackers
 	# uses an interceptor
@@ -1750,6 +1891,15 @@ func add_action_interceptors() -> void:
 	
 	Global.register_rod(interceptor_damage_increase)
 	
+		# increases damage done by attackers
+	var interceptor_temp_damage_increase: ActionInterceptorData = ActionInterceptorData.new("interceptor_temp_damage_increase")
+	interceptor_temp_damage_increase.action_interceptor_priority = 10000
+	interceptor_temp_damage_increase.action_interceptor_modifies_parent = true
+	interceptor_temp_damage_increase.action_interceptor_script_path = Scripts.INTERCEPTOR_TEMP_DAMAGE_INCREASE
+	interceptor_temp_damage_increase.action_intercepted_action_paths = [Scripts.ACTION_ATTACK]
+	
+	Global.register_rod(interceptor_temp_damage_increase)
+	
 	# decreases damage done by attackers
 	var interceptor_weaken: ActionInterceptorData = ActionInterceptorData.new("interceptor_weaken")
 	interceptor_weaken.action_interceptor_priority = 9500
@@ -1904,6 +2054,33 @@ func add_action_interceptors() -> void:
 	interceptor_negate_add_money.action_intercepted_action_paths = [Scripts.ACTION_ADD_MONEY]
 	
 	Global.register_rod(interceptor_negate_add_money)
+	
+	# prevents gaining money
+	var interceptor_negate_add_food: ActionInterceptorData = ActionInterceptorData.new("interceptor_negate_add_food")
+	interceptor_negate_add_food.action_interceptor_priority = 10000
+	interceptor_negate_add_food.action_interceptor_modifies_parent = true
+	interceptor_negate_add_food.action_interceptor_script_path = Scripts.INTERCEPTOR_NEGATE_ADD_FOOD
+	interceptor_negate_add_food.action_intercepted_action_paths = [Scripts.ACTION_ADD_FOOD]
+	
+	Global.register_rod(interceptor_negate_add_food)
+	
+	# prevents gaining money
+	var interceptor_negate_add_ore: ActionInterceptorData = ActionInterceptorData.new("interceptor_negate_add_ore")
+	interceptor_negate_add_ore.action_interceptor_priority = 10000
+	interceptor_negate_add_ore.action_interceptor_modifies_parent = true
+	interceptor_negate_add_ore.action_interceptor_script_path = Scripts.INTERCEPTOR_NEGATE_ADD_ORE
+	interceptor_negate_add_ore.action_intercepted_action_paths = [Scripts.ACTION_ADD_ORE]
+	
+	Global.register_rod(interceptor_negate_add_ore)
+	
+	# increases damage done by attackers
+	var interceptor_food_increase: ActionInterceptorData = ActionInterceptorData.new("interceptor_food_increase")
+	interceptor_food_increase.action_interceptor_priority = 11000
+	interceptor_food_increase.action_interceptor_modifies_parent = true
+	interceptor_food_increase.action_interceptor_script_path = Scripts.INTERCEPTOR_FOOD_INCREASE
+	interceptor_food_increase.action_intercepted_action_paths = [Scripts.ACTION_ADD_FOOD]
+	
+	Global.register_rod(interceptor_temp_damage_increase)
 
 #endregion
 
@@ -1970,6 +2147,11 @@ func add_keywords() -> void:
 	keyword_ore.keyword_name = "Ore"
 	keyword_ore.keyword_text_bb_code = "Ore is used to make Artifacts."
 	Global.register_rod(keyword_ore)
+	
+	var keyword_forge: KeywordData = KeywordData.new("keyword_forge")
+	keyword_ore.keyword_name = "Forge"
+	keyword_ore.keyword_text_bb_code = "Spend 1 Ore to Make a Craft."
+	Global.register_rod(keyword_forge)
 	
 	var keyword_corrosion: KeywordData = KeywordData.new("keyword_corrosion")
 	keyword_corrosion.keyword_name = "Corrosion"
@@ -2068,7 +2250,7 @@ func add_characters() -> void:
 	character_green.character_color_id = "color_{0}".format([character_color])
 	character_green.character_starting_health = 75
 	character_green.character_starting_card_draft_card_pack_ids = ["card_pack_prismatic".format([character_color])]
-	character_green.character_starting_artifact_ids = ["artifact_draw_on_combat_start"]
+	character_green.character_starting_artifact_ids = ["artifact_draw_on_combat_start","artifact_check_scroll"]
 	character_green.character_starting_artifact_pack_ids = ["artifact_pack_white", "artifact_pack_{0}".format([character_color])]
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
@@ -3391,60 +3573,74 @@ func add_cards_misc() -> void:
 
 	Global.register_rod(card_rock)
 	
+	var card_scroll: CardData = CardData.new("card_scroll")
+	card_scroll.card_name = "Scroll"
+	card_scroll.card_color_id = "color_{0}".format([color])
+	card_scroll.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_scroll.card_description = "Explore [damage]. If this is the third time you played a Scroll this turn, gain 1 Insight."
+	card_scroll.card_type = CardData.CARD_TYPES.ATTACK
+	card_scroll.card_energy_cost = 0
+	card_scroll.card_durability = 0
+	card_scroll.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_scroll.card_requires_target = true
+	card_scroll.card_play_destination = HandManager.EXHAUST_PILE
+	card_scroll.card_values = {"damage": 1,"number_of_attacks":1}
+	card_scroll.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_ORE:
+			{
+			}
+		}
+		]
+
+	Global.register_rod(card_scroll)
+	
+	var card_delicacy: CardData = CardData.new("card_delicacy")
+	card_delicacy.card_name = "Delicacy"
+	card_delicacy.card_color_id = "color_{0}".format([color])
+	card_delicacy.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_delicacy.card_description = "Draw [draw_count], then gain [energy_amount] energy."
+	card_delicacy.card_type = CardData.CARD_TYPES.ATTACK
+	card_delicacy.card_energy_cost = 0
+	card_delicacy.card_influence = 2
+	card_delicacy.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_delicacy.card_requires_target = true
+	card_delicacy.card_play_destination = HandManager.EXHAUST_PILE
+	card_delicacy.card_values = {"draw_count": 1,"energy_amount":1}
+	card_delicacy.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_ENERGY:{}
+		},
+		{
+			Scripts.ACTION_DRAW_GENERATOR:{}
+		}
+		]
+	for action in durability_action_data:
+		card_delicacy.card_play_actions.append(action)
+	Global.register_rod(card_delicacy)
+	
+	
 	var card_sword: CardData = CardData.new("card_sword")
 	card_sword.card_name = "Sword"
 	card_sword.card_color_id = "color_{0}".format([color])
 	card_sword.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_sword.card_description = "Explore [damage]. Durability 2."
+	card_sword.card_description = "Explore [damage]."
 	card_sword.card_type = CardData.CARD_TYPES.ATTACK
 	card_sword.card_energy_cost = 0
 	card_sword.card_rarity = CardData.CARD_RARITIES.GENERATED
-	card_sword.card_durability = 2
+	card_sword.card_influence = 2
 	card_sword.card_requires_target = true
-	card_sword.card_values = {"damage": 2, "number_of_attacks": 1, "ore_amount": 1, "card_durability": -1}
+	card_sword.card_values = {"damage": 2, "number_of_attacks": 1, "card_influence": -1}
 	card_sword.card_play_actions = [
 		{
 			Scripts.ACTION_ATTACK_GENERATOR:
 			{
 				"time_delay": 0.0, "actions_on_lethal": []
-			},
-			#Scripts.ACTION_ADD_ORE:
-				#{
-					#
-				#},
-			Scripts.ACTION_CHANGE_CARD_DURABILITY:
-				{
-				"pick_played_card": true,
-				"modify_parent_card": false,
-				},
-			# check flag when drawn
-			Scripts.ACTION_VALIDATOR: {
-				"validator_data":
-				[
-					{
-					Scripts.VALIDATOR_CARD_PROPERTIES:
-						{
-						"card_property_name": "card_durability",
-						"operator": "<=",
-						"comparison_value": 0,
-						"invert_validation": false,
-						}
-					}
-				],
-				# exhaust
-				"passed_action_data":
-				[
-					{
-					Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION: {
-						"card_destination": HandManager.EXHAUST_PILE,
-						"card_destination_strategy": HandManager.PILE_INSERTION_STRATEGIES.TOP
-						},
-					},
-				]
 			}
 		}
 		]
-	
+	for action in durability_action_data:
+		card_sword.card_play_actions.append(action)
 	Global.register_rod(card_sword)
 	
 	var card_treasure: CardData = CardData.new("card_treasure")
@@ -3455,61 +3651,31 @@ func add_cards_misc() -> void:
 	card_treasure.card_type = CardData.CARD_TYPES.SKILL
 	card_treasure.card_energy_cost = 0
 	card_treasure.card_rarity = CardData.CARD_RARITIES.GENERATED
-	card_treasure.card_durability = 3
+	card_treasure.card_influence = 3
 	card_treasure.card_requires_target = false
-	card_treasure.card_values = {"money_amount": 1, "card_durability": -1}
+	card_treasure.card_values = {"money_amount": 1, "card_influence": -1}
 	card_treasure.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
 			{
-			},
-			Scripts.ACTION_CHANGE_CARD_DURABILITY:
-			{
-				"pick_played_card": true,
-				"modify_parent_card": false,
-			},
-			# check flag when drawn
-			Scripts.ACTION_VALIDATOR: {
-				"validator_data":
-				[
-					{
-					Scripts.VALIDATOR_CARD_PROPERTIES:
-						{
-						"card_property_name": "card_durability",
-						"operator": "<=",
-						"comparison_value": 0,
-						"invert_validation": false,
-						}
-					}
-				],
-				# exhaust
-				"passed_action_data":
-				[
-					{
-					Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION: {
-						"card_destination": HandManager.EXHAUST_PILE,
-						"card_destination_strategy": HandManager.PILE_INSERTION_STRATEGIES.TOP
-						},
-					},
-				]
-			}
-		}
+			}}
 		]
-	
+		
+	for action in durability_action_data:
+		card_treasure.card_play_actions.append(action)
 	Global.register_rod(card_treasure)
-	
 		
 	var card_spice: CardData = CardData.new("card_spice")
 	card_spice.card_name = "Spice"
 	card_spice.card_color_id = "color_{0}".format([color])
 	card_spice.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
-	card_spice.card_description = "Gain [money_amount] Money. Durability 3."
+	card_spice.card_description = "Gain [money_amount] Money."
 	card_spice.card_type = CardData.CARD_TYPES.SKILL
 	card_spice.card_energy_cost = 0
 	card_spice.card_rarity = CardData.CARD_RARITIES.GENERATED
-	card_spice.card_durability = 3
+	card_spice.card_influence = 3
 	card_spice.card_requires_target = false
-	card_spice.card_values = {"money_amount": 1, "card_durability": -1, "card_value_improvements": {"money_amount": 1}}
+	card_spice.card_values = {"money_amount": 1, "card_influence": -1, "card_value_improvements": {"money_amount": 1}}
 	card_spice.card_discard_actions = [
 		{
 			Scripts.ACTION_IMPROVE_CARD_VALUES: {
@@ -3520,41 +3686,9 @@ func add_cards_misc() -> void:
 		}
 		]
 	card_spice.card_play_actions = [
-		{
-			Scripts.ACTION_ADD_MONEY:
-			{
-			},
-			Scripts.ACTION_CHANGE_CARD_DURABILITY:
-				{},
-			# check flag when drawn
-			
-			Scripts.ACTION_VALIDATOR: {
-				"validator_data":
-				[
-					{
-					Scripts.VALIDATOR_CARD_PROPERTIES:
-						{
-						"card_property_name": "card_durability",
-						"operator": "<=",
-						"comparison_value": 0,
-						"invert_validation": false,
-						}
-					}
-				],
-				# exhaust
-				"passed_action_data":
-				[
-					{
-					Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION: {
-						"card_destination": HandManager.EXHAUST_PILE,
-						"card_destination_strategy": HandManager.PILE_INSERTION_STRATEGIES.TOP
-						},
-					},
-				]
-			}
-		}
-		]
-	
+		{Scripts.ACTION_ADD_MONEY:{}}]
+	for action in durability_action_data:
+		card_spice.card_play_actions.append(action)
 	Global.register_rod(card_spice)
 			
 	var card_rebel: CardData = CardData.new("card_rebel")
@@ -3568,7 +3702,7 @@ func add_cards_misc() -> void:
 	card_rebel.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_rebel.card_requires_target = false
 	card_rebel.card_is_playable = false
-	card_rebel.card_values = {"food_amount": -1, "card_durability":-1}
+	card_rebel.card_values = {"food_amount": -1}
 	card_rebel.card_end_of_turn_actions = [
 		{
 			Scripts.ACTION_ADD_FOOD:
@@ -3604,6 +3738,34 @@ func add_cards_misc() -> void:
 		}]
 	
 	Global.register_rod(card_blueprint)
+	
+	var card_draft: CardData = CardData.new("card_draft")
+	card_draft.card_name = "Draft"
+	card_draft.card_color_id = "color_{0}".format([color])
+	card_draft.card_texture_path = "external/sprites/cards/{0}/card_{0}.png".format([color])
+	card_draft.card_description = "Spend 3 Insight to gain [card_object_id]."
+	card_draft.card_type = CardData.CARD_TYPES.SKILL
+	card_draft.card_energy_cost = 0
+	card_draft.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_draft.card_play_destination = HandManager.EXHAUST_PILE
+	card_draft.card_requires_target = false
+	card_draft.card_values = {"card_object_id":""}
+	card_draft.card_play_actions = [
+		{
+			Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data":[{Scripts.VALIDATOR_INSIGHT:{"insight_amount":3}}],
+				"action_data":[{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":-3}},
+				{
+				Scripts.ACTION_CREATE_CARDS:
+				{
+					"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
+				}
+				}]
+			}
+		}]
+	
+	Global.register_rod(card_draft)
 #endregion
 
 func add_cards_trade() -> void:
@@ -3680,6 +3842,66 @@ func add_cards_trade() -> void:
 			}
 		}]
 	Global.register_rod(card_trade3)
+	
+	var card_money_manual: CardData = CardData.new("card_money_manual")
+	card_money_manual.card_name = "Money Manual"
+	card_money_manual.card_color_id = "color_blue"
+	card_money_manual.card_texture_path = "external/sprites/cards/basic/01_trade.png"
+	card_money_manual.card_description = "Gain [money_amount] Money."
+	card_money_manual.card_type = CardData.CARD_TYPES.SKILL
+	card_money_manual.card_energy_cost = 0
+	card_money_manual.card_rarity = CardData.CARD_RARITIES.BOOK
+	card_money_manual.card_requires_target = false
+	card_money_manual.card_values = {"money_amount":4}
+	card_money_manual.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_MONEY:
+			{
+			}
+		}]
+	Global.register_rod(card_money_manual)
+	
+	var card_food_manual: CardData = CardData.new("card_food_manual")
+	card_food_manual.card_name = "Food Manual"
+	card_food_manual.card_color_id = "color_blue"
+	card_food_manual.card_texture_path = "external/sprites/cards/basic/01_trade.png"
+	card_food_manual.card_description = "Improve all Food Values by 1 during the turn."
+	card_food_manual.card_type = CardData.CARD_TYPES.SKILL
+	card_food_manual.card_energy_cost = 0
+	card_food_manual.card_rarity = CardData.CARD_RARITIES.BOOK
+	card_food_manual.card_requires_target = false
+	card_food_manual.card_values = {"status_charge_amount": 1}
+	card_food_manual.card_play_actions = [
+		{
+			Scripts.ACTION_APPLY_STATUS:
+			{
+				"status_effect_object_id": "status_effect_temp_damage_increase",
+				"status_charge_amount":1,
+				"target_override": BaseAction.TARGET_OVERRIDES.PLAYER
+			}
+		}]
+	Global.register_rod(card_food_manual)
+	
+	var card_exploration_tome: CardData = CardData.new("card_exploration_tome")
+	card_exploration_tome.card_name = "Exploration Tome"
+	card_exploration_tome.card_color_id = "color_blue"
+	card_exploration_tome.card_texture_path = "external/sprites/cards/basic/01_trade.png"
+	card_exploration_tome.card_description = "Increases all Explore values by 2 for the turn."
+	card_exploration_tome.card_type = CardData.CARD_TYPES.SKILL
+	card_exploration_tome.card_energy_cost = 0
+	card_exploration_tome.card_rarity = CardData.CARD_RARITIES.BOOK
+	card_exploration_tome.card_requires_target = false
+	card_exploration_tome.card_values = {"money_amount":4}
+	card_exploration_tome.card_play_actions = [
+		{
+			Scripts.ACTION_APPLY_STATUS:
+			{
+				"status_effect_object_id": "status_effect_temp_damage_increase",
+				"status_charge_amount": 2,
+				"target_override": BaseAction.TARGET_OVERRIDES.PLAYER
+			}
+		}]
+	Global.register_rod(card_exploration_tome)
 #endregion
 func add_cards_purple() -> void:
 	var color: String = "purple"
@@ -3854,12 +4076,13 @@ func add_cards_purple() -> void:
 	card_recklessenvoy.card_color_id = "color_{0}".format([color])
 	card_recklessenvoy.card_texture_path = "external/sprites/cards/pearl/05_recklessenvoy.png"
 	card_recklessenvoy.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_recklessenvoy.card_description = "Explore [damage], then consume 1 Ore to create 1 Spice."
+	card_recklessenvoy.card_description = "Explore [damage], then Forge 1 Sword."
+	card_recklessenvoy.card_keyword_object_ids = ["keyword_forge"]
 	card_recklessenvoy.card_type = CardData.CARD_TYPES.ATTACK
 	card_recklessenvoy.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_recklessenvoy.card_requires_target = true
 	card_recklessenvoy.card_energy_cost = 1
-	card_recklessenvoy.card_values = {"card_influence": 1,"damage": 3, "number_of_attacks":1,"ore_amount":-1, "created_card_object_id": "card_spice",  "number_of_cards": 1}
+	card_recklessenvoy.card_values = {"damage": 3, "number_of_attacks":1,"ore_amount":-1, "created_card_object_id": "card_sword",  "number_of_cards": 1}
 	card_recklessenvoy.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_recklessenvoy.card_influence = 3
 	card_recklessenvoy.card_play_actions = [
@@ -3869,30 +4092,8 @@ func add_cards_purple() -> void:
 				"time_delay": 0.0, "actions_on_lethal": []
 			},
 		},
-		{
-		Scripts.ACTION_VALIDATOR: {
-			"validator_data": [
-				{
-				Scripts.VALIDATOR_ORE: {"ore_amount": 1}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_ADD_ORE:
-				{
-				}
-				},
-				{
-				Scripts.ACTION_CREATE_CARDS:
-				{
-				"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
-				}
-				}
-			]
-		}
-		}
 	]
+	card_recklessenvoy.card_play_actions.append(forge_action)
 	card_recklessenvoy.card_play_actions.append(influence_action)
 	card_recklessenvoy.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_recklessenvoy)
@@ -3938,37 +4139,16 @@ func add_cards_purple() -> void:
 	card_pearlregaler.card_color_id = "color_{0}".format([color])
 	card_pearlregaler.card_texture_path = "external/sprites/cards/pearl/07_pearlregalerpng"
 	card_pearlregaler.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearlregaler.card_description = "Consume [money_amount] Money to gain 1 Insight. Upgrade 1 card."
+	card_pearlregaler.card_description = "Weave 1 Scroll. Upgrade 1."
 	card_pearlregaler.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlregaler.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_pearlregaler.card_requires_target = false
-	card_pearlregaler.card_energy_cost = 1
-	card_pearlregaler.card_values = {"card_influence": 1,"money_amount":-2, "insight_amount":1}
-	card_pearlregaler.card_upgrade_value_improvements = {"number_of_cards": 1}
+	card_pearlregaler.card_energy_cost = 2
+	card_pearlregaler.card_values = {"card_influence": 1, "created_card_object_id":"card_scroll","number_of_cards":1}
+	#card_pearlregaler.card_upgrade_value_improvements = {"number_of_cards": 2}
+	card_pearlregaler.card_first_upgrade_property_changes = {"card_energy_cost":-1}
 	card_pearlregaler.card_influence = 3
 	card_pearlregaler.card_play_actions = [
-		{
-		Scripts.ACTION_VALIDATOR: {
-			"validator_data": [
-				{
-				Scripts.VALIDATOR_ORE: {"money_amount": 2}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_ADD_MONEY:
-				{
-				}
-				},
-				{
-				Scripts.ACTION_ADD_INSIGHT:
-				{
-				}
-				}
-			]
-		}
-		},
 		{
 		Scripts.ACTION_VALIDATOR:
 			{
@@ -3992,6 +4172,7 @@ func add_cards_purple() -> void:
 			}
 		}
 	]
+	card_pearlregaler.card_play_actions.append(weave_action)
 	card_pearlregaler.card_play_actions.append(influence_action)
 	card_pearlregaler.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlregaler)
@@ -4002,7 +4183,7 @@ func add_cards_purple() -> void:
 	card_flintlockaccountant.card_color_id = "color_{0}".format([color])
 	card_flintlockaccountant.card_texture_path = "external/sprites/cards/pearl/08_flintlockaccountant.png"
 	card_flintlockaccountant.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_flintlockaccountant.card_description = "Return 2 Crafts from your discard pile to your hand. Increase 2 Durability to selected cards."
+	card_flintlockaccountant.card_description = "Return up to 2 Crafts from your discard pile to your hand. Increase 2 Durability to selected cards."
 	card_flintlockaccountant.card_type = CardData.CARD_TYPES.SKILL
 	card_flintlockaccountant.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockaccountant.card_requires_target = false
@@ -4023,8 +4204,9 @@ func add_cards_purple() -> void:
 			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_RARITIES.GENERATED]}}
 			],
 			"action_data": [
-			{Scripts.ACTION_CHANGE_CARD_DURABILITY: {"card_durability": 2
+			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {"card_durability": 2
 			}},
+			{Scripts.ACTION_ADD_CARDS_TO_HAND:{"pick_played_card": true}}
 			]
 			}
 		}
@@ -4038,16 +4220,16 @@ func add_cards_purple() -> void:
 	card_pearlscribe.card_color_id = "color_{0}".format([color])
 	card_pearlscribe.card_texture_path = "external/sprites/cards/pearl/09_pearlscribe"
 	card_pearlscribe.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearlscribe.card_description = "If you have draw pile 20 or more, gain [insight_amount] Insight."
+	card_pearlscribe.card_description = "If you have draw pile 20 or more, gain [insight_amount] Insight. Weave 1 Scroll."
 	card_pearlscribe.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_pearlscribe.card_requires_target = false
 	card_pearlscribe.card_energy_cost = 1
-	card_pearlscribe.card_values = {"card_influence": 1, "insight_amount": 2}
+	card_pearlscribe.card_values = {"card_influence": 1, "insight_amount": 2,"created_card_object_id":"card_scroll","number_of_cards":1}
 	card_pearlscribe.card_upgrade_value_improvements = {"insight_amount": 1}
 	card_pearlscribe.card_influence = 3
-	card_pearlscribe.card_play_actions = [
-		{
+	card_pearlscribe.card_play_actions.append(weave_action)
+	card_pearlscribe.card_play_actions.append({
 		Scripts.ACTION_VALIDATOR:
 			{
 			"validator_data": [
@@ -4058,8 +4240,7 @@ func add_cards_purple() -> void:
 			}},
 			]
 			}
-		}
-	]
+		})
 	card_pearlscribe.card_play_actions.append(influence_action)
 	card_pearlscribe.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlscribe)
@@ -4074,15 +4255,11 @@ func add_cards_purple() -> void:
 	card_pearlsmuggler.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_pearlsmuggler.card_requires_target = false
 	card_pearlsmuggler.card_energy_cost = 1
-	card_pearlsmuggler.card_values = {"card_influence": -1, "draw_count": 2}
+	card_pearlsmuggler.card_values = {"draw_count": 2, "min_card_amount":3,"max_card_amount":3}
 	card_pearlsmuggler.card_upgrade_value_improvements = {"draw_count": 1}
 	card_pearlsmuggler.card_influence = 3
-	card_pearlsmuggler.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		}},
+	card_pearlsmuggler.card_play_actions.append(wield_action)
+	var this_action_data: Array[Dictionary] = [
 		{
 		Scripts.ACTION_PICK_CARDS:
 		{
@@ -4100,29 +4277,9 @@ func add_cards_purple() -> void:
 		{
 		Scripts.ACTION_DRAW_GENERATOR:{}
 		},
-		{
-		Scripts.ACTION_VALIDATOR:
-			{
-				"validator_data": [{
-					Scripts.VALIDATOR_MONEY: {
-						"money_amount": 0, "operator": ">="
-					}
-				}],
-				"action_data": [{
-					Scripts.ACTION_PICK_CARDS:
-				{
-				"min_card_amount": 3,
-				"max_card_amount": 3,
-				"min_cards_are_required_for_action": false,
-				"random_selection": true,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
-				"action_data": [{Scripts.ACTION_PLAY_CARDS:{}}]
-			}}]
-			}
-		}
-	]
+		]
+	card_pearlsmuggler.append(this_action_data)
+	card_pearlsmuggler.card_play_actions.append(influence_action)
 	card_pearlsmuggler.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlsmuggler)
 	
@@ -4136,16 +4293,10 @@ func add_cards_purple() -> void:
 	card_pearlseer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_pearlseer.card_requires_target = false
 	card_pearlseer.card_energy_cost = 1
-	card_pearlseer.card_values = {"card_influence": 1, "draw_count": 2, "money_amount": 1}
+	card_pearlseer.card_values = {"draw_count": 2, "money_amount": 1}
 	card_pearlseer.card_upgrade_value_improvements = {"draw_count": 1}
 	card_pearlseer.card_influence = 3
 	card_pearlseer.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
 		{
 		Scripts.ACTION_DRAW_GENERATOR: {}
 		},
@@ -4167,6 +4318,7 @@ func add_cards_purple() -> void:
 			]
 		}}
 	]
+	card_pearlseer.card_play_actions.append(influence_action)
 	card_pearlseer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlseer)
 	
@@ -4176,74 +4328,20 @@ func add_cards_purple() -> void:
 	card_mastertactician.card_color_id = "color_{0}".format([color])
 	card_mastertactician.card_texture_path = "external/sprites/cards/pearl/12_mastertactician.png"
 	card_mastertactician.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_mastertactician.card_description = "Create [number_of_cards] Swords. Wield [min_card_amount]."
+	card_mastertactician.card_description = "Forge [number_of_cards] Swords. Wield [min_card_amount]."
 	card_mastertactician.card_type = CardData.CARD_TYPES.SKILL
 	card_mastertactician.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_mastertactician.card_requires_target = true
 	card_mastertactician.card_energy_cost = 1
-	card_mastertactician.card_values = {"card_influence": 1, "created_card_object_id": "card_sword", "number_of_cards": 2,	"min_card_amount": 3,
+	card_mastertactician.card_values = {"created_card_object_id": "card_sword", "number_of_cards": 2,	"min_card_amount": 3,
 		"max_card_amount": 3,}
 	card_mastertactician.card_upgrade_value_improvements = {"number_of_cards":1, "min_card_amount": 1,
 		"max_card_amount": 1,}
 	card_mastertactician.card_influence = 3
-	card_mastertactician.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
-		{
-		Scripts.ACTION_CREATE_CARDS:
-			{
-				"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
-			}
-		},
-		{
-		Scripts.ACTION_PICK_CARDS:
-			{
-				"min_cards_are_required_for_action": false,
-				"random_selection": true,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.GENERATED]}}],
-				"action_data": [{Scripts.ACTION_PLAY_CARDS:{}}]
-		}}
-	]
-	card_mastertactician.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-		]
+	card_mastertactician.append(wield_action)
+	card_mastertactician.append(forge_action)
+	card_mastertactician.append(influence_action)
+	card_mastertactician.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_mastertactician)
 	
 	var card_schemingplanner: CardData = CardData.new("card_schemingplanner")
@@ -4279,16 +4377,10 @@ func add_cards_purple() -> void:
 	card_courthand.card_rarity = CardData.CARD_RARITIES.RARE
 	card_courthand.card_requires_target = false
 	card_courthand.card_energy_cost = 1
-	card_courthand.card_values = {"card_influence": 1, "created_card_object_id": "card_performance", "number_of_cards": 1}
+	card_courthand.card_values = {"created_card_object_id": "card_performance", "number_of_cards": 1}
 	card_courthand.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_courthand.card_influence = 3
 	card_courthand.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
 		{
 		Scripts.ACTION_CREATE_CARDS:
 			{
@@ -4296,40 +4388,9 @@ func add_cards_purple() -> void:
 			}
 		}
 	]
-	card_courthand.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_courthand.card_play_actions.append(influence_action)
+	card_courthand.card_end_of_turn_actions = end_action_data
+	
 	Global.register_rod(card_courthand)
 	
 	var card_wizenedcommander: CardData = CardData.new("card_wizenedcommander")
@@ -4337,21 +4398,15 @@ func add_cards_purple() -> void:
 	card_wizenedcommander.card_color_id = "color_{0}".format([color])
 	card_wizenedcommander.card_texture_path = "external/sprites/cards/pearl/15_wizenedcommander.png"
 	card_wizenedcommander.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_wizenedcommander.card_description = "Create 1 Performance."
-	card_wizenedcommander.card_type = CardData.CARD_TYPES.SKILL
+	card_wizenedcommander.card_description = "Explore 1 for each generated card in your discard pile."
+	card_wizenedcommander.card_type = CardData.CARD_TYPES.ATTACK
 	card_wizenedcommander.card_rarity = CardData.CARD_RARITIES.RARE
-	card_wizenedcommander.card_requires_target = false
+	card_wizenedcommander.card_requires_target = true
 	card_wizenedcommander.card_energy_cost = 1
 	card_wizenedcommander.card_values = {"card_influence": 1, "damage": 1}
 	card_wizenedcommander.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_wizenedcommander.card_influence = 3
 	card_wizenedcommander.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
 		{
 		Scripts.ACTION_PICK_CARDS:
 			{
@@ -4370,40 +4425,8 @@ func add_cards_purple() -> void:
 			}]
 		}}
 	]
-	card_wizenedcommander.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_wizenedcommander.card_play_actions.append(influence_action)
+	card_wizenedcommander.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_wizenedcommander)
 	
 #endregion
@@ -4417,9 +4440,9 @@ func add_cards_purple() -> void:
 	card_performance.card_type = CardData.CARD_TYPES.SKILL
 	card_performance.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_performance.card_requires_target = false
-	card_performance.card_energy_cost = 0
-	card_performance.card_values = {"influence_count": 1}
-	card_performance.card_upgrade_value_improvements = {"influence_count": 1}
+	card_performance.card_energy_cost = 1
+	card_performance.card_values = {"card_influence": 1}
+	card_performance.card_upgrade_value_improvements = {"card_influence": 1}
 	card_performance.card_play_actions = [
 		{
 		Scripts.ACTION_PICK_CARDS:
@@ -4496,15 +4519,9 @@ func add_cards_black() -> void:
 	card_fishwrangler.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_fishwrangler.card_requires_target = false
 	card_fishwrangler.card_energy_cost = 1
-	card_fishwrangler.card_values = {"card_influence":1,"created_card_object_id": "card_fish",  "number_of_cards": 1, "food_amount": 2}
+	card_fishwrangler.card_values = {"created_card_object_id": "card_fish",  "number_of_cards": 1, "food_amount": 2}
 	card_fishwrangler.card_upgrade_value_improvements = {"food_amount": 1}
 	card_fishwrangler.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
 		{
 		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}
 		},
@@ -4515,6 +4532,7 @@ func add_cards_black() -> void:
 			"card_tortype_maximum":99}}],
 			"passed_action_data":[{Scripts.ACTION_ADD_FOOD:{}}]}
 		}]
+	card_fishwrangler.card_play_actions.append(influence_action)
 	card_fishwrangler.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_fishwrangler)
 	
@@ -4532,12 +4550,6 @@ func add_cards_black() -> void:
 	card_spicepicker.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_spicepicker.card_play_actions = [
 		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
-		{
 		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}
 		},
 		{
@@ -4550,40 +4562,8 @@ func add_cards_black() -> void:
 				"number_of_cards": 2,
 				"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}}]}
 		}]
-	card_spicepicker.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_spicepicker.card_play_actions.append(influence_action)
+	card_spicepicker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_spicepicker)
 	
 	var card_reveredcraftsworker: CardData = CardData.new("card_reveredcraftsworker")
@@ -4591,105 +4571,18 @@ func add_cards_black() -> void:
 	card_reveredcraftsworker.card_color_id = "color_{0}".format([color])
 	card_reveredcraftsworker.card_texture_path = "external/sprites/cards/aniseed/05_reveredcraftsworker.png"
 	card_reveredcraftsworker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_reveredcraftsworker.card_description = "Consume 1 Ore to Craft [number_of_cards] Treasure. If you have 3 or more Spice cards in hand, create 2 Grains."
+	card_reveredcraftsworker.card_description = "Forge [number_of_cards] Treasure. Inspect [min_card_amount]."
 	card_reveredcraftsworker.card_type = CardData.CARD_TYPES.SKILL
 	card_reveredcraftsworker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_reveredcraftsworker.card_requires_target = false
 	card_reveredcraftsworker.card_energy_cost = 1
-	card_reveredcraftsworker.card_values = {"card_influence":1,"created_card_object_id": "card_treasure",  "number_of_cards": 1}
-	card_reveredcraftsworker.card_upgrade_value_improvements = {"number_of_cards": 1}
-	card_reveredcraftsworker.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
-		{
-		Scripts.ACTION_VALIDATOR:{"validator_data": [{Scripts.VALIDATOR_ORE:{ "ore_amount": 1}}],
-			"passed_action_data": [{
-		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}},
-		{Scripts.ACTION_ADD_ORE:{"ore_amount":-1}}]}
-		},{
-		Scripts.ACTION_PICK_CARDS:
-			{
-				"min_card_amount": 2,
-				"max_card_amount": 2,
-				"min_cards_are_required_for_action": false,
-				"random_selection": true,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock"]}}],
-				"action_data": [{
-				Scripts.ACTION_VALIDATOR:
-				{
-				"validator_data":
-					[{Scripts.VALIDATOR_PILE_SIZE:
-						{"card_pick_type":HandManager.EXHAUST_PILE,
-						"operator":">=",
-						"comparison_value": 5}}],
-				"passed_action_data":
-					[{
-						Scripts.ACTION_IMPROVE_CARD_VALUES: {
-						"card_value_improvements":{"ore_amount":1},
-						"time_delay": 0.1,
-						"pick_played_card": true,
-						"modify_parent_card": false,
-						}},
-						{
-						Scripts.ACTION_VALIDATOR:
-						{
-						"validator_data":
-							[{Scripts.VALIDATOR_PILE_SIZE:
-							{"card_pick_type":HandManager.EXHAUST_PILE,
-							"operator":">=",
-							"comparison_value": 15}}],
-						"passed_action_data":
-							[{
-							Scripts.ACTION_IMPROVE_CARD_VALUES: {
-							"card_value_improvements":{"ore_amount":2},
-							"time_delay": 0.1,
-							"pick_played_card": true,
-							"modify_parent_card": false,
-						}}],
-						}
-					}]
-				}
-		}]}}]
-	card_reveredcraftsworker.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_reveredcraftsworker.card_values = {"created_card_object_id": "card_treasure",  "number_of_cards": 1,	"min_card_amount": 2,
+				"max_card_amount": 2}
+	card_reveredcraftsworker.card_upgrade_value_improvements = {"number_of_cards": 1,"min_card_amount":1,"max_card_amount":1}
+	card_reveredcraftsworker.append(inspect_action)
+	card_reveredcraftsworker.append(forge_action)
+	card_reveredcraftsworker.append(influence_action)
+	card_reveredcraftsworker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_reveredcraftsworker)
 	
 	var card_cartographersassistant: CardData = CardData.new("card_cartographersassistant")
@@ -4706,12 +4599,6 @@ func add_cards_black() -> void:
 	card_cartographersassistant.card_upgrade_value_improvements = {"damage": 2}
 	card_cartographersassistant.card_play_actions = [
 		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
-		{
 		Scripts.ACTION_ATTACK_GENERATOR: {
 			"time_delay":0.5
 		}
@@ -4722,40 +4609,8 @@ func add_cards_black() -> void:
 			"passed_action_data":[{Scripts.ACTION_ADD_ORE:{
 				"ore_amount":-3}},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]}
 		}]
-	card_cartographersassistant.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_cartographersassistant.card_play_action.append(influence_action)
+	card_cartographersassistant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cartographersassistant)
 	
 	var card_flintlockmage: CardData = CardData.new("card_flintlockmage")
@@ -4763,27 +4618,14 @@ func add_cards_black() -> void:
 	card_flintlockmage.card_color_id = "color_{0}".format([color])
 	card_flintlockmage.card_texture_path = "external/sprites/cards/aniseed/07_flintlockmage.png"
 	card_flintlockmage.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_flintlockmage.card_description = "Craft [number_of_cards] Sword. Draw [draw_count], then discard a card."
+	card_flintlockmage.card_description = "Forge [number_of_cards] Sword. Draw [draw_count], then discard a card."
 	card_flintlockmage.card_type = CardData.CARD_TYPES.SKILL
 	card_flintlockmage.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockmage.card_requires_target = false
 	card_flintlockmage.card_energy_cost = 1
-	card_flintlockmage.card_values = {"card_influence":1,"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":1}
+	card_flintlockmage.card_values = {"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":1}
 	card_flintlockmage.card_upgrade_value_improvements = {"draw_count": 1}
 	card_flintlockmage.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
-		{
-		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}
-		},
-		{
-		Scripts.ACTION_DRAW_GENERATOR: {}
-		},
-		
 		{
 		Scripts.ACTION_PICK_CARDS:{
 			"min_card_amount": 1,
@@ -4795,42 +4637,14 @@ func add_cards_black() -> void:
 			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {
 			}
 			}]
-			}}
-		]
-	card_flintlockmage.card_end_of_turn_actions = [
+		}},
 		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
+		Scripts.ACTION_DRAW_GENERATOR: {}
 		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+		]
+	card_flintlockmage.card_play_actions.append(forge_action)
+	card_flintlockmage.card_play_actions.append(influence_action)
+	card_flintlockmage.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockmage)
 	
 	var card_aniseedscribe: CardData = CardData.new("card_aniseedscribe")
@@ -4847,12 +4661,6 @@ func add_cards_black() -> void:
 	card_aniseedscribe.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_aniseedscribe.card_play_actions = [
 		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
-		{
 		Scripts.ACTION_DRAW_GENERATOR: {}
 		},
 		{
@@ -4863,40 +4671,8 @@ func add_cards_black() -> void:
 			}}]
 			}
 		}]
-	card_aniseedscribe.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_aniseedscribe.card_play_actions.append(influence_action)
+	card_aniseedscribe.card_end_of_turn_actions = end_action_data	
 	Global.register_rod(card_aniseedscribe)
 	
 	var card_peddlerveteran: CardData = CardData.new("card_peddlerveteran")
@@ -5080,40 +4856,7 @@ func add_cards_black() -> void:
 				}}]
 		}
 		}]
-	card_keeneyedbuccaneer.card_end_of_turn_actions = [
-	{
-		Scripts.ACTION_VALIDATOR: {
-		"validator_data":
-		[
-			{
-			Scripts.VALIDATOR_CARD_PROPERTIES:
-				{
-				"card_property_name": "card_influence",
-				"operator": "<=",
-				"comparison_value": 0,
-				"invert_validation": false,
-				}
-			}
-		],
-		"passed_action_data":
-		[
-			{
-			Scripts.ACTION_TRANSFORM_CARDS: {
-				"transform_into_card_object_id": "card_rebel",
-				"pick_played_card": true
-				},
-			},
-		]
-		}
-	},
-	{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-			{
-				"pick_played_card": true,
-				"card_influence": -1
-			}
-	}
-	]
+	card_keeneyedbuccaneer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_keeneyedbuccaneer)
 	
 	
@@ -5215,7 +4958,7 @@ func add_cards_black() -> void:
 	Global.register_rod(card_taxfarmer)
 	
 	var card_swashbucklingchamp: CardData = CardData.new("card_swashbucklingchamp")
-	card_swashbucklingchamp.card_name = "Swashbuckling Champ"
+	card_swashbucklingchamp.card_name = "Exalted Champ"
 	card_swashbucklingchamp.card_color_id = "color_{0}".format([color])
 	card_swashbucklingchamp.card_texture_path = "external/sprites/cards/aniseed/15_swashbucklingchamp.png"
 	card_swashbucklingchamp.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
@@ -5245,7 +4988,7 @@ func add_cards_black() -> void:
 			Scripts.ACTION_PLAY_CARDS: {}},
 			{
 			Scripts.ACTION_IMPROVE_CARD_VALUES: {
-				"card_value_improvements":{"explore_amount":1,"ore_amount":1},
+				"card_value_improvements":{"damage":1,"ore_amount":1},
 				"time_delay": 0.1,
 				"pick_played_card": true,
 				"modify_parent_card": false,
@@ -6143,12 +5886,6 @@ func add_cards_green() -> void:
 	card_supremerecaster.card_upgrade_value_improvements = {"ore_amount":2}
 	card_supremerecaster.card_play_actions = [
 		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		}
-		},
-		{
 			Scripts.ACTION_VALIDATOR:
 			{
 				"validator_data": [{
@@ -6159,40 +5896,8 @@ func add_cards_green() -> void:
 				},
 				{Scripts.ACTION_ADD_INSIGHT:{}}]
 		}}]
-	card_supremerecaster.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_supremerecaster.card_play_actions.append(influence_action)
+	card_supremerecaster.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_supremerecaster)
 	
 		
@@ -6201,7 +5906,7 @@ func add_cards_green() -> void:
 	card_villagehero.card_color_id = "color_{0}".format([color])
 	card_villagehero.card_texture_path = "external/sprites/cards/jade/villagehero.png"
 	card_villagehero.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_villagehero.card_description = "Gain 1 Explore for each Faction card."
+	card_villagehero.card_description = "Explore 1 for each Faction card."
 	card_villagehero.card_type = CardData.CARD_TYPES.ATTACK
 	card_villagehero.card_rarity = CardData.CARD_RARITIES.RARE
 	card_villagehero.card_requires_target = true
@@ -6233,40 +5938,7 @@ func add_cards_green() -> void:
 			}]
 		}
 		}]
-	card_villagehero.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_villagehero.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_villagehero)
 	
 	var card_solverofriddles: CardData = CardData.new("card_solverofriddles")
@@ -6733,12 +6405,6 @@ func add_cards_gold() -> void:
 	card_flintlockschooner.card_upgrade_value_improvements = {"min_card_amount":2,"max_card_amount":2}
 	card_flintlockschooner.card_play_actions = [
 		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
-		{
 			Scripts.ACTION_PICK_CARDS: {
 				"min_cards_are_required_for_action": false,
 				"random_selection": true,
@@ -6753,40 +6419,8 @@ func add_cards_gold() -> void:
 		Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5},
 		},
 	]
-	card_flintlockschooner.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_flintlockschooner.card_play_actions.append(influence_action)
+	card_flintlockschooner.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockschooner)
 #region Card Packs
 

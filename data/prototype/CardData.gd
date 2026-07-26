@@ -26,7 +26,7 @@ var parent_card: CardData = null	# the parent card in the player's true deck tha
 @export var card_energy_cost_variable_upper_bound: int = -1	# allows an upper bound on energy input into an X cost card. -1 for no limit
 
 ## A card's influence. If influence reaches 0, does something.
-@export var card_influence: int = 3
+@export var card_influence: int = 0
 @export var card_durability: int = 0
 
 ## Determines how a card should be shuffled in the deck on combat start.
@@ -48,7 +48,7 @@ const STANDARD_CARD_TYPES: Array[int] = [CARD_TYPES.ATTACK, CARD_TYPES.SKILL, CA
 @export var card_type: int = CARD_TYPES.ATTACK
 @export var card_subtype: int = CARD_SUBTYPES.NEUTRAL
 # Card Rarity
-enum CARD_RARITIES {BASIC, COMMON, UNCOMMON, RARE, GENERATED, TRADE}
+enum CARD_RARITIES {BASIC, COMMON, UNCOMMON, RARE, GENERATED, TRADE, BOOK}
 const STANDARD_CARD_RARITIES: Array[int] = [CARD_RARITIES.COMMON, CARD_RARITIES.UNCOMMON, CARD_RARITIES.RARE]
 @export var card_rarity: int = CARD_RARITIES.COMMON
 

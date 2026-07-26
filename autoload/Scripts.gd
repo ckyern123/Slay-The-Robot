@@ -203,6 +203,7 @@ const DECORATOR_DYNAMIC_VALUE_MODIFIER: String = "res://scripts/card_decorators/
 
 #region Interceptors
 const INTERCEPTOR_DAMAGE_INCREASE: String = "res://scripts/action_interceptors/InterceptorDamageIncrease.gd"
+const INTERCEPTOR_TEMP_DAMAGE_INCREASE: String = "res://scripts/action_interceptors/InterceptorTempDamageIncrease.gd"
 const INTERCEPTOR_WEAKEN: String = "res://scripts/action_interceptors/InterceptorWeaken.gd"
 const INTERCEPTOR_VULNERABLE: String = "res://scripts/action_interceptors/InterceptorVulnerable.gd"
 const INTERCEPTOR_OVERSHIELD: String = "res://scripts/action_interceptors/InterceptorOvershield.gd"
@@ -212,6 +213,9 @@ const INTERCEPTOR_NEGATE_DAMAGE: String = "res://scripts/action_interceptors/Int
 const INTERCEPTOR_CAP_DAMAGE: String = "res://scripts/action_interceptors/InterceptorCapDamage.gd"
 const INTERCEPTOR_NEGATE_DEBUFF: String = "res://scripts/action_interceptors/InterceptorNegateDebuff.gd"
 const INTERCEPTOR_NEGATE_ADD_MONEY: String = "res://scripts/action_interceptors/InterceptorNegateAddMoney.gd"
+const INTERCEPTOR_FOOD_INCREASE: String = "res://scripts/action_interceptors/InterceptorFoodIncrease.gd"
+const INTERCEPTOR_NEGATE_ADD_FOOD: String = "res://scripts/action_interceptors/InterceptorNegateAddFood.gd"
+const INTERCEPTOR_NEGATE_ADD_ORE: String = "res://scripts/action_interceptors/InterceptorNegateAddOre.gd"
 # auto revive
 const INTERCEPTOR_CONSUMABLE_AUTO_REVIVE: String = "res://scripts/action_interceptors/InterceptorConsumableAutoRevive.gd"
 # modifiers
