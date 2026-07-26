@@ -92,7 +92,7 @@ var cook_action: Dictionary = {
 			"passed_action_data": [
 				{
 				Scripts.ACTION_CREATE_CARDS: {
-					"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DISCARD:{}}]
+					"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 					}
 					},
 			{
@@ -108,7 +108,7 @@ var forge_action: Dictionary = {
 			"passed_action_data": [
 				{
 				Scripts.ACTION_CREATE_CARDS: {
-					"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DISCARD:{}}]
+					"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 					}
 					},
 			{
@@ -124,7 +124,7 @@ var weave_action: Dictionary = {
 			"passed_action_data": [
 				{
 				Scripts.ACTION_CREATE_CARDS: {
-					"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DISCARD:{}}]
+					"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 					}
 					},
 			{
@@ -4278,7 +4278,8 @@ func add_cards_purple() -> void:
 		Scripts.ACTION_DRAW_GENERATOR:{}
 		},
 		]
-	card_pearlsmuggler.append(this_action_data)
+	for action in this_action_data:
+		card_pearlsmuggler.card_play_actions.append(action)
 	card_pearlsmuggler.card_play_actions.append(influence_action)
 	card_pearlsmuggler.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlsmuggler)
@@ -4338,9 +4339,9 @@ func add_cards_purple() -> void:
 	card_mastertactician.card_upgrade_value_improvements = {"number_of_cards":1, "min_card_amount": 1,
 		"max_card_amount": 1,}
 	card_mastertactician.card_influence = 3
-	card_mastertactician.append(wield_action)
-	card_mastertactician.append(forge_action)
-	card_mastertactician.append(influence_action)
+	card_mastertactician.card_play_actions.append(wield_action)
+	card_mastertactician.card_play_actions.append(forge_action)
+	card_mastertactician.card_play_actions.append(influence_action)
 	card_mastertactician.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_mastertactician)
 	
@@ -4579,9 +4580,9 @@ func add_cards_black() -> void:
 	card_reveredcraftsworker.card_values = {"created_card_object_id": "card_treasure",  "number_of_cards": 1,	"min_card_amount": 2,
 				"max_card_amount": 2}
 	card_reveredcraftsworker.card_upgrade_value_improvements = {"number_of_cards": 1,"min_card_amount":1,"max_card_amount":1}
-	card_reveredcraftsworker.append(inspect_action)
-	card_reveredcraftsworker.append(forge_action)
-	card_reveredcraftsworker.append(influence_action)
+	card_reveredcraftsworker.card_play_actions.append(inspect_action)
+	card_reveredcraftsworker.card_play_actions.append(forge_action)
+	card_reveredcraftsworker.card_play_actions.append(influence_action)
 	card_reveredcraftsworker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_reveredcraftsworker)
 	
@@ -4609,7 +4610,7 @@ func add_cards_black() -> void:
 			"passed_action_data":[{Scripts.ACTION_ADD_ORE:{
 				"ore_amount":-3}},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]}
 		}]
-	card_cartographersassistant.card_play_action.append(influence_action)
+	card_cartographersassistant.card_play_actions.append(influence_action)
 	card_cartographersassistant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cartographersassistant)
 	

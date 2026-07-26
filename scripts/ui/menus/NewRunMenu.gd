@@ -87,7 +87,7 @@ func populate_character_info(character_object_id: String) -> void:
 	if character_data != null:
 		character_name_label.text = character_data.character_name
 		character_food_label.text = "Food: {0}".format([character_data.character_starting_food])
-		character_ore_label.text = "Ore: {0}".format([character_data.character_starting_money])
+		character_ore_label.text = ": {0}".format([character_data.character_starting_money])
 		character_money_label.text = "Money: {0}".format([character_data.character_starting_ore])
 		character_insight_label.text = "Insight: {0}".format([character_data.character_starting_insight])
 		character_description_label.text = character_data.character_description

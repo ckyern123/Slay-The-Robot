@@ -81,8 +81,8 @@ func _populate_run_history(run_index: int = -1) -> void:
 	run_history_seed_label.text = "Seed: {0}".format([run_stats_data.run_seed])
 	run_history_food_label.text = "HP: {0}/{1}".format([run_stats_data.run_player_food, run_stats_data.run_player_food_max])
 	run_history_money_label.text = "Money: {0}".format([run_stats_data.run_player_money])
-	run_history_ore_label.text = "Money: {0}".format([run_stats_data.run_player_ore])
-	run_history_insight_label.text = "Money: {0}".format([run_stats_data.run_player_insight])
+	run_history_ore_label.text = "Ore: {0}".format([run_stats_data.run_player_ore])
+	run_history_insight_label.text = "Insight: {0}".format([run_stats_data.run_player_insight])
 	run_history_floor_label.text = "Floor: {0}".format([run_stats_data.run_floor])
 	
 	if run_stats_data.run_victory:

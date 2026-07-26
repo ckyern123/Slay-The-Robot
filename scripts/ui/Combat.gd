@@ -1,10 +1,28 @@
 # maintains combat UI
 extends Control
 
-@onready var money_label: Label = $%MoneyLabel
-@onready var food_label: Label = $%FoodLabel
-@onready var ore_label: Label = $%OreLabel
-@onready var insight_label: Label = $%InsightLabel
+const FONT_SIZE: int = 24	
+const EMBEDDED_IMAGE_SIZE: int = 36
+
+@onready var money_label: RichTextLabel = %MoneyLabel
+@onready var food_label: RichTextLabel = %FoodLabel
+@onready var ore_label: RichTextLabel = %OreLabel
+@onready var insight_label: RichTextLabel = %InsightLabel
+@onready var sprawl_label: RichTextLabel = %SprawlLabel
+@onready var room_label: RichTextLabel = %RoomLabel
+
+const money_texture_path = "res://sprites/rupee.svg"
+const food_texture_path = "res://sprites/oat.svg"
+const ore_texture_path = "res://sprites/ore.svg"
+const insight_texture_path = "res://sprites/scroll.svg"
+const sprawl_texture_path = "res://sprites/village.svg"
+const room_texture_path = "res://sprites/tower.svg"
+const money_texture = preload("res://sprites/rupee.svg")
+const food_texture = preload("res://sprites/oat.svg")
+const ore_texture = preload("res://sprites/ore.svg")
+const insight_texture = preload("res://sprites/scrolL.svg")
+const sprawl_texture = preload("res://sprites/village.svg")
+const room_texture = preload("res://sprites/tower.svg")
 
 @onready var energy_count: Label = $Energy/EnergyCount
 @onready var energy: TextureButton = $Energy
@@ -41,6 +59,8 @@ func _ready():
 	Signals.player_money_changed.connect(_on_player_money_changed)
 	Signals.player_food_changed.connect(_on_player_food_changed)
 	Signals.player_ore_changed.connect(_on_player_ore_changed)
+	Signals.player_sprawl_changed.connect(_on_player_sprawl_changed)
+	Signals.player_room_changed.connect(_on_player_room_changed)
 	Signals.player_insight_changed.connect(_on_player_insight_changed)
 		
 	Signals.enemy_killed.connect(_on_enemy_killed)
@@ -60,7 +80,12 @@ func _ready():
 	combat_end_button.button_up.connect(_on_combat_end_button_up)
 	update_combat_display()
 	player.update_player_display(Global.player_data)
-	
+
+	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
+	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
+	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size(), Global.player_data.player_size]
+
 	# pile buttons
 	deck_button.button_up.connect(_on_deck_button_up)
 	draw_pile_button.button_up.connect(_on_draw_pile_button_up)
@@ -119,6 +144,8 @@ func update_combat_display():
 	_on_player_ore_changed()
 	_on_player_insight_changed()
 	_on_player_money_changed()
+	_on_player_sprawl_changed()
+	_on_player_room_changed()
 
 func _update_background() -> void:
 	# set the background if possible
@@ -174,16 +201,22 @@ func _on_card_queue_refunded():
 	update_combat_display()
 
 func _on_player_money_changed(_delta: int = 0):
-	money_label.text = "$%s" % Global.player_data.player_money
+	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
 
 func _on_player_ore_changed(_delta: int = 0):
-	ore_label.text = "ORE%s" % Global.player_data.player_ore
-	
+	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
+		
 func _on_player_insight_changed(_delta: int = 0):
-	insight_label.text = "INSIGHT%s" % Global.player_data.player_insight
+	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
 	
 func _on_player_food_changed(_delta: int = 0):
-	food_label.text = "FOOD%s , %s / %s" % [Global.player_data.player_food, HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size(), Global.player_data.player_size]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size(), Global.player_data.player_size]
+
+func _on_player_sprawl_changed(_delta: int = 0):
+	sprawl_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Sprawl"])  % [(HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size()),Global.player_data.player_size]
+
+func _on_player_room_changed(_delta: int = 0):
+	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room
 
 ### Deck Buttons
 

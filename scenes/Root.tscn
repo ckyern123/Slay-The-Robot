@@ -1741,6 +1741,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1757,14 +1758,8 @@ script = ExtResource("3_h4evn")
 [node name="Background" type="ColorRect" parent="RunScreen/Combat" unique_id=39069088]
 layout_mode = 0
 offset_right = 1915.0
-offset_bottom = 1080.0
-color = Color(0.202309, 0.187588, 0.216973, 1)
-
-[node name="Background2" type="ColorRect" parent="RunScreen/Combat" unique_id=1118416378]
-layout_mode = 0
-offset_right = 1915.0
-offset_bottom = 64.0
-color = Color(0.135517, 0.124494, 0.146491, 1)
+offset_bottom = 60.0
+color = Color(0.20280343, 0.19458723, 0.17946157, 1)
 
 [node name="BackgroundButton" type="TextureButton" parent="RunScreen/Combat" unique_id=321482324]
 unique_name_in_owner = true
@@ -1777,6 +1772,12 @@ grow_vertical = 2
 button_mask = 3
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="Background2" type="ColorRect" parent="RunScreen/Combat" unique_id=1118416378]
+layout_mode = 0
+offset_right = 1915.0
+offset_bottom = 70.0
+color = Color(0.135517, 0.124494, 0.146491, 1)
 
 [node name="PauseButton" type="TextureButton" parent="RunScreen/Combat" unique_id=647341802]
 unique_name_in_owner = true
@@ -1815,64 +1816,45 @@ texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="MoneyLabel" type="Label" parent="RunScreen/Combat" unique_id=1231323859]
+[node name="FoodLabel" type="RichTextLabel" parent="RunScreen/Combat" unique_id=1670164399]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 500.0
-offset_top = 8.0
-offset_right = -1220.0
-offset_bottom = 56.0
-grow_horizontal = 2
-mouse_filter = 1
-theme_override_font_sizes/font_size = 34
-text = "$10000"
-
-[node name="InsightLabel" type="Label" parent="RunScreen/Combat" unique_id=1656331907]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 900.0
-offset_top = 9.0
-offset_right = -869.99976
-offset_bottom = 56.0
-grow_horizontal = 2
-mouse_filter = 1
-theme_override_font_sizes/font_size = 34
-text = "$10000"
-horizontal_alignment = 2
-
-[node name="OreLabel" type="Label" parent="RunScreen/Combat" unique_id=2130004089]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 650.0
-offset_top = 8.0
-offset_right = -1070.0
-offset_bottom = 56.0
-grow_horizontal = 2
-mouse_filter = 1
-theme_override_font_sizes/font_size = 34
-text = "$10000"
-horizontal_alignment = 2
-
-[node name="FoodLabel" type="Label" parent="RunScreen/Combat" unique_id=453838396]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
+layout_mode = 0
 offset_left = 200.0
 offset_top = 8.0
-offset_right = -1520.0
-offset_bottom = 56.0
-grow_horizontal = 2
-mouse_filter = 1
-theme_override_font_sizes/font_size = 34
-text = "99/99"
-horizontal_alignment = 2
+offset_right = 400.0
+offset_bottom = 58.0
+bbcode_enabled = true
+text = "[img width=24]external/sprites/cards/basic/oat.svg[/img] Food"
+
+[node name="MoneyLabel" type="RichTextLabel" parent="RunScreen/Combat" unique_id=416191368]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 400.0
+offset_top = 8.0
+offset_right = 600.0
+offset_bottom = 58.0
+bbcode_enabled = true
+text = "[img width=24]external/sprites/cards/basic/rupee.svg[/img] Money"
+
+[node name="OreLabel" type="RichTextLabel" parent="RunScreen/Combat" unique_id=1597183768]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 650.0
+offset_top = 8.0
+offset_right = 850.0
+offset_bottom = 58.0
+bbcode_enabled = true
+text = "[img width=24]external/sprites/cards/basic/ore.svg[/img] Ore"
+
+[node name="InsightLabel" type="RichTextLabel" parent="RunScreen/Combat" unique_id=2103451130]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 900.0
+offset_top = 9.0
+offset_right = 1100.0
+offset_bottom = 59.0
+bbcode_enabled = true
+text = "[img width=24]external/sprites/cards/basic/scroll-unfurled.svg[/img] Insight"
 
 [node name="ArtifactContainer" type="HBoxContainer" parent="RunScreen/Combat" unique_id=1591838213]
 layout_mode = 0
@@ -1886,10 +1868,30 @@ script = ExtResource("5_a7j3r")
 [node name="Player" parent="RunScreen/Combat" unique_id=524412048 instance=ExtResource("5_7crh0")]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 59.0
-offset_top = 121.0
-offset_right = 259.0
-offset_bottom = 282.0
+offset_left = 87.0
+offset_top = 130.0
+offset_right = 287.0
+offset_bottom = 291.0
+
+[node name="SprawlLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=603507063]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 2.0
+offset_top = 92.0
+offset_right = 202.0
+offset_bottom = 142.0
+bbcode_enabled = true
+text = "Sprawl:"
+
+[node name="RoomLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=1691440553]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 4.0
+offset_top = 136.0
+offset_right = 204.0
+offset_bottom = 186.0
+bbcode_enabled = true
+text = "Room:"
 
 [node name="EnemyContainer" type="Control" parent="RunScreen/Combat" unique_id=754159237]
 anchors_preset = 0
@@ -2307,9 +2309,10 @@ unique_name_in_owner = true
 process_mode = 1
 z_index = 10
 anchors_preset = 0
+offset_left = 363.0
 offset_top = 71.0
 offset_right = 1900.0
-offset_bottom = 380.0
+offset_bottom = 463.0
 script = ExtResource("17_stqr4")
 
 [node name="Background" type="ColorRect" parent="RunScreen/ShopOverlay" unique_id=78866647]
@@ -2326,10 +2329,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -752.0
-offset_top = -142.5
-offset_right = 764.0
-offset_bottom = 249.5
+offset_left = -742.5
+offset_top = -196.0
+offset_right = 791.5
+offset_bottom = 196.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
@@ -2341,10 +2344,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 183.0
-offset_top = -112.5
-offset_right = 938.0
-offset_bottom = 87.5
+offset_left = 81.5
+offset_top = -166.0
+offset_right = 809.5
+offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 70
@@ -2356,10 +2359,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -707.0
-offset_top = -112.5
-offset_right = -224.0
-offset_bottom = 126.5
+offset_left = -718.5
+offset_top = -166.0
+offset_right = -235.5
+offset_bottom = 73.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 70
@@ -2371,10 +2374,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -185.0
-offset_top = -97.5
-offset_right = 115.0
-offset_bottom = 102.5
+offset_left = -218.5
+offset_top = -166.0
+offset_right = 81.5
+offset_bottom = 34.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20

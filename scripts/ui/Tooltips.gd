@@ -8,10 +8,10 @@ class_name Tooltip
 @onready var pause_button: TextureButton = %PauseButton
 @onready var map_button: TextureButton = %MapButton
 
-@onready var money_label: Label = %MoneyLabel
-@onready var food_label: Label = %FoodLabel
-@onready var ore_label: Label = %OreLabel
-@onready var insight_label: Label = %InsightLabel
+@onready var money_label: RichTextLabel = %MoneyLabel
+@onready var food_label: RichTextLabel = %FoodLabel
+@onready var ore_label: RichTextLabel = %OreLabel
+@onready var insight_label: RichTextLabel = %InsightLabel
 
 @onready var energy: TextureButton = %Energy
 @onready var deck_button: TextureButton = %DeckButton
@@ -45,8 +45,8 @@ func _ready() -> void:
 		
 		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose", true, false, true, $TooltipPositions/FoodTooltipPos],
 		[money_label, "[color=orange]Money[/color]\nHow much money you have", true, false, true, $TooltipPositions/MoneyTooltipPos],
-		[ore_label, "[color=orange]Money[/color]\nHow much Ore you have", true, false, true, $TooltipPositions/OreTooltipPos],
-		[insight_label, "[color=orange]Money[/color]\nHow much Insight you have", true, false, true, $TooltipPositions/InsightTooltipPos],
+		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have", true, false, true, $TooltipPositions/OreTooltipPos],
+		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have", true, false, true, $TooltipPositions/InsightTooltipPos],
 	
 		[energy, "[color=orange]Energy[/color]\nUsed to play cards", false, false, false, $TooltipPositions/EnergyTooltipPos],
 		[draw_pile_button, "[color=orange]Draw Pile[/color]\nThese cards will be drawn", false, false, false, $TooltipPositions/EnergyTooltipPos],

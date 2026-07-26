@@ -260,7 +260,7 @@ func add_size(amount: int) -> void:
 	var old_player_size_amount: int = player_size
 	player_size = max(player_size + amount, 0)
 	var delta: int = player_size - old_player_size_amount
-	Signals.player_size_changed.emit(delta)
+	Signals.player_sprawl_changed.emit(delta)
 
 ## If goes into negative amounts, the proper delta will be calculated 
 func add_room(amount: int) -> void:
