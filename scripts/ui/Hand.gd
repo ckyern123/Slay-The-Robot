@@ -190,7 +190,7 @@ func update_hand_card_hover(hovered_card: Card = null) -> void:
 		
 		if hovered_card == card_in_hand:
 			# hovered card
-			card_in_hand.position.y = CARD_HOVERED_HEIGHT
+			card_in_hand.position.y = CARD_HOVERED_HEIGHT - 50
 			card_in_hand.z_index = 50
 		else:
 			# unhovered cards

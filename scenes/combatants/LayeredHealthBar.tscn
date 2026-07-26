@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0qk0vn81d0kp"]
+[gd_scene format=3 uid="uid://b0qk0vn81d0kp"]
 
 [ext_resource type="Script" uid="uid://lltsdli24v32" path="res://scripts/combatants/LayeredHealthBar.gd" id="1_smklb"]
 [ext_resource type="Texture2D" uid="uid://bnukx08xo2hps" path="res://sprites/health_bar_frame.PNG" id="3_0ueoi"]
 
-[node name="LayeredHealthBar" type="Control"]
+[node name="LayeredHealthBar" type="Control" unique_id=696342928]
 self_modulate = Color(1, 0, 0, 1)
 layout_mode = 3
 anchors_preset = 0
@@ -14,7 +14,7 @@ offset_bottom = 88.0
 script = ExtResource("1_smklb")
 metadata/_edit_group_ = true
 
-[node name="DamageLayer" type="ColorRect" parent="."]
+[node name="DamageLayer" type="ColorRect" parent="." unique_id=357026224]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -23,10 +23,10 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(85.799, 75.148, 0.114, 1)
 
-[node name="DamageTimer" type="Timer" parent="DamageLayer"]
+[node name="DamageTimer" type="Timer" parent="DamageLayer" unique_id=682884737]
 one_shot = true
 
-[node name="HealthLayer" type="ColorRect" parent="."]
+[node name="HealthLayer" type="ColorRect" parent="." unique_id=62890056]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
@@ -35,7 +35,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.870588, 0.141176, 0, 1)
 
-[node name="StatusLayers" type="Control" parent="."]
+[node name="StatusLayers" type="Control" parent="." unique_id=1900201246]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,7 +44,7 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_group_ = true
 
-[node name="HealthBarFrame" type="NinePatchRect" parent="."]
+[node name="HealthBarFrame" type="NinePatchRect" parent="." unique_id=38229584]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,7 +57,7 @@ patch_margin_top = 2
 patch_margin_right = 2
 patch_margin_bottom = 2
 
-[node name="HealthBarText" type="Label" parent="."]
+[node name="HealthBarText" type="Label" parent="." unique_id=1508033351]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

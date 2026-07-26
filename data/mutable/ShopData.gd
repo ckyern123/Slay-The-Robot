@@ -23,7 +23,8 @@ class_name ShopData
 @export var shop_consumable_slot_to_consumable_price: Dictionary = {}
 
 const GENERATED_CARD_COUNT: int = 3
-const GENERATED_ARTIFACT_COUNT: int = 2
+const GENERATED_TRADE_COUNT: int = 2
+const GENERATED_ARTIFACT_COUNT: int = 3
 const GENERATED_SHOP_SPECIFIC_ARTIFACT_COUNT: int = 1
 const GENERATED_CONSUMABLE_COUNT: int = 3
 
@@ -35,11 +36,11 @@ const CARD_RARITY_TO_PRICE_RANGE: Dictionary = {
 }
 
 const ARTIFACT_RARITY_TO_PRICE_RANGE: Dictionary = {
-	ArtifactData.ARTIFACT_RARITIES.COMMON: [50,80],
-	ArtifactData.ARTIFACT_RARITIES.UNCOMMON: [85,115],
-	ArtifactData.ARTIFACT_RARITIES.RARE: [120,140],
-	ArtifactData.ARTIFACT_RARITIES.BOSS: [130,150],
-	ArtifactData.ARTIFACT_RARITIES.SHOP: [150,200],
+	ArtifactData.ARTIFACT_RARITIES.COMMON: [5,8],
+	ArtifactData.ARTIFACT_RARITIES.UNCOMMON: [8,11],
+	ArtifactData.ARTIFACT_RARITIES.RARE: [12,14],
+	ArtifactData.ARTIFACT_RARITIES.BOSS: [13,15],
+	ArtifactData.ARTIFACT_RARITIES.SHOP: [15,20],
 	ArtifactData.ARTIFACT_RARITIES.EVENT: [0,1],
 }
 
@@ -62,7 +63,7 @@ func visit_shop() -> void:
 		var generated_cards: Array[CardData] = Random.generate_rarity_weighted_card_draft(rng_shop, ShopData.GENERATED_CARD_COUNT, Random.CARD_DRAFT_TABLE_TYPES.SHOP, false)
 		### Generate Items
 		# generates shop cards
-		var generated_trade: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_grey",ShopData.GENERATED_CARD_COUNT - shop_trade.size())
+		var generated_trade: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_grey",ShopData.GENERATED_TRADE_COUNT)
 				
 		# generate regular artifacts from player artifact pool
 		var artifact_ids: Array[String] = Global.player_data.get_next_shop_standard_artifacts_from_pool(GENERATED_ARTIFACT_COUNT, true)
@@ -149,6 +150,10 @@ func remove_shop_trade(card_data: CardData) -> void:
 func clear_shop_trade() -> void:
 	shop_trade.clear()
 	shop_trade_prices.clear()
+
+func clear_shop_artifact() -> void:
+	shop_artifact_ids.clear()
+	shop_artifact_prices.clear()
 		
 func get_shop_trade_price(card_data: CardData) -> int:
 	if shop_trade.has(card_data):

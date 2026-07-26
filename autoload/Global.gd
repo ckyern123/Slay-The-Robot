@@ -239,6 +239,7 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	player_data.player_money = character_data.character_starting_money
 	player_data.player_food = 20
 	player_data.player_size = 20
+	player_data.player_room = 1
 	player_data.player_health_max = character_data.character_starting_health
 	player_data.player_health = character_data.character_starting_health
 	

@@ -34,6 +34,7 @@ extends Control
 @onready var combat_end_button: TextureButton = $CombatEndButton
 
 var end_turn_object: CombatEndTurn = null
+var kill_count: int = 0
 
 func _ready():
 
@@ -204,6 +205,13 @@ func _on_enemy_killed(enemy: Enemy):
 		await ActionHandler.actions_ended
 	if (combat_end_button.visible == false):
 		combat_end_button.visible = true
+	kill_count += 1
+	if (kill_count == 2):
+		var action_data = [{Scripts.ACTION_ADD_ROOM:{"room_amount":1}}]
+		generated_actions = ActionGenerator.create_actions(player, null, [], action_data, null)
+		ActionHandler.add_actions(generated_actions)
+		if ActionHandler.actions_being_performed:
+			await ActionHandler.actions_ended
 	
 func _on_enemy_death_animation_finished(_enemy: Enemy):
 	# determine if all non minion enemies killed and end combat

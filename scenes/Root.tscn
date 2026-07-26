@@ -228,6 +228,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -69.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_jd5n0")
@@ -330,6 +331,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -4.0
+offset_bottom = -53.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_878fa")
@@ -1738,6 +1741,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1746,21 +1750,20 @@ script = ExtResource("12_elxq6")
 [node name="Combat" type="Control" parent="RunScreen" unique_id=797179111]
 unique_name_in_owner = true
 process_mode = 1
-visible = false
 anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 script = ExtResource("3_h4evn")
 
 [node name="Background" type="ColorRect" parent="RunScreen/Combat" unique_id=39069088]
 layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1915.0
+offset_bottom = 1080.0
 color = Color(0.202309, 0.187588, 0.216973, 1)
 
 [node name="Background2" type="ColorRect" parent="RunScreen/Combat" unique_id=1118416378]
 layout_mode = 0
-offset_right = 1200.0
+offset_right = 1915.0
 offset_bottom = 64.0
 color = Color(0.135517, 0.124494, 0.146491, 1)
 
@@ -1818,24 +1821,23 @@ unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 570.0
+offset_left = 500.0
 offset_top = 8.0
-offset_right = -513.0
+offset_right = -1220.0
 offset_bottom = 56.0
 grow_horizontal = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 34
 text = "$10000"
-horizontal_alignment = 2
 
 [node name="InsightLabel" type="Label" parent="RunScreen/Combat" unique_id=1656331907]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 750.0
+offset_left = 900.0
 offset_top = 9.0
-offset_right = -333.0
+offset_right = -869.99976
 offset_bottom = 56.0
 grow_horizontal = 2
 mouse_filter = 1
@@ -1848,9 +1850,9 @@ unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 400.0
+offset_left = 650.0
 offset_top = 8.0
-offset_right = -683.0
+offset_right = -1070.0
 offset_bottom = 56.0
 grow_horizontal = 2
 mouse_filter = 1
@@ -1865,7 +1867,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_left = 200.0
 offset_top = 8.0
-offset_right = -864.0
+offset_right = -1520.0
 offset_bottom = 56.0
 grow_horizontal = 2
 mouse_filter = 1
@@ -1891,46 +1893,25 @@ offset_top = 336.0
 offset_right = 400.0
 offset_bottom = 480.0
 
-[node name="CombatEndButton" type="TextureButton" parent="RunScreen/Combat" unique_id=401268533]
-unique_name_in_owner = true
-visible = false
-layout_mode = 0
-offset_left = 1087.0
-offset_top = 526.0
-offset_right = 1178.0
-offset_bottom = 591.0
-shortcut = ExtResource("8_xur7f")
-shortcut_feedback = false
-shortcut_in_tooltip = false
-texture_normal = ExtResource("3_8ax2e")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="Label" type="Label" parent="RunScreen/Combat/CombatEndButton" unique_id=1398503520]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "END COMBAT"
-
 [node name="EnemyContainer" type="Control" parent="RunScreen/Combat" unique_id=754159237]
 anchors_preset = 0
-offset_left = 100.0
-offset_top = 300.0
-offset_right = 1100.0
-offset_bottom = 500.0
+offset_left = 518.0
+offset_top = 486.0
+offset_right = 1518.0
+offset_bottom = 686.0
 mouse_filter = 2
 script = ExtResource("4_kvn7e")
 metadata/_edit_group_ = true
 
 [node name="AutomaticEnemyContainer" type="HBoxContainer" parent="RunScreen/Combat/EnemyContainer" unique_id=797003300]
 layout_mode = 0
-offset_right = 608.0
+offset_right = 1011.0
 offset_bottom = 192.0
 mouse_filter = 2
 
 [node name="PositionalEnemyContainer" type="Control" parent="RunScreen/Combat/EnemyContainer" unique_id=801103158]
 anchors_preset = 0
-offset_right = 608.0
+offset_right = 1037.0
 offset_bottom = 192.0
 mouse_filter = 2
 
@@ -2081,12 +2062,11 @@ horizontal_alignment = 1
 
 [node name="Energy" type="TextureButton" parent="RunScreen/Combat" unique_id=517286826]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
-offset_left = 24.0
-offset_top = 560.0
-offset_right = 74.0
-offset_bottom = 610.0
+offset_left = 150.0
+offset_top = 731.0
+offset_right = 250.0
+offset_bottom = 831.0
 texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
@@ -2097,73 +2077,96 @@ offset_left = 24.0
 offset_top = 32.0
 offset_right = 66.0
 offset_bottom = 58.0
-theme_override_font_sizes/font_size = 18
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 30
 text = "30"
 horizontal_alignment = 1
 
 [node name="DrawPile" type="TextureButton" parent="RunScreen/Combat" unique_id=320277565]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
-offset_left = 24.0
-offset_top = 616.0
-offset_right = 74.0
-offset_bottom = 666.0
+offset_left = 50.0
+offset_top = 911.0
+offset_right = 150.0
+offset_bottom = 1011.0
 texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
 
 [node name="DrawCount" type="Label" parent="RunScreen/Combat/DrawPile" unique_id=2059573911]
 layout_mode = 0
-offset_left = 24.0
-offset_top = 32.0
-offset_right = 66.0
-offset_bottom = 58.0
-theme_override_font_sizes/font_size = 18
+offset_left = 62.0
+offset_top = 56.0
+offset_right = 104.0
+offset_bottom = 98.0
+theme_override_font_sizes/font_size = 30
 text = "30"
 horizontal_alignment = 1
 
-[node name="DiscardPile" type="TextureButton" parent="RunScreen/Combat" unique_id=1125735299]
+[node name="CombatEndButton" type="TextureButton" parent="RunScreen/Combat" unique_id=401268533]
 unique_name_in_owner = true
 visible = false
+modulate = Color(0, 0.42352942, 0.007843138, 1)
 layout_mode = 0
-offset_left = 1136.0
-offset_top = 560.0
-offset_right = 1186.0
-offset_bottom = 610.0
+offset_left = 1718.0
+offset_top = 820.0
+offset_right = 1861.0
+offset_bottom = 885.0
+shortcut = ExtResource("8_xur7f")
+shortcut_feedback = false
+shortcut_in_tooltip = false
+texture_normal = ExtResource("3_8ax2e")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="RunScreen/Combat/CombatEndButton" unique_id=1398503520]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 19.0
+offset_right = 127.0
+offset_bottom = 42.0
+text = "END COMBAT"
+
+[node name="DiscardPile" type="TextureButton" parent="RunScreen/Combat" unique_id=1125735299]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1783.0
+offset_top = 911.0
+offset_right = 1883.0
+offset_bottom = 1011.0
 texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
 
 [node name="DiscardCount" type="Label" parent="RunScreen/Combat/DiscardPile" unique_id=1348692494]
 layout_mode = 0
-offset_left = 24.0
-offset_top = 32.0
-offset_right = 66.0
-offset_bottom = 58.0
-theme_override_font_sizes/font_size = 18
+offset_left = 55.0
+offset_top = 57.0
+offset_right = 97.0
+offset_bottom = 99.0
+theme_override_font_sizes/font_size = 30
 text = "30"
 horizontal_alignment = 1
 
 [node name="ExhaustPile" type="TextureButton" parent="RunScreen/Combat" unique_id=1351464836]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
-offset_left = 1080.0
-offset_top = 560.0
-offset_right = 1130.0
-offset_bottom = 610.0
+offset_left = 1669.0
+offset_top = 911.0
+offset_right = 1769.0
+offset_bottom = 1011.0
 texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
 
 [node name="ExhaustCount" type="Label" parent="RunScreen/Combat/ExhaustPile" unique_id=391818972]
 layout_mode = 0
-offset_left = 24.0
-offset_top = 32.0
-offset_right = 66.0
-offset_bottom = 58.0
-theme_override_font_sizes/font_size = 18
+offset_left = 57.0
+offset_top = 52.0
+offset_right = 99.0
+offset_bottom = 94.0
+theme_override_font_sizes/font_size = 30
 text = "30"
 horizontal_alignment = 1
 
@@ -2171,10 +2174,10 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 visible = false
 anchors_preset = 0
-offset_left = 160.0
-offset_top = 208.0
-offset_right = 968.0
-offset_bottom = 568.0
+offset_left = 632.0
+offset_top = 287.0
+offset_right = 1440.0
+offset_bottom = 647.0
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/Combat/CardPicking" unique_id=663104816]
 unique_name_in_owner = true
@@ -2202,10 +2205,10 @@ text = "Confirm"
 [node name="Hand" type="Control" parent="RunScreen/Combat" unique_id=1468352038]
 unique_name_in_owner = true
 anchors_preset = 0
-offset_left = 168.0
-offset_top = 632.0
-offset_right = 1048.0
-offset_bottom = 692.0
+offset_left = 500.0
+offset_top = 900.0
+offset_right = 1380.0
+offset_bottom = 960.0
 script = ExtResource("4_i2yfj")
 
 [node name="CardContainer" type="Control" parent="RunScreen/Combat/Hand" unique_id=2017383676]
@@ -2222,20 +2225,19 @@ unique_name_in_owner = true
 visible = false
 self_modulate = Color(1, 1, 1, 0.258824)
 layout_mode = 0
-offset_left = 168.0
-offset_top = 632.0
-offset_right = 1048.0
-offset_bottom = 692.0
+offset_left = 597.0
+offset_top = 842.0
+offset_right = 1477.0
+offset_bottom = 902.0
 mouse_filter = 2
 
 [node name="EndTurnButton" type="Button" parent="RunScreen/Combat" unique_id=1702274490]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
-offset_left = 1080.0
-offset_top = 624.0
-offset_right = 1192.0
-offset_bottom = 664.0
+offset_left = 1715.0
+offset_top = 737.0
+offset_right = 1866.0
+offset_bottom = 798.0
 disabled = true
 text = "End Turn"
 
@@ -2292,9 +2294,9 @@ libraries/ = SubResource("AnimationLibrary_yww7o")
 [node name="RunTimer" type="Label" parent="RunScreen/Combat" unique_id=833142312]
 process_mode = 4
 layout_mode = 0
-offset_left = 1016.0
+offset_left = 1717.0
 offset_top = 8.0
-offset_right = 1186.0
+offset_right = 1887.0
 offset_bottom = 56.0
 theme_override_font_sizes/font_size = 34
 text = "HH:MM:SS"
@@ -2305,12 +2307,11 @@ script = ExtResource("30_plfau")
 [node name="ShopOverlay" type="Control" parent="RunScreen" unique_id=1618705129]
 unique_name_in_owner = true
 process_mode = 1
-visible = false
 z_index = 10
 anchors_preset = 0
 offset_top = 71.0
-offset_right = 1200.0
-offset_bottom = 300.0
+offset_right = 1900.0
+offset_bottom = 380.0
 script = ExtResource("17_stqr4")
 
 [node name="Background" type="ColorRect" parent="RunScreen/ShopOverlay" unique_id=78866647]
@@ -2327,10 +2328,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -568.0
-offset_top = -80.0
-offset_right = 568.0
-offset_bottom = 140.0
+offset_left = -752.0
+offset_top = -142.5
+offset_right = 764.0
+offset_bottom = 249.5
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
@@ -2342,13 +2343,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 80.0
-offset_top = -70.0
-offset_right = 580.0
-offset_bottom = 130.0
+offset_left = 183.0
+offset_top = -112.5
+offset_right = 938.0
+offset_bottom = 87.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 70
 
 [node name="TradeContainer" type="HBoxContainer" parent="RunScreen/ShopOverlay" unique_id=878969051]
 layout_mode = 1
@@ -2357,26 +2358,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -550.0
-offset_top = -70.0
-offset_right = -50.0
-offset_bottom = 130.0
+offset_left = -707.0
+offset_top = -112.5
+offset_right = -224.0
+offset_bottom = 126.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 70
 
 [node name="ArtifactContainer" type="VBoxContainer" parent="RunScreen/ShopOverlay" unique_id=899795513]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -528.0
-offset_top = 34.0
-offset_right = -248.0
-offset_bottom = 282.0
+offset_left = -185.0
+offset_top = -97.5
+offset_right = 115.0
+offset_bottom = 102.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
@@ -2454,8 +2454,10 @@ script = ExtResource("25_tn5yy")
 
 [node name="Background" type="ColorRect" parent="RunScreen/DialogueOverlay" unique_id=819239096]
 layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_left = 365.0
+offset_top = 151.0
+offset_right = 1565.0
+offset_bottom = 851.0
 color = Color(0.203922, 0.188235, 0.215686, 0.635294)
 
 [node name="Background2" type="ColorRect" parent="RunScreen/DialogueOverlay" unique_id=1150024936]
@@ -2465,20 +2467,20 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -568.0
-offset_top = -286.0
-offset_right = 568.0
-offset_bottom = 290.0
+offset_left = -203.0
+offset_top = -135.0
+offset_right = 933.0
+offset_bottom = 441.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
 
 [node name="DialogueNameLabel" type="RichTextLabel" parent="RunScreen/DialogueOverlay" unique_id=421153425]
 layout_mode = 0
-offset_left = 96.0
-offset_top = 72.0
-offset_right = 544.0
-offset_bottom = 136.0
+offset_left = 461.0
+offset_top = 223.0
+offset_right = 909.0
+offset_bottom = 287.0
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 horizontal_alignment = 1
@@ -2487,19 +2489,19 @@ vertical_alignment = 1
 [node name="DialogueTextureRect" type="TextureRect" parent="RunScreen/DialogueOverlay" unique_id=1734939055]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
-offset_left = 88.0
-offset_top = 144.0
-offset_right = 544.0
-offset_bottom = 600.0
+offset_left = 453.0
+offset_top = 295.0
+offset_right = 909.0
+offset_bottom = 751.0
 texture = ExtResource("3_8ax2e")
 expand_mode = 1
 
 [node name="DialoguePromptLabel" type="RichTextLabel" parent="RunScreen/DialogueOverlay" unique_id=619646754]
 layout_mode = 0
-offset_left = 608.0
-offset_top = 96.0
-offset_right = 1152.0
-offset_bottom = 392.0
+offset_left = 973.0
+offset_top = 247.0
+offset_right = 1517.0
+offset_bottom = 543.0
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 text = "[color=green]Dialogue Prompt Rich Text[/color]"
@@ -2511,10 +2513,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 8.0
-offset_top = -22.0
-offset_right = 544.0
-offset_bottom = 226.0
+offset_left = 373.0
+offset_top = 129.0
+offset_right = 909.0
+offset_bottom = 377.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
@@ -2525,8 +2527,8 @@ process_mode = 1
 visible = false
 z_index = 10
 anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1980.0
+offset_bottom = 1080.0
 script = ExtResource("21_fj66g")
 
 [node name="Background" type="ColorRect" parent="RunScreen/RunSummaryOverlay" unique_id=1204848117]
@@ -2619,16 +2621,16 @@ process_mode = 1
 visible = false
 z_index = 10
 anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1980.0
+offset_bottom = 1080.0
 script = ExtResource("25_ll3o0")
 
 [node name="StartingOptionContainer" type="VBoxContainer" parent="RunScreen/RunStartOptions" unique_id=21744175]
 layout_mode = 0
-offset_left = 24.0
-offset_top = 528.0
-offset_right = 520.0
-offset_bottom = 640.0
+offset_left = 730.0
+offset_top = 531.0
+offset_right = 1226.0
+offset_bottom = 643.0
 
 [node name="RewardOverlay" type="Control" parent="RunScreen" unique_id=50214048]
 unique_name_in_owner = true
@@ -2636,14 +2638,16 @@ process_mode = 1
 visible = false
 z_index = 10
 anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1980.0
+offset_bottom = 1080.0
 script = ExtResource("10_u2l48")
 
 [node name="Background" type="ColorRect" parent="RunScreen/RewardOverlay" unique_id=1286800736]
 layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_left = 7.0
+offset_top = 65.0
+offset_right = 1976.0
+offset_bottom = 1081.0
 color = Color(0.203922, 0.188235, 0.215686, 0.635294)
 
 [node name="Background2" type="ColorRect" parent="RunScreen/RewardOverlay" unique_id=832259791]
@@ -2653,10 +2657,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -224.0
-offset_top = -196.0
-offset_right = 224.0
-offset_bottom = 187.0
+offset_left = -222.0
+offset_top = -289.0
+offset_right = 226.0
+offset_bottom = 94.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
@@ -2668,20 +2672,20 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -216.0
-offset_top = -190.0
-offset_right = 216.0
-offset_bottom = 170.0
+offset_left = -214.0
+offset_top = -283.0
+offset_right = 218.0
+offset_bottom = 77.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
 [node name="ContinueButton" type="Button" parent="RunScreen/RewardOverlay" unique_id=140157544]
 layout_mode = 0
-offset_left = 528.0
-offset_top = 544.0
-offset_right = 672.0
-offset_bottom = 575.0
+offset_left = 905.0
+offset_top = 694.0
+offset_right = 1049.0
+offset_bottom = 725.0
 text = "Continue"
 
 [node name="CardSelectionOverlay" type="Control" parent="RunScreen" unique_id=262278364]
@@ -2690,53 +2694,52 @@ process_mode = 1
 visible = false
 z_index = 10
 anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1916.0
+offset_bottom = 1082.0
 script = ExtResource("10_bwtvr")
 
 [node name="Background" type="ColorRect" parent="RunScreen/CardSelectionOverlay" unique_id=257922218]
 layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1980.0
+offset_bottom = 1087.0
 color = Color(0.203922, 0.188235, 0.215686, 0.631373)
 
 [node name="BackButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=414985548]
-visible = false
 layout_mode = 0
-offset_left = 16.0
-offset_top = 344.0
-offset_right = 160.0
-offset_bottom = 375.0
+offset_left = 136.0
+offset_top = 514.0
+offset_right = 280.0
+offset_bottom = 545.0
 text = "<----"
 
 [node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=575565750]
-visible = false
 layout_mode = 0
-offset_left = 504.0
-offset_top = 40.0
-offset_right = 648.0
-offset_bottom = 71.0
+offset_left = 905.0
+offset_top = 210.0
+offset_right = 1049.0
+offset_bottom = 241.0
 text = "Confirm"
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/CardSelectionOverlay" unique_id=1269392340]
 layout_mode = 0
-offset_left = 176.0
-offset_top = 8.0
-offset_right = 1016.0
-offset_bottom = 32.0
+offset_left = 577.0
+offset_top = 178.0
+offset_right = 1417.0
+offset_bottom = 202.0
 text = "Pick X Cards"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="RunScreen/CardSelectionOverlay" unique_id=209764368]
 layout_mode = 0
-offset_left = 152.0
-offset_top = 80.0
-offset_right = 1000.0
-offset_bottom = 680.0
+offset_left = 322.0
+offset_top = 250.0
+offset_right = 1826.0
+offset_bottom = 969.0
 follow_focus = true
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
+scroll_hint_mode = 1
 script = ExtResource("25_t3i5t")
 wheel_scroll_damper = SubResource("Resource_tn5yy")
 dragging_scroll_damper = SubResource("Resource_kpmo0")
@@ -2752,8 +2755,8 @@ theme_override_constants/margin_bottom = 96
 
 [node name="CardContainer" type="GridContainer" parent="RunScreen/CardSelectionOverlay/ScrollContainer/MarginContainer" unique_id=1755940544]
 layout_mode = 2
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 20
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 170
 columns = 5
 
 [node name="CardDraftSelectionOverlay" type="Control" parent="RunScreen" unique_id=302868452]
@@ -2762,14 +2765,14 @@ process_mode = 1
 visible = false
 z_index = 10
 anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1980.0
+offset_bottom = 1080.0
 script = ExtResource("11_yys3c")
 
 [node name="Background" type="ColorRect" parent="RunScreen/CardDraftSelectionOverlay" unique_id=1345787303]
 layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1983.0
+offset_bottom = 1082.0
 color = Color(0.203922, 0.188235, 0.215686, 0.631373)
 
 [node name="CardContainer" type="HBoxContainer" parent="RunScreen/CardDraftSelectionOverlay" unique_id=1634988066]
@@ -2779,21 +2782,21 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -120.0
-offset_right = 400.0
-offset_bottom = 74.0
+offset_left = -438.0
+offset_top = -240.0
+offset_right = 362.0
+offset_bottom = -46.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 70
 alignment = 1
 
 [node name="SkipButton" type="Button" parent="RunScreen/CardDraftSelectionOverlay" unique_id=1535340385]
 layout_mode = 0
-offset_left = 528.0
-offset_top = 432.0
-offset_right = 672.0
-offset_bottom = 463.0
+offset_left = 891.0
+offset_top = 668.0
+offset_right = 1035.0
+offset_bottom = 699.0
 text = "Skip"
 
 [node name="Map" type="Control" parent="RunScreen" unique_id=1094624931]
@@ -2802,14 +2805,14 @@ process_mode = 1
 visible = false
 z_index = 100
 anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1980.0
+offset_bottom = 1080.0
 script = ExtResource("14_fc5ht")
 
 [node name="Background" type="ColorRect" parent="RunScreen/Map" unique_id=1988191387]
 layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1980.0
+offset_bottom = 1080.0
 color = Color(0.203922, 0.188235, 0.215686, 0.631373)
 
 [node name="Background2" type="ColorRect" parent="RunScreen/Map" unique_id=1738550303]
@@ -2829,18 +2832,18 @@ color = Color(0.701961, 0.67451, 0.721569, 1)
 
 [node name="BackButton" type="Button" parent="RunScreen/Map" unique_id=478791985]
 layout_mode = 0
-offset_left = 504.0
-offset_top = 32.0
-offset_right = 648.0
-offset_bottom = 63.0
+offset_left = 549.0
+offset_top = 192.0
+offset_right = 693.0
+offset_bottom = 223.0
 text = "<----"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="RunScreen/Map" unique_id=1572105427]
 layout_mode = 0
-offset_left = 152.0
-offset_top = 72.0
-offset_right = 1040.0
-offset_bottom = 656.0
+offset_left = 536.0
+offset_top = 263.0
+offset_right = 1424.0
+offset_bottom = 847.0
 follow_focus = true
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
@@ -2859,14 +2862,14 @@ process_mode = 3
 visible = false
 z_index = 100
 anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1980.0
+offset_bottom = 1080.0
 script = ExtResource("29_p8axl")
 
 [node name="Background" type="ColorRect" parent="RunScreen/PauseOverlay" unique_id=1057281171]
 layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+offset_right = 1973.0
+offset_bottom = 1080.0
 color = Color(0.203922, 0.188235, 0.215686, 0.141176)
 
 [node name="Background2" type="ColorRect" parent="RunScreen/PauseOverlay" unique_id=726319778]
@@ -2976,16 +2979,19 @@ anchor_left = 0.0133333
 anchor_top = 0.0914286
 anchor_right = 0.24
 anchor_bottom = 0.171429
+offset_left = -28.599936
+offset_top = -98.74289
+offset_right = -190.79999
+offset_bottom = -125.14331
 mouse_filter = 2
 border_width = 5.0
 
 [node name="MoneyTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1169814212]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.173333
-anchor_top = 0.0914286
-anchor_right = 0.4
-anchor_bottom = 0.171429
+anchor_left = 0.2359375
+anchor_right = 0.34322917
+anchor_bottom = 0.055555556
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -2993,10 +2999,10 @@ metadata/_edit_use_anchors_ = true
 [node name="OreTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=479080032]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.333333
-anchor_top = 0.0914286
-anchor_right = 0.56
-anchor_bottom = 0.171429
+anchor_left = 0.3421875
+anchor_top = 0.0018518518
+anchor_right = 0.46822917
+anchor_bottom = 0.060185187
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3004,10 +3010,10 @@ metadata/_edit_use_anchors_ = true
 [node name="InsightTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=315712033]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.333333
-anchor_top = 0.0914286
-anchor_right = 0.56
-anchor_bottom = 0.171429
+anchor_left = 0.47291666
+anchor_top = -0.0037037036
+anchor_right = 0.67291665
+anchor_bottom = 0.06481481
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3015,10 +3021,10 @@ metadata/_edit_use_anchors_ = true
 [node name="FoodTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=2094616792]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.333333
-anchor_top = 0.0914286
-anchor_right = 0.56
-anchor_bottom = 0.171429
+anchor_left = 0.14375
+anchor_top = 0.0046296297
+anchor_right = 0.2296875
+anchor_bottom = 0.05925926
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3037,10 +3043,10 @@ metadata/_edit_use_anchors_ = true
 [node name="DiscardTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1695506171]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.786667
-anchor_top = 0.72
-anchor_right = 0.986667
-anchor_bottom = 0.891429
+anchor_left = 0.79010415
+anchor_top = 0.8154496
+anchor_right = 0.99010414
+anchor_bottom = 0.9868786
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3048,10 +3054,10 @@ metadata/_edit_use_anchors_ = true
 [node name="ExhaustTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=722425392]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.793333
-anchor_top = 0.697143
-anchor_right = 0.953333
-anchor_bottom = 0.868572
+anchor_left = 0.79677016
+anchor_top = 0.7925926
+anchor_right = 0.9567702
+anchor_bottom = 0.96402156
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true

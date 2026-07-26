@@ -59,11 +59,11 @@ _data = {
 }
 
 [node name="Card" type="Control" unique_id=1234656898 groups=["cards"]]
-custom_minimum_size = Vector2(144, 184)
+custom_minimum_size = Vector2(200, 184)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 144.0
-offset_bottom = 184.0
+offset_right = 225.0
+offset_bottom = 325.0
 script = ExtResource("1_u8ksl")
 
 [node name="Pivot" type="Node2D" parent="." unique_id=379416748]
@@ -75,48 +75,47 @@ layout_mode = 3
 anchors_preset = 0
 offset_left = -72.0
 offset_top = -90.0
-offset_right = 72.0
-offset_bottom = 94.0
+offset_right = 153.0
+offset_bottom = 235.0
 
 [node name="CardGlow" type="ColorRect" parent="Pivot/CardVisual" unique_id=1215692677]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
 offset_left = -8.0
 offset_top = -8.0
-offset_right = 152.0
-offset_bottom = 192.0
+offset_right = 232.0
+offset_bottom = 337.0
 color = Color(0.909804, 0.901961, 0.992157, 0.392157)
 
 [node name="ColorBackground" type="ColorRect" parent="Pivot/CardVisual" unique_id=2045262168]
 unique_name_in_owner = true
 layout_mode = 0
-offset_right = 144.0
-offset_bottom = 184.0
+offset_right = 225.0
+offset_bottom = 325.0
 
 [node name="Background" type="ColorRect" parent="Pivot/CardVisual" unique_id=176974862]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 140.0
-offset_bottom = 180.0
+offset_right = 219.0
+offset_bottom = 319.0
 color = Color(0.207843, 0.207843, 0.207843, 1)
 
 [node name="TextureBackground" type="TextureRect" parent="Pivot/CardVisual" unique_id=2057717682]
 unique_name_in_owner = true
 layout_mode = 0
 offset_top = 1.0
-offset_right = 144.0
-offset_bottom = 185.0
+offset_right = 225.0
+offset_bottom = 326.0
 expand_mode = 1
 
 [node name="CardDescription" type="RichTextLabel" parent="Pivot/CardVisual" unique_id=1982061738]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 8.0
-offset_top = 137.0
-offset_right = 136.0
-offset_bottom = 209.0
+offset_left = 19.0
+offset_top = 219.0
+offset_right = 205.0
+offset_bottom = 314.0
 theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
 text = "If you can see this something is wrong"
@@ -153,19 +152,19 @@ vertical_alignment = 1
 [node name="InfluenceSprite" type="TextureRect" parent="Pivot/CardVisual" unique_id=401866531]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 112.0
-offset_top = 153.0
-offset_right = 144.0
-offset_bottom = 185.0
+offset_left = 184.0
+offset_top = 280.0
+offset_right = 216.0
+offset_bottom = 312.0
 texture = ExtResource("1_7f6u3")
 expand_mode = 1
 
 [node name="InfluenceLabel" type="Label" parent="Pivot/CardVisual/InfluenceSprite" unique_id=144790335]
 unique_name_in_owner = true
 layout_mode = 0
-offset_top = 1.0
-offset_right = 32.0
-offset_bottom = 33.0
+offset_left = -3.0
+offset_right = 31.0
+offset_bottom = 34.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -3
 theme_override_constants/outline_size = 3
@@ -177,10 +176,10 @@ vertical_alignment = 1
 [node name="CardTexture" type="TextureRect" parent="Pivot/CardVisual" unique_id=1528137638]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 15.0
-offset_top = 24.0
-offset_right = 130.0
-offset_bottom = 120.0
+offset_left = 23.0
+offset_top = 41.0
+offset_right = 202.15625
+offset_bottom = 188.0
 texture = ExtResource("1_7f6u3")
 expand_mode = 1
 
@@ -190,26 +189,26 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = -0.031000001
 anchor_bottom = -0.031000001
-offset_left = -4.0
-offset_top = -18.024
-offset_right = 124.0
-offset_bottom = 5.976
-theme_override_font_sizes/normal_font_size = 12
+offset_left = -14.0
+offset_top = -21.024002
+offset_right = 193.0
+offset_bottom = 2.9759989
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Card Name"
 scroll_active = false
 script = ExtResource("3_8gkbw")
-_max_size = 12
-_current_font_size = 12
+_max_size = 20
+_current_font_size = 20
 _editor_defaults_set = true
 
 [node name="CardType" type="Label" parent="Pivot/CardVisual" unique_id=1220224152]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 8.0
-offset_top = 120.0
-offset_right = 136.0
-offset_bottom = 137.0
+offset_left = 48.0
+offset_top = 197.0
+offset_right = 176.0
+offset_bottom = 214.0
 theme_override_constants/line_spacing = -3
 theme_override_font_sizes/font_size = 12
 text = "Card Type"
@@ -218,10 +217,10 @@ horizontal_alignment = 1
 [node name="CardDecoratorContainer" type="VBoxContainer" parent="Pivot/CardVisual" unique_id=1612328187]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = -8.0
-offset_top = 24.0
-offset_right = 16.0
-offset_bottom = 104.0
+offset_left = -1.0
+offset_top = 29.0
+offset_right = 23.0
+offset_bottom = 109.0
 theme_override_constants/separation = 4
 
 [node name="CardButton" type="Button" parent="Pivot" unique_id=994086188]
@@ -230,10 +229,9 @@ self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(144, 184)
 offset_left = -72.0
 offset_top = -90.0
-offset_right = 72.0
-offset_bottom = 94.0
+offset_right = 146.0
+offset_bottom = 228.0
 button_mask = 3
-metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=712678052]
 libraries/ = SubResource("AnimationLibrary_156sy")

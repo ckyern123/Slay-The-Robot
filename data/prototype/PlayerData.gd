@@ -13,6 +13,7 @@ class_name PlayerData
 @export var player_food_max: int = 0
 @export var player_ore: int = 0
 @export var player_size: int = 0
+@export var player_room: int = 0
 @export var player_insight: int = 0
 
 var player_energy: int = 3 # in combat energy. Not saved.
@@ -260,6 +261,13 @@ func add_size(amount: int) -> void:
 	player_size = max(player_size + amount, 0)
 	var delta: int = player_size - old_player_size_amount
 	Signals.player_size_changed.emit(delta)
+
+## If goes into negative amounts, the proper delta will be calculated 
+func add_room(amount: int) -> void:
+	var old_player_room_amount: int = player_room
+	player_room = max(player_room + amount, 0)
+	var delta: int = player_room - old_player_room_amount
+	Signals.player_room_changed.emit(delta)
 	
 ## Gets an rng track for the run. If it does not exist create one.
 func get_player_rng(rng_name: String) -> RandomNumberGenerator:
