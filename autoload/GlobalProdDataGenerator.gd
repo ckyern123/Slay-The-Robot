@@ -2148,11 +2148,11 @@ func add_colors() -> void:
 	color_green.color_energy_icon_texture_path = "sprites/jadeenergy.svg"
 	Global.register_rod(color_green)
 	
-	var color_orange: ColorData = ColorData.new("color_orange")
-	color_orange.color = Color.CORAL
-	color_orange.color_name = "Orange"
-	color_orange.color_energy_icon_texture_path = "sprites/cengkihenergy.svg"
-	Global.register_rod(color_orange)
+	var color_gold: ColorData = ColorData.new("color_gold")
+	color_gold.color = Color.CORAL
+	color_gold.color_name = "Gold"
+	color_gold.color_energy_icon_texture_path = "sprites/cengkihenergy.svg"
+	Global.register_rod(color_gold)
 	
 	var color_red: ColorData = ColorData.new("color_red")
 	color_red.color = Color.FIREBRICK
@@ -5352,20 +5352,15 @@ func add_cards_gold() -> void:
 	card_spiceguard.card_color_id = "color_{0}".format([color])
 	card_spiceguard.card_texture_path = "external/sprites/cards/cengkih/01_spiceguard.png"
 	card_spiceguard.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_spiceguard.card_description = "Gain 3 Food. Rattle 2 random cards in discard pile."
-	card_spiceguard.card_type = CardData.CARD_TYPES.SKILL
+	card_spiceguard.card_description = "Explore [damage]. Rattle 2 random cards in discard pile."
+	card_spiceguard.card_type = CardData.CARD_TYPES.ATTACK
 	card_spiceguard.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_spiceguard.card_requires_target = false
+	card_spiceguard.card_requires_target = true
 	card_spiceguard.card_energy_cost = 1
-	card_spiceguard.card_values = {"card_influence":1, "food_amount": 3}
-	card_spiceguard.card_upgrade_value_improvements = {"food_amount": 1}
+	card_spiceguard.card_influence = 3
+	card_spiceguard.card_values = {"damage": 4}
+	card_spiceguard.card_upgrade_value_improvements = {"damage": 2}
 	card_spiceguard.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		}
-		},
 		{
 			Scripts.ACTION_ADD_FOOD: {
 			}
@@ -5383,77 +5378,32 @@ func add_cards_gold() -> void:
 			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"card_influence":-1,
 			"time_delay": 0.1,
-			"pick_played_card": true,
 			"modify_parent_card": false,
 		}}]
 		}
 		}
 	]
-	card_spiceguard.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_spiceguard.card_play_actions.append(influence_action)
+	card_spiceguard.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_spiceguard)
 
-	
 	var card_cengkihemissary: CardData = CardData.new("card_cengkihemissary")
 	card_cengkihemissary.card_name = "Cengkih Emissary"
 	card_cengkihemissary.card_color_id = "color_{0}".format([color])
 	card_cengkihemissary.card_texture_path = "external/sprites/cards/cengkih/02_cengkihemissary.png"
 	card_cengkihemissary.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_cengkihemissary.card_description = "Appease 4 random cards in discard pile."
+	card_cengkihemissary.card_description = "Appease [min_card_amount] random cards in discard pile."
 	card_cengkihemissary.card_type = CardData.CARD_TYPES.SKILL
 	card_cengkihemissary.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_cengkihemissary.card_requires_target = false
 	card_cengkihemissary.card_energy_cost = 1
-	card_cengkihemissary.card_values = {"card_influence":1}
+	card_cengkihemissary.card_influence = 3
+	card_cengkihemissary.card_values = {"min_card_amount":3, "max_card_amount":3}
 	card_cengkihemissary.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
 	card_cengkihemissary.card_play_actions = [
 		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		}
-		},
-		{
-			Scripts.ACTION_ADD_FOOD: {
-			}
-		},
-		{
 		Scripts.ACTION_PICK_CARDS:
 		{
-			"min_card_amount":4,
-			"max_card_amount":4,
 			"min_cards_are_required_for_action": false,
 			"random_selection": true,
 			"card_pick_type": HandManager.DISCARD_PILE,
@@ -5462,46 +5412,13 @@ func add_cards_gold() -> void:
 			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"card_influence":1,
 			"time_delay": 0.1,
-			"pick_played_card": true,
 			"modify_parent_card": false,
 		}}]
 		}
 		}
 	]
-	card_cengkihemissary.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_cengkihemissary.card_play_actions.append(influence_action)
+	card_cengkihemissary.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cengkihemissary)
 	
 	var card_happysailor: CardData = CardData.new("card_happysailor")
@@ -5513,55 +5430,19 @@ func add_cards_gold() -> void:
 	card_happysailor.card_type = CardData.CARD_TYPES.ATTACK
 	card_happysailor.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_happysailor.card_requires_target = true
-	card_happysailor.card_energy_cost = 1
-	card_happysailor.card_values = {"card_influence":1,"damage": 2, "number_of_attacks": 1, "draw_count":1}
-	card_happysailor.card_upgrade_value_improvements = {"damage": 1,"draw_count": 1}
+	card_happysailor.card_energy_cost = 3
+	card_happysailor.card_influence = 5
+	card_happysailor.card_values = {"damage": 4, "number_of_attacks": 1, "draw_count":2}
+	card_happysailor.card_upgrade_value_improvements = {"damage": 2,"draw_count": 1}
 	card_happysailor.card_play_actions = [
 		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
-		{Scripts.ACTION_DRAW_GENERATOR:{}},
+			Scripts.ACTION_DRAW_GENERATOR:{}},
 		{
-		Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5},
+			Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5},
 		},
 	]
-	card_happysailor.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_happysailor.card_play_actions.append(influence_action)
+	card_happysailor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_happysailor)
 	
 	var card_shucker: CardData = CardData.new("card_shucker")
@@ -5574,54 +5455,17 @@ func add_cards_gold() -> void:
 	card_shucker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_shucker.card_requires_target = false
 	card_shucker.card_energy_cost = 1
-	card_shucker.card_values = {"card_influence":1,"money_amount":1,"created_card_object_id":"card_fish"}
-	card_shucker.card_upgrade_value_improvements = {"money_amount": 2}
+	card_shucker.card_influence = 3
+	card_shucker.card_values = {"money_amount":1,"created_card_object_id":"card_fish"}
+	card_shucker.card_upgrade_value_improvements = {"money_amount": 1}
 	card_shucker.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
 		{Scripts.ACTION_ADD_MONEY:{}},
 		{Scripts.ACTION_CREATE_CARDS: {
-			"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
+			"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 		}}
 		]
-	card_shucker.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_shucker.card_play_actions.append(influence_action)
+	card_shucker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_shucker)
 	
 	var card_foresttracker: CardData = CardData.new("card_foresttracker")
@@ -5637,12 +5481,6 @@ func add_cards_gold() -> void:
 	card_foresttracker.card_values = {"card_influence":1,"created_card_object_id":"card_grain","number_of_cards":1}
 	card_foresttracker.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_foresttracker.card_play_actions = [
-		{
-		Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"pick_played_card": true,
-			"modify_parent_card": false,
-		},
-		},
 		{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_INSIGHT:{"insight_amount":3}}]
 			,"action_data":[{Scripts.ACTION_PICK_CARDS:
 				{
@@ -5654,55 +5492,21 @@ func add_cards_gold() -> void:
 					"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
 					"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"cards_object_ids": ["card_grain"]}}],
 					"time_delay": 0.1,
-					"pick_played_card": true,
 					"modify_parent_card": false,
 					"action_data":[	{
 						Scripts.ACTION_IMPROVE_CARD_VALUES: {
 						"card_value_improvements": {"food_amount": 1},
 						"time_delay": 0.1,
-						"pick_played_card": true,
 						"modify_parent_card": false,
 						}
 				}]
 				}}]}},
 		{Scripts.ACTION_CREATE_CARDS: {
-			"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
+			"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 		}}
 		]
-	card_foresttracker.card_end_of_turn_actions = [
-		{
-			Scripts.ACTION_VALIDATOR: {
-			"validator_data":
-			[
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				}
-			],
-			"passed_action_data":
-			[
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel",
-					"pick_played_card": true
-					},
-				},
-			]
-			}
-		},
-		{
-			Scripts.ACTION_CHANGE_CARD_INFLUENCE:
-				{
-					"pick_played_card": true,
-					"card_influence": -1
-				}
-		}
-	]
+	card_foresttracker.card_play_actions.append(influence_action)
+	card_foresttracker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_foresttracker)
 	
 	var card_flintlockschooner: CardData = CardData.new("card_flintlockschooner")
@@ -5710,12 +5514,12 @@ func add_cards_gold() -> void:
 	card_flintlockschooner.card_color_id = "color_{0}".format([color])
 	card_flintlockschooner.card_texture_path = "external/sprites/cards/cengkih/06_flintlockschooner.png"
 	card_flintlockschooner.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_flintlockschooner.card_description = "Explore [damage]. Wield [number_of_cards]."
-	card_flintlockschooner.card_type = CardData.CARD_TYPES.ATTACK
+	card_flintlockschooner.card_description = "Repair all Swords in discard pile by 1. Wield [number_of_cards]."
+	card_flintlockschooner.card_type = CardData.CARD_TYPES.SKILL
 	card_flintlockschooner.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_flintlockschooner.card_requires_target = true
-	card_flintlockschooner.card_energy_cost = 1
-	card_flintlockschooner.card_values = {"card_influence":1,"damage": 3, "number_of_attacks": 1, "min_card_amount":2,"max_card_amount":2}
+	card_flintlockschooner.card_requires_target = false
+	card_flintlockschooner.card_energy_cost = 3
+	card_flintlockschooner.card_values = {"min_card_amount":2,"max_card_amount":2}
 	card_flintlockschooner.card_upgrade_value_improvements = {"min_card_amount":2,"max_card_amount":2}
 	card_flintlockschooner.card_play_actions = [
 		{
@@ -5723,19 +5527,321 @@ func add_cards_gold() -> void:
 				"min_cards_are_required_for_action": false,
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose up to {0} card(s) to return. {1} cards selected",
+				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
 				"validator_data":[{Scripts.VALIDATOR_CARD_ID:[{"card_object_ids":["card_sword"]}]}],
 				"action_data": [
 				{Scripts.ACTION_PLAY_CARDS:{}}]
 				}
 			},
 		{
-		Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5},
-		},
+			Scripts.ACTION_PICK_CARDS: {
+				"min_card_amount": 99,
+				"max_card_amount": 99,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
+				"validator_data":[{Scripts.VALIDATOR_CARD_ID:[{"card_object_ids":["card_sword"]}]}],
+				"action_data": [
+				{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":1}}]
+				}
+			},
 	]
 	card_flintlockschooner.card_play_actions.append(influence_action)
 	card_flintlockschooner.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockschooner)
+	
+	var card_reveredsmithy: CardData = CardData.new("card_reveredsmithy")
+	card_reveredsmithy.card_name = "Revered Smithy"
+	card_reveredsmithy.card_color_id = "color_{0}".format([color])
+	card_reveredsmithy.card_texture_path = "external/sprites/cards/cengkih/07_reveredsmithy.png"
+	card_reveredsmithy.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_reveredsmithy.card_description = "Forge [ore_required] Treasures."
+	card_reveredsmithy.card_type = CardData.CARD_TYPES.SKILL
+	card_reveredsmithy.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_reveredsmithy.card_requires_target = false
+	card_reveredsmithy.card_energy_cost = 2
+	card_reveredsmithy.card_influence = 4
+	card_reveredsmithy.card_values = {"ore_required": 2,"ore_amount": -2, "min_card_amount":2,"max_card_amount":2}
+	card_reveredsmithy.card_upgrade_value_improvements = {"ore_required": 1,"ore_amount": -1, "min_card_amount":1,"max_card_amount":1}
+	card_reveredsmithy.card_play_actions.append(forge_action)
+	card_reveredsmithy.card_play_actions.append(influence_action)
+	card_reveredsmithy.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_reveredsmithy)
+	
+	var card_ravineexplorer: CardData = CardData.new("card_ravineexplorer")
+	card_ravineexplorer.card_name = "Ravine Explorer"
+	card_ravineexplorer.card_color_id = "color_{0}".format([color])
+	card_ravineexplorer.card_texture_path = "external/sprites/cards/cengkih/08_ravineexplorer.png"
+	card_ravineexplorer.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_ravineexplorer.card_description = "Explore [damage]. If you've completed an expedition, create 1 Grain and 1 Fish."
+	card_ravineexplorer.card_type = CardData.CARD_TYPES.ATTACK
+	card_ravineexplorer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_ravineexplorer.card_requires_target = true
+	card_ravineexplorer.card_energy_cost = 1
+	card_ravineexplorer.card_influence = 3
+	card_ravineexplorer.card_values = {"damage":4,"number_of_attacks":1}
+	card_ravineexplorer.card_upgrade_value_improvements = {"damage":2}
+	card_ravineexplorer.card_play_actions = [
+		{
+			Scripts.ACTION_ATTACK_GENERATOR:
+				{
+					"actions_on_lethal":[{Scripts.ACTION_CREATE_CARDS:{
+						"created_card_object_id":"card_fish",
+						"number_of_cards": 1,
+						"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
+					}},
+					{
+						Scripts.ACTION_CREATE_CARDS:{
+							"created_card_object_id":"card_grain",
+							"number_of_cards": 1,
+							"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
+						}
+					}]
+				}
+		}
+	]
+	card_ravineexplorer.card_play_actions.append(influence_action)
+	card_ravineexplorer.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_ravineexplorer)
+	
+	var card_flintlockcrier: CardData = CardData.new("card_flintlockcrier")
+	card_flintlockcrier.card_name = "Flintlock Crier"
+	card_flintlockcrier.card_color_id = "color_{0}".format([color])
+	card_flintlockcrier.card_texture_path = "external/sprites/cards/cengkih/09_flintlockcrier.png"
+	card_flintlockcrier.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_flintlockcrier.card_description = "Return up to [min_card_amount] cards from your discard pile to your hand. Rattle them. You gain 2 energy."
+	card_flintlockcrier.card_type = CardData.CARD_TYPES.SKILL
+	card_flintlockcrier.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_flintlockcrier.card_requires_target = false
+	card_flintlockcrier.card_energy_cost = 3
+	card_flintlockcrier.card_influence = 4
+	card_flintlockcrier.card_values = {"min_card_amount":0,"max_card_amount":3}
+	card_flintlockcrier.card_upgrade_value_improvements = {"max_card_amount":1}
+	card_flintlockcrier.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_ENERGY:{"energy_amount":2}
+		},
+		{
+			Scripts.ACTION_PICK_CARDS: {
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose up to {0} card(s) to return to hand. {1} cards selected",
+				"action_data": [
+				{
+					Scripts.ACTION_CHANGE_CARD_INFLUENCE: {"card_influence":-1}
+				},
+				{
+					Scripts.ACTION_ADD_CARDS_TO_HAND: {}
+				}]
+			}
+		}
+	]
+	card_flintlockcrier.card_play_actions.append(influence_action)
+	card_flintlockcrier.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_flintlockcrier)
+	
+	var card_cunningeyedguard: CardData = CardData.new("card_cunningeyedguard")
+	card_cunningeyedguard.card_name = "Cunning-Eyed Guard"
+	card_cunningeyedguard.card_color_id = "color_{0}".format([color])
+	card_cunningeyedguard.card_texture_path = "external/sprites/cards/cengkih/10_cunningeyedguard.png"
+	card_cunningeyedguard.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_cunningeyedguard.card_description = "Discard 2 cards, then Explore [damage]."
+	card_cunningeyedguard.card_type = CardData.CARD_TYPES.ATTACK
+	card_cunningeyedguard.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_cunningeyedguard.card_requires_target = true
+	card_cunningeyedguard.card_energy_cost = 2
+	card_cunningeyedguard.card_influence = 4
+	card_cunningeyedguard.card_values = {"min_card_amount":2,"max_card_amount":2, "damage":7}
+	card_cunningeyedguard.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1,"damage":3}
+	card_cunningeyedguard.card_play_actions = [
+		{
+			Scripts.ACTION_ATTACK_GENERATOR:{}
+		},
+		{
+			Scripts.ACTION_PICK_CARDS: {
+				"min_cards_are_required_for_action": true,
+				"random_selection": false,
+				"card_pick_type": HandManager.HAND_PILE,
+				"card_pick_text": "Choose {0} card(s) to discard. {1} cards selected",
+				"action_data": [
+				{
+					Scripts.ACTION_DISCARD_CARDS:{
+						
+					}}]
+			}
+		}
+	]
+	card_cunningeyedguard.card_play_actions.append(influence_action)
+	card_cunningeyedguard.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_cunningeyedguard)
+	
+	var card_cengkihscribe: CardData = CardData.new("card_cengkihscribe")
+	card_cengkihscribe.card_name = "Cunning-Eyed Guard"
+	card_cengkihscribe.card_color_id = "color_{0}".format([color])
+	card_cengkihscribe.card_texture_path = "external/sprites/cards/cengkih/11_cengkihscribe.png"
+	card_cengkihscribe.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_cengkihscribe.card_description = "Return [min_card_amount] Scrolls from your discard pile to your hand."
+	card_cengkihscribe.card_type = CardData.CARD_TYPES.SKILL
+	card_cengkihscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_cengkihscribe.card_requires_target = false
+	card_cengkihscribe.card_energy_cost = 2
+	card_cengkihscribe.card_influence = 4
+	card_cengkihscribe.card_values = {"min_card_amount":3,"max_card_amount":3}
+	card_cengkihscribe.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
+	card_cengkihscribe.card_play_actions = [
+		{
+			Scripts.ACTION_ATTACK_GENERATOR:{}
+		},
+		{
+			Scripts.ACTION_PICK_CARDS: {
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose {0} card(s) to discard. {1} cards selected",
+				"action_data": [
+				{
+					Scripts.ACTION_ADD_CARDS_TO_HAND:{
+						
+					}}]
+			}
+		}
+	]
+	card_cengkihscribe.card_play_actions.append(influence_action)
+	card_cengkihscribe.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_cengkihscribe)
+	
+	var card_intrepidcollector: CardData = CardData.new("card_intrepidcollector")
+	card_intrepidcollector.card_name = "Intrepid Collector"
+	card_intrepidcollector.card_color_id = "color_{0}".format([color])
+	card_intrepidcollector.card_texture_path = "external/sprites/cards/cengkih/12_intrepidcollector.png"
+	card_intrepidcollector.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_intrepidcollector.card_description = "Explore [damage]. If you completed an expedition, gain [money_amount] Money. Tick down Shop Refresh by 2."
+	card_intrepidcollector.card_type = CardData.CARD_TYPES.ATTACK
+	card_intrepidcollector.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_intrepidcollector.card_requires_target = true
+	card_intrepidcollector.card_energy_cost = 1
+	card_intrepidcollector.card_influence = 3
+	card_intrepidcollector.card_values = {"damage":3,"number_of_attacks":1, "money_amount":2}
+	card_intrepidcollector.card_upgrade_value_improvements = {"money_amount":1,"damage":1}
+	card_intrepidcollector.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_REFRESH:{"refresh_amount":-2}
+		},
+		{
+			Scripts.ACTION_ATTACK_GENERATOR:{
+				"actions_on_lethal": [{Scripts.ACTION_ADD_MONEY:{}}]
+			}
+		}
+	]
+	card_intrepidcollector.card_play_actions.append(influence_action)
+	card_intrepidcollector.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_intrepidcollector)
+	
+	var card_cengkihnoble: CardData = CardData.new("card_cengkihnoble")
+	card_cengkihnoble.card_name = "Cengkih Noble"
+	card_cengkihnoble.card_color_id = "color_{0}".format([color])
+	card_cengkihnoble.card_texture_path = "external/sprites/cards/cengkih/13_cengkihnoble.png"
+	card_cengkihnoble.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_cengkihnoble.card_description = "Draw 2 cards. Gain 2 energy. Create 1 Debt."
+	card_cengkihnoble.card_type = CardData.CARD_TYPES.SKILL
+	card_cengkihnoble.card_rarity = CardData.CARD_RARITIES.RARE
+	card_cengkihnoble.card_requires_target = false
+	card_cengkihnoble.card_energy_cost = 1
+	card_cengkihnoble.card_influence = 3
+	card_cengkihnoble.card_values = {"draw_count":2,"energy_amount":2,"number_of_cards":1,"card_object_id":"card_debt"}
+	card_cengkihnoble.card_upgrade_value_improvements = {"draw_count":1,"energy_amount":1}
+	card_cengkihnoble.card_play_actions = [
+		{
+			Scripts.ACTION_CREATE_CARDS:{
+				"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
+
+			},
+			Scripts.ACTION_ADD_ENERGY:{},
+			Scripts.ACTION_DRAW_GENERATOR:{}
+		}
+	]
+	card_cengkihnoble.card_play_actions.append(influence_action)
+	card_cengkihnoble.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_cengkihnoble)
+	
+	var card_tradingenvoy: CardData = CardData.new("card_tradingenvoy")
+	card_tradingenvoy.card_name = "Trading Envoy"
+	card_tradingenvoy.card_color_id = "color_{0}".format([color])
+	card_tradingenvoy.card_texture_path = "external/sprites/cards/cengkih/14_tradingenvoy.png"
+	card_tradingenvoy.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_tradingenvoy.card_description = "Exhaust up to 2 cards in hand to gain [money_amount] Money each."
+	card_tradingenvoy.card_type = CardData.CARD_TYPES.SKILL
+	card_tradingenvoy.card_rarity = CardData.CARD_RARITIES.RARE
+	card_tradingenvoy.card_requires_target = false
+	card_tradingenvoy.card_energy_cost = 1
+	card_tradingenvoy.card_influence = 3
+	card_tradingenvoy.card_values = {"max_card_amount": 2, "money_amount": 4}
+	card_tradingenvoy.card_upgrade_value_improvements = {"money_amount": 2}
+	card_tradingenvoy.card_play_actions = [
+		{
+			Scripts.ACTION_PICK_CARDS: {
+				"min_cards_are_required_for_action": false,
+				"random_selection": false,
+				"card_pick_type": HandManager.HAND_PILE,
+				"card_pick_text": "Choose {0} card(s) to exhaust. {1} cards selected",
+				"action_data": [
+				{
+					Scripts.ACTION_ADD_MONEY:{},
+					Scripts.ACTION_EXHAUST_CARDS:{}
+				}]
+			}
+		}
+	]
+	card_tradingenvoy.card_play_actions.append(influence_action)
+	card_tradingenvoy.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_tradingenvoy)
+		
+	var card_provisionalcaptain: CardData = CardData.new("card_provisionalcaptain")
+	card_provisionalcaptain.card_name = "Provisional Captain"
+	card_provisionalcaptain.card_color_id = "color_{0}".format([color])
+	card_provisionalcaptain.card_texture_path = "external/sprites/cards/cengkih/15_provisionalcaptain.png"
+	card_provisionalcaptain.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_provisionalcaptain.card_description = "Rattle all cards in discard pile. Wield all Swords in discard pile."
+	card_provisionalcaptain.card_type = CardData.CARD_TYPES.SKILL
+	card_provisionalcaptain.card_rarity = CardData.CARD_RARITIES.RARE
+	card_provisionalcaptain.card_requires_target = false
+	card_provisionalcaptain.card_energy_cost = 1
+	card_provisionalcaptain.card_influence = 3
+	card_provisionalcaptain.card_values = {}
+	card_provisionalcaptain.card_upgrade_value_improvements = {}
+	card_provisionalcaptain.card_play_actions = [
+		{
+			Scripts.ACTION_PICK_CARDS: {
+				"min_card_amount": 99,
+				"max_card_amount": 99,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
+				"validator_data":[{Scripts.VALIDATOR_CARD_ID:[{"card_object_ids":["card_sword"]}]}],
+				"action_data": [
+				{Scripts.ACTION_PLAY_CARDS:{}}]
+				}
+			},
+			{
+			Scripts.ACTION_PICK_CARDS: {
+				"min_card_amount": 99,
+				"max_card_amount": 99,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
+				"validator_data":[{Scripts.VALIDATOR_CARD_RARITY:[{"card_rarities_exclude":[CardData.CARD_RARITIES.GENERATED]}]}],
+				"action_data": [
+				{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-1}}]
+				}
+			},
+	]
+	card_provisionalcaptain.card_play_actions.append(influence_action)
+	card_provisionalcaptain.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_provisionalcaptain)
 #region Card Packs
 
 func add_card_packs() -> void:
