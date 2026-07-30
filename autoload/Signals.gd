@@ -83,6 +83,7 @@ signal reward_clear_requested(reward_group: int) # -1 for clear all rewards
 signal player_money_changed(money_delta: int)
 signal player_health_changed(money_delta: int)
 signal player_food_changed(food_delta: int)
+signal player_refresh_changed(food_delta: int)
 signal player_ore_changed(ore_delta: int)
 signal player_sprawl_changed(influence_delta: int)
 signal player_room_changed(influence_delta: int)

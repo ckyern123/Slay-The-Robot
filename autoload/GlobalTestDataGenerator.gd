@@ -1525,13 +1525,13 @@ func add_test_colors() -> void:
 	var color_green: ColorData = ColorData.new("color_green")
 	color_green.color = Color.WEB_GREEN
 	color_green.color_name = "Green"
-	color_green.color_energy_icon_texture_path = "external/sprites/colors/green_energy_icon.png"
+	color_green.color_energy_icon_texture_path = "res://sprites/jadeenergy.svg"
 	Global.register_rod(color_green)
 	
 	var color_orange: ColorData = ColorData.new("color_orange")
 	color_orange.color = Color.CORAL
 	color_orange.color_name = "Orange"
-	color_orange.color_energy_icon_texture_path = "external/sprites/colors/orange_energy_icon.png"
+	color_orange.color_energy_icon_texture_path = "res://sprites/cengkihenergy.svg"
 	Global.register_rod(color_orange)
 	
 	var color_red: ColorData = ColorData.new("color_red")
@@ -1555,8 +1555,9 @@ func add_test_colors() -> void:
 	var color_purple: ColorData = ColorData.new("color_purple")
 	color_purple.color = Color.REBECCA_PURPLE
 	color_purple.color_name = "Purple"
-	color_purple.color_energy_icon_texture_path = "external/sprites/colors/purple_energy_icon.png"
+	color_purple.color_energy_icon_texture_path = "res://sprites/pearlenergy.svg"
 	Global.register_rod(color_purple)
+
 
 #endregion
 

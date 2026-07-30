@@ -84,6 +84,9 @@ func populate_shop() -> void:
 			
 		### populate shop artifacts
 		var shop_artifacts: Array[ArtifactData] = shop_data.get_shop_artifact_options()
+		for artifact in artifact_container.get_children():
+			artifact_container.remove_child(artifact)
+			artifact.queue_free()
 		for artifact_data in shop_artifacts:
 			# create artifact button asset
 			var artifact_shop_button: BaseShopButton = Scenes.ARTIFACT_SHOP_BUTTON.instantiate()

@@ -52,14 +52,14 @@ const HAND_CARD_ROTATION_CURVE_MULTIPLIER: float = 6.0 # multiplies the curve sa
 const HAND_CARD_Y_OFFSET_CURVE_MULTIPLIER: float = -20.0 # multiplies the curve sampling
 
 const CARD_WIDTH: float = 144.0 # how big the Card asset is. NOTE: Update this if you update Card's size at all
-const CARD_SEPERATION_WIDTH: float = CARD_WIDTH * .75 # how far apart each card should be from one another. Generally between .5 to 1X the card width
+const CARD_SEPERATION_WIDTH: float = CARD_WIDTH * 1 # how far apart each card should be from one another. Generally between .5 to 1X the card width
 
 const MIDDLE_OFFSET: float = CARD_WIDTH / 2
 var middle: float = (size[0] / 2) - MIDDLE_OFFSET # calculate middle X position of hand container, with optional offset for fine tuning
 
 # y offsets for when the player hovers over a card
 const CARD_UNHOVERED_HEIGHT = 0.0
-const CARD_HOVERED_HEIGHT = -30
+const CARD_HOVERED_HEIGHT = -50
 
 const CARD_PICK_POSITIONS: Array = [
 	[0.0],
@@ -73,7 +73,7 @@ const CARD_PICK_POSITIONS: Array = [
 	[-2.75, -2.25, -1.5, -0.75, 0.0, 0.75 ,1.5, 2.25, 2.75],
 	[-3.25, -2.75, -2.25, -1.5, -0.75, 0.75 ,1.5, 2.25, 2.75, 3.25],
 ]
-const CARD_PICK_Y_OFFSET = -300 # Where picked cards in hand appear relative to the Hand container
+const CARD_PICK_Y_OFFSET = -500 # Where picked cards in hand appear relative to the Hand container
 
 
 func _ready():
@@ -188,7 +188,7 @@ func update_hand_card_hover(hovered_card: Card = null) -> void:
 		if card_in_hand == null:
 			continue
 		
-		if hovered_card == card_in_hand:
+		if hovered_card == card_in_hand and hovered_card and not hovered_card.is_picked:
 			# hovered card
 			card_in_hand.position.y = CARD_HOVERED_HEIGHT - 50
 			card_in_hand.z_index = 50
@@ -317,10 +317,12 @@ func attempt_pick_card(card: Card):
 				var max_card_amount: int = min(current_card_pick_action.get_card_pick_max_amount(), HandManager.PLAYER_DEFAULT_HAND_CARD_COUNT_MAX)
 				if picked_card_amount < max_card_amount:
 					# pick the card
+					card.is_picked = true
 					current_card_pick_action.picked_cards.append(card.card_data)
 				elif max_card_amount == 1:
 					# if max 1 card, it will swap them out
 					current_card_pick_action.picked_cards.clear()
+					card.is_picked = true
 					current_card_pick_action.picked_cards.append(card.card_data)
 		
 		update_card_pick_ui()
@@ -328,6 +330,7 @@ func attempt_pick_card(card: Card):
 
 func unpick_card(card: Card):
 	if current_card_pick_action != null:
+		card.is_picked = false
 		current_card_pick_action.picked_cards.erase(card)
 
 func _on_confirm_pick_button_up():

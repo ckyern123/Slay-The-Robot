@@ -12,6 +12,8 @@ class_name Tooltip
 @onready var food_label: RichTextLabel = %FoodLabel
 @onready var ore_label: RichTextLabel = %OreLabel
 @onready var insight_label: RichTextLabel = %InsightLabel
+@onready var sprawl_label: RichTextLabel = %SprawlLabel
+@onready var room_label: RichTextLabel = %RoomLabel
 
 @onready var energy: TextureButton = %Energy
 @onready var deck_button: TextureButton = %DeckButton
@@ -43,10 +45,12 @@ func _ready() -> void:
 		[map_button, "[color=orange]Map[/color]\nOpens map for this act", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		[deck_button, "[color=orange]Deck[/color]\nList of all cards currently owned. Saved between combats", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		
-		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose", true, false, true, $TooltipPositions/FoodTooltipPos],
+		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose. Each turn, you lose Food equal to total cards/10", true, false, true, $TooltipPositions/FoodTooltipPos],
 		[money_label, "[color=orange]Money[/color]\nHow much money you have", true, false, true, $TooltipPositions/MoneyTooltipPos],
 		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have", true, false, true, $TooltipPositions/OreTooltipPos],
 		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have", true, false, true, $TooltipPositions/InsightTooltipPos],
+		[sprawl_label, "[color=orange]Sprawl[/color]\nHow much Sprawl you have. If you have more total cards than Sprawl, you lose Food at the end of turn equal to half the difference.", true, false, true, $TooltipPositions/SprawlTooltipPos],
+		[room_label, "[color=orange]Insight[/color]\nHow much Room you have. Room is needed to build Artifacts.", true, false, true, $TooltipPositions/RoomTooltipPos],
 	
 		[energy, "[color=orange]Energy[/color]\nUsed to play cards", false, false, false, $TooltipPositions/EnergyTooltipPos],
 		[draw_pile_button, "[color=orange]Draw Pile[/color]\nThese cards will be drawn", false, false, false, $TooltipPositions/EnergyTooltipPos],

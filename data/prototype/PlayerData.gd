@@ -11,10 +11,11 @@ class_name PlayerData
 @export var player_money: int = 0
 @export var player_food: int = 0
 @export var player_food_max: int = 0
-@export var player_ore: int = 0
+@export var player_ore: int = 3
 @export var player_size: int = 0
 @export var player_room: int = 0
-@export var player_insight: int = 0
+@export var player_insight: int = 1
+@export var player_refresh: int = 5
 
 var player_energy: int = 3 # in combat energy. Not saved.
 ## The energy the player gains each turn. This can be modified.
@@ -268,6 +269,14 @@ func add_room(amount: int) -> void:
 	player_room = max(player_room + amount, 0)
 	var delta: int = player_room - old_player_room_amount
 	Signals.player_room_changed.emit(delta)
+
+## Adds or subtracts food from the player
+## If goes into negative amounts, the proper delta will be calculated 
+func add_refresh(amount: int) -> void:
+	var old_player_refresh_amount: int = player_refresh
+	player_refresh = max(player_refresh + amount, 0)
+	var delta: int = player_refresh - old_player_refresh_amount
+	Signals.player_refresh_changed.emit(delta)
 	
 ## Gets an rng track for the run. If it does not exist create one.
 func get_player_rng(rng_name: String) -> RandomNumberGenerator:

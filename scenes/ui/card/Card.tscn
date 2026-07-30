@@ -3,6 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://d33u8m744fh03" path="res://icon.svg" id="1_7f6u3"]
 [ext_resource type="Script" uid="uid://k4n0whn5t0m" path="res://scripts/ui/card/Card.gd" id="1_u8ksl"]
 [ext_resource type="Script" uid="uid://c5i0sjwlko88l" path="res://addons/label_font_auto_sizer/rich_label_auto_sizer.gd" id="3_8gkbw"]
+[ext_resource type="Texture2D" uid="uid://c7woouwx3sgtx" path="res://sprites/energy.svg" id="3_822sr"]
+[ext_resource type="Texture2D" uid="uid://cxcd1n4jr23ij" path="res://sprites/influence.svg" id="4_s13hi"]
 
 [sub_resource type="Animation" id="Animation_qe6gy"]
 length = 0.001
@@ -128,11 +130,9 @@ _editor_defaults_set = true
 [node name="EnergySprite" type="TextureRect" parent="Pivot/CardVisual" unique_id=1206550874]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = -12.0
-offset_top = -12.0
-offset_right = 20.0
-offset_bottom = 20.0
-texture = ExtResource("1_7f6u3")
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("3_822sr")
 expand_mode = 1
 metadata/_edit_group_ = true
 
@@ -152,19 +152,20 @@ vertical_alignment = 1
 [node name="InfluenceSprite" type="TextureRect" parent="Pivot/CardVisual" unique_id=401866531]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 184.0
+offset_left = 185.0
 offset_top = 280.0
-offset_right = 216.0
-offset_bottom = 312.0
-texture = ExtResource("1_7f6u3")
+offset_right = 235.0
+offset_bottom = 330.0
+texture = ExtResource("4_s13hi")
 expand_mode = 1
 
 [node name="InfluenceLabel" type="Label" parent="Pivot/CardVisual/InfluenceSprite" unique_id=144790335]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = -3.0
-offset_right = 31.0
-offset_bottom = 34.0
+offset_left = 8.0
+offset_top = 12.0
+offset_right = 42.0
+offset_bottom = 46.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -3
 theme_override_constants/outline_size = 3

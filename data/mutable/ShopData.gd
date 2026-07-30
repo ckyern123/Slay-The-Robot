@@ -15,6 +15,7 @@ class_name ShopData
 @export var shop_trade: Array[CardData] = [] 
 @export var shop_artifact_ids: Array[String] = []
 @export var shop_consumable_slot_to_consumable_object_id: Dictionary = {}	# maps a numerical slot index to a consumable id. 0 indexed
+@export var shop_refresh: int = 0
 
 # prices; parallel to the items
 @export var shop_card_prices: Array[int] = []
@@ -190,6 +191,7 @@ func get_shop_artifact_price(artifact_id: String) -> int:
 	return 0
 
 func get_shop_artifact_options() -> Array[ArtifactData]:
+	
 	# returns array of data for purchasable artifacts
 	var artifacts: Array[ArtifactData] = []
 	for artifact_id in shop_artifact_ids:

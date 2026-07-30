@@ -10,6 +10,7 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var insight_label: RichTextLabel = %InsightLabel
 @onready var sprawl_label: RichTextLabel = %SprawlLabel
 @onready var room_label: RichTextLabel = %RoomLabel
+@onready var shop_refresh_label: RichTextLabel = %ShopRefreshLabel
 
 const money_texture_path = "res://sprites/rupee.svg"
 const food_texture_path = "res://sprites/oat.svg"
@@ -62,7 +63,7 @@ func _ready():
 	Signals.player_sprawl_changed.connect(_on_player_sprawl_changed)
 	Signals.player_room_changed.connect(_on_player_room_changed)
 	Signals.player_insight_changed.connect(_on_player_insight_changed)
-		
+	Signals.player_refresh_changed.connect(_on_player_refresh_changed)
 	Signals.enemy_killed.connect(_on_enemy_killed)
 	Signals.enemy_death_animation_finished.connect(_on_enemy_death_animation_finished)
 	
@@ -84,7 +85,7 @@ func _ready():
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size(), Global.player_data.player_size]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
 
 	# pile buttons
 	deck_button.button_up.connect(_on_deck_button_up)
@@ -146,7 +147,7 @@ func update_combat_display():
 	_on_player_money_changed()
 	_on_player_sprawl_changed()
 	_on_player_room_changed()
-
+	_on_player_refresh_changed()
 func _update_background() -> void:
 	# set the background if possible
 	var background_texture_path: String = ""
@@ -210,13 +211,30 @@ func _on_player_insight_changed(_delta: int = 0):
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
 	
 func _on_player_food_changed(_delta: int = 0):
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size(), Global.player_data.player_size]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
 
 func _on_player_sprawl_changed(_delta: int = 0):
-	sprawl_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Sprawl"])  % [(HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size()),Global.player_data.player_size]
+	var calc: int = (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())
+	var sprawl: int = Global.player_data.player_size
+	if (calc > sprawl):
+		sprawl_label.text = "[img width={0}]{1}[/img] {2}: [color=#FF9233]%s / %s[/color]".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Sprawl"])  % [calc,Global.player_data.player_size]
+	else:
+		sprawl_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Sprawl"])  % [calc,Global.player_data.player_size]
 
 func _on_player_room_changed(_delta: int = 0):
 	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room
+
+func _on_player_refresh_changed(_delta: int = 0):
+	shop_refresh_label.text = "Refresh: %s"  % Global.player_data.player_refresh
+	if (Global.player_data.player_refresh <= 0):
+		var shop_data: ShopData = Global.get_shop_at_player_location()
+		shop_data.shop_is_visited = false
+		shop_data.refresh_shop = true
+		shop_overlay.populate_shop()
+		Global.player_data.player_refresh = 5
+		shop_refresh_label.text = "Refresh: %s"  % Global.player_data.player_refresh
+		#var current_event = Global.get_player_event_data()
+		#enemy_container.populate_enemies_from_event(current_event)
 
 ### Deck Buttons
 
@@ -454,7 +472,7 @@ func _on_player_turn_started():
 			
 			if _end_combat_check():
 				return
-		
+
 		# combat start consumable actions
 		for consumable_slot_index: int in Global.player_data.player_consumable_slot_count:
 			var consumable_data: ConsumableData = Global.get_player_consumable_in_slot_index(consumable_slot_index)
@@ -488,6 +506,8 @@ func _on_player_turn_started():
 		if _end_combat_check():
 			return
 		Signals.shop_opened.emit()
+	else:
+		Global.player_data.add_refresh(-1)
 	
 	# reset energy
 	ActionGenerator.generate_start_of_turn_energy_actions()
@@ -515,14 +535,6 @@ func _on_player_turn_started():
 	if _end_combat_check():
 		return
 	
-	if (StatsHandler.get_turn_count() % 5 == 0):
-		var shop_data: ShopData = Global.get_shop_at_player_location()
-		shop_data.shop_is_visited = false
-		shop_data.refresh_shop = true
-		shop_overlay.populate_shop()
-		
-		#var current_event = Global.get_player_event_data()
-		#enemy_container.populate_enemies_from_event(current_event)
 	# unlock and update hand
 	HandManager.set_disable_hand(false)
 	hand.update_hand_card_display()
@@ -605,6 +617,7 @@ func _on_run_started():
 	visible = true
 	_on_player_food_changed()
 	_on_player_ore_changed()
+	_on_player_refresh_changed()
 	_on_player_insight_changed()
 	_on_player_money_changed()
 	

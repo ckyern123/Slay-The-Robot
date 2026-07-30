@@ -61,6 +61,7 @@ const ACTION_SWAP_BOSS_ARTIFACT: String = "res://scripts/actions/combatant_actio
 const ACTION_ADD_ENERGY: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddEnergy.gd"
 const ACTION_ADD_MONEY: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddMoney.gd"
 const ACTION_ADD_FOOD: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddFood.gd"
+const ACTION_ADD_REFRESH: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddRefresh.gd"
 const ACTION_ADD_ROOM: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddRoom.gd"
 const ACTION_ADD_INSIGHT: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddInsight.gd"
 const ACTION_ADD_ORE: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddOre.gd"
