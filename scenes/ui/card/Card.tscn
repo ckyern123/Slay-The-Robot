@@ -129,9 +129,10 @@ _editor_defaults_set = true
 
 [node name="EnergySprite" type="TextureRect" parent="Pivot/CardVisual" unique_id=1206550874]
 unique_name_in_owner = true
+z_index = 2
 layout_mode = 0
-offset_right = 32.0
-offset_bottom = 32.0
+offset_right = 40.0
+offset_bottom = 40.0
 texture = ExtResource("3_822sr")
 expand_mode = 1
 metadata/_edit_group_ = true
@@ -139,8 +140,10 @@ metadata/_edit_group_ = true
 [node name="EnergyCost" type="Label" parent="Pivot/CardVisual/EnergySprite" unique_id=744247887]
 unique_name_in_owner = true
 layout_mode = 0
-offset_right = 32.0
-offset_bottom = 32.0
+offset_left = 5.0
+offset_top = 2.0
+offset_right = 37.0
+offset_bottom = 34.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -3
 theme_override_constants/outline_size = 3
@@ -151,11 +154,11 @@ vertical_alignment = 1
 
 [node name="InfluenceSprite" type="TextureRect" parent="Pivot/CardVisual" unique_id=401866531]
 unique_name_in_owner = true
+z_index = 1
 layout_mode = 0
-offset_left = 185.0
-offset_top = 280.0
-offset_right = 235.0
-offset_bottom = 330.0
+offset_top = 25.0
+offset_right = 50.0
+offset_bottom = 75.0
 texture = ExtResource("4_s13hi")
 expand_mode = 1
 

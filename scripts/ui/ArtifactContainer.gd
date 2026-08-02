@@ -4,7 +4,8 @@ func _ready():
 	Signals.run_started.connect(_on_run_started)
 	Signals.run_ended.connect(_on_run_ended)
 	Signals.player_artifacts_changed.connect(_on_player_artifacts_changed)
-
+	Signals.player_insight_changed.connect(_on_player_insight_changed)
+	
 func populate_artifacts():
 	clear_artifacts()
 	
@@ -25,3 +26,6 @@ func _on_run_ended():
 
 func _on_player_artifacts_changed():
 	populate_artifacts()
+
+func _on_player_insight_changed():
+	populate_artifacts()	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://crqhgunlgq648"]
+[gd_scene format=3 uid="uid://crqhgunlgq648"]
 
 [ext_resource type="Script" uid="uid://dswtk5i5bcmjj" path="res://scripts/ui/Artifact.gd" id="2_irli7"]
 
@@ -23,7 +23,7 @@ _data = {
 &"proc_anim": SubResource("Animation_hwclp")
 }
 
-[node name="Artifact" type="TextureButton"]
+[node name="Artifact" type="TextureButton" unique_id=1385408959]
 custom_minimum_size = Vector2(40, 40)
 offset_right = 40.0
 offset_bottom = 40.0
@@ -34,7 +34,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("2_irli7")
 
-[node name="CounterLabel" type="Label" parent="."]
+[node name="CounterLabel" type="Label" parent="." unique_id=843546204]
 z_index = 1
 layout_mode = 0
 offset_left = 24.0
@@ -43,7 +43,5 @@ offset_right = 48.0
 offset_bottom = 47.0
 horizontal_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_fusox")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=914506010]
+libraries/ = SubResource("AnimationLibrary_fusox")

@@ -42,7 +42,7 @@ var parent_card: CardData = null	# the parent card in the player's true deck tha
 @export var card_shuffle_weighting: float = 1.0
 
 # Card Type
-enum CARD_TYPES {ATTACK, SKILL, POWER, STATUS, CURSE}
+enum CARD_TYPES {ATTACK, SKILL, POWER, STATUS, CURSE, CRAFT}
 enum CARD_SUBTYPES {NEUTRAL, FOOD, CRAFT, PEARL, JADE, ANISSEED, CENGKIH}
 const STANDARD_CARD_TYPES: Array[int] = [CARD_TYPES.ATTACK, CARD_TYPES.SKILL, CARD_TYPES.POWER]
 @export var card_type: int = CARD_TYPES.ATTACK

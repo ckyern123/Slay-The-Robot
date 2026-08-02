@@ -21,6 +21,7 @@ func _ready():
 	Signals.trade_purchased.connect(_on_trade_purchased)
 	Signals.artifact_purchased.connect(_on_artifact_purchased)
 	Signals.consumable_purchased.connect(_on_consumable_purchased)
+	Signals.player_money_changed.connect(_on_player_money_changed)
 	
 	continue_button.button_up.connect(_on_continue_button_up)
 
@@ -151,6 +152,7 @@ func clear_shop():
 		#for j in shop_data.shop_trade:
 		#	j.queue_free()
 		shop_data.shop_trade.clear()
+		shop_data.shop_artifact_ids.clear()
 		shop_data.refresh_shop = false
 			# ensure the shop is populated
 #func _on_combat_started(_event_id: String):
@@ -171,6 +173,9 @@ func _on_artifact_purchased(_artifact_data: ArtifactData):
 	_repopulate_shop_after_actions_ended()
 
 func _on_consumable_purchased(_consumable_object_id: String):
+	_repopulate_shop_after_actions_ended()
+
+func _on_player_money_changed(money_delta: int):
 	_repopulate_shop_after_actions_ended()
 
 func _repopulate_shop_after_actions_ended() -> void:

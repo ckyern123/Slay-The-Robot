@@ -7,9 +7,9 @@ func connect_signals() -> void:
 func _on_enemy_killed(_enemy: Enemy) -> void:
 	# must have at least one enemy remaining
 	if len(Global.get_tree().get_nodes_in_group("enemies")) > 0:
-		
+		var draw_amount: int = 1 + (Global.player_data.player_insight/5)
 		var action_data: Array[Dictionary] = [{
-		Scripts.ACTION_DRAW_GENERATOR: {"draw_count": 1}
+		Scripts.ACTION_DRAW_GENERATOR: {"draw_count": draw_amount}
 		}]
 		var generated_draw_actions: Array[BaseAction] = ActionGenerator.create_actions(null, null, [], action_data, null)
 

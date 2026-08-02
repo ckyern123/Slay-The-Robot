@@ -21,7 +21,7 @@ func perform_action():
 		var from_back: bool = action_interceptor_processor.get_shadowed_action_values("from_back", false)
 		
 		# get the next available artifacts to add to the player
-		var artifact_ids: Array[String] = Global.player_data.get_next_artifacts_from_pool(artifact_count, artifact_rarities, use_rarity_ordering, from_back, true)
+		var artifact_ids: Array[String] = Global.player_data.get_next_artifacts_from_pool(artifact_count, artifact_rarities, use_rarity_ordering, from_back, false)
 		
 		for artifact_id: String in artifact_ids:
 			var artifact_data: ArtifactData = Global.get_artifact_data(artifact_id)

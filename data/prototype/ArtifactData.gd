@@ -36,6 +36,8 @@ const STANDARD_ARTIFACT_RARITIES: Array[int] = [ARTIFACT_RARITIES.COMMON, ARTIFA
 ## Actions take when the artifact counter equals the max charge amount. See artifact_counter_wraparound.
 @export var artifact_max_counter_actions: Array[Dictionary] = []
 
+@export var artifact_insight_increment: Dictionary = {}
+
 ## Actions taken when the artifact is obtained by the player.
 @export var artifact_add_actions: Array[Dictionary] = []
 ## Actions taken when the artifact is removed from the player.

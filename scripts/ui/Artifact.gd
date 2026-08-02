@@ -46,6 +46,10 @@ func _on_right_button_up() -> void:
 
 func _on_mouse_entered() -> void:
 	if artifact_data.artifact_description != "":
-		HandManager.tooltip.display_artifact_tooltip(artifact_script)
+		var displayed_script: String = artifact_data.artifact_description
+		if !artifact_data.artifact_insight_increment.is_empty():
+			var factor: int = (artifact_data.artifact_insight_increment["base"]) + ((artifact_data.artifact_insight_increment["increment"]) * (Global.player_data.player_insight / (artifact_data.artifact_insight_increment["insight"])))
+			displayed_script = displayed_script % factor
+		HandManager.tooltip.display_artifact_tooltip(displayed_script)
 func _on_mouse_exited() -> void:
 	HandManager.tooltip.hide_tooltip()

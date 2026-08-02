@@ -18,6 +18,30 @@ const CARD_SUFFICIENT_ENERGY_LABEL_COLOR: Color = Color.WHITE
 const CARD_INSUFFICIENT_ENERGY_LABEL_COLOR: Color = Color.FIREBRICK
 const CARD_TEXT_IMAGE_SIZE: int = 16	# images in card descriptions will be set to this size
 const ENERGY_ICON_KEYWORD: String = "[energy_icon]"	# tells description to display an energy icon in place
+const EXPLORE_ICON_KEYWORD: String = "[explore_icon]"
+const FOOD_ICON_KEYWORD: String = "[food_icon]"
+const ORE_ICON_KEYWORD: String = "[ore_icon]"
+const MONEY_ICON_KEYWORD: String = "[money_icon]"
+const INSIGHT_ICON_KEYWORD: String = "[insight_icon]"
+const SIZE_ICON_KEYWORD: String = "[size_icon]"
+const ROOM_ICON_KEYWORD: String = "[room_icon]"
+
+const FONT_SIZE: int = 24
+const explore_texture_path = "res://sprites/journey.svg"
+const money_texture_path = "res://sprites/rupee.svg"
+const food_texture_path = "res://sprites/oat.svg"
+const ore_texture_path = "res://sprites/ore.svg"
+const insight_texture_path = "res://sprites/scroll.svg"
+const size_texture_path = "res://sprites/village.svg"
+const room_texture_path = "res://sprites/tower.svg"
+
+const explore_texture = preload(explore_texture_path)
+const money_texture = preload(money_texture_path)
+const food_texture = preload(food_texture_path)
+const ore_texture = preload(ore_texture_path)
+const insight_texture = preload(insight_texture_path)
+const size_texture = preload(size_texture_path)
+const room_texture = preload(room_texture_path)
 
 var tooltip_left_side: bool = false # if tooltip should display to the left of the card when hovered
 
@@ -75,7 +99,11 @@ func init(_card_data: CardData, angular_offset: float, connect_combat_signals: b
 		card_button.mouse_entered.connect(_on_mouse_entered)
 		card_button.mouse_exited.connect(_on_mouse_exited)
 		keyword_timer.timeout.connect(_on_keyword_timeout)
-	
+	if _card_data.card_rarity == CardData.CARD_RARITIES.GENERATED:
+		if (_card_data.card_influence == 0):
+			card_influence_sprite.visible = false
+		else:
+			card_influence_sprite.texture = load("res://sprites/quill.svg")
 	update_card_display()
 	
 	# initialize card decorators
@@ -250,6 +278,35 @@ func get_card_description(selected_target: BaseCombatant = null) -> String:
 					var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE, color_data.color_energy_icon_texture_path])
 					modified_description_bb_code = modified_description_bb_code.replace(ENERGY_ICON_KEYWORD, image_bb_code)
 	
+	if card_data.card_description.contains(FOOD_ICON_KEYWORD):
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,food_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace(FOOD_ICON_KEYWORD, image_bb_code)
+	
+	if card_data.card_description.contains(ORE_ICON_KEYWORD):
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,ore_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace(ORE_ICON_KEYWORD, image_bb_code)
+		
+	if card_data.card_description.contains(INSIGHT_ICON_KEYWORD):
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,insight_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace(INSIGHT_ICON_KEYWORD, image_bb_code)
+		
+	if card_data.card_description.contains(MONEY_ICON_KEYWORD):
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,money_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace(MONEY_ICON_KEYWORD, image_bb_code)
+		
+	if card_data.card_description.contains(EXPLORE_ICON_KEYWORD):
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,explore_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace(EXPLORE_ICON_KEYWORD, image_bb_code)
+		
+	if card_data.card_description.contains(SIZE_ICON_KEYWORD):
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,size_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace(SIZE_ICON_KEYWORD, image_bb_code)
+		
+	if card_data.card_description.contains(ROOM_ICON_KEYWORD):
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,room_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace(ROOM_ICON_KEYWORD, image_bb_code)
+		
+		
 	return modified_description_bb_code
 
 func _clear_card_decorators() -> void:

@@ -14,7 +14,7 @@ class_name PlayerData
 @export var player_ore: int = 3
 @export var player_size: int = 0
 @export var player_room: int = 0
-@export var player_insight: int = 1
+@export var player_insight: int = 6
 @export var player_refresh: int = 5
 
 var player_energy: int = 3 # in combat energy. Not saved.
@@ -481,11 +481,11 @@ func initialize_artifact_pool() -> void:
 
 ## Wrapper method for get_next_artifacts_from_pool() that gets the next standard artifacts for a shop.
 ## Pulls from the back of the artifact list.
-func get_next_shop_standard_artifacts_from_pool(artifact_count: int, mutate_artifact_pool: bool = true) -> Array[String]:
+func get_next_shop_standard_artifacts_from_pool(artifact_count: int, mutate_artifact_pool: bool = false) -> Array[String]:
 	return get_next_artifacts_from_pool(artifact_count, ArtifactData.STANDARD_ARTIFACT_RARITIES, false, true, mutate_artifact_pool)
 ## Wrapper method for get_next_artifacts_from_pool() that gets the next artifacts that can ONLY be obtained from the shop.
 ## Pulls from the back of the list
-func get_next_shop_specific_artifacts_from_pool(artifact_count: int, mutate_artifact_pool: bool = true) -> Array[String]:
+func get_next_shop_specific_artifacts_from_pool(artifact_count: int, mutate_artifact_pool: bool = false) -> Array[String]:
 	return get_next_artifacts_from_pool(artifact_count, [ArtifactData.ARTIFACT_RARITIES.SHOP], false, true, mutate_artifact_pool)
 func get_next_boss_artifacts_from_pool(artifact_count: int, mutate_artifact_pool: bool = true) -> Array[String]:
 	return get_next_artifacts_from_pool(artifact_count, [ArtifactData.ARTIFACT_RARITIES.BOSS], false, false, mutate_artifact_pool)
@@ -498,7 +498,7 @@ func get_next_boss_artifacts_from_pool(artifact_count: int, mutate_artifact_pool
 ## given rarities provided.
 ## mutate_artifact_pool = false will ensure the artifacts are not removed from the list, allowing you to simply
 ## get the next results without modifying it.
-func get_next_artifacts_from_pool(artifact_count: int, artifact_rarities: Array[int], use_rarity_ordering: bool = false, from_back: bool = false, mutate_artifact_pool: bool = true) -> Array[String]:
+func get_next_artifacts_from_pool(artifact_count: int, artifact_rarities: Array[int], use_rarity_ordering: bool = false, from_back: bool = false, mutate_artifact_pool: bool = false) -> Array[String]:
 	# pops standard artifacts from the artifact pool and returns them
 	var returned_artifact_ids: Array[String] = []
 	if len(artifact_rarities) == 0:

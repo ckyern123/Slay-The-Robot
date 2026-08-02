@@ -37,11 +37,11 @@ const CARD_RARITY_TO_PRICE_RANGE: Dictionary = {
 }
 
 const ARTIFACT_RARITY_TO_PRICE_RANGE: Dictionary = {
-	ArtifactData.ARTIFACT_RARITIES.COMMON: [5,8],
-	ArtifactData.ARTIFACT_RARITIES.UNCOMMON: [8,11],
-	ArtifactData.ARTIFACT_RARITIES.RARE: [12,14],
-	ArtifactData.ARTIFACT_RARITIES.BOSS: [13,15],
-	ArtifactData.ARTIFACT_RARITIES.SHOP: [15,20],
+	ArtifactData.ARTIFACT_RARITIES.COMMON: [1,2],
+	ArtifactData.ARTIFACT_RARITIES.UNCOMMON: [2,3],
+	ArtifactData.ARTIFACT_RARITIES.RARE: [3,4],
+	ArtifactData.ARTIFACT_RARITIES.BOSS: [4,5],
+	ArtifactData.ARTIFACT_RARITIES.SHOP: [1,3],
 	ArtifactData.ARTIFACT_RARITIES.EVENT: [0,1],
 }
 
@@ -66,11 +66,14 @@ func visit_shop() -> void:
 		# generates shop cards
 		var generated_trade: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_grey",ShopData.GENERATED_TRADE_COUNT)
 				
+		# generates shop cards
+		#var generated_books: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_blue",ShopData.GENERATED_TRADE_COUNT)
+			
 		# generate regular artifacts from player artifact pool
-		var artifact_ids: Array[String] = Global.player_data.get_next_shop_standard_artifacts_from_pool(GENERATED_ARTIFACT_COUNT, true)
+		var artifact_ids: Array[String] = Global.player_data.get_next_shop_standard_artifacts_from_pool(GENERATED_ARTIFACT_COUNT, false)
 		
 		# generate shop artifacts from player artifact pool
-		var shop_artifact_ids: Array[String] = Global.player_data.get_next_shop_specific_artifacts_from_pool(GENERATED_SHOP_SPECIFIC_ARTIFACT_COUNT, true)
+		var shop_artifact_ids: Array[String] = Global.player_data.get_next_shop_specific_artifacts_from_pool(GENERATED_SHOP_SPECIFIC_ARTIFACT_COUNT, false)
 		artifact_ids.append_array(shop_artifact_ids)
 		
 		# generate shop consumables

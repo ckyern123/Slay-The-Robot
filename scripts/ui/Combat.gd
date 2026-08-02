@@ -217,9 +217,9 @@ func _on_player_sprawl_changed(_delta: int = 0):
 	var calc: int = (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())
 	var sprawl: int = Global.player_data.player_size
 	if (calc > sprawl):
-		sprawl_label.text = "[img width={0}]{1}[/img] {2}: [color=#FF9233]%s / %s[/color]".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Sprawl"])  % [calc,Global.player_data.player_size]
+		sprawl_label.text = "[img width={0}]{1}[/img] {2}: [color=#FF9233]%s / %s[/color]".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Size"])  % [calc,Global.player_data.player_size]
 	else:
-		sprawl_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Sprawl"])  % [calc,Global.player_data.player_size]
+		sprawl_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Size"])  % [calc,Global.player_data.player_size]
 
 func _on_player_room_changed(_delta: int = 0):
 	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room
@@ -256,13 +256,6 @@ func _on_enemy_killed(enemy: Enemy):
 		await ActionHandler.actions_ended
 	if (combat_end_button.visible == false):
 		combat_end_button.visible = true
-	kill_count += 1
-	if (kill_count == 2):
-		var action_data = [{Scripts.ACTION_ADD_ROOM:{"room_amount":1}}]
-		generated_actions = ActionGenerator.create_actions(player, null, [], action_data, null)
-		ActionHandler.add_actions(generated_actions)
-		if ActionHandler.actions_being_performed:
-			await ActionHandler.actions_ended
 	
 func _on_enemy_death_animation_finished(_enemy: Enemy):
 	# determine if all non minion enemies killed and end combat

@@ -36,6 +36,7 @@ func perform_action():
 			var trade_data: CardData = shop_trade[i]
 			var trade_price: int = shop_trade_prices[i]
 			shop_data.add_shop_trade(trade_data, trade_price)
+			
 			var shop_artifact_id: String = shop_artifact_ids[i]
 			var shop_artifact_price: int = shop_artifact_prices[i]
 			shop_data.add_shop_artifact(shop_artifact_id, shop_artifact_price)
