@@ -31,6 +31,7 @@ func perform_action():
 						ActionHandler.add_actions(generated_actions)
 						# remove card from shop
 						shop_data.remove_shop_card(card_data)
+						shop_data.clear_shop_cards()
 						Signals.card_purchased.emit(card_data)
 					return
 				else:

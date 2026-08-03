@@ -5,6 +5,7 @@ class_name ArtifactData
 
 @export var artifact_name: String = ""
 @export var artifact_description: String = ""
+@export var artifact_shop_description: String = ""
 @export var artifact_texture_path: String = "external/sprites/artifacts/artifact_white.png"
 @export var artifact_script_path: String = "res://scripts/artifacts/BaseArtifact.gd"
 @export var artifact_interceptor_ids: Array[String] = []

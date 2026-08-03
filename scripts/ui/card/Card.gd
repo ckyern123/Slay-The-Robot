@@ -58,7 +58,7 @@ var tooltip_left_side: bool = false # if tooltip should display to the left of t
 @onready var card_energy_sprite: TextureRect = %EnergySprite
 @onready var card_energy_cost_label: Label = %EnergyCost
 @onready var card_influence_sprite: TextureRect = %InfluenceSprite
-@onready var card_influence_label: Label = %InfluenceLabel
+@onready var card_influence_label: RichTextLabel = %InfluenceLabel
 @onready var card_color: ColorRect = %ColorBackground
 @onready var card_decorator_container: VBoxContainer = %CardDecoratorContainer
 
@@ -99,8 +99,10 @@ func init(_card_data: CardData, angular_offset: float, connect_combat_signals: b
 		card_button.mouse_entered.connect(_on_mouse_entered)
 		card_button.mouse_exited.connect(_on_mouse_exited)
 		keyword_timer.timeout.connect(_on_keyword_timeout)
-	if _card_data.card_rarity == CardData.CARD_RARITIES.GENERATED:
-		if (_card_data.card_influence == 0):
+	if card_data.card_rarity == CardData.CARD_RARITIES.GENERATED:
+		card_energy_sprite.visible = false
+		card_energy_cost_label.visible = false
+		if (card_data.card_influence == 0):
 			card_influence_sprite.visible = false
 		else:
 			card_influence_sprite.texture = load("res://sprites/quill.svg")
@@ -137,7 +139,14 @@ func update_card_display(selected_enemy: Enemy = null) -> void:
 	#var card_play_intercepted_action_results: Dictionary[String, Variant] = card_data.get_card_play_intercepted_action_results(selected_enemy)
 	#var card_influence: int = card_play_intercepted_action_results.get("card_influence", card_data.get_card_influence())
 	var card_influence = card_data.card_influence
-	if (card_data.card_rarity != CardData.CARD_RARITIES.TRADE or card_data.card_rarity != CardData.CARD_RARITIES.BOOK):
+	if (card_data.card_rarity != CardData.CARD_RARITIES.GENERATED):
+		if (card_influence > 5):
+			card_influence_label.text = "[outline_color=black][color=27F550][outline_size=3]"+str(card_influence) + "[/outline_size][/color][/outline_color]"
+		elif (card_influence < 2):
+			card_influence_label.text = "[outline_color=black][color=FF6200][outline_size=3]"+str(card_influence) + "[/outline_size][/color][/outline_color]"
+		else:
+			card_influence_label.text = str(card_influence)
+	elif (card_data.card_influence > 0):
 		card_influence_label.text = str(card_influence)
 	else:
 		card_influence_label.visible = false
@@ -146,6 +155,8 @@ func update_card_display(selected_enemy: Enemy = null) -> void:
 ## can be messed with depending on interception and card play validation
 func _update_energy_display(selected_enemy: Enemy = null) -> void:
 	# flags used for determining playability
+	if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
+		return
 	var card_is_in_hand: bool = _is_card_in_hand()
 	
 	# set the energy texture
@@ -214,6 +225,19 @@ func can_play_card(selected_enemy: Enemy = null, display_player_messages: bool =
 		return false
 	
 	return true # card passes all checks and is playable
+
+## Spawns an animated effect over the combatant
+## Used for things like imacts
+func create_effect_animation(animation_id: String, container: TextureRect) -> void:
+	var animation_data: AnimationData = Global.get_animation_data(animation_id)
+	if animation_data == null:
+		return
+	
+	var animated_card_effect: AnimatedCardEffect = Scenes.CARD_EFFECT_ANIMATION.instantiate()
+	container.add_child(animated_card_effect)
+	animated_card_effect.init(animation_data)
+
+#endregion
 
 func get_card_description(selected_target: BaseCombatant = null) -> String:
 	# generates a card description for a card
@@ -359,11 +383,13 @@ func _on_button_gui_input(event: InputEvent):
 
 func _on_mouse_entered():
 	keyword_timer.start(KEYWORD_HOVER_DELAY)
+	#animation_player.play("card_hover")
 	card_hovered.emit(self)
 	
 func _on_mouse_exited():
 	keyword_timer.stop()
 	HandManager.tooltip.hide_tooltip()
+	#animation_player.play("card_unhover")
 	card_unhovered.emit(self)
 
 func _on_keyword_timeout():
@@ -379,6 +405,7 @@ func _on_card_turn_energy_changed(_card_data: CardData):
 		
 func _on_card_turn_influence_changed(_card_data: CardData):
 	if card_data == _card_data:
+		create_effect_animation("animation_vfx_impact_default",card_influence_sprite)
 		update_card_display()
 
 func _on_card_upgraded(_card_data: CardData):

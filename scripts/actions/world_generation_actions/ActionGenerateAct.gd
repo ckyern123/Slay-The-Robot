@@ -125,39 +125,49 @@ func perform_action() -> void:
 				var chance_array: Array = LocationData.LOCATION_TYPES.values()
 				chance_array.pop_back()
 				location.location_type = chance_array.pick_random()					
-				if k < 3:
+				if k < 5:
 					if location.location_type == LocationData.LOCATION_TYPES.PLAINS:
+						location.icon_texture_path = "external/sprites/locations/plains.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/plains.png"
 						location.location_event_pool_object_id = act_data.act_easy_plains_event_pool_object_id
 					elif location.location_type == LocationData.LOCATION_TYPES.FOREST:
 						location.location_event_pool_object_id = act_data.act_easy_forest_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/forest.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/forest.png"
 					elif location.location_type == LocationData.LOCATION_TYPES.COAST:
 						location.location_event_pool_object_id = act_data.act_easy_coast_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/coast.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/coast.png"
 					elif location.location_type == LocationData.LOCATION_TYPES.SWAMP:
 						location.location_event_pool_object_id = act_data.act_easy_swamp_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/swamp.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/swamp.png"
 					elif location.location_type == LocationData.LOCATION_TYPES.DESERT:
 						location.location_event_pool_object_id = act_data.act_easy_desert_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/desert.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/desert.png"
 				else:
 					if location.location_type == LocationData.LOCATION_TYPES.PLAINS:
 						location.location_event_pool_object_id = act_data.act_hard_plains_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/plains.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/plains.png"
 					elif location.location_type == LocationData.LOCATION_TYPES.FOREST:
 						location.location_event_pool_object_id = act_data.act_hard_forest_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/forest.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/forest.png"
 					elif location.location_type == LocationData.LOCATION_TYPES.COAST:
+						location.icon_texture_path = "external/sprites/locations/coast.svg"
 						location.location_event_pool_object_id = act_data.act_hard_coast_event_pool_object_id
 						location.location_background_texture_path = "external/sprites/backgrounds/coast.png"
 					elif location.location_type == LocationData.LOCATION_TYPES.SWAMP:
 						location.location_event_pool_object_id = act_data.act_hard_swamp_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/swamp.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/swamp.png"
 					elif location.location_type == LocationData.LOCATION_TYPES.DESERT:
 						location.location_event_pool_object_id = act_data.act_hard_desert_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/desert.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/desert.png"
-
+					
 				## randomly obfuscate some location types
 				#if [LocationData.LOCATION_TYPES.TREASURE, LocationData.LOCATION_TYPES.COMBAT].has(location.location_type):
 					#if rng_world_generation.randf() < location_obfuscation_rate:

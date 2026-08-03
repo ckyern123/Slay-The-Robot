@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dqe5rxtsamk05"]
+
+[ext_resource type="Script" uid="uid://dm51gml07b4uv" path="res://scripts/combatants/AnimatedCardEffect.gd" id="1_wiei7"]
+
+[node name="AnimatedCardEffect" type="AnimatedSprite2D" unique_id=368599493]
+script = ExtResource("1_wiei7")

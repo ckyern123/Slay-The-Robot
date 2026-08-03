@@ -27,5 +27,5 @@ func _on_run_ended():
 func _on_player_artifacts_changed():
 	populate_artifacts()
 
-func _on_player_insight_changed():
+func _on_player_insight_changed(delta: int):
 	populate_artifacts()	

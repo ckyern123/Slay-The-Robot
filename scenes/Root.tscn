@@ -1862,19 +1862,19 @@ text = "[img width=24]external/sprites/cards/basic/scroll-unfurled.svg[/img] Ins
 
 [node name="ArtifactContainer" type="HBoxContainer" parent="RunScreen/Combat" unique_id=1591838213]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 72.0
-offset_right = 496.0
-offset_bottom = 112.0
+offset_left = 50.0
+offset_top = 400.0
+offset_right = 423.0
+offset_bottom = 732.0
 mouse_filter = 2
 script = ExtResource("5_a7j3r")
 
 [node name="Player" parent="RunScreen/Combat" unique_id=524412048 instance=ExtResource("5_7crh0")]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 87.0
+offset_left = 70.0
 offset_top = 130.0
-offset_right = 287.0
+offset_right = 270.0
 offset_bottom = 291.0
 
 [node name="ColorRect" type="ColorRect" parent="RunScreen/Combat/Player" unique_id=1213429792]

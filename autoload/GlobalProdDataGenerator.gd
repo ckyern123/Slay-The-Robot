@@ -29,6 +29,9 @@ var influence_action: Dictionary = 		{
 			"passed_action_data":
 				[
 					{
+						Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/upgrade.wav"},
+					},
+					{
 						Scripts.ACTION_UPGRADE_CARDS:
 						{
 							"pick_played_card": true
@@ -78,6 +81,7 @@ var durability_action_data: Array[Dictionary] = [
 			"card_influence":-1,
 		}},
 	]
+
 var exhaust_action: Dictionary = {
 		Scripts.ACTION_PICK_CARDS: {
 			"min_card_amount": 0,
@@ -215,6 +219,7 @@ var influence_upgrade_action: Dictionary = {
 		}, {Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"pick_played_card":true,"card_infuence":-5}}]
 	}
 	}
+
 var end_action_data: Array[Dictionary] = [
 		{
 			Scripts.ACTION_VALIDATOR: {
@@ -237,6 +242,9 @@ var end_action_data: Array[Dictionary] = [
 					"transform_into_card_object_id": "card_rebel",
 					"pick_played_card": true
 					},
+				},
+				{
+					Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rebel.wav"},
 				},
 			]
 			}
@@ -290,106 +298,118 @@ func generate_production_data() -> void:
 
 #region Artifacts
 func add_artifacts() -> void:
-	var artifact_add_money: ArtifactData = ArtifactData.new("artifact_add_money")
-	artifact_add_money.artifact_name = "Artifact Add Money"
-	artifact_add_money.artifact_description = "Adds money when obtained"
-	artifact_add_money.artifact_add_actions = [{Scripts.ACTION_ADD_MONEY: {"money_amount": 20}}]
+	var artifact_add_size: ArtifactData = ArtifactData.new("artifact_add_size")
+	artifact_add_size.artifact_name = "Town Hall"
+	artifact_add_size.artifact_texture_path = "external/sprites/artifacts/townhall.svg"
+	artifact_add_size.artifact_description = "Adds 7 Size when obtained."
+	artifact_add_size.artifact_shop_description = "Adds 7 Size when obtained."
+	artifact_add_size.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_add_size.artifact_add_actions = [{Scripts.ACTION_ADD_KINGDOM_SIZE: {"size_amount": 7}}]
+	Global.register_rod(artifact_add_size)
 	
-	Global.register_rod(artifact_add_money)
+	var artifact_add_room: ArtifactData = ArtifactData.new("artifact_add_room")
+	artifact_add_room.artifact_name = "Landscaping Office"
+	artifact_add_room.artifact_texture_path = "external/sprites/artifacts/landscapingoffice.svg"
+	artifact_add_room.artifact_description = "Adds 3 Room when obtained."
+	artifact_add_room.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_add_room.artifact_shop_description = "Adds 3 Room when obtained."
+	artifact_add_room.artifact_add_actions = [{Scripts.ACTION_ADD_ROOM: {"room_amount": 3}}]
+	Global.register_rod(artifact_add_room)
 	
-	#var artifact_negate_money_gain: ArtifactData = ArtifactData.new("artifact_negate_money_gain")
-	#artifact_negate_money_gain.artifact_name = "Artifact Negate Money Gain"
-	#artifact_negate_money_gain.artifact_description = "Gain 1 energy per turn. You can no longer gain money"
-	#artifact_negate_money_gain.artifact_add_actions = [{Scripts.ACTION_ADD_ENERGY:{
-		#"target_overrides": BaseAction.TARGET_OVERRIDES.PLAYER,
-		#"energy_amount_max": 1,
-	#}}]
-	#artifact_negate_money_gain.artifact_remove_actions = [{Scripts.ACTION_ADD_ENERGY:{
-		#"target_overrides": BaseAction.TARGET_OVERRIDES.PLAYER,
-		#"energy_amount_max": -1,
-	#}}]
-	#artifact_negate_money_gain.artifact_interceptor_ids = ["interceptor_negate_add_money"]
+	var artifact_food_per_turn: ArtifactData = ArtifactData.new("artifact_food_per_turn")
+	artifact_food_per_turn.artifact_name = "Granary"
+	artifact_food_per_turn.artifact_texture_path = "external/sprites/artifacts/granary.svg"
+	artifact_food_per_turn.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_food_per_turn.artifact_description = "Adds 1 Food per turn. Increases by 1 per 5 Insight (3 max)."
+	artifact_food_per_turn.artifact_shop_description = "Adds 1 Food per turn."
+	artifact_food_per_turn.artifact_turn_start_actions = [{Scripts.ACTION_ADD_FOOD: {"food_amount": 1}},
+	{Scripts.ACTION_VALIDATOR: {"validator_data":[{Scripts.VALIDATOR_INSIGHT:{"insight_required":5}}],"passed_action_data":[{Scripts.ACTION_ADD_FOOD:{"food_amount":1}}]}},
+	{Scripts.ACTION_VALIDATOR: {"validator_data":[{Scripts.VALIDATOR_INSIGHT:{"insight_required":10}}],"passed_action_data":[{Scripts.ACTION_ADD_FOOD:{"food_amount":1}}]}}
+	]
+	Global.register_rod(artifact_food_per_turn)
+	
+	var artifact_ore_per_turn: ArtifactData = ArtifactData.new("artifact_ore_per_turn")
+	artifact_ore_per_turn.artifact_name = "Quarry"
+	artifact_ore_per_turn.artifact_texture_path = "external/sprites/artifacts/quarry.svg"
+	artifact_ore_per_turn.artifact_description = "Adds 1 Ore per turn. Increases by 1 per 7 Insight (3 max)."
+	artifact_ore_per_turn.artifact_shop_description = "Adds 1 Ore per turn."
+	artifact_ore_per_turn.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_ore_per_turn.artifact_turn_start_actions = [{Scripts.ACTION_ADD_ORE: {"ore_amount": 1}},
+	{Scripts.ACTION_VALIDATOR: {"validator_data":[{Scripts.VALIDATOR_INSIGHT:{"insight_required":7}}],"passed_action_data":[{Scripts.ACTION_ADD_ORE:{"ore_amount":1}}]}},
+	{Scripts.ACTION_VALIDATOR: {"validator_data":[{Scripts.VALIDATOR_INSIGHT:{"insight_required":14}}],"passed_action_data":[{Scripts.ACTION_ADD_ORE:{"ore_amount":1}}]}}
+	]
+	Global.register_rod(artifact_ore_per_turn)
+	
+	var artifact_insight_periodic: ArtifactData = ArtifactData.new("artifact_insight_periodic")
+	artifact_insight_periodic.artifact_name = "Library"
+	artifact_insight_periodic.artifact_texture_path = "external/sprites/artifacts/library.svg"
+	artifact_insight_periodic.artifact_description = "Adds 1 Insight every 4 turns."
+	artifact_insight_periodic.artifact_shop_description = "Adds 1 Insight every 4 turns."
+	artifact_insight_periodic.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_insight_periodic.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
+	artifact_insight_periodic.artifact_counter_max = 4
+	artifact_insight_periodic.artifact_max_counter_actions = [{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]
+
+	Global.register_rod(artifact_insight_periodic)
 	#
-	#Global.register_rod(artifact_negate_money_gain)
-	
-	#var artifact_heal_on_combat_ended: ArtifactData = ArtifactData.new("artifact_heal_on_combat_ended")
-	#artifact_heal_on_combat_ended.artifact_name = "Artifact Heal On Combat End"
-	#artifact_heal_on_combat_ended.artifact_description = "Grants 5 health when combat is over"
-	#artifact_heal_on_combat_ended.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.COMMON
-	#artifact_heal_on_combat_ended.artifact_end_of_combat_actions = [{
-		#Scripts.ACTION_ADD_HEALTH: {"target_override": BaseAction.TARGET_OVERRIDES.PLAYER, "health_amount": 5}
+	#var artifact_discard_appease: ArtifactData = ArtifactData.new("artifact_discard_appease")
+	#artifact_discard_appease.artifact_name = "Artifact Discard Appease"
+	#artifact_discard_appease.artifact_description = "Every 4 Faction cards discarded, appease 2 random cards in discard pile."
+	#artifact_discard_appease.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	#artifact_discard_appease.artifact_counter_max = 4
+	#artifact_discard_appease.artifact_script_path = "res://scripts/artifacts/ArtifactDiscardAppease.gd"
+	#artifact_discard_appease.artifact_max_counter_actions = [{		
+		#Scripts.ACTION_PICK_CARDS: {
+		#"min_card_amount": 2,
+		#"max_card_amount": 2,
+		#"min_cards_are_required_for_action": false,
+		#"random_selection": true,
+		#"card_pick_type": HandManager.DISCARD_PILE,
+		#"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+		#"validator_data": [
+			#{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+		#],
+		#"action_data": [
+			#{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {"card_influence": 1
+			#}},
+			#]
+		#}
 		#}]
 	#
-	#Global.register_rod(artifact_heal_on_combat_ended)
-	
-	var artifact_discard_appease: ArtifactData = ArtifactData.new("artifact_discard_appease")
-	artifact_discard_appease.artifact_name = "Artifact Discard Appease"
-	artifact_discard_appease.artifact_description = "Every 4 Faction cards discarded, appease 2 random cards in discard pile."
-	artifact_discard_appease.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	artifact_discard_appease.artifact_counter_max = 4
-	artifact_discard_appease.artifact_script_path = "res://scripts/artifacts/ArtifactDiscardAppease.gd"
-	artifact_discard_appease.artifact_max_counter_actions = [{		
-		Scripts.ACTION_PICK_CARDS: {
-		"min_card_amount": 2,
-		"max_card_amount": 2,
-		"min_cards_are_required_for_action": false,
-		"random_selection": true,
-		"card_pick_type": HandManager.DISCARD_PILE,
-		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-		"validator_data": [
-			{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
-		],
-		"action_data": [
-			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {"card_influence": 1
-			}},
-			]
-		}
-		}]
-	
-	Global.register_rod(artifact_discard_appease)
-	
-	var artifact_draw_on_kill: ArtifactData = ArtifactData.new("artifact_draw_on_kill")
-	artifact_draw_on_kill.artifact_name = "Artifact Draw on Kill"
-	artifact_draw_on_kill.artifact_description = "Draws %s card(s) when an enemy is killed. (Draw 1 more card per 5 insight.)"
-	artifact_draw_on_kill.artifact_insight_increment = {"base": 1, "insight": 5, "increment": 1}
-	artifact_draw_on_kill.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	artifact_draw_on_kill.artifact_script_path = "res://scripts/artifacts/ArtifactDrawOnKill.gd"
-	Global.register_rod(artifact_draw_on_kill)
-	
-	
-	#var artifact_draw_on_combat_start: ArtifactData = ArtifactData.new("artifact_draw_on_combat_start")
-	#artifact_draw_on_combat_start.artifact_name = "Artifact Draw on Combat"
-	#artifact_draw_on_combat_start.artifact_description = "Every 3 Crafts you play, draw a card."
-	#artifact_draw_on_combat_start.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.UNCOMMON
-	#artifact_draw_on_combat_start.artifact_color_id = "color_green"
-	#artifact_draw_on_combat_start.artifact_texture_path = "external/sprites/artifacts/artifact_green.png"
-	#artifact_draw_on_combat_start.artifact_script_path = "res://scripts/artifacts/ArtifactDrawOnPlays.gd"
-	#artifact_draw_on_combat_start.artifact_counter_max = 3
-	#artifact_draw_on_combat_start.artifact_max_counter_actions = [{Scripts.ACTION_DRAW_GENERATOR:{"draw_count":1}}]
-	#Global.register_rod(artifact_draw_on_combat_start)
-	
-	var artifact_energy_every_four_turns: ArtifactData = ArtifactData.new("artifact_energy_every_four_turns")
-	artifact_energy_every_four_turns.artifact_name = "Artifact Every Few Turns"
-	artifact_energy_every_four_turns.artifact_description = "Gain %s energy every 4 turns. (Gain 1 more energy per 8 insight.)"
-	artifact_energy_every_four_turns.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
-	artifact_energy_every_four_turns.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	artifact_energy_every_four_turns.artifact_color_id = "color_white"
-	artifact_energy_every_four_turns.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
-	artifact_energy_every_four_turns.artifact_counter_wraparound = true
-	artifact_energy_every_four_turns.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
-	artifact_energy_every_four_turns.artifact_counter_max = 4
-	artifact_energy_every_four_turns.artifact_max_counter_actions = [{Scripts.ACTION_ADD_ARTIFACT_ENERGY: {"energy_amount": 1}}]
-	
-	Global.register_rod(artifact_energy_every_four_turns)
-	
-		
+	#Global.register_rod(artifact_discard_appease)
+	#
+	#var artifact_draw_on_kill: ArtifactData = ArtifactData.new("artifact_draw_on_kill")
+	#artifact_draw_on_kill.artifact_name = "Artifact Draw on Kill"
+	#artifact_draw_on_kill.artifact_description = "Draws %s card(s) when an enemy is killed. (Draw 1 more card per 5 insight.)"
+	#artifact_draw_on_kill.artifact_insight_increment = {"base": 1, "insight": 5, "increment": 1}
+	#artifact_draw_on_kill.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	#artifact_draw_on_kill.artifact_script_path = "res://scripts/artifacts/ArtifactDrawOnKill.gd"
+	#
+	#Global.register_rod(artifact_draw_on_kill)
+	#
+	#var artifact_energy_every_four_turns: ArtifactData = ArtifactData.new("artifact_energy_every_four_turns")
+	#artifact_energy_every_four_turns.artifact_name = "Artifact Every Few Turns"
+	#artifact_energy_every_four_turns.artifact_description = "Gain %s energy every 4 turns. (Gain 1 more energy per 8 insight.)"
+	#artifact_energy_every_four_turns.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
+	#artifact_energy_every_four_turns.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	#artifact_energy_every_four_turns.artifact_color_id = "color_white"
+	#artifact_energy_every_four_turns.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
+	#artifact_energy_every_four_turns.artifact_counter_wraparound = true
+	#artifact_energy_every_four_turns.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
+	#artifact_energy_every_four_turns.artifact_counter_max = 4
+	#artifact_energy_every_four_turns.artifact_max_counter_actions = [{Scripts.ACTION_ADD_ARTIFACT_ENERGY: {"energy_amount": 1}}]
+	#
+	#Global.register_rod(artifact_energy_every_four_turns)
+	#
+		#
 	var artifact_inspect_on_exhaust: ArtifactData = ArtifactData.new("artifact_inspect_on_exhaust")
-	artifact_inspect_on_exhaust.artifact_name = "Artifact Inspect on Exhaust"
+	artifact_inspect_on_exhaust.artifact_name = "Inspectorate"
+	artifact_inspect_on_exhaust.artifact_texture_path = "external/sprites/artifacts/inspectorate.svg"
 	artifact_inspect_on_exhaust.artifact_description = "Whenever a card is exhausted, gain %s charge. Then, spend 3 charges to Inspect once. (Improve charge gain by 1 per 5 insight.)"
+	artifact_inspect_on_exhaust.artifact_shop_description = "Every few cards exhausted, Inspect."
 	artifact_inspect_on_exhaust.artifact_insight_increment = {"base": 1, "insight": 5, "increment": 1}
 	artifact_inspect_on_exhaust.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_inspect_on_exhaust.artifact_color_id = "color_white"
-	artifact_inspect_on_exhaust.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
 	artifact_inspect_on_exhaust.artifact_counter_wraparound = true
 	artifact_inspect_on_exhaust.artifact_script_path = "res://scripts/artifacts/ArtifactExhaustInspect.gd"
 	artifact_inspect_on_exhaust.artifact_counter_max = 3
@@ -397,37 +417,25 @@ func add_artifacts() -> void:
 	artifact_inspect_action["min_card_amount"] = 1
 	artifact_inspect_action["max_card_amount"] = 1
 	artifact_inspect_on_exhaust.artifact_max_counter_actions.append(artifact_inspect_action)
-
+#
 	Global.register_rod(artifact_inspect_on_exhaust)
-	#var artifact_easy_mode: ArtifactData = ArtifactData.new("artifact_easy_mode")
-	#artifact_easy_mode.artifact_name = "Artifact Easy Mode"
-	#artifact_easy_mode.artifact_description = "Sets enemy HP to 1"
-	#artifact_easy_mode.artifact_counter = 999
-	#artifact_easy_mode.artifact_counter_max = 999
-	#artifact_easy_mode.artifact_counter_reset_on_combat_end = -1
-	#artifact_easy_mode.artifact_counter_reset_on_turn_start = -1
-	#artifact_easy_mode.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.EVENT
-	#artifact_easy_mode.artifact_script_path = "res://scripts/artifacts/ArtifactEasyMode.gd"
-	#
-	#Global.register_rod(artifact_easy_mode)
 	
-	#var artifact_block_on_attacks: ArtifactData = ArtifactData.new("artifact_block_on_attacks")
-	#artifact_block_on_attacks.artifact_name = "Artifact Block on Attacks"
-	#artifact_block_on_attacks.artifact_description = "Grants 5 block every 3 attacks"
-	#artifact_block_on_attacks.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.COMMON
-	#artifact_block_on_attacks.artifact_color_id = "color_red"
-	#artifact_block_on_attacks.artifact_texture_path = "external/sprites/artifacts/artifact_red.png"
-	#artifact_block_on_attacks.artifact_script_path = "res://scripts/artifacts/ArtifactBlockOnAttacks.gd"
-	#artifact_block_on_attacks.artifact_counter_max = 3
-	#artifact_block_on_attacks.artifact_counter_wraparound = true
-	#artifact_block_on_attacks.artifact_counter_reset_on_turn_start = 0
-	#artifact_block_on_attacks.artifact_counter_reset_on_combat_end = 0
-	#artifact_block_on_attacks.artifact_max_counter_actions = [{
-		#Scripts.ACTION_BLOCK: {"block": 5, "target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		#}]
-	#
-	#Global.register_rod(artifact_block_on_attacks)
-	#
+	var artifact_money_on_exhaust: ArtifactData = ArtifactData.new("artifact_money_on_exhaust")
+	artifact_money_on_exhaust.artifact_name = "Caravan"
+	artifact_money_on_exhaust.artifact_texture_path = "external/sprites/artifacts/caravan.svg"
+	artifact_money_on_exhaust.artifact_description = "Whenever a card is exhausted, gain %s charge. Then, spend 3 charges to gain 2 Money. (Improve charge gain by 1 per 5 insight.)"
+	artifact_money_on_exhaust.artifact_shop_description = "Every few cards exhausted, gain 2 Money."
+	artifact_money_on_exhaust.artifact_insight_increment = {"base": 1, "insight": 5, "increment": 1}
+	artifact_money_on_exhaust.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_money_on_exhaust.artifact_color_id = "color_white"
+	artifact_money_on_exhaust.artifact_counter_wraparound = true
+	artifact_money_on_exhaust.artifact_script_path = "res://scripts/artifacts/ArtifactExhaustInspect.gd"
+	artifact_money_on_exhaust.artifact_counter_max = 3
+	artifact_money_on_exhaust.artifact_max_counter_actions.append(artifact_inspect_action)
+#
+	Global.register_rod(artifact_money_on_exhaust)
+#
+
 	var artifact_check_scroll: ArtifactData = ArtifactData.new("artifact_check_scroll")
 	artifact_check_scroll.artifact_name = "Artifact Check Scroll"
 	artifact_check_scroll.artifact_description = "Draft a Book after 3 Scroll plays."
@@ -451,38 +459,17 @@ func add_artifacts() -> void:
 	
 	Global.register_rod(artifact_check_scroll)
 	
-	#var artifact_retain_hand: ArtifactData = ArtifactData.new("artifact_retain_hand")
-	#artifact_retain_hand.artifact_name = "Artifact Retain Hand"
-	#artifact_retain_hand.artifact_description = "Cards will be retained end of turn"
-	#artifact_retain_hand.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BOSS
-	#artifact_retain_hand.artifact_script_path = "res://scripts/artifacts/ArtifactRetainHand.gd"
-	#
-	#Global.register_rod(artifact_retain_hand)
-	#
-	# preserves energy between turns
-	#var artifact_preserve_energy: ArtifactData = ArtifactData.new("artifact_preserve_energy")
-	#artifact_preserve_energy.artifact_name = "Artifact Preserve Energy"
-	#artifact_preserve_energy.artifact_description = "Energy will be preserved between turns"
-	#artifact_preserve_energy.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.RARE
-	#artifact_preserve_energy.artifact_first_turn_actions = [{
-		#Scripts.ACTION_APPLY_STATUS: {
-			#"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
-			#"status_effect_object_id": "status_effect_preserve_energy"
-			#}
-		#}]
-	#artifact_preserve_energy.artifact_script_path = "res://scripts/artifacts/BaseArtifact.gd"
-	#
-	#Global.register_rod(artifact_preserve_energy)
-	#
+
 	## Enables a rest action when obtained, which grants a damage increase at the start of combat
 	var artifact_improve_explore: ArtifactData = ArtifactData.new("artifact_improve_explore")
-	artifact_improve_explore.artifact_name = "Artifact Improve Explore"
-	artifact_improve_explore.artifact_description = "Increases Explore by %s. (Increase by 1 per 8 insight.)"
-	artifact_improve_explore.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
+	artifact_improve_explore.artifact_name = "Barracks"
+	artifact_improve_explore.artifact_description = "Increases Explore by 1."
+	artifact_improve_explore.artifact_shop_description = "Increases Explore by 1."
+	#artifact_improve_explore.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
 	artifact_improve_explore.artifact_counter = 1
 	artifact_improve_explore.artifact_counter_max = 1
 	artifact_improve_explore.artifact_color_id = "color_orange"
-	artifact_improve_explore.artifact_texture_path = "external/sprites/artifacts/artifact_orange.png"
+	artifact_improve_explore.artifact_texture_path = "external/sprites/artifacts/barracks.svg"
 	artifact_improve_explore.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_improve_explore.artifact_first_turn_actions = [{
 		Scripts.ACTION_APPLY_STATUS: {
@@ -495,163 +482,6 @@ func add_artifacts() -> void:
 		}]
 	
 	Global.register_rod(artifact_improve_explore)
-	
-	
-	#
-	#var artifact_see_top_of_draw_pile: ArtifactData = ArtifactData.new("artifact_see_top_of_draw_pile")
-	#artifact_see_top_of_draw_pile.artifact_name = "Artifact See Draw Pile"
-	#artifact_see_top_of_draw_pile.artifact_description = "See the top cards in your draw pile"
-	#artifact_see_top_of_draw_pile.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.COMMON
-	#artifact_see_top_of_draw_pile.artifact_color_id = "color_blue"
-	#artifact_see_top_of_draw_pile.artifact_texture_path = "external/sprites/artifacts/artifact_blue.png"
-	#artifact_see_top_of_draw_pile.artifact_first_turn_actions = [{
-		#Scripts.ACTION_CUSTOM_UI: {"enable_custom_ui": true, "custom_ui_object_id": "custom_ui_see_top_of_draw_pile", "target_override": BaseAction.TARGET_OVERRIDES.PLAYER}
-		#}]
-	#
-	#Global.register_rod(artifact_see_top_of_draw_pile)
-	
-	## Makes an attack card top deck when obtained
-	#var artifact_top_deck_attack_card: ArtifactData = ArtifactData.new("artifact_top_deck_attack_card")
-	#artifact_top_deck_attack_card.artifact_name = "Artifact Make Attack Card Innate"
-	#artifact_top_deck_attack_card.artifact_description = "Select an attack card to make appear at the top of your deck."
-	#artifact_top_deck_attack_card.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.COMMON
-	#artifact_top_deck_attack_card.artifact_add_actions = [
-	#{
-	#Scripts.ACTION_PICK_CARDS: {
-		#"max_card_amount": 1,
-		#"min_card_amount": 1,
-		#"min_cards_are_required_for_action": true,
-		#"random_selection": false,
-		#"quick_pick": true,
-		#"card_pick_type": HandManager.DECK,
-		#"card_pick_text": "Choose a card to make top deck",
-		#"action_data": [
-			## convert the card to top deck
-			#{Scripts.ACTION_CHANGE_CARD_PROPERTIES:
-				#{
-				#"modify_parent_card": false,
-				#"card_properties": {"card_unremovable_from_deck": true, "card_untransformable_from_deck": true, "card_first_shuffle_priority": 1, }
-				#}
-				#},
-			#],
-		## only non-generated removable attack cards allowed
-		#"validator_data": [
-			#{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.ATTACK]}},
-			#{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}},
-			#{Scripts.VALIDATOR_CARD_PROPERTIES: {"card_property_name": "card_unremovable_from_deck", "operator": "==", "comparison_value": false}},
-		#],
-		#}
-	#},
-	#]
-	#
-	#Global.register_rod(artifact_top_deck_attack_card)
-	
-	#
-	#var artifact_right_click_shuffle_deck: ArtifactData = ArtifactData.new("artifact_right_click_shuffle_deck")
-	#artifact_right_click_shuffle_deck.artifact_name = "Artifact Reshuffle"
-	#artifact_right_click_shuffle_deck.artifact_description = "Right click to shuffle discard into draw pile."
-	#artifact_right_click_shuffle_deck.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.COMMON
-	#artifact_right_click_shuffle_deck.artifact_color_id = "color_green"
-	#artifact_right_click_shuffle_deck.artifact_texture_path = "external/sprites/artifacts/artifact_green.png"
-	#artifact_right_click_shuffle_deck.artifact_script_path = "res://scripts/artifacts/BaseArtifact.gd"
-	#artifact_right_click_shuffle_deck.artifact_right_click_actions = [
-		#{Scripts.ACTION_RESHUFFLE:{}}
-	#]
-	#
-	#Global.register_rod(artifact_right_click_shuffle_deck)
-	#
-	#### Filler Artifacts
-	#var artifact_boss_red: ArtifactData = ArtifactData.new("artifact_boss_red")
-	#artifact_boss_red.artifact_name = "Artifact Red Boss"
-	#artifact_boss_red.artifact_description = "Test Red Boss Artifact."
-	#artifact_boss_red.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BOSS
-	#artifact_boss_red.artifact_color_id = "color_red"
-	#artifact_boss_red.artifact_texture_path = "external/sprites/artifacts/artifact_red.png"
-	#
-	#Global.register_rod(artifact_boss_red)
-	#
-	#var artifact_shop_red: ArtifactData = ArtifactData.new("artifact_shop_red")
-	#artifact_shop_red.artifact_name = "Artifact Red Shop"
-	#artifact_shop_red.artifact_description = "Test Red Shop Artifact."
-	#artifact_shop_red.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	#artifact_shop_red.artifact_color_id = "color_red"
-	#artifact_shop_red.artifact_texture_path = "external/sprites/artifacts/artifact_red.png"
-	#
-	#Global.register_rod(artifact_shop_red)
-	#
-	#var artifact_boss_blue: ArtifactData = ArtifactData.new("artifact_boss_blue")
-	#artifact_boss_blue.artifact_name = "Artifact Blue Boss"
-	#artifact_boss_blue.artifact_description = "Test Blue Boss Artifact."
-	#artifact_boss_blue.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BOSS
-	#artifact_boss_blue.artifact_color_id = "color_blue"
-	#artifact_boss_blue.artifact_texture_path = "external/sprites/artifacts/artifact_blue.png"
-	#
-	#Global.register_rod(artifact_boss_blue)
-	#
-	#var artifact_shop_blue: ArtifactData = ArtifactData.new("artifact_shop_blue")
-	#artifact_shop_blue.artifact_name = "Artifact Blue Shop"
-	#artifact_shop_blue.artifact_description = "Test Blue Shop Artifact."
-	#artifact_shop_blue.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	#artifact_shop_blue.artifact_color_id = "color_blue"
-	#artifact_shop_blue.artifact_texture_path = "external/sprites/artifacts/artifact_blue.png"
-	#
-	#Global.register_rod(artifact_shop_blue)
-	#
-	#var artifact_boss_green: ArtifactData = ArtifactData.new("artifact_boss_green")
-	#artifact_boss_green.artifact_name = "Artifact Green Boss"
-	#artifact_boss_green.artifact_description = "Test Green Boss Artifact."
-	#artifact_boss_green.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BOSS
-	#artifact_boss_green.artifact_color_id = "color_green"
-	#artifact_boss_green.artifact_texture_path = "external/sprites/artifacts/artifact_green.png"
-	#
-	#Global.register_rod(artifact_boss_green)
-	#
-	#var artifact_shop_green: ArtifactData = ArtifactData.new("artifact_shop_green")
-	#artifact_shop_green.artifact_name = "Artifact Green Shop"
-	#artifact_shop_green.artifact_description = "Test Green Shop Artifact."
-	#artifact_shop_green.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	#artifact_shop_green.artifact_color_id = "color_green"
-	#artifact_shop_green.artifact_texture_path = "external/sprites/artifacts/artifact_green.png"
-	#
-	#Global.register_rod(artifact_shop_green)
-	#
-	#var artifact_boss_orange: ArtifactData = ArtifactData.new("artifact_boss_orange")
-	#artifact_boss_orange.artifact_name = "Artifact Orange Boss"
-	#artifact_boss_orange.artifact_description = "Test Orange Boss Artifact."
-	#artifact_boss_orange.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BOSS
-	#artifact_boss_orange.artifact_color_id = "color_orange"
-	#artifact_boss_orange.artifact_texture_path = "external/sprites/artifacts/artifact_orange.png"
-	#
-	#Global.register_rod(artifact_boss_orange)
-	#
-	#var artifact_shop_orange: ArtifactData = ArtifactData.new("artifact_shop_orange")
-	#artifact_shop_orange.artifact_name = "Artifact Orange Shop"
-	#artifact_shop_orange.artifact_description = "Test Orange Shop Artifact."
-	#artifact_shop_orange.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	#artifact_shop_orange.artifact_color_id = "color_orange"
-	#artifact_shop_orange.artifact_texture_path = "external/sprites/artifacts/artifact_orange.png"
-	#
-	#Global.register_rod(artifact_shop_orange)
-	#
-	#var artifact_boss_white: ArtifactData = ArtifactData.new("artifact_boss_white")
-	#artifact_boss_white.artifact_name = "Artifact White Boss"
-	#artifact_boss_white.artifact_description = "Test White Boss Artifact."
-	#artifact_boss_white.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BOSS
-	#artifact_boss_white.artifact_color_id = "color_white"
-	#artifact_boss_white.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
-	#
-	#Global.register_rod(artifact_boss_white)
-	#
-	#var artifact_shop_white: ArtifactData = ArtifactData.new("artifact_shop_white")
-	#artifact_shop_white.artifact_name = "Artifact White Shop"
-	#artifact_shop_white.artifact_description = "Test White Shop Artifact."
-	#artifact_shop_white.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	#artifact_shop_white.artifact_color_id = "color_white"
-	#artifact_shop_white.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
-	#
-	#Global.register_rod(artifact_shop_white)
-	#
-	
 
 #endregion
 
@@ -900,7 +730,7 @@ func add_rest_actions() -> void:
 		# must have enough money
 		Scripts.VALIDATOR_MONEY:
 			{
-				"money_amount": 25
+				"money_required": 25
 			}
 		},
 		{
@@ -943,10 +773,6 @@ func add_rest_actions() -> void:
 	]
 	
 	Global.register_rod(rest_action_increase_attack_on_rest)
-	
-
-
-
 #endregion
 
 #region Status Effects
@@ -1566,6 +1392,13 @@ func add_acts() -> void:
 	act_1.act_easy_desert_event_pool_object_id = "event_pool_act_1_desert_easy"
 	act_1.act_easy_coast_event_pool_object_id = "event_pool_act_1_coast_easy"
 	act_1.act_easy_swamp_event_pool_object_id = "event_pool_act_1_swamp_easy"
+	
+	act_1.act_medium_plains_event_pool_object_id = "event_pool_act_1_plains_medium"
+	act_1.act_medium_forest_event_pool_object_id = "event_pool_act_1_forest_medium"
+	act_1.act_medium_desert_event_pool_object_id = "event_pool_act_1_desert_medium"
+	act_1.act_medium_coast_event_pool_object_id = "event_pool_act_1_coast_medium"
+	act_1.act_medium_swamp_event_pool_object_id = "event_pool_act_1_swamp_medium"
+	
 	act_1.act_hard_plains_event_pool_object_id = "event_pool_act_1_plains_hard"
 	act_1.act_hard_forest_event_pool_object_id = "event_pool_act_1_forest_hard"
 	act_1.act_hard_desert_event_pool_object_id = "event_pool_act_1_desert_hard"
@@ -1584,9 +1417,7 @@ func add_events() -> void:
 	event_act_1_easy_plains_1.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"rock": 1},
-		{"mound": 1},
-		{"chargedvista": 0.5}
-		]
+		{"mound": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_1)
 	
@@ -1595,9 +1426,7 @@ func add_events() -> void:
 	event_act_1_easy_plains_2.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"rock": 1},
-		{"pond": 1},
-		{"animalherd": 0.5}
-		]
+		{"pond": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_2)
 	
@@ -1606,20 +1435,48 @@ func add_events() -> void:
 	event_act_1_easy_plains_3.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"pond": 1},
-		{"mound": 1},
-		{"chargedvista": 0.5},
-		{"animalherd": 0.5}
-		]
+		{"mound": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_3)
 	
+	var event_act_1_medium_plains_1: EventData = EventData.new("event_act_1_medium_plains_1")
+	event_act_1_medium_plains_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_plains_1.event_weighted_enemy_object_ids = [
+		{"field_patch": 1},
+		{"rock": 1},
+		{"pond": 1},
+		{"chargedvista": 0.5}
+		]
+	
+	Global.register_rod(event_act_1_medium_plains_1)
+	
+	var event_act_1_medium_plains_2: EventData = EventData.new("event_act_1_medium_plains_2")
+	event_act_1_medium_plains_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_plains_2.event_weighted_enemy_object_ids = [
+		{"field_patch": 1},
+		{"rock": 1},
+		{"rock": 1},
+		{"animalherd": 0.5}
+		]
+	
+	Global.register_rod(event_act_1_medium_plains_2)
+	
+	var event_act_1_medium_plains_3: EventData = EventData.new("event_act_1_medium_plains_3")
+	event_act_1_medium_plains_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_plains_3.event_weighted_enemy_object_ids = [
+		{"field_patch": 1},
+		{"field_patch": 1},
+		{"field_patch": 1},
+		{"chargedvista": 0.5},
+		{"animalherd": 0.5}
+		]
+		
 	var event_act_1_hard_plains_1: EventData = EventData.new("event_act_1_hard_plains_1")
 	event_act_1_hard_plains_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_plains_1.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"rock": 1},
-		{"pond": 1},
-		{"chargedvista": 0.5}
+		{"chargedvista": 1}
 		]
 	
 	Global.register_rod(event_act_1_hard_plains_1)
@@ -1630,7 +1487,7 @@ func add_events() -> void:
 		{"field_patch": 1},
 		{"rock": 1},
 		{"rock": 1},
-		{"animalherd": 0.5}
+		{"animalherd": 1}
 		]
 	
 	Global.register_rod(event_act_1_hard_plains_2)
@@ -1640,9 +1497,8 @@ func add_events() -> void:
 	event_act_1_hard_plains_3.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"field_patch": 1},
-		{"field_patch": 1},
-		{"chargedvista": 0.5},
-		{"animalherd": 0.5}
+		{"chargedvista": 1},
+		{"animalherd": 1}
 		]
 	
 	Global.register_rod(event_act_1_hard_plains_3)
@@ -1682,6 +1538,39 @@ func add_events() -> void:
 		]
 	
 	Global.register_rod(event_act_1_easy_desert_3)
+	
+	var event_act_1_medium_desert_1: EventData = EventData.new("event_act_1_medium_desert_1")
+	event_act_1_medium_desert_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_desert_1.event_weighted_enemy_object_ids = [
+		{"boulder": 1},
+		{"boulder": 1},
+		{"barrenwastes": 0.6}
+		]
+	
+	Global.register_rod(event_act_1_medium_desert_1)
+	
+	var event_act_1_medium_desert_2: EventData = EventData.new("event_act_1_medium_desert_2")
+	event_act_1_medium_desert_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_desert_2.event_weighted_enemy_object_ids = [
+		{"boulder": 1},
+		{"boulder": 1},
+		{"boulder": 1},
+		{"islandanomaly":0.6}
+		]
+	
+	Global.register_rod(event_act_1_medium_desert_2)
+	
+	var event_act_1_medium_desert_3: EventData = EventData.new("event_act_1_medium_desert_3")
+	event_act_1_medium_desert_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_desert_3.event_weighted_enemy_object_ids = [
+		{"boulder": 1},
+		{"boulder": 1},
+		{"bigboulder": 1},
+		{"barren_wastes": 0.6},
+		{"islandanomaly":0.6}
+		]
+	
+	Global.register_rod(event_act_1_medium_desert_3)
 	
 	var event_act_1_hard_desert_1: EventData = EventData.new("event_act_1_hard_desert_1")
 	event_act_1_hard_desert_1.event_death_message_bbcode = "Died to easy event"
@@ -1750,6 +1639,40 @@ func add_events() -> void:
 	
 	Global.register_rod(event_act_1_easy_forest_3)
 	
+		# has an equal chance of spawning 1 of 3 enemies in each slot
+	var event_act_1_medium_forest_1: EventData = EventData.new("event_act_1_medium_forest_1")
+	event_act_1_medium_forest_1.event_death_message_bbcode = "Died to medium event"
+	event_act_1_medium_forest_1.event_weighted_enemy_object_ids = [
+		{"forestfloor": 1},
+		{"forestfloor": 1},
+		{"den": 1},
+		{"mangroveroots": 0.4}
+		]
+	
+	Global.register_rod(event_act_1_medium_forest_1)
+	
+	var event_act_1_medium_forest_2: EventData = EventData.new("event_act_1_medium_forest_2")
+	event_act_1_medium_forest_2.event_death_message_bbcode = "Died to medium event"
+	event_act_1_medium_forest_2.event_weighted_enemy_object_ids = [
+		{"forestfloor": 1},
+		{"forestfloor": 1},
+		{"hideout": 1},
+		]
+	
+	Global.register_rod(event_act_1_medium_forest_2)
+	
+	var event_act_1_medium_forest_3: EventData = EventData.new("event_act_1_medium_forest_3")
+	event_act_1_medium_forest_3.event_death_message_bbcode = "Died to medium event"
+	event_act_1_medium_forest_3.event_weighted_enemy_object_ids = [
+		{"forestfloor": 1},
+		{"forestfloor": 1},
+		{"forestfloor": 1},
+		{"mangroveroots": 0.4}
+		]
+	
+	Global.register_rod(event_act_1_medium_forest_3)
+	
+	
 	var event_act_1_hard_forest_1: EventData = EventData.new("event_act_1_hard_forest_1")
 	event_act_1_hard_forest_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_forest_1.event_weighted_enemy_object_ids = [
@@ -1811,6 +1734,41 @@ func add_events() -> void:
 		]
 	
 	Global.register_rod(event_act_1_easy_coast_3)
+	
+	
+		
+	## Act 1 Combat
+	# has an equal chance of spawning 1 of 3 enemies in each slot
+	var event_act_1_medium_coast_1: EventData = EventData.new("event_act_1_medium_coast_1")
+	event_act_1_medium_coast_1.event_death_message_bbcode = "Died to medium event"
+	event_act_1_medium_coast_1.event_weighted_enemy_object_ids = [
+		{"shore": 1},
+		{"shore": 1},
+		{"cave": 1},
+		]
+	
+	Global.register_rod(event_act_1_medium_coast_1)
+	
+	var event_act_1_medium_coast_2: EventData = EventData.new("event_act_1_medium_coast_2")
+	event_act_1_medium_coast_2.event_death_message_bbcode = "Died to medium event"
+	event_act_1_medium_coast_2.event_weighted_enemy_object_ids = [
+		{"shore": 1},
+		{"shore": 1},
+		{"sandbed": 1},
+		]
+	
+	Global.register_rod(event_act_1_medium_coast_2)
+	
+	var event_act_1_medium_coast_3: EventData = EventData.new("event_act_1_medium_coast_3")
+	event_act_1_medium_coast_3.event_death_message_bbcode = "Died to medium event"
+	event_act_1_medium_coast_3.event_weighted_enemy_object_ids = [
+		{"shore": 1},
+		{"shore": 1},
+		{"shore": 1},
+		]
+	
+	Global.register_rod(event_act_1_medium_coast_3)
+	
 	
 	var event_act_1_hard_coast_1: EventData = EventData.new("event_act_1_hard_coast_1")
 	event_act_1_hard_coast_1.event_death_message_bbcode = "Died to easy event"
@@ -1879,13 +1837,46 @@ func add_events() -> void:
 	
 	Global.register_rod(event_act_1_easy_swamp_3)
 	
+	
+	var event_act_1_medium_swamp_1: EventData = EventData.new("event_act_1_medium_swamp_1")
+	event_act_1_medium_swamp_1.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_swamp_1.event_weighted_enemy_object_ids = [
+		{"dryfield": 1},
+		{"dryfield": 1},
+		{"dryfield": 1},
+		{"infestedwaters": 0.8}
+		]
+	
+	Global.register_rod(event_act_1_medium_swamp_1)
+	
+	var event_act_1_medium_swamp_2: EventData = EventData.new("event_act_1_medium_swamp_2")
+	event_act_1_medium_swamp_2.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_swamp_2.event_weighted_enemy_object_ids = [
+		{"dryfield": 1},
+		{"dryfield": 1},
+		{"hut": 1},
+		]
+	
+	Global.register_rod(event_act_1_medium_swamp_2)
+	
+	var event_act_1_medium_swamp_3: EventData = EventData.new("event_act_1_medium_swamp_3")
+	event_act_1_medium_swamp_3.event_death_message_bbcode = "Died to easy event"
+	event_act_1_medium_swamp_3.event_weighted_enemy_object_ids = [
+		{"dryfield": 1},
+		{"hut": 1},
+		{"brackishbeds":0.8}
+		]
+	
+	Global.register_rod(event_act_1_medium_swamp_3)
+	
+	
 	var event_act_1_hard_swamp_1: EventData = EventData.new("event_act_1_hard_swamp_1")
 	event_act_1_hard_swamp_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_swamp_1.event_weighted_enemy_object_ids = [
 		{"dryfield": 1},
 		{"dryfield": 1},
 		{"dryfield": 1},
-		{"infestedwaters": 0.8}
+		{"infestedwaters": 1}
 		]
 	
 	Global.register_rod(event_act_1_hard_swamp_1)
@@ -1905,7 +1896,7 @@ func add_events() -> void:
 	event_act_1_hard_swamp_3.event_weighted_enemy_object_ids = [
 		{"dryfield": 1},
 		{"hut": 1},
-		{"brackishbeds":0.8}
+		{"brackishbeds":1}
 		]
 	
 	Global.register_rod(event_act_1_hard_swamp_3)
@@ -2090,7 +2081,7 @@ func add_dialogue() -> void:
 		{Scripts.ACTION_ADD_MONEY: {"money_amount": -50}},
 	]
 	dialogue_pick_something_option_2.dialogue_option_validators = [
-		{Scripts.VALIDATOR_MONEY: {"money_amount": 50}},
+		{Scripts.VALIDATOR_MONEY: {"money_required": 50}},
 	]
 	dialogue_pick_something_option_2.dialogue_option_next_dialogue_state_id = "" # empty ends dialogue
 	
@@ -3148,7 +3139,9 @@ func add_enemies() -> void:
 	var _barrenwastes_anim: AnimationData = barrenwastes.add_standard_animations(
 		["external/sprites/enemies/wastes.png"]
 	)
-
+	Global.register_rod(barrenwastes)
+	Global.register_rod(_barrenwastes_anim)
+	
 	# enemy that negates the first damage instance against it
 	var islandanomaly: EnemyData = EnemyData.new("islandanomaly")
 	islandanomaly.enemy_name = "Island Anomaly"
@@ -4059,7 +4052,7 @@ func add_cards_misc() -> void:
 	card_delicacy.card_name = "Delicacy"
 	card_delicacy.card_color_id = "color_{0}".format([color])
 	card_delicacy.card_texture_path = "external/sprites/status_effects/delicacy.svg"
-	card_delicacy.card_description = "Draw [draw_count], then gain [energy_amount] {0}.".format(Card.ENERGY_ICON_KEYWORD)
+	card_delicacy.card_description = "Draw [draw_count], then gain [energy_amount]{0}.".format([Card.ENERGY_ICON_KEYWORD])
 	card_delicacy.card_type = CardData.CARD_TYPES.SKILL
 	card_delicacy.card_energy_cost = 0
 	card_delicacy.card_influence = 2
@@ -4219,20 +4212,13 @@ func add_cards_misc() -> void:
 	card_blueprint.card_play_destination = HandManager.EXHAUST_PILE
 	card_blueprint.card_requires_target = false
 	card_blueprint.card_values = {"ore_amount": -8,"artifact_id":""}
+	card_blueprint.card_play_validators = [{Scripts.VALIDATOR_ORE:{"ore_required":0}},{Scripts.VALIDATOR_ROOM:{"room_amount":1}}]
 	card_blueprint.card_play_actions = [
-		{
-			Scripts.ACTION_VALIDATOR:
-			{
-				"validator_data":[{Scripts.VALIDATOR_ORE:{"ore_required":8}},{Scripts.VALIDATOR_ROOM:{"room_amount":1}}],
-				"action_data":[{Scripts.ACTION_ADD_ORE:{"ore_amount":-8}},
-				{
-				Scripts.ACTION_ADD_ARTIFACT:
-				{
+			{Scripts.ACTION_ADD_ORE:{"ore_amount":-8}},
+			{Scripts.ACTION_ADD_ARTIFACT:{
 					"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
-				}
-				},{Scripts.ACTION_ADD_ROOM:{"room_amount":-1}}]
-			},
-		}]
+			}},{Scripts.ACTION_ADD_ROOM:{"room_amount":-1}}
+		]
 	
 	Global.register_rod(card_blueprint)
 	
@@ -4297,13 +4283,13 @@ func add_cards_trade() -> void:
 		}]
 			}
 		}]
-	Global.register_rod(card_trade1)
+	Global.register_rod(card_trade1)	
 	
 	var card_trade2: CardData = CardData.new("card_trade2")
 	card_trade2.card_name = "Trade2"
 	card_trade2.card_color_id = "color_{0}".format([color])
 	card_trade2.card_texture_path = "external/sprites/cards/basic/01_trade.png"
-	card_trade2.card_description = "Lose [food_amount]{0}. Gain [money_amount]{1}.".format([Card.FOOD_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
+	card_trade2.card_description = "[food_amount]{0}. Gain [money_amount]{1}.".format([Card.FOOD_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
 	card_trade2.card_type = CardData.CARD_TYPES.SKILL
 	card_trade2.card_energy_cost = 0
 	card_trade2.card_influence = 0
@@ -4333,7 +4319,7 @@ func add_cards_trade() -> void:
 	card_trade3.card_name = "Trade3"
 	card_trade3.card_color_id = "color_{0}".format([color])
 	card_trade3.card_texture_path = "external/sprites/cards/basic/01_trade.png"
-	card_trade3.card_description = "Lose [insight_amount] Insight. Gain [money_amount] Money.".format([Card.INSIGHT_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
+	card_trade3.card_description = "[insight_amount]{0}. Gain [money_amount]{1}.".format([Card.INSIGHT_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
 	card_trade3.card_type = CardData.CARD_TYPES.SKILL
 	card_trade3.card_energy_cost = 0
 	card_trade3.card_influence = 0
@@ -4360,7 +4346,96 @@ func add_cards_trade() -> void:
 	Global.register_rod(card_trade3)
 	
 	
-
+	var card_trade4: CardData = CardData.new("card_trade4")
+	card_trade4.card_name = "Trade4"
+	card_trade4.card_color_id = "color_{0}".format([color])
+	card_trade4.card_texture_path = "external/sprites/cards/basic/01_trade.png"
+	card_trade4.card_description = "[money_amount]{0}. Gain [ore_amount]{1}.".format([Card.MONEY_ICON_KEYWORD,Card.ORE_ICON_KEYWORD])
+	card_trade4.card_type = CardData.CARD_TYPES.SKILL
+	card_trade4.card_energy_cost = 0
+	card_trade4.card_influence = 0
+	card_trade4.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_trade4.card_requires_target = false
+	card_trade4.card_play_destination = HandManager.EXHAUST_PILE
+	card_trade4.card_values = {"ore_amount": randi_range(4, 6),"money_amount":randi_range(-4, -6)}
+	card_trade4.card_play_actions = [
+		{Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data": [{Scripts.VALIDATOR_MONEY:{"money_required":abs(card_trade4.card_values["money_amount"])}}],
+				"passed_action_data": [{
+			Scripts.ACTION_ADD_MONEY:
+			{
+			}
+		},
+		{
+			Scripts.ACTION_ADD_ORE:
+			{
+			}
+		}]
+			}
+		}]
+	Global.register_rod(card_trade4)
+	
+	var card_trade5: CardData = CardData.new("card_trade5")
+	card_trade5.card_name = "Trade5"
+	card_trade5.card_color_id = "color_{0}".format([color])
+	card_trade5.card_texture_path = "external/sprites/cards/basic/01_trade.png"
+	card_trade5.card_description = "[money_amount]{0}. Gain [food_amount]{1}.".format([Card.MONEY_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
+	card_trade5.card_type = CardData.CARD_TYPES.SKILL
+	card_trade5.card_energy_cost = 0
+	card_trade5.card_influence = 0
+	card_trade5.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_trade5.card_requires_target = false
+	card_trade5.card_play_destination = HandManager.EXHAUST_PILE
+	card_trade5.card_values = {"food_amount": randi_range(4, 8),"money_amount":randi_range(-4, -6)}
+	card_trade5.card_play_actions = [
+		{Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data": [{Scripts.VALIDATOR_MONEY:{"money_required":abs(card_trade5.card_values["money_amount"])}}],
+				"passed_action_data": [{
+			Scripts.ACTION_ADD_MONEY:
+			{
+			}
+		},
+		{
+			Scripts.ACTION_ADD_FOOD:
+			{
+			}
+		}]
+			}
+		}]
+	Global.register_rod(card_trade5)
+	
+	var card_trade6: CardData = CardData.new("card_trade6")
+	card_trade6.card_name = "Trade6"
+	card_trade6.card_color_id = "color_{0}".format([color])
+	card_trade6.card_texture_path = "external/sprites/cards/basic/01_trade.png"
+	card_trade6.card_description = "[money_amount]{0}. Gain [insight_amount]{1}.".format([Card.MONEY_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
+	card_trade6.card_type = CardData.CARD_TYPES.SKILL
+	card_trade6.card_energy_cost = 0
+	card_trade6.card_influence = 0
+	card_trade6.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_trade6.card_requires_target = false
+	card_trade6.card_play_destination = HandManager.EXHAUST_PILE
+	card_trade6.card_values = {"insight_amount": randi_range(1, 3),"money_amount":randi_range(-9, -15)}
+	card_trade6.card_play_actions = [
+		{Scripts.ACTION_VALIDATOR:
+			{
+				"validator_data": [{Scripts.VALIDATOR_MONEY:{"money_required":abs(card_trade6.card_values["money_amount"])}}],
+				"passed_action_data": [{
+			Scripts.ACTION_ADD_MONEY:
+			{
+			}
+		},
+		{
+			Scripts.ACTION_ADD_ORE:
+			{
+			}
+		}]
+			}
+		}]
+	Global.register_rod(card_trade6)
+	
 	var card_rejuvenating_tome: CardData = CardData.new("card_rejuvenating_tome")
 	card_rejuvenating_tome.card_name = "Rejuvenating Tome"
 	card_rejuvenating_tome.card_color_id = "color_blue"
@@ -4369,7 +4444,7 @@ func add_cards_trade() -> void:
 	card_rejuvenating_tome.card_type = CardData.CARD_TYPES.SKILL
 	card_rejuvenating_tome.card_energy_cost = 0
 	card_rejuvenating_tome.card_influence = 0
-	card_rejuvenating_tome.card_rarity = CardData.CARD_RARITIES.BOOK
+	card_rejuvenating_tome.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_rejuvenating_tome.card_requires_target = false
 	card_rejuvenating_tome.card_values = {"draw_count":2, "energy_amount":2}
 	card_rejuvenating_tome.card_play_actions = [
@@ -4385,7 +4460,7 @@ func add_cards_trade() -> void:
 	card_food_manual.card_type = CardData.CARD_TYPES.SKILL
 	card_food_manual.card_energy_cost = 0
 	card_food_manual.card_influence = 0
-	card_food_manual.card_rarity = CardData.CARD_RARITIES.BOOK
+	card_food_manual.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_food_manual.card_requires_target = false
 	card_food_manual.card_values = {"status_charge_amount": 1}
 	card_food_manual.card_play_actions = [{
@@ -4417,7 +4492,7 @@ func add_cards_trade() -> void:
 	card_preservation_pamphlet.card_type = CardData.CARD_TYPES.SKILL
 	card_preservation_pamphlet.card_energy_cost = 0
 	card_preservation_pamphlet.card_influence = 0
-	card_preservation_pamphlet.card_rarity = CardData.CARD_RARITIES.BOOK
+	card_preservation_pamphlet.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_preservation_pamphlet.card_requires_target = false
 	card_preservation_pamphlet.card_values = {"status_charge_amount": 1}
 	card_preservation_pamphlet.card_play_actions = [{Scripts.ACTION_PICK_CARDS:
@@ -4456,7 +4531,7 @@ func add_cards_trade() -> void:
 	card_exploration_tome.card_type = CardData.CARD_TYPES.SKILL
 	card_exploration_tome.card_influence = 0
 	card_exploration_tome.card_energy_cost = 0
-	card_exploration_tome.card_rarity = CardData.CARD_RARITIES.BOOK
+	card_exploration_tome.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_exploration_tome.card_requires_target = false
 	card_exploration_tome.card_values = {"status_charge_amount":2}
 	card_exploration_tome.card_play_actions = [
@@ -4884,7 +4959,7 @@ func add_cards_purple() -> void:
 	var card_schemingplanner: CardData = CardData.new("card_schemingplanner")
 	card_schemingplanner.card_name = "Scheming Planner"
 	card_schemingplanner.card_color_id = "color_{0}".format([color])
-	card_schemingplanner.card_texture_path = "external/sprites/cards/13_schemingplanner.png"
+	card_schemingplanner.card_texture_path = "external/sprites/cards/pearl/13_schemingplanner.png"
 	card_schemingplanner.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_schemingplanner.card_description = "Gain [money_amount]{0}. Create 2 Debt. Tick down Shop Refresh by 3.".format([Card.MONEY_ICON_KEYWORD])
 	card_schemingplanner.card_keyword_object_ids = ["keyword_debt"]

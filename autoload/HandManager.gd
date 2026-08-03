@@ -13,7 +13,7 @@ const PLAYER_CARD_DRAW_PER_TURN: int = 5
 const PLAYER_DEFAULT_HAND_CARD_COUNT_MAX: int = 10
 
 ## If multipe cards are queueed how long it takes between them. Tweaking this will speed up plays slightly
-const TIME_BETWEEN_CARD_PLAYS: float = 0.2
+const TIME_BETWEEN_CARD_PLAYS: float = 0.5
 
 ## If cards were exhausted end of turn, wait this amount
 const EXHAUST_TIMER: float = 0.5
@@ -133,6 +133,7 @@ func reset_deck() -> void:
 ## Removes a card from everything in player's deck and hand.
 ## Useful for resetting a card to move it into one place.
 func move_card_to_limbo(card_data: CardData) -> void:
+	#await get_tree().create_timer(0.5).timeout
 	if card_data == null:
 		return
 	player_draw.erase(card_data)
@@ -140,6 +141,7 @@ func move_card_to_limbo(card_data: CardData) -> void:
 	player_exhaust.erase(card_data)
 	player_hand.erase(card_data)
 	# unregister from Hand UI
+
 	hand.card_data_to_hand_card.erase(card_data)
 
 ## Generic method for moving a card to a given pile.
@@ -148,6 +150,7 @@ func move_card_to_limbo(card_data: CardData) -> void:
 ## You may wish to use more specific methods for clarity.
 func move_card_to_pile(card_data: CardData, card_pile_origin: String, card_destination_pile: String, card_destination_strategy: int, hand_size: int, perform_actions: bool = true, send_signal: bool = true) -> void:
 	# ensure card is removed from all piles
+
 	move_card_to_limbo(card_data)
 	
 	# banished cards go nowhere, so you can just stop here
@@ -366,9 +369,9 @@ func _perform_card_plays() -> void:
 	cards_being_played = true # lock the queue
 	while len(card_play_queue) > 0:
 		# no more enemies
-		if not Global.are_remaining_enemies():
-			clear_card_queue()
-			break
+		#if not Global.are_remaining_enemies():
+		#	clear_card_queue()
+		#	break
 		
 		# pop the next card from the queue and play it
 		var card_play_request: CardPlayRequest = card_play_queue.pop_front()
@@ -382,7 +385,7 @@ func _perform_card_plays() -> void:
 			card_play_queue.push_front(card_play_request)
 			refund_card_queue()
 			break
-		
+			
 		_play_card(card_play_request)
 		if ActionHandler.actions_being_performed:
 			await ActionHandler.actions_ended

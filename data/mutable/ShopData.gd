@@ -5,6 +5,7 @@ class_name ShopData
 
 @export var shop_is_visited: bool = false	# determines whether to perform actions for the first time
 @export var refresh_shop: bool = false
+@export var first_time: bool = true
 
 ## The location this shop belongs to. Used to validate if the shop actually belongs to the player's
 ## current location
@@ -14,6 +15,9 @@ class_name ShopData
 @export var shop_cards: Array[CardData] = [] # array of CardData prototype instances
 @export var shop_trade: Array[CardData] = [] 
 @export var shop_artifact_ids: Array[String] = []
+@export var available_artifact_ids: Array[String] = []
+
+
 @export var shop_consumable_slot_to_consumable_object_id: Dictionary = {}	# maps a numerical slot index to a consumable id. 0 indexed
 @export var shop_refresh: int = 0
 
@@ -65,17 +69,26 @@ func visit_shop() -> void:
 		### Generate Items
 		# generates shop cards
 		var generated_trade: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_grey",ShopData.GENERATED_TRADE_COUNT)
-				
-		# generates shop cards
-		#var generated_books: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_blue",ShopData.GENERATED_TRADE_COUNT)
+		
+		if (first_time):
+			available_artifact_ids = Global.player_data.player_artifact_pool
+			for item in available_artifact_ids:
+				var artifact_data: ArtifactData = Global.get_artifact_data(item)
+				if (artifact_data.artifact_rarity != ArtifactData.ARTIFACT_RARITIES.SHOP):
+					available_artifact_ids.erase(item)
+			first_time = false
+		
+		var artifact_ids: Array[String] = []
+		var artifact_prices: Array[int] = []
+		var unique_integers: Array[int] = []
+		for i: int in range(0,len(available_artifact_ids)):
+			unique_integers.append(i)
+		for i: int in range (GENERATED_ARTIFACT_COUNT):
+			var random_int: int = randi_range(0,len(unique_integers)-1)
+			var unique_int: int = unique_integers.pop_at(random_int)
+			artifact_ids.append(available_artifact_ids[unique_int])
+			artifact_prices.append(randi_range(1,3))
 			
-		# generate regular artifacts from player artifact pool
-		var artifact_ids: Array[String] = Global.player_data.get_next_shop_standard_artifacts_from_pool(GENERATED_ARTIFACT_COUNT, false)
-		
-		# generate shop artifacts from player artifact pool
-		var shop_artifact_ids: Array[String] = Global.player_data.get_next_shop_specific_artifacts_from_pool(GENERATED_SHOP_SPECIFIC_ARTIFACT_COUNT, false)
-		artifact_ids.append_array(shop_artifact_ids)
-		
 		# generate shop consumables
 		var consumable_ids: Array[String] = []
 		for _i in GENERATED_CONSUMABLE_COUNT:
@@ -85,7 +98,7 @@ func visit_shop() -> void:
 		### Generate Prices
 		var card_prices: Array[int] = Random.get_shop_card_prices(generated_cards, rng_shop)
 		var trade_prices: Array[int] = Random.get_shop_trade_prices(generated_trade, rng_shop)
-		var artifact_prices: Array[int] = Random.get_shop_artifact_prices(artifact_ids, rng_shop)
+		#var artifact_prices: Array[int] = Random.get_shop_artifact_prices(artifact_ids, rng_shop)
 		var consumable_prices: Array[int] = Random.get_shop_consumable_prices(consumable_ids, rng_shop)
 		
 		### Generate Population Action
@@ -151,6 +164,10 @@ func remove_shop_trade(card_data: CardData) -> void:
 		shop_trade.remove_at(index)
 		shop_trade_prices.remove_at(index)
 
+func clear_shop_cards() -> void:
+	shop_cards.clear()
+	shop_card_prices.clear()
+	
 func clear_shop_trade() -> void:
 	shop_trade.clear()
 	shop_trade_prices.clear()

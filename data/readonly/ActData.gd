@@ -37,6 +37,23 @@ class_name ActData
 ## The event pool for this act's hard combats. Used for generation of locations in this act.
 @export var act_hard_forest_event_pool_object_id: String = ""
 
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_medium_plains_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_medium_desert_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_medium_coast_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_medium_swamp_event_pool_object_id: String = ""
+
+## The event pool for this act's hard combats. Used for generation of locations in this act.
+@export var act_medium_forest_event_pool_object_id: String = ""
+
+
 ## The event pool for this act's hard combats. Used for generation of locations in this act.
 @export var act_easy_plains_event_pool_object_id: String = ""
 

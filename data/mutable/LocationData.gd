@@ -25,6 +25,7 @@ class_name LocationData
 @export var location_index: Vector2 = Vector2()	# where the location exists on a grid mapping
 @export var location_floor: int = 1
 @export var location_act: int = 1
+@export var icon_texture_path: String = ""
 
 ## A path to an external texture file to use when at this location. Overrides the act background
 @export var location_background_texture_path: String = ""

@@ -13,7 +13,7 @@ func _ready():
 func init(_location_data: LocationData):
 	location_data = _location_data
 	position = location_data.location_position
-	
+	texture_normal = FileLoader.load_texture(_location_data.icon_texture_path)
 	# display the type of location
 	if location_data.location_obfuscated and not location_data.location_visited:
 		map_label.text = "???" # unvisited obfuscated locations are marked hidden

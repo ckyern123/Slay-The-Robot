@@ -34,6 +34,7 @@ var TEXT_FADE: PackedScene = load("res://scenes/combatants/fades/TextFade.tscn")
 var ARTIFACT_FADE: PackedScene = load("res://scenes/combatants/fades/ArtifactFade.tscn")
 var IMAGE_FADE: PackedScene = load("res://scenes/combatants/fades/ImageFade.tscn")
 var COMBAT_EFFECT_ANIMATION: PackedScene = load("res://scenes/combatants/AnimatedCombatEffect.tscn")
+var CARD_EFFECT_ANIMATION: PackedScene = load("res://scenes/combatants/AnimatedCardEffect.tscn")
 
 var KEYWORD_TOOLTIP: PackedScene = load("res://scenes/ui/general/KeywordTooltip.tscn")
 var TOOLTIP: PackedScene = load("res://ui/components/tooltip/Tooltip.tscn")
