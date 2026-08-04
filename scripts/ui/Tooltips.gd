@@ -45,7 +45,7 @@ func _ready() -> void:
 		[map_button, "[color=orange]Map[/color]\nOpens map for this act", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		[deck_button, "[color=orange]Deck[/color]\nList of all cards currently owned. Saved between combats", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		
-		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose. Each turn, you lose Food equal to total cards/10", true, false, true, $TooltipPositions/FoodTooltipPos],
+		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose. /Overhead: Each turn, you lose Food equal to total cards/10 /Blight: Each turn, you lose Food equal to Blight (Increases by 1 every 4 turns.)", true, false, true, $TooltipPositions/FoodTooltipPos],
 		[money_label, "[color=orange]Money[/color]\nHow much money you have", true, false, true, $TooltipPositions/MoneyTooltipPos],
 		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have", true, false, true, $TooltipPositions/OreTooltipPos],
 		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have", true, false, true, $TooltipPositions/InsightTooltipPos],
