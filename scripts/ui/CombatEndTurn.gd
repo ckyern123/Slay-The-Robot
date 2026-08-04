@@ -27,7 +27,9 @@ func wait() -> void:
 			var sprawl_count: int = Global.player_data.player_size - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			if (sprawl_count < 0):
 				Global.player_data.add_food(sprawl_count/2)
-				
+			Global.player_data.blight -= 1
+			Global.player_data.add_food(Global.player_data.blight/4)
+			
 			if Global.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
 			if Global.player_data.player_deck.size() >= 100:

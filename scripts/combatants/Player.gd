@@ -13,7 +13,7 @@ func _ready():
 	Signals.enemy_intent_changed.connect(_on_enemy_intent_changed)
 	Signals.enemy_death_animation_finished.connect(_on_enemy_death_animation_finished)
 	Signals.player_health_changed.connect(_on_player_health_changed)
-	Signals.artifact_proc.connect(_on_artifact_proc)
+	#Signals.artifact_proc.connect(_on_artifact_proc)
 	Signals.run_started.connect(_on_run_started)
 	Signals.run_ended.connect(_on_run_ended)
 	
@@ -228,8 +228,8 @@ func _on_player_health_changed():
 		play_death_animation()
 	update_health_bar(true)
 
-func _on_artifact_proc(artifact_data: ArtifactData):
-	create_artifact_fade(artifact_data.object_id)
+#func _on_artifact_proc(artifact_data: ArtifactData):
+	#create_artifact_fade(artifact_data.object_id)
 
 
 func _on_death_animtation_finished():

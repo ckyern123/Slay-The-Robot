@@ -1825,40 +1825,52 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_left = 200.0
 offset_top = 8.0
-offset_right = 400.0
+offset_right = 550.0
 offset_bottom = 58.0
 bbcode_enabled = true
 text = "[img width=24]external/sprites/cards/basic/oat.svg[/img] Food"
 
+[node name="FoodFadeContainer" type="Node2D" parent="RunScreen/Combat" unique_id=227173185]
+position = Vector2(215, 15)
+
 [node name="MoneyLabel" type="RichTextLabel" parent="RunScreen/Combat" unique_id=416191368]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 400.0
+offset_left = 500.0
 offset_top = 8.0
-offset_right = 600.0
+offset_right = 700.0
 offset_bottom = 58.0
 bbcode_enabled = true
 text = "[img width=24]external/sprites/cards/basic/rupee.svg[/img] Money"
 
+[node name="MoneyFadeContainer" type="Node2D" parent="RunScreen/Combat" unique_id=1864940312]
+position = Vector2(515, 15)
+
 [node name="OreLabel" type="RichTextLabel" parent="RunScreen/Combat" unique_id=1597183768]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 650.0
+offset_left = 675.0
 offset_top = 8.0
-offset_right = 850.0
+offset_right = 875.0
 offset_bottom = 58.0
 bbcode_enabled = true
 text = "[img width=24]external/sprites/cards/basic/ore.svg[/img] Ore"
 
+[node name="OreFadeContainer" type="Node2D" parent="RunScreen/Combat" unique_id=1561845151]
+position = Vector2(690, 15)
+
 [node name="InsightLabel" type="RichTextLabel" parent="RunScreen/Combat" unique_id=2103451130]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 900.0
+offset_left = 815.0
 offset_top = 9.0
-offset_right = 1100.0
+offset_right = 1015.0
 offset_bottom = 59.0
 bbcode_enabled = true
 text = "[img width=24]external/sprites/cards/basic/scroll-unfurled.svg[/img] Insight"
+
+[node name="InsightFadeContainer" type="Node2D" parent="RunScreen/Combat" unique_id=686892605]
+position = Vector2(830, 15)
 
 [node name="ArtifactContainer" type="HBoxContainer" parent="RunScreen/Combat" unique_id=1591838213]
 layout_mode = 0
@@ -1895,6 +1907,10 @@ offset_bottom = 142.0
 bbcode_enabled = true
 text = "Sprawl:"
 
+[node name="SprawlFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=228372623]
+unique_name_in_owner = true
+position = Vector2(20, 107)
+
 [node name="RoomLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=1691440553]
 unique_name_in_owner = true
 layout_mode = 0
@@ -1905,6 +1921,10 @@ offset_bottom = 186.0
 bbcode_enabled = true
 text = "Room:"
 
+[node name="RoomFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=484523731]
+unique_name_in_owner = true
+position = Vector2(20, 151)
+
 [node name="ShopRefreshLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=1682282931]
 unique_name_in_owner = true
 layout_mode = 0
@@ -1913,6 +1933,10 @@ offset_right = 350.0
 offset_bottom = 50.0
 bbcode_enabled = true
 text = "Shop Refresh:"
+
+[node name="RefreshFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=1304016618]
+unique_name_in_owner = true
+position = Vector2(275, 15)
 
 [node name="EnemyContainer" type="Control" parent="RunScreen/Combat" unique_id=754159237]
 anchors_preset = 0
@@ -2187,6 +2211,8 @@ offset_left = 57.0
 offset_top = 52.0
 offset_right = 99.0
 offset_bottom = 94.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 19
 theme_override_font_sizes/font_size = 30
 text = "30"
 horizontal_alignment = 1
@@ -2893,6 +2919,24 @@ offset_bottom = 306.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.701961, 0.67451, 0.721569, 1)
+
+[node name="Label" type="Label" parent="RunScreen/Map/Background2" unique_id=466257665]
+layout_mode = 0
+offset_left = 899.0
+offset_top = 50.0
+offset_right = 1236.0
+offset_bottom = 391.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+text = "Plains: Food, Rock, Fertiliser, Size, Room
+
+Desert: Rock, Shop Refresh, Room,  Insight
+
+Coast: Fish, Treasure, Shop Refresh, Insight
+
+Forest: Fertiliser, Spice, Treasure, Room, Size
+
+Swamp: Size, Delicacy, Insight"
 
 [node name="BackButton" type="Button" parent="RunScreen/Map" unique_id=478791985]
 layout_mode = 0

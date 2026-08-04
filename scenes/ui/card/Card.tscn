@@ -203,6 +203,10 @@ offset_bottom = 75.0
 texture = ExtResource("4_s13hi")
 expand_mode = 1
 
+[node name="InfluenceFade" type="Node2D" parent="Pivot/CardVisual/InfluenceSprite" unique_id=1343870565]
+unique_name_in_owner = true
+position = Vector2(25, 30)
+
 [node name="InfluenceLabel" type="RichTextLabel" parent="Pivot/CardVisual/InfluenceSprite" unique_id=1314072638]
 unique_name_in_owner = true
 layout_mode = 0

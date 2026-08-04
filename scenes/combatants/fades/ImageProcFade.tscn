@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://bcb365dtd8vsy"]
+[gd_scene format=3 uid="uid://b35owfxjenl5g"]
 
-[ext_resource type="Script" uid="uid://dr6qc5pdjo7yy" path="res://scripts/combatants/fades/ArtifactFade.gd" id="1_nm21a"]
-[ext_resource type="Texture2D" uid="uid://d33u8m744fh03" path="res://icon.svg" id="2_rfplr"]
+[ext_resource type="Script" uid="uid://s7utj3mj1vyc" path="res://scripts/combatants/fades/ImageFade.gd" id="1_xpd7i"]
+[ext_resource type="Texture2D" uid="uid://d33u8m744fh03" path="res://icon.svg" id="2_vsoto"]
 
 [sub_resource type="Animation" id="Animation_ceare"]
 resource_name = "fade"
@@ -30,21 +30,21 @@ tracks/1/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_pbo75"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xpd7i"]
 _data = {
 &"fade": SubResource("Animation_ceare")
 }
 
-[node name="ArtifactFade" type="Node2D" unique_id=1843614170]
-script = ExtResource("1_nm21a")
+[node name="ImageFade" type="Node2D" unique_id=151265866]
+script = ExtResource("1_xpd7i")
 
-[node name="Sprite" type="TextureRect" parent="." unique_id=96067098]
+[node name="Sprite" type="TextureRect" parent="." unique_id=1797916279]
 offset_left = -16.0
 offset_top = -16.0
 offset_right = 16.0
 offset_bottom = 16.0
-texture = ExtResource("2_rfplr")
+texture = ExtResource("2_vsoto")
 expand_mode = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite" unique_id=165094777]
-libraries/ = SubResource("AnimationLibrary_pbo75")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite" unique_id=1732477438]
+libraries/ = SubResource("AnimationLibrary_xpd7i")

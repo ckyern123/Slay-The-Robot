@@ -12,7 +12,7 @@ extends Control
 func _ready():
 	#Signals.combat_started.connect(_on_combat_started)
 	
-	Signals.map_location_selected.connect(_on_map_location_selected)
+	#Signals.map_location_selected.connect(_on_map_location_selected)
 	Signals.shop_opened.connect(_on_shop_opened)
 	
 	Signals.player_killed.connect(_on_player_killed)
@@ -195,8 +195,8 @@ func _on_continue_button_up():
 		visible = false
 		Signals.run_victory.emit()
 
-func _on_map_location_selected(_location_data: LocationData):
-	visible = false
+#func _on_map_location_selected(_location_data: LocationData):
+	#visible = false
 
 func _on_player_killed(_player: Player):
 	clear_shop()

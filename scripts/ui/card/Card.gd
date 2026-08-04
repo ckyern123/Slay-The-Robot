@@ -27,21 +27,13 @@ const SIZE_ICON_KEYWORD: String = "[size_icon]"
 const ROOM_ICON_KEYWORD: String = "[room_icon]"
 
 const FONT_SIZE: int = 24
-const explore_texture_path = "res://sprites/journey.svg"
-const money_texture_path = "res://sprites/rupee.svg"
-const food_texture_path = "res://sprites/oat.svg"
-const ore_texture_path = "res://sprites/ore.svg"
-const insight_texture_path = "res://sprites/scroll.svg"
-const size_texture_path = "res://sprites/village.svg"
-const room_texture_path = "res://sprites/tower.svg"
-
-const explore_texture = preload(explore_texture_path)
-const money_texture = preload(money_texture_path)
-const food_texture = preload(food_texture_path)
-const ore_texture = preload(ore_texture_path)
-const insight_texture = preload(insight_texture_path)
-const size_texture = preload(size_texture_path)
-const room_texture = preload(room_texture_path)
+const explore_texture_path = "sprites/conqueror.svg"
+const money_texture_path = "sprites/rupee.svg"
+const food_texture_path = "sprites/oat.svg"
+const ore_texture_path = "sprites/ore.svg"
+const insight_texture_path = "sprites/scroll.svg"
+const size_texture_path = "sprites/village.svg"
+const room_texture_path = "sprites/tower.svg"
 
 var tooltip_left_side: bool = false # if tooltip should display to the left of the card when hovered
 
@@ -61,6 +53,7 @@ var tooltip_left_side: bool = false # if tooltip should display to the left of t
 @onready var card_influence_label: RichTextLabel = %InfluenceLabel
 @onready var card_color: ColorRect = %ColorBackground
 @onready var card_decorator_container: VBoxContainer = %CardDecoratorContainer
+@onready var influence_fade_container: Node2D = %InfluenceFade
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var card_glow: ColorRect = %CardGlow
@@ -303,30 +296,37 @@ func get_card_description(selected_target: BaseCombatant = null) -> String:
 					modified_description_bb_code = modified_description_bb_code.replace(ENERGY_ICON_KEYWORD, image_bb_code)
 	
 	if card_data.card_description.contains(FOOD_ICON_KEYWORD):
+		FileLoader.load_texture(food_texture_path)
 		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,food_texture_path])
 		modified_description_bb_code = modified_description_bb_code.replace(FOOD_ICON_KEYWORD, image_bb_code)
 	
 	if card_data.card_description.contains(ORE_ICON_KEYWORD):
+		FileLoader.load_texture(ore_texture_path)
 		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,ore_texture_path])
 		modified_description_bb_code = modified_description_bb_code.replace(ORE_ICON_KEYWORD, image_bb_code)
 		
 	if card_data.card_description.contains(INSIGHT_ICON_KEYWORD):
+		FileLoader.load_texture(insight_texture_path)
 		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,insight_texture_path])
 		modified_description_bb_code = modified_description_bb_code.replace(INSIGHT_ICON_KEYWORD, image_bb_code)
 		
 	if card_data.card_description.contains(MONEY_ICON_KEYWORD):
+		FileLoader.load_texture(money_texture_path)
 		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,money_texture_path])
 		modified_description_bb_code = modified_description_bb_code.replace(MONEY_ICON_KEYWORD, image_bb_code)
 		
 	if card_data.card_description.contains(EXPLORE_ICON_KEYWORD):
+		FileLoader.load_texture(explore_texture_path)
 		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,explore_texture_path])
 		modified_description_bb_code = modified_description_bb_code.replace(EXPLORE_ICON_KEYWORD, image_bb_code)
 		
 	if card_data.card_description.contains(SIZE_ICON_KEYWORD):
+		FileLoader.load_texture(size_texture_path)
 		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,size_texture_path])
 		modified_description_bb_code = modified_description_bb_code.replace(SIZE_ICON_KEYWORD, image_bb_code)
 		
 	if card_data.card_description.contains(ROOM_ICON_KEYWORD):
+		FileLoader.load_texture(room_texture_path)
 		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,room_texture_path])
 		modified_description_bb_code = modified_description_bb_code.replace(ROOM_ICON_KEYWORD, image_bb_code)
 		
@@ -374,6 +374,11 @@ func _attempt_hand_glow() -> void:
 	# tests to see if cards in hand that require validation meet validation and glow
 	if _is_card_in_hand():
 		set_card_glow(_glow_validation())
+		
+func create_image_fade(texture: Texture) -> void:
+	var image_fade: ImageFade = Scenes.IMAGE_PROC_FADE.instantiate()
+	influence_fade_container.add_child(image_fade)
+	image_fade.init(texture)
 
 func _on_button_gui_input(event: InputEvent):
 	if event.is_action_released("left_click"):
@@ -405,7 +410,7 @@ func _on_card_turn_energy_changed(_card_data: CardData):
 		
 func _on_card_turn_influence_changed(_card_data: CardData):
 	if card_data == _card_data:
-		create_effect_animation("animation_vfx_impact_default",card_influence_sprite)
+		create_image_fade(card_influence_sprite.texture)
 		update_card_display()
 
 func _on_card_upgraded(_card_data: CardData):

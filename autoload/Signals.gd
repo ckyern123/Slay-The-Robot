@@ -138,6 +138,7 @@ signal enemy_spawn_requested(enemy_object_id: String, slot_id: int)	# requests s
 signal artifact_proc(artifact_data: ArtifactData)	# an artifact's effect has been triggered
 signal artifact_counter_changed(artifact_data: ArtifactData)
 signal artifact_purchased(artifact_data: ArtifactData)
+signal player_fertilise(delta: int)
 
 # consumables
 signal consumable_discarded(consumable_index: int, consumable_object_id: String)	# player got rid of a consumable

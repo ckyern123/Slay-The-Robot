@@ -7,6 +7,7 @@ var artifact_script: BaseArtifact
 
 @onready var counter_label: Label = $CounterLabel
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var fade_container: Node2D = %FadeContainer
 
 func _ready():
 	Signals.artifact_proc.connect(_on_artifact_proc)
@@ -14,7 +15,12 @@ func _ready():
 	
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
-
+	
+func create_artifact_fade(artifact_id: String) -> void:
+	var artifact_fade: ArtifactFade = Scenes.ARTIFACT_FADE.instantiate()
+	fade_container.add_child(artifact_fade)
+	artifact_fade.init(artifact_id)
+	
 func init(_artifact_data: ArtifactData):
 	artifact_data = _artifact_data
 	var artifact_script_asset: Resource = load(artifact_data.artifact_script_path)
@@ -28,6 +34,7 @@ func init(_artifact_data: ArtifactData):
 func _on_artifact_proc(_artifact_data: ArtifactData):
 	if artifact_data == _artifact_data:
 		animation_player.play("proc_anim")
+		create_artifact_fade(_artifact_data.object_id)
 
 func _on_artifact_counter_changed(_artifact_data: ArtifactData):
 	if artifact_data == _artifact_data:

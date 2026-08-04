@@ -11,19 +11,21 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var sprawl_label: RichTextLabel = %SprawlLabel
 @onready var room_label: RichTextLabel = %RoomLabel
 @onready var shop_refresh_label: RichTextLabel = %ShopRefreshLabel
+@onready var food_fade_container = $FoodFadeContainer
+@onready var money_fade_container = $MoneyFadeContainer
+@onready var ore_fade_container = $OreFadeContainer
+@onready var insight_fade_container = $InsightFadeContainer
+@onready var sprawl_fade_container = %SprawlFadeContainer
+@onready var room_fade_container = %RoomFadeContainer
+@onready var refresh_fade_container = %RefreshFadeContainer
 
-const money_texture_path = "res://sprites/rupee.svg"
-const food_texture_path = "res://sprites/oat.svg"
-const ore_texture_path = "res://sprites/ore.svg"
-const insight_texture_path = "res://sprites/scroll.svg"
-const sprawl_texture_path = "res://sprites/village.svg"
-const room_texture_path = "res://sprites/tower.svg"
-const money_texture = preload("res://sprites/rupee.svg")
-const food_texture = preload("res://sprites/oat.svg")
-const ore_texture = preload("res://sprites/ore.svg")
-const insight_texture = preload("res://sprites/scrolL.svg")
-const sprawl_texture = preload("res://sprites/village.svg")
-const room_texture = preload("res://sprites/tower.svg")
+const money_texture_path = "sprites/rupee.svg"
+const food_texture_path = "sprites/oat.svg"
+const ore_texture_path = "sprites/ore.svg"
+const insight_texture_path = "sprites/scroll.svg"
+const sprawl_texture_path = "sprites/village.svg"
+const room_texture_path = "sprites/tower.svg"
+const refresh_texture_path = "sprites/refresh.svg"
 
 @onready var energy_count: Label = $Energy/EnergyCount
 @onready var energy: TextureButton = $Energy
@@ -53,10 +55,17 @@ const room_texture = preload("res://sprites/tower.svg")
 @onready var combat_end_button: TextureButton = $CombatEndButton
 
 var end_turn_object: CombatEndTurn = null
-var kill_count: int = 0
+var game_start: bool = true
 
 func _ready():
-
+	FileLoader.load_texture(money_texture_path)
+	FileLoader.load_texture(room_texture_path)
+	FileLoader.load_texture(food_texture_path)
+	FileLoader.load_texture(ore_texture_path)
+	FileLoader.load_texture(insight_texture_path)
+	FileLoader.load_texture(sprawl_texture_path)
+	FileLoader.load_texture(refresh_texture_path)					
+						
 	Signals.player_money_changed.connect(_on_player_money_changed)
 	Signals.player_food_changed.connect(_on_player_food_changed)
 	Signals.player_ore_changed.connect(_on_player_ore_changed)
@@ -85,7 +94,7 @@ func _ready():
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead: %s / blight: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10,abs(Global.player_data.blight/4)]
 
 	# pile buttons
 	deck_button.button_up.connect(_on_deck_button_up)
@@ -203,16 +212,20 @@ func _on_card_queue_refunded():
 
 func _on_player_money_changed(_delta: int = 0):
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
-
+	if (_delta != 0):
+		create_image_fade(money_fade_container, FileLoader.load_texture(money_texture_path))
 func _on_player_ore_changed(_delta: int = 0):
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
-		
+	if (_delta != 0):
+		create_image_fade(ore_fade_container, FileLoader.load_texture(ore_texture_path))		
 func _on_player_insight_changed(_delta: int = 0):
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
-	
+	if (_delta != 0):
+		create_image_fade(insight_fade_container, FileLoader.load_texture(insight_texture_path))	
 func _on_player_food_changed(_delta: int = 0):
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
-
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead %s / blight %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10,abs(Global.player_data.blight/4)]
+	if (_delta != 0):
+		create_image_fade(food_fade_container, FileLoader.load_texture(food_texture_path))
 func _on_player_sprawl_changed(_delta: int = 0):
 	var calc: int = (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())
 	var sprawl: int = Global.player_data.player_size
@@ -220,19 +233,22 @@ func _on_player_sprawl_changed(_delta: int = 0):
 		sprawl_label.text = "[img width={0}]{1}[/img] {2}: [color=#FF9233]%s / %s[/color]".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Size"])  % [calc,Global.player_data.player_size]
 	else:
 		sprawl_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Size"])  % [calc,Global.player_data.player_size]
-
+	if (_delta != 0):
+		create_image_fade(sprawl_fade_container, FileLoader.load_texture(sprawl_texture_path))
 func _on_player_room_changed(_delta: int = 0):
 	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room
-
+	if (_delta != 0):
+		create_image_fade(room_fade_container, FileLoader.load_texture(room_texture_path))
 func _on_player_refresh_changed(_delta: int = 0):
-	shop_refresh_label.text = "Refresh: %s"  % Global.player_data.player_refresh
+	shop_refresh_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, refresh_texture_path, "Shop Refresh"]) % Global.player_data.player_refresh
 	if (Global.player_data.player_refresh <= 0):
 		var shop_data: ShopData = Global.get_shop_at_player_location()
 		shop_data.shop_is_visited = false
 		shop_data.refresh_shop = true
 		shop_overlay.populate_shop()
 		Global.player_data.player_refresh = 5
-		shop_refresh_label.text = "Refresh: %s"  % Global.player_data.player_refresh
+		shop_refresh_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, refresh_texture_path, "Shop Refresh"]) % Global.player_data.player_refresh
+		create_image_fade(refresh_fade_container, FileLoader.load_texture(refresh_texture_path))
 		#var current_event = Global.get_player_event_data()
 		#enemy_container.populate_enemies_from_event(current_event)
 
@@ -498,7 +514,9 @@ func _on_player_turn_started():
 		# if player is dead stop
 		if _end_combat_check():
 			return
-		Signals.shop_opened.emit()
+		if (game_start):
+			Signals.shop_opened.emit()
+			game_start = false
 	else:
 		Global.player_data.add_refresh(-1)
 	
@@ -652,6 +670,11 @@ func start_turn():
 	_reset_turn_end_queue()
 	update_combat_display()
 	Signals.player_turn_started.emit()
+
+func create_image_fade(fade_container: Node2D, texture: Texture) -> void:
+	var image_fade: ImageFade = Scenes.IMAGE_PROC_FADE.instantiate()
+	fade_container.add_child(image_fade)
+	image_fade.init(texture)
 
 func end_turn_animation() -> void:
 	_reset_turn_end_queue()

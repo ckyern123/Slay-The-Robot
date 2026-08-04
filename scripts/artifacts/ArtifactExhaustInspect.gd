@@ -6,4 +6,4 @@ func connect_signals() -> void:
 	Signals.card_exhausted.connect(_on_card_exhausted)
 	
 func _on_card_exhausted(_card_data: CardData):
-b	ActionGenerator.generate_artifact_counter_increment_action(artifact_data, 1)
+	ActionGenerator.generate_artifact_counter_increment_action(artifact_data, 1)

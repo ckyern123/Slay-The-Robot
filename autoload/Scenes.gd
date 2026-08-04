@@ -33,6 +33,7 @@ var CONSUMABLE_SHOP_BUTTON: PackedScene = load("res://scenes/ui/shop/ConsumableS
 var TEXT_FADE: PackedScene = load("res://scenes/combatants/fades/TextFade.tscn")
 var ARTIFACT_FADE: PackedScene = load("res://scenes/combatants/fades/ArtifactFade.tscn")
 var IMAGE_FADE: PackedScene = load("res://scenes/combatants/fades/ImageFade.tscn")
+var IMAGE_PROC_FADE: PackedScene = load("res://scenes/combatants/fades/ImageProcFade.tscn")
 var COMBAT_EFFECT_ANIMATION: PackedScene = load("res://scenes/combatants/AnimatedCombatEffect.tscn")
 var CARD_EFFECT_ANIMATION: PackedScene = load("res://scenes/combatants/AnimatedCardEffect.tscn")
 

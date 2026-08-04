@@ -103,7 +103,8 @@ offset_bottom = 39.0
 text = "15"
 
 [node name="FadeContainer" type="Node2D" parent="Visible" unique_id=947886725]
-position = Vector2(64, -96)
+visible = false
+position = Vector2(27, 120)
 
 [node name="Block" type="Sprite2D" parent="Visible" unique_id=1378163627]
 visible = false
