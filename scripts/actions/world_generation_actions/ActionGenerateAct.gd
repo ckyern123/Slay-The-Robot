@@ -23,8 +23,8 @@ func perform_action() -> void:
 		Global.player_data.player_act = act_number
 		
 		### parameters of grid
-		var floors_per_act: int = action_interceptor_processor.get_shadowed_action_values("floors_per_act", 10)
-		var locations_per_floor: int = action_interceptor_processor.get_shadowed_action_values("locations_per_floor", 3)
+		var floors_per_act: int = action_interceptor_processor.get_shadowed_action_values("floors_per_act", 20)
+		var locations_per_floor: int = action_interceptor_processor.get_shadowed_action_values("locations_per_floor", 2)
 		var location_obfuscation_rate: float = action_interceptor_processor.get_shadowed_action_values("location_obfuscation_rate", 0) # how often locations will be obfuscated
 		var location_non_combat_event_rate: float = action_interceptor_processor.get_shadowed_action_values("location_non_combat_event_rate", 0) # how often locations will be a non combat event
 		
@@ -125,7 +125,7 @@ func perform_action() -> void:
 				var chance_array: Array = LocationData.LOCATION_TYPES.values()
 				chance_array.pop_back()
 				location.location_type = chance_array.pick_random()					
-				if k < 5:
+				if k <= 6:
 					if location.location_type == LocationData.LOCATION_TYPES.PLAINS:
 						location.icon_texture_path = "external/sprites/locations/plains.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/plains.png"
@@ -144,6 +144,27 @@ func perform_action() -> void:
 						location.location_background_texture_path = "external/sprites/backgrounds/swamp.png"
 					elif location.location_type == LocationData.LOCATION_TYPES.DESERT:
 						location.location_event_pool_object_id = act_data.act_easy_desert_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/desert.svg"
+						location.location_background_texture_path = "external/sprites/backgrounds/desert.png"
+				elif k > 6 and k < 12:
+					if location.location_type == LocationData.LOCATION_TYPES.PLAINS:
+						location.location_event_pool_object_id = act_data.act_medium_plains_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/plains.svg"
+						location.location_background_texture_path = "external/sprites/backgrounds/plains.png"
+					elif location.location_type == LocationData.LOCATION_TYPES.FOREST:
+						location.location_event_pool_object_id = act_data.act_medium_forest_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/forest.svg"
+						location.location_background_texture_path = "external/sprites/backgrounds/forest.png"
+					elif location.location_type == LocationData.LOCATION_TYPES.COAST:
+						location.icon_texture_path = "external/sprites/locations/coast.svg"
+						location.location_event_pool_object_id = act_data.act_medium_coast_event_pool_object_id
+						location.location_background_texture_path = "external/sprites/backgrounds/coast.png"
+					elif location.location_type == LocationData.LOCATION_TYPES.SWAMP:
+						location.location_event_pool_object_id = act_data.act_medium_swamp_event_pool_object_id
+						location.icon_texture_path = "external/sprites/locations/swamp.svg"
+						location.location_background_texture_path = "external/sprites/backgrounds/swamp.png"
+					elif location.location_type == LocationData.LOCATION_TYPES.DESERT:
+						location.location_event_pool_object_id = act_data.act_medium_desert_event_pool_object_id
 						location.icon_texture_path = "external/sprites/locations/desert.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/desert.png"
 				else:
@@ -219,6 +240,7 @@ func perform_action() -> void:
 		Global.player_data.location_id_to_location_data[location_id] = boss_location	# store as mapping in Global
 		# positioning and act
 		boss_location.location_act = act_number
+		boss_location.icon_texture_path = "external/sprites/locations/plains.svg"
 		boss_location.location_index = Vector2(MIDDLE_INDEX, floors_per_act)
 		location_position = BOTTOM_LEFT + (Vector2(MIDDLE_INDEX, -floors_per_act) * GRID_SPACING)
 		boss_location.location_position = location_position

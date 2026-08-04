@@ -530,29 +530,51 @@ func add_artifacts() -> void:
 	
 	Global.register_rod(artifact_check_scroll)
 	
-
-	## Enables a rest action when obtained, which grants a damage increase at the start of combat
-	var artifact_improve_explore: ArtifactData = ArtifactData.new("artifact_improve_explore")
-	artifact_improve_explore.artifact_name = "Barracks"
-	artifact_improve_explore.artifact_description = "Increases Explore by 1."
-	artifact_improve_explore.artifact_shop_description = "Increases Explore by 1."
-	#artifact_improve_explore.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
-	artifact_improve_explore.artifact_counter = 1
-	artifact_improve_explore.artifact_counter_max = 1
-	artifact_improve_explore.artifact_color_id = "color_orange"
-	artifact_improve_explore.artifact_texture_path = "external/sprites/artifacts/barracks.svg"
-	artifact_improve_explore.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	artifact_improve_explore.artifact_first_turn_actions = [{
-		Scripts.ACTION_APPLY_STATUS: {
-			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
-			"status_effect_object_id": "status_effect_damage_increase",
-			"custom_key_names": {
-					# convert artifact counter passed in from BaseArtifact, into the status charges
-				"status_charge_amount": "artifact_counter"
-			}}
-		}]
+	### Enables a rest action when obtained, which grants a damage increase at the start of combat
+	#var artifact_improve_explore: ArtifactData = ArtifactData.new("artifact_improve_explore")
+	#artifact_improve_explore.artifact_name = "Barracks"
+	#artifact_improve_explore.artifact_description = "Increases Explore by 1."
+	#artifact_improve_explore.artifact_shop_description = "Increases Explore by 1."
+	##artifact_improve_explore.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
+	#artifact_improve_explore.artifact_counter_reset_on_turn_start = 1
+	#artifact_improve_explore.artifact_counter_max = 1
+	#artifact_improve_explore.artifact_color_id = "color_orange"
+	#artifact_improve_explore.artifact_texture_path = "external/sprites/artifacts/barracks.svg"
+	#artifact_improve_explore.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	#artifact_improve_explore.artifact_first_turn_actions = [{
+		#Scripts.ACTION_APPLY_STATUS: {
+			#"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
+			#"status_effect_object_id": "status_effect_damage_increase",
+			#"custom_key_names": {
+					## convert artifact counter passed in from BaseArtifact, into the status charges
+				#"status_charge_amount": "artifact_counter"
+			#}}
+		#}]
+	#
+	#Global.register_rod(artifact_improve_explore)
 	
-	Global.register_rod(artifact_improve_explore)
+	### Enables a rest action when obtained, which grants a damage increase at the start of combat
+	#var artifact_improve_explore: ArtifactData = ArtifactData.new("artifact_improve_explore")
+	#artifact_improve_explore.artifact_name = "Barracks"
+	#artifact_improve_explore.artifact_description = "Increases Explore by 1."
+	#artifact_improve_explore.artifact_shop_description = "Increases Explore by 1."
+	##artifact_improve_explore.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
+	#artifact_improve_explore.artifact_counter_reset_on_turn_start = 1
+	#artifact_improve_explore.artifact_counter_max = 1
+	#artifact_improve_explore.artifact_color_id = "color_orange"
+	#artifact_improve_explore.artifact_texture_path = "external/sprites/artifacts/barracks.svg"
+	#artifact_improve_explore.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	#artifact_improve_explore.artifact_first_turn_actions = [{
+		#Scripts.ACTION_APPLY_STATUS: {
+			#"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
+			#"status_effect_object_id": "status_effect_damage_increase",
+			#"custom_key_names": {
+					## convert artifact counter passed in from BaseArtifact, into the status charges
+				#"status_charge_amount": "artifact_counter"
+			#}}
+		#}]
+	#
+	#Global.register_rod(artifact_improve_explore)
 
 #endregion
 
@@ -2635,7 +2657,7 @@ func add_characters() -> void:
 	character_green.character_color_id = "color_{0}".format([character_color])
 	character_green.character_starting_health = 75
 	character_green.character_starting_card_draft_card_pack_ids = ["card_pack_prismatic".format([character_color])]
-	character_green.character_starting_artifact_ids = ["artifact_fertiliser", "artifact_check_scroll"]
+	character_green.character_starting_artifact_ids = ["artifact_fertiliser", "artifact_check_scroll","artifact_improve_explore"]
 	character_green.character_starting_artifact_pack_ids = ["artifact_pack_white", "artifact_pack_{0}".format([character_color])]
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
@@ -4223,7 +4245,6 @@ func add_cards_misc() -> void:
 	card_delicacy.card_influence = 2
 	card_delicacy.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_delicacy.card_requires_target = false
-	card_delicacy.card_play_destination = HandManager.EXHAUST_PILE
 	card_delicacy.card_values = {"draw_count": 1,"energy_amount":1}
 	card_delicacy.card_play_actions = [
 		{
