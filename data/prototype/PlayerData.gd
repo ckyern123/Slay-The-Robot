@@ -15,7 +15,7 @@ class_name PlayerData
 @export var player_size: int = 0
 @export var player_room: int = 0
 @export var player_insight: int = 0
-@export var player_refresh: int = 5
+@export var player_refresh: int = 4
 @export var blight: int = 0
 
 var player_energy: int = 3 # in combat energy. Not saved.

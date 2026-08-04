@@ -11,10 +11,10 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var sprawl_label: RichTextLabel = %SprawlLabel
 @onready var room_label: RichTextLabel = %RoomLabel
 @onready var shop_refresh_label: RichTextLabel = %ShopRefreshLabel
-@onready var food_fade_container = $FoodFadeContainer
-@onready var money_fade_container = $MoneyFadeContainer
-@onready var ore_fade_container = $OreFadeContainer
-@onready var insight_fade_container = $InsightFadeContainer
+@onready var food_fade_container = %FoodFadeContainer
+@onready var money_fade_container = %MoneyFadeContainer
+@onready var ore_fade_container = %OreFadeContainer
+@onready var insight_fade_container = %InsightFadeContainer
 @onready var sprawl_fade_container = %SprawlFadeContainer
 @onready var room_fade_container = %RoomFadeContainer
 @onready var refresh_fade_container = %RefreshFadeContainer
@@ -243,10 +243,12 @@ func _on_player_refresh_changed(_delta: int = 0):
 	shop_refresh_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, refresh_texture_path, "Shop Refresh"]) % Global.player_data.player_refresh
 	if (Global.player_data.player_refresh <= 0):
 		var shop_data: ShopData = Global.get_shop_at_player_location()
+		if (shop_data == null):
+			shop_data = Global.generate_shop_at_player_location()
 		shop_data.shop_is_visited = false
 		shop_data.refresh_shop = true
 		shop_overlay.populate_shop()
-		Global.player_data.player_refresh = 5
+		Global.player_data.player_refresh = 4
 		shop_refresh_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, refresh_texture_path, "Shop Refresh"]) % Global.player_data.player_refresh
 		create_image_fade(refresh_fade_container, FileLoader.load_texture(refresh_texture_path))
 		#var current_event = Global.get_player_event_data()
@@ -300,15 +302,18 @@ func _on_combat_started(event_id: String):
 		current_event = Global.get_event_data(event_id)
 	
 	enemy_container.populate_enemies_from_event(current_event)
-	start_turn_animation()
+	if (game_start):
+		start_turn_animation()
 	
-	Global.player_data.player_energy = Global.player_data.player_energy_max
+	if (game_start):
+		Global.player_data.player_energy = Global.player_data.player_energy_max
 	set_combat_display_visibility(true)
 
 	update_combat_display()
 	
 func _on_combat_ended():
-	set_combat_display_visibility(false)
+	print("lol2")
+	#set_combat_display_visibility(false)
 	
 ## Helper method to cut down on code bloat. Used in player/enemy turn logic to short circuit
 ## the turn logic if either player or enemies are dead.
@@ -514,14 +519,12 @@ func _on_player_turn_started():
 		# if player is dead stop
 		if _end_combat_check():
 			return
-		if (game_start):
-			Signals.shop_opened.emit()
-			game_start = false
+		Signals.shop_opened.emit()
 	else:
 		Global.player_data.add_refresh(-1)
 	
 	# reset energy
-	ActionGenerator.generate_start_of_turn_energy_actions()
+
 	
 	# perform pre draw actions
 	player.update_incoming_damage_amount(true)
@@ -533,7 +536,10 @@ func _on_player_turn_started():
 		return
 	
 	# draw cards
-	ActionGenerator.generate_start_of_turn_draw_actions()
+	if (StatsHandler.turn_count > 1 or game_start):
+		ActionGenerator.generate_start_of_turn_energy_actions()
+		ActionGenerator.generate_start_of_turn_draw_actions()
+		game_start = false
 	if ActionHandler.actions_being_performed:
 		await ActionHandler.actions_ended
 	# if player is dead stop
@@ -601,7 +607,7 @@ func _on_end_turn_button_up():
 	queue_end_turn(CombatEndTurn.END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS)
 
 func _on_combat_end_button_up():
-	queue_end_turn(CombatEndTurn.END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS)
+	#queue_end_turn(CombatEndTurn.END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS)
 	end_combat()
 	
 func _on_end_turn_requested(immediacy: int):
@@ -625,6 +631,7 @@ func _reset_turn_end_queue() -> void:
 		end_turn_object = null
 
 func _on_run_started():
+	background_button.texture_normal = FileLoader.load_texture("external/sprites/base_map.jpg")
 	visible = true
 	_on_player_food_changed()
 	_on_player_ore_changed()
@@ -642,10 +649,11 @@ func _on_run_started():
 func _on_run_ended():
 	visible = false
 	_reset_turn_end_queue()
+	game_start = true
 	combat_end_button.visible = false
 
 func start_combat() -> void:
-	_reset_turn_end_queue()
+	print("lol")#_reset_turn_end_queue()
 
 ## Performs end of combat logic and signals end of combat
 func end_combat() -> void:
@@ -658,7 +666,7 @@ func end_combat() -> void:
 		if ActionHandler.actions_being_performed:
 			await ActionHandler.actions_ended
 	
-	_reset_turn_end_queue()
+	#_reset_turn_end_queue()
 	combat_end_button.visible = false
 	Signals.combat_ended.emit()
 

@@ -65,7 +65,7 @@ func visit_shop() -> void:
 		
 		### Generate Items
 		# generates shop cards
-		var generated_cards: Array[CardData] = Random.generate_rarity_weighted_card_draft(rng_shop, ShopData.GENERATED_CARD_COUNT, Random.CARD_DRAFT_TABLE_TYPES.SHOP, false)
+		var generated_cards: Array[CardData] = Random.generate_rarity_weighted_card_draft(rng_shop, ShopData.GENERATED_CARD_COUNT, Random.CARD_DRAFT_TABLE_TYPES.STANDARD, false)
 		### Generate Items
 		# generates shop cards
 		var generated_trade: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_grey",ShopData.GENERATED_TRADE_COUNT)

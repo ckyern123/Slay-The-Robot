@@ -2409,13 +2409,13 @@ func add_colors() -> void:
 	var color_green: ColorData = ColorData.new("color_green")
 	color_green.color = Color.WEB_GREEN
 	color_green.color_name = "Green"
-	color_green.color_energy_icon_texture_path = "sprites/jadeenergy.svg"
+	color_green.color_energy_icon_texture_path = "external/sprites/colors/jadeenergy.svg"
 	Global.register_rod(color_green)
 	
 	var color_gold: ColorData = ColorData.new("color_gold")
 	color_gold.color = Color.CORAL
 	color_gold.color_name = "Gold"
-	color_gold.color_energy_icon_texture_path = "sprites/cengkihenergy.svg"
+	color_gold.color_energy_icon_texture_path = "external/sprites/colors/cengkihenergy.svg"
 	Global.register_rod(color_gold)
 	
 	var color_red: ColorData = ColorData.new("color_red")
@@ -2439,13 +2439,13 @@ func add_colors() -> void:
 	var color_purple: ColorData = ColorData.new("color_purple")
 	color_purple.color = Color.REBECCA_PURPLE
 	color_purple.color_name = "Purple"
-	color_purple.color_energy_icon_texture_path = "sprites/pearlenergy.svg"
+	color_purple.color_energy_icon_texture_path = "external/sprites/colors/pearlenergy.svg"
 	Global.register_rod(color_purple)
 
 	var color_black: ColorData = ColorData.new("color_black")
 	color_black.color = Color.BLACK
 	color_black.color_name = "Black"
-	color_black.color_energy_icon_texture_path = "sprites/anisenergy.svg"
+	color_black.color_energy_icon_texture_path = "external/sprites/colors/anisenergy.svg"
 	Global.register_rod(color_black)
 	
 	var color_grey: ColorData = ColorData.new("color_grey")
@@ -6037,7 +6037,7 @@ func add_cards_green() -> void:
 	var card_mysticsower: CardData = CardData.new("card_mysticsower")
 	card_mysticsower.card_name = "Mystic Sower"
 	card_mysticsower.card_color_id = "color_{0}".format([color])
-	card_mysticsower.card_texture_path = "external/sprites/cards/jade/07_mysticsower.png"
+	#card_mysticsower.card_texture_path = "external/sprites/cards/jade/07_mysticsower.png"
 	card_mysticsower.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_mysticsower.card_description = "Create [number_of_cards] Grains. Put up to 2 cards from your discard pile to the bottom of your draw pile."
 	card_mysticsower.card_type = CardData.CARD_TYPES.SKILL
@@ -6070,14 +6070,14 @@ func add_cards_green() -> void:
 	card_shockrider.card_color_id = "color_{0}".format([color])
 	card_shockrider.card_texture_path = "external/sprites/cards/jade/08_shockrider.png"
 	card_shockrider.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_shockrider.card_description = "Explore [damage]{0}. Forge [ore_amount] Sword, Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_shockrider.card_description = "Explore [damage]{0}. Forge [ore_required] Sword, Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_shockrider.card_type = CardData.CARD_TYPES.ATTACK
 	card_shockrider.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_shockrider.card_requires_target = true
 	card_shockrider.card_energy_cost = 1
-	card_shockrider.card_values = {"damage":3,"number_of_attacks":1,"ore_amount":1, "ore_required": 1,"number_of_cards":1,"created_card_object_id":"card_sword", "min_card_amount":1,"max_card_amount":1}
+	card_shockrider.card_values = {"damage":3,"number_of_attacks":1,"ore_amount":-1, "ore_required": 1,"number_of_cards":1,"created_card_object_id":"card_sword", "min_card_amount":1,"max_card_amount":1}
 	card_shockrider.card_keyword_object_ids = ["keyword_forge","keyword_sword","keyword_wield"]
-	card_shockrider.card_upgrade_value_improvements = {"damage":1,"ore_amount":1, "ore_required": 1,"min_card_amount":1,"max_card_amount":1}
+	card_shockrider.card_upgrade_value_improvements = {"damage":1,"ore_amount":-1, "ore_required": 1,"min_card_amount":1,"max_card_amount":1}
 	card_shockrider.card_first_upgrade_property_changes = {"card_energy_cost": 1}
 	card_shockrider.card_play_actions.append(wield_action)
 	card_shockrider.card_play_actions.append(forge_action)

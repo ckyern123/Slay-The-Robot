@@ -574,8 +574,8 @@ func get_shop_at_player_location() -> ShopData:
 	if player_shop_data == null:
 		return null
 	# shop not at current location
-	if player_shop_data.shop_location_id != player_location_data.location_id:
-		return null
+	#if player_shop_data.shop_location_id != player_location_data.location_id:
+	#	return null
 	
 	return player_shop_data
 #endregion

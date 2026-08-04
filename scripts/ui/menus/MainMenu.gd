@@ -12,9 +12,9 @@ func _ready():
 	continue_button.button_up.connect(_on_continue_button_up)
 	forfeit_run_button.button_up.connect(_on_forfeit_run_button_up)
 	exit_game_button.button_up.connect(_on_exit_game_button_up)
-	
 	Signals.run_ended.connect(_on_run_ended)
-	
+	var seed_input: LineEdit = %SeedInput
+	seed_input.text = str(randi())
 	update_continue_button_visibility()
 
 func _on_continue_button_up():
@@ -35,6 +35,8 @@ func update_continue_button_visibility() -> void:
 
 func _on_run_ended():
 	# go back to tile screen on abandoned run, but not failed run
+	var seed_input: LineEdit = %SeedInput
+	seed_input.text = str(randi())
 	var has_save_file: bool = FileLoader.has_save_file()
 	visible = has_save_file
 	update_continue_button_visibility()

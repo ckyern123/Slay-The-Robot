@@ -60,7 +60,7 @@ var tooltip_left_side: bool = false # if tooltip should display to the left of t
 
 @onready var keyword_timer = $KeywordTimer
 
-const KEYWORD_HOVER_DELAY: float = 0.5
+const KEYWORD_HOVER_DELAY: float = 0.2
 var is_picked: bool = false
 
 signal card_selected(Card)

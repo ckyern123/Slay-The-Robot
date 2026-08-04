@@ -416,7 +416,7 @@ func _on_combat_started(_event_id: String):
 	
 func _on_combat_ended():
 	_unprompt_target()
-	clear_hand_cards()
+	#clear_hand_cards()
 
 func _on_run_ended():
 	_unprompt_target()

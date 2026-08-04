@@ -4,10 +4,14 @@
 [ext_resource type="Script" uid="uid://dyk3dehb3twof" path="res://scripts/combatants/StatusEffect.gd" id="2_kfjjq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_006od"]
-font_size = 12
+font_size = 20
+outline_size = 13
+outline_color = Color(0, 0, 0, 1)
 
 [node name="StatusEffect" type="TextureRect" unique_id=990115354]
-custom_minimum_size = Vector2(24, 24)
+custom_minimum_size = Vector2(40, 40)
+offset_right = 50.0
+offset_bottom = 50.0
 texture = ExtResource("1_0cyym")
 expand_mode = 1
 script = ExtResource("2_kfjjq")
@@ -15,11 +19,11 @@ script = ExtResource("2_kfjjq")
 [node name="StatusChargeLabel" type="Label" parent="." unique_id=1752183495]
 z_index = 2
 layout_mode = 0
-offset_left = 12.0
-offset_top = 14.0
-offset_right = 33.0
-offset_bottom = 31.0
-theme_override_font_sizes/font_size = 12
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 50.0
+offset_bottom = 50.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 text = "999"
 label_settings = SubResource("LabelSettings_006od")
 horizontal_alignment = 1

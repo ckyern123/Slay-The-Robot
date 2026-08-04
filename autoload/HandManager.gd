@@ -571,22 +571,22 @@ func refund_card_queue():
 #region Signals
 func _on_combat_started(_event_id: String):
 	hand._unprompt_target()
-	HandManager.cards_retained_this_turn.clear()
-	HandManager.cards_with_modified_turn_energy.clear()
-	HandManager.clear_card_queue()
 	if !first_time:
+		HandManager.cards_retained_this_turn.clear()
+		HandManager.cards_with_modified_turn_energy.clear()
+		HandManager.clear_card_queue()
 		HandManager.reset_deck()
 		first_time = true
 	
 func _on_combat_ended():
-	HandManager.cards_retained_this_turn.clear()
-	HandManager.cards_with_modified_turn_energy.clear()
-	HandManager.clear_card_queue()
+	#HandManager.cards_retained_this_turn.clear()
+	#HandManager.cards_with_modified_turn_energy.clear()
+	#HandManager.clear_card_queue()
 	
 	hand._unprompt_target()
 	
 	# remove cards in hand
-	hand.clear_hand_cards()
+	#hand.clear_hand_cards()
 
 func _on_run_ended():
 	HandManager.cards_retained_this_turn.clear()
