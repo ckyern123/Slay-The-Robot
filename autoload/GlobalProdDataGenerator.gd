@@ -355,12 +355,12 @@ func add_artifacts() -> void:
 	var artifact_fertiliser: ArtifactData = ArtifactData.new("artifact_fertiliser")
 	artifact_fertiliser.artifact_name = "Fertiliser"
 	artifact_fertiliser.artifact_texture_path = "external/sprites/artifacts/fertiliser.svg"
-	artifact_fertiliser.artifact_description = "Fertilises grains in draw pile at 5 charges. Increase by 1 charge per turn."
+	artifact_fertiliser.artifact_description = "Fertilises grains in draw pile at 3 charges. Increase by 1 charge per turn."
 	#artifact_fertiliser.artifact_shop_description = "Adds 1 Insight every 4 turns."
 	artifact_fertiliser.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BASIC
 	artifact_fertiliser.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
 	#artifact_fertiliser.artifact_script_path = "res://scripts/artifacts/ArtifactFertiliseChargeIncrease.gd"
-	artifact_fertiliser.artifact_counter_max = 5
+	artifact_fertiliser.artifact_counter_max = 3
 	artifact_fertiliser.artifact_max_counter_actions = [
 		{
 		Scripts.ACTION_PICK_CARDS: {
@@ -2657,7 +2657,7 @@ func add_characters() -> void:
 	character_green.character_color_id = "color_{0}".format([character_color])
 	character_green.character_starting_health = 75
 	character_green.character_starting_card_draft_card_pack_ids = ["card_pack_prismatic".format([character_color])]
-	character_green.character_starting_artifact_ids = ["artifact_fertiliser", "artifact_check_scroll","artifact_improve_explore"]
+	character_green.character_starting_artifact_ids = ["artifact_fertiliser", "artifact_check_scroll"]
 	character_green.character_starting_artifact_pack_ids = ["artifact_pack_white", "artifact_pack_{0}".format([character_color])]
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
@@ -5727,13 +5727,13 @@ func add_cards_black() -> void:
 	card_royalpurveyor.card_color_id = "color_{0}".format([color])
 	#card_royalpurveyor.card_texture_path = "external/sprites/cards/aniseed/12_royalpurveyor.png"
 	card_royalpurveyor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_royalpurveyor.card_description = "Retain all cards in hand. Appease/Repair [card_influence] to Faction and Craft cards. If discarded, Fertilise [artifact_charge_increase]"
+	card_royalpurveyor.card_description = "Retain all cards in hand. Appease/Repair [card_influence] to Faction and Craft cards. If discarded, Fertilise [artifact_charge_increase]."
 	card_royalpurveyor.card_keyword_object_ids = ["keyword_appease","keyword_fertilise"]
 	card_royalpurveyor.card_type = CardData.CARD_TYPES.SKILL
 	card_royalpurveyor.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_royalpurveyor.card_requires_target = false
 	card_royalpurveyor.card_energy_cost = 2
-	card_royalpurveyor.card_values = {"card_influence":2}
+	card_royalpurveyor.card_values = {"card_influence":2, "artifact_charge_increase": 3}
 	card_royalpurveyor.card_upgrade_value_improvements = {"card_influence":1}
 	card_royalpurveyor.card_play_actions = [		{
 			Scripts.ACTION_PICK_CARDS:
