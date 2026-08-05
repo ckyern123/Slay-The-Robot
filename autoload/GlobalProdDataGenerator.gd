@@ -2663,7 +2663,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_explore_green", "card_basic_explore_green","card_fishsaucemaker","card_fish","card_fish","card_fish","card_fish",
+		"card_basic_explore_green", "card_basic_explore_green"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
