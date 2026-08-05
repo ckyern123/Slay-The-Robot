@@ -420,6 +420,12 @@ func _on_card_upgraded(_card_data: CardData):
 func _on_card_transformed(_card_data: CardData):
 	if card_data == _card_data:
 		# # reset card decorators to newly transformed card and rerender if in hand
+		if (card_data.object_id == "card_rebel"):	
+			var sound_action_data: Array[Dictionary] = [{
+					Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rebel.wav"},
+				}]
+			var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+			ActionHandler.add_actions(sound_actions)
 		if _is_card_in_hand():
 			card_decorator_id_to_card_decorator = _generate_card_decorators(card_data.card_decorators)
 			update_card_display()

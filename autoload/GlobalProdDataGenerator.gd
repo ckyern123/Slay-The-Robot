@@ -145,6 +145,8 @@ var cook_action: Dictionary = {
 			"passed_action_data": [
 				{
 				Scripts.ACTION_CREATE_CARDS: {
+					"created_card_object_id":"card_delicacy",
+					"number_of_cards": 1,
 					"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 					}
 					},
@@ -242,9 +244,6 @@ var end_action_data: Array[Dictionary] = [
 					"transform_into_card_object_id": "card_rebel",
 					"pick_played_card": true
 					},
-				},
-				{
-					Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rebel.wav"},
 				},
 			]
 			}
@@ -355,12 +354,12 @@ func add_artifacts() -> void:
 	var artifact_fertiliser: ArtifactData = ArtifactData.new("artifact_fertiliser")
 	artifact_fertiliser.artifact_name = "Fertiliser"
 	artifact_fertiliser.artifact_texture_path = "external/sprites/artifacts/fertiliser.svg"
-	artifact_fertiliser.artifact_description = "Fertilises grains in draw pile at 3 charges. Increase by 1 charge per turn."
+	artifact_fertiliser.artifact_description = "Fertilises grains in draw pile at 2 charges. Increase by 1 charge per turn."
 	#artifact_fertiliser.artifact_shop_description = "Adds 1 Insight every 4 turns."
 	artifact_fertiliser.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BASIC
 	artifact_fertiliser.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
 	#artifact_fertiliser.artifact_script_path = "res://scripts/artifacts/ArtifactFertiliseChargeIncrease.gd"
-	artifact_fertiliser.artifact_counter_max = 3
+	artifact_fertiliser.artifact_counter_max = 2
 	artifact_fertiliser.artifact_max_counter_actions = [
 		{
 		Scripts.ACTION_PICK_CARDS: {
@@ -2555,6 +2554,11 @@ func add_keywords() -> void:
 	keyword_appease.keyword_text_bb_code = "Increases a Faction card's influence by 1."
 	Global.register_rod(keyword_appease)
 	
+	var keyword_repair: KeywordData = KeywordData.new("keyword_repair")
+	keyword_repair.keyword_name = "repair"
+	keyword_repair.keyword_text_bb_code = "Increases a Craft card's durability by 1 (Does not affect cards with exhaust)."
+	Global.register_rod(keyword_repair)
+	
 	var keyword_rattle: KeywordData = KeywordData.new("keyword_rattle")
 	keyword_rattle.keyword_name = "rattle"
 	keyword_rattle.keyword_text_bb_code = "Decreases a Faction card's influence by 1."
@@ -4142,14 +4146,14 @@ func add_cards_misc() -> void:
 	card_fish.card_name = "Fish"
 	card_fish.card_color_id = "color_{0}".format([color])
 	card_fish.card_texture_path = "external/sprites/status_effects/fish.svg"
-	card_fish.card_description = "Gain [food_amount]{0}. Improve by 1{0} when retained.".format([Card.FOOD_ICON_KEYWORD])
+	card_fish.card_description = "Gain [food_amount]{0}. Improve by 2{0} when retained.".format([Card.FOOD_ICON_KEYWORD])
 	card_fish.card_type = CardData.CARD_TYPES.SKILL
 	card_fish.card_energy_cost = 0
 	card_fish.card_influence = 0
 	card_fish.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_fish.card_requires_target = false
 	card_fish.card_play_destination = HandManager.EXHAUST_PILE
-	card_fish.card_values = {"food_amount": 2, "card_value_improvements": {"food_amount": 1}}
+	card_fish.card_values = {"food_amount": 2, "card_value_improvements": {"food_amount": 2}}
 	card_fish.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_FOOD:
@@ -4886,7 +4890,7 @@ func add_cards_purple() -> void:
 	card_storiedspinner.card_description = "Draw [draw_count], Explore [damage]{0}.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_storiedspinner.card_type = CardData.CARD_TYPES.ATTACK
 	card_storiedspinner.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_storiedspinner.card_requires_target = false
+	card_storiedspinner.card_requires_target = true
 	card_storiedspinner.card_energy_cost = 1
 	card_storiedspinner.card_values = {"draw_count": 1,"damage": 2,"number_of_attacks": 1}
 	card_storiedspinner.card_upgrade_value_improvements = {"draw_count": 1}
@@ -4938,20 +4942,18 @@ func add_cards_purple() -> void:
 	card_pearldiplomat.card_color_id = "color_{0}".format([color])
 	card_pearldiplomat.card_texture_path = "external/sprites/cards/pearl/06_pearldiplomat.png"
 	card_pearldiplomat.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Appease [number_of_cards] Cards in discard pile."
+	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Appease [max_card_amount] Cards in discard pile."
 	card_pearldiplomat.card_keyword_object_ids = ["keyword_spice","keyword_appease"]
 	card_pearldiplomat.card_type = CardData.CARD_TYPES.SKILL
 	card_pearldiplomat.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_pearldiplomat.card_requires_target = false
-	card_pearldiplomat.card_energy_cost = 2
-	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice",  "number_of_cards": 1}
-	card_pearldiplomat.card_upgrade_value_improvements = {"number_of_cards": 1}
-	card_pearldiplomat.card_influence = 4
+	card_pearldiplomat.card_energy_cost = 3
+	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice",  "min_card_amount": 2,"max_card_amount":2}
+	card_pearldiplomat.card_upgrade_value_improvements = {"min_card_amount": 1,"max_card_amount":1}
+	card_pearldiplomat.card_influence = 5
 	card_pearldiplomat.card_play_actions = [
 		{
 		Scripts.ACTION_PICK_CARDS: {
-		"min_card_amount": 2,
-		"max_card_amount": 2,
 		"min_cards_are_required_for_action": false,
 		"random_selection": true,
 		"card_pick_type": HandManager.DISCARD_PILE,
@@ -4964,6 +4966,9 @@ func add_cards_purple() -> void:
 			}},
 			]
 		}
+		},
+		{
+			Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
 		}
 	]
 	card_pearldiplomat.card_play_actions.append(influence_action)
@@ -5012,7 +5017,7 @@ func add_cards_purple() -> void:
 	#card_fishsaucemaker.card_texture_path = "external/sprites/cards/pearl/03_fishsaucemaker.png"
 	card_fishsaucemaker.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_fishsaucemaker.card_description = "Exhaust a Fish card in discard pile to Fertilise [artifact_charge_increase] and create a Delicacy."
-	card_fishsaucemaker.card_keyword_object_ids = ["keyword_fertilise"]
+	card_fishsaucemaker.card_keyword_object_ids = ["keyword_fertilise","keyword_delicacy"]
 	card_fishsaucemaker.card_type = CardData.CARD_TYPES.SKILL
 	card_fishsaucemaker.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_fishsaucemaker.card_requires_target = false
@@ -5725,7 +5730,7 @@ func add_cards_black() -> void:
 	#card_royalpurveyor.card_texture_path = "external/sprites/cards/aniseed/12_royalpurveyor.png"
 	card_royalpurveyor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_royalpurveyor.card_description = "Retain all cards in hand. Appease/Repair [card_influence] to Faction and Craft cards. If discarded, Fertilise [artifact_charge_increase]."
-	card_royalpurveyor.card_keyword_object_ids = ["keyword_appease","keyword_fertilise"]
+	card_royalpurveyor.card_keyword_object_ids = ["keyword_appease","keyword_repair", "keyword_fertilise"]
 	card_royalpurveyor.card_type = CardData.CARD_TYPES.SKILL
 	card_royalpurveyor.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_royalpurveyor.card_requires_target = false
@@ -5740,7 +5745,7 @@ func add_cards_black() -> void:
 			"min_cards_are_required_for_action": false,
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
-			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
+			"card_pick_text": "Choose {0} card to appease. {1} cards selected",
 			"action_data": [{Scripts.ACTION_RETAIN_CARDS:{}},
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"time_delay": 0.1,
@@ -6213,21 +6218,16 @@ func add_cards_green() -> void:
 	card_gardenmystic.card_color_id = "color_{0}".format([color])
 	#card_gardenmystic.card_texture_path = "external/sprites/cards/jade/11_gardenmystic.png"
 	card_gardenmystic.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_gardenmystic.card_description = "Create [number_of_cards] Delicacy. When discarded, Fertilise [artifact_charge_increase] instead."
+	card_gardenmystic.card_description = "Cook [number_of_cards] Delicacy. When discarded, Fertilise [artifact_charge_increase] instead."
+	card_gardenmystic.card_keyword_object_ids = ["keyword_cook", "keyword_delicacy", "keyword_fertiliser"]
 	card_gardenmystic.card_type = CardData.CARD_TYPES.SKILL
 	card_gardenmystic.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_gardenmystic.card_requires_target = false
-	card_gardenmystic.card_energy_cost = 2
-	card_gardenmystic.card_influence = 4
+	card_gardenmystic.card_energy_cost = 1
+	card_gardenmystic.card_influence = 3
 	card_gardenmystic.card_values = {"created_card_object_id":"card_delicacy","number_of_cards":1,"artifact_charge_increase":3}
 	card_gardenmystic.card_upgrade_value_improvements = {"artifact_charge_increase":2}
-	card_gardenmystic.card_play_actions = [
-		{
-		Scripts.ACTION_CREATE_CARDS:
-			{
-				"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
-			}
-		}]
+	card_gardenmystic.card_play_actions.append(cook_action)
 	card_gardenmystic.card_discard_actions = [
 		{
 			Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:
@@ -6264,7 +6264,7 @@ func add_cards_green() -> void:
 			"min_cards_are_required_for_action": false,
 			"random_selection": true,
 			"card_pick_type": HandManager.DISCARD_PILE,
-			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
+			"card_pick_text": "Choose {0} card to return. {1} cards selected",
 			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_scroll"]}}],
 			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
 		}
@@ -6279,7 +6279,7 @@ func add_cards_green() -> void:
 	card_supremerecaster.card_color_id = "color_{0}".format([color])
 	card_supremerecaster.card_texture_path = "external/sprites/cards/jade/13_supremerecaster.png"
 	card_supremerecaster.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_supremerecaster.card_description = "Weave 1, Cook 1, then Draw [draw_count]."
+	card_supremerecaster.card_description = "Weave a Scroll, Cook a Delicacy, then Draw [draw_count]."
 	card_supremerecaster.card_keyword_object_ids = ["keyword_weave","keyword_cook"]
 	card_supremerecaster.card_type = CardData.CARD_TYPES.SKILL
 	card_supremerecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6316,7 +6316,7 @@ func add_cards_green() -> void:
 			"min_cards_are_required_for_action": false,
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
-			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
+			"card_pick_text": "Choose {0} card to add. {1} cards selected",
 			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
 			"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
 			"multiplied_values": ["damage"],
@@ -6513,15 +6513,15 @@ func add_cards_gold() -> void:
 	card_flintlockschooner.card_color_id = "color_{0}".format([color])
 	card_flintlockschooner.card_texture_path = "external/sprites/cards/cengkih/06_flintlockschooner.png"
 	card_flintlockschooner.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_flintlockschooner.card_description = "Repair all Swords in discard pile by 1. Wield [min_card_amount]."
-	card_flintlockschooner.card_keyword_object_ids = ["keyword_wield"]
+	card_flintlockschooner.card_description = "Repair all Swords in discard pile by [card_influence]. Wield [min_card_amount]."
+	card_flintlockschooner.card_keyword_object_ids = ["keyword_repair", "keyword_wield"]
 	card_flintlockschooner.card_type = CardData.CARD_TYPES.SKILL
 	card_flintlockschooner.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_flintlockschooner.card_requires_target = false
 	card_flintlockschooner.card_energy_cost = 3
 	card_flintlockschooner.card_influence = 5
-	card_flintlockschooner.card_values = {"min_card_amount":2,"max_card_amount":2}
-	card_flintlockschooner.card_upgrade_value_improvements = {"min_card_amount":2,"max_card_amount":2}
+	card_flintlockschooner.card_values = {"min_card_amount":2,"max_card_amount":2,"card_influence":1}
+	card_flintlockschooner.card_upgrade_value_improvements = {"min_card_amount":2,"max_card_amount":2, "card_influence":1}
 	card_flintlockschooner.card_play_actions = [
 		{
 			Scripts.ACTION_PICK_CARDS: {
@@ -6544,7 +6544,7 @@ func add_cards_gold() -> void:
 				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
 				"validator_data":[{Scripts.VALIDATOR_CARD_ID:[{"card_object_ids":["card_sword"]}]}],
 				"action_data": [
-				{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":1}}]
+				{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{}}]
 				}
 			},
 	]
@@ -6612,7 +6612,7 @@ func add_cards_gold() -> void:
 	card_flintlockcrier.card_color_id = "color_{0}".format([color])
 	card_flintlockcrier.card_texture_path = "external/sprites/cards/cengkih/09_flintlockcrier.png"
 	card_flintlockcrier.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_flintlockcrier.card_description = "Return up to [min_card_amount] cards from your discard pile to your hand. Rattle them. You gain [energy_amount]{0}.".format([Card.ENERGY_ICON_KEYWORD])
+	card_flintlockcrier.card_description = "Return up to [max_card_amount] cards from your discard pile to your hand. Rattle them. You gain [energy_amount]{0}.".format([Card.ENERGY_ICON_KEYWORD])
 	card_flintlockcrier.card_keyword_object_ids = ["keyword_rattle"]
 	card_flintlockcrier.card_type = CardData.CARD_TYPES.SKILL
 	card_flintlockcrier.card_rarity = CardData.CARD_RARITIES.UNCOMMON

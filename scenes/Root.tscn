@@ -54,6 +54,7 @@
 [ext_resource type="Script" uid="uid://cwt4a5keff86t" path="res://scripts/ui/RunTimer.gd" id="30_plfau"]
 [ext_resource type="Texture2D" uid="uid://daoiik3k5jxvw" path="res://sprites/card-draw.svg" id="39_bf4by"]
 [ext_resource type="Texture2D" uid="uid://bxodxn727oyk4" path="res://sprites/discard.svg" id="40_r05d4"]
+[ext_resource type="Texture2D" uid="uid://kimnalvtilo3" path="res://sprites/map.svg" id="40_v75fn"]
 [ext_resource type="Script" uid="uid://cv2h3ccb6uytr" path="res://scripts/ui/Tooltips.gd" id="40_wtekq"]
 [ext_resource type="Theme" uid="uid://2714jm71pkv4" path="res://themes/keyword_tooltip_theme.tres" id="41_0h1ar"]
 [ext_resource type="Texture2D" uid="uid://bwahwdjasjwbb" path="res://sprites/exhaust.svg" id="41_v75fn"]
@@ -2157,7 +2158,7 @@ offset_bottom = 885.0
 shortcut = ExtResource("8_xur7f")
 shortcut_feedback = false
 shortcut_in_tooltip = false
-texture_normal = ExtResource("3_8ax2e")
+texture_normal = ExtResource("40_v75fn")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -2167,7 +2168,7 @@ offset_left = 21.0
 offset_top = 19.0
 offset_right = 127.0
 offset_bottom = 42.0
-text = "END COMBAT"
+text = "VENTURE FURTHER"
 
 [node name="DiscardPile" type="TextureButton" parent="RunScreen/Combat" unique_id=1125735299]
 unique_name_in_owner = true

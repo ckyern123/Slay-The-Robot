@@ -54,17 +54,14 @@ func wait() -> void:
 					"comparison_value": 0,
 					"invert_validation": false,
 					}
-				},{Scripts.VALIDATOR_CARD_RARITY:{"card_rarities_exclude":CardData.CARD_RARITIES.GENERATED}}
+				},{Scripts.VALIDATOR_CARD_RARITY:{"card_rarities_exclude":[CardData.CARD_RARITIES.GENERATED]}}
 			],
 				"action_data": [
 				{
 				Scripts.ACTION_TRANSFORM_CARDS: {
 					"transform_into_card_object_id": "card_rebel"
 					},
-				},
-				{
-					Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rebel.wav"},
-				},
+				}
 				]
 			}},{
 				Scripts.ACTION_PICK_CARDS: {
@@ -120,17 +117,14 @@ func wait() -> void:
 					"comparison_value": 0,
 					"invert_validation": false,
 					}
-				},{Scripts.VALIDATOR_CARD_RARITY:{"card_rarities_exclude":CardData.CARD_RARITIES.GENERATED}}
+				},{Scripts.VALIDATOR_CARD_RARITY:{"card_rarities_exclude":[CardData.CARD_RARITIES.GENERATED]}}
 			],
 				"action_data": [
 				{
 				Scripts.ACTION_TRANSFORM_CARDS: {
 					"transform_into_card_object_id": "card_rebel"
 					},
-				},
-				{
-					Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rebel.wav"},
-				},
+				}
 				]
 			}},{
 				Scripts.ACTION_PICK_CARDS: {
