@@ -49,7 +49,7 @@ func _ready() -> void:
 		[money_label, "[color=orange]Money[/color]\nHow much money you have", true, false, true, $TooltipPositions/MoneyTooltipPos],
 		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have", true, false, true, $TooltipPositions/OreTooltipPos],
 		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have", true, false, true, $TooltipPositions/InsightTooltipPos],
-		[sprawl_label, "[color=orange]Size[/color]\nHow much Size you have. If you have more total cards than Size, you lose Food at the end of turn equal to half the difference.", true, false, true, $TooltipPositions/SprawlTooltipPos],
+		[sprawl_label, "[color=orange]Size[/color]\nHow much Size you have. For every 3 cards that exceed Size, you rattle a card in discard pile at the end of turn.", true, false, true, $TooltipPositions/SprawlTooltipPos],
 		[room_label, "[color=orange]Insight[/color]\nHow much Room you have. Room is needed to build Artifacts.", true, false, true, $TooltipPositions/RoomTooltipPos],
 	
 		[energy, "[color=orange]Energy[/color]\nUsed to play cards", false, false, false, $TooltipPositions/EnergyTooltipPos],
