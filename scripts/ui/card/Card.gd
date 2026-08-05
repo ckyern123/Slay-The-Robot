@@ -98,7 +98,7 @@ func init(_card_data: CardData, angular_offset: float, connect_combat_signals: b
 		if (card_data.card_influence == 0):
 			card_influence_sprite.visible = false
 		else:
-			card_influence_sprite.texture = load("res://sprites/quill.svg")
+			card_influence_sprite.texture = load("res://sprites/crate.svg")
 	update_card_display()
 	
 	# initialize card decorators

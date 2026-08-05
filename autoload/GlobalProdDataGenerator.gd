@@ -2663,7 +2663,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_explore_green", "card_basic_explore_green",
+		"card_basic_explore_green", "card_basic_explore_green","card_fishsaucemaker","card_fish","card_fish","card_fish","card_fish",
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -5010,7 +5010,7 @@ func add_cards_purple() -> void:
 	card_fishsaucemaker.card_color_id = "color_{0}".format([color])
 	#card_fishsaucemaker.card_texture_path = "external/sprites/cards/pearl/03_fishsaucemaker.png"
 	card_fishsaucemaker.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_fishsaucemaker.card_description = "Exhaust a card to Fertilise [artifact_charge_increase]. If exhausted card is a Fish, create a Delicacy."
+	card_fishsaucemaker.card_description = "Exhaust a Fish card in discard pile to Fertilise [artifact_charge_increase] and create a Delicacy."
 	card_fishsaucemaker.card_keyword_object_ids = ["keyword_fertilise"]
 	card_fishsaucemaker.card_type = CardData.CARD_TYPES.SKILL
 	card_fishsaucemaker.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5025,15 +5025,11 @@ func add_cards_purple() -> void:
 		"random_selection": false,
 		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to retain. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_ID:{"card_object_ids":["card_fish"]}}],
 		"action_data": [
 			{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser"}},
 			{Scripts.ACTION_EXHAUST_CARDS:{}},
-			{
-				Scripts.ACTION_VALIDATOR:{
-					"validator_data":[{Scripts.VALIDATOR_CARD_ID:{"card_object_ids":["card_fish"]}}],
-					"passed_action_data":[{Scripts.ACTION_CREATE_CARDS:{Scripts.ACTION_DISCARD_CARDS:{}}}]
-				}
-			}]
+			{Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 		}
 	}]
 	card_fishsaucemaker.card_play_actions.append(influence_action)
@@ -5687,7 +5683,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.DRAW_PILE,
 			"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-			"validator_data":[{Scripts.VALIDATOR_CARD_ID: {"card_ids": ["card_sword"]}}],
+			"validator_data":[{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
 			"action_data": [
 				{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
 				"multiplied_values": ["damage"],
@@ -5830,7 +5826,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to wield. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_ids": ["card_sword"]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
 			"action_data": [{
 			Scripts.ACTION_PLAY_CARDS: {}},
 			{
@@ -6499,7 +6495,7 @@ func add_cards_gold() -> void:
 	card_foresttracker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_foresttracker.card_requires_target = false
 	card_foresttracker.card_energy_cost = 1
-	card_foresttracker.card_values = {"card_influence":1,"created_card_object_id":"card_grain","number_of_cards":1}
+	card_foresttracker.card_values = {"card_influence":1,"created_card_object_id":"card_grain","number_of_cards":1,"artifact_charge_increase":2}
 	card_foresttracker.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_foresttracker.card_play_actions = [
 		{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser"}},
