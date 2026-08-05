@@ -24,7 +24,7 @@ func wait() -> void:
 			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			
-			Global.player_data.add_food(Global.player_data.blight/4)
+			Global.player_data.add_food(Global.player_data.blight/7)
 			Global.player_data.blight -= 1			
 			if Global.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
@@ -87,7 +87,7 @@ func wait() -> void:
 			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			
-			Global.player_data.add_food(Global.player_data.blight/4)
+			Global.player_data.add_food(Global.player_data.blight/7)
 			Global.player_data.blight -= 1
 			if Global.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
@@ -150,7 +150,7 @@ func wait() -> void:
 			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			
-			Global.player_data.add_food(Global.player_data.blight/4)
+			Global.player_data.add_food(Global.player_data.blight/7)
 			Global.player_data.blight -= 1
 			if Global.player_data.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)

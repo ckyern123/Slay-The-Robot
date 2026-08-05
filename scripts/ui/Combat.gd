@@ -609,7 +609,7 @@ func _on_end_turn_button_up():
 func _on_combat_end_button_up():
 	#queue_end_turn(CombatEndTurn.END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS)
 	end_combat()
-	
+
 func _on_end_turn_requested(immediacy: int):
 	queue_end_turn(immediacy)
 
