@@ -94,7 +94,7 @@ func _ready():
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead: %s / blight: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10,abs(Global.player_data.blight/4)]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
 
 	# pile buttons
 	deck_button.button_up.connect(_on_deck_button_up)
@@ -223,7 +223,7 @@ func _on_player_insight_changed(_delta: int = 0):
 	if (_delta != 0):
 		create_image_fade(insight_fade_container, FileLoader.load_texture(insight_texture_path))	
 func _on_player_food_changed(_delta: int = 0):
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead %s / blight %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10,abs(Global.player_data.blight/4)]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
 	if (_delta != 0):
 		create_image_fade(food_fade_container, FileLoader.load_texture(food_texture_path))
 func _on_player_sprawl_changed(_delta: int = 0):

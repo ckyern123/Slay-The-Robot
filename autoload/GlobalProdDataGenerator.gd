@@ -5205,7 +5205,7 @@ func add_cards_purple() -> void:
 	card_mastertactician.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_mastertactician.card_requires_target = false
 	card_mastertactician.card_energy_cost = 2
-	card_mastertactician.card_values = {"created_card_object_id": "card_sword", "ore_required":1, "ore_amount":-1, "number_of_cards": 2,	"min_card_amount": 4,
+	card_mastertactician.card_values = {"created_card_object_id": "card_sword", "ore_required":2, "ore_amount":-2, "number_of_cards": 2,	"min_card_amount": 4,
 		"max_card_amount": 4,}
 	card_mastertactician.card_upgrade_value_improvements = {"number_of_cards":1, "min_card_amount": 2,
 		"max_card_amount": 2,"ore_required":1, "ore_amount":-1}
@@ -6496,7 +6496,7 @@ func add_cards_gold() -> void:
 	card_foresttracker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_foresttracker.card_requires_target = false
 	card_foresttracker.card_energy_cost = 1
-	card_foresttracker.card_values = {"card_influence":1,"created_card_object_id":"card_grain","number_of_cards":1,"artifact_charge_increase":2}
+	card_foresttracker.card_values = {"created_card_object_id":"card_grain","number_of_cards":1,"artifact_charge_increase":2}
 	card_foresttracker.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_foresttracker.card_play_actions = [
 		{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser"}},
