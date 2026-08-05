@@ -38,14 +38,32 @@ func wait() -> void:
 			# prevents further card plays but finishes the rest of the current action stack
 			HandManager.refund_card_queue()
 			HandManager.set_disable_hand(true)
+			var sprawl_count: int = Global.player_data.player_size - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
+			if (sprawl_count < 0):
+				var influence_action_data: Array[Dictionary] = [{
+				Scripts.ACTION_PICK_CARDS: {
+				"min_card_amount": abs(sprawl_count)/2,
+				"max_card_amount": abs(sprawl_count)/2,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"validator_data": [
+					{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+				],
+				"action_data": [
+				{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+					"card_influence": -1
+				}},
+				]
+			}}]
+				var influence_actions: Array = ActionGenerator.create_actions(null, null, [], influence_action_data, null)
+				ActionHandler.add_actions(influence_actions)
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
 			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			
-			var sprawl_count: int = Global.player_data.player_size - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
-			if (sprawl_count < 0):
-				Global.player_data.add_food(sprawl_count/2)
 			Global.player_data.add_food(Global.player_data.blight/4)
 			Global.player_data.blight -= 1
 			if Global.player_food <= 0:
@@ -57,14 +75,32 @@ func wait() -> void:
 			# default
 			# continuously wait for all card plays to finish before ending the player's turn
 			HandManager.set_disable_hand(true)
+			var sprawl_count: int = Global.player_data.player_size - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
+			if (sprawl_count < 0):
+				var influence_action_data: Array[Dictionary] = [{
+				Scripts.ACTION_PICK_CARDS: {
+				"min_card_amount": abs(sprawl_count)/2,
+				"max_card_amount": abs(sprawl_count)/2,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"validator_data": [
+					{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+				],
+				"action_data": [
+				{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+					"card_influence": -1
+				}},
+				]
+			}}]
+				var influence_actions: Array = ActionGenerator.create_actions(null, null, [], influence_action_data, null)
+				ActionHandler.add_actions(influence_actions)
 			while len(HandManager.card_play_queue) > 0 or ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
 			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			
-			var sprawl_count: int = Global.player_data.player_size - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
-			if (sprawl_count < 0):
-				Global.player_data.add_food(sprawl_count/2)
 			Global.player_data.add_food(Global.player_data.blight/4)
 			Global.player_data.blight -= 1
 			if Global.player_data.player_food <= 0:

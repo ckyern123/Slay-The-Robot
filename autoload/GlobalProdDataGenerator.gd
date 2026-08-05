@@ -515,6 +515,7 @@ func add_artifacts() -> void:
 	artifact_check_scroll.artifact_texture_path = "external/sprites/artifacts/artifact_red.png"
 	artifact_check_scroll.artifact_script_path = "res://scripts/artifacts/ArtifactCheckScroll.gd"
 	artifact_check_scroll.artifact_counter_max = 3
+	artifact_check_scroll.artifact_turn_end_actions = []
 	artifact_check_scroll.artifact_counter_wraparound = true
 	artifact_check_scroll.artifact_max_counter_actions = [{Scripts.ACTION_PICK_CARDS:
 		{
