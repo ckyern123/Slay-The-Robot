@@ -20,7 +20,7 @@ func perform_action():
 					parent_card_data = card_data.parent_card
 			
 			# iterate over the card's values, adding to them where necessary
-			var i: int = 1 + (HandManager.player_exhaust.size()/5)
+			var i: int = 1 + (HandManager.player_exhaust.size()/7)
 			var card_value_improvements: Dictionary[String, int] = {"ore_amount":i,"money_amount":i}
 			#card_value_improvements.assign(action_interceptor_processor.get_shadowed_action_values("card_value_improvements", {})) # assign to force typed dict
 			

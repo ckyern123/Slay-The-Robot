@@ -102,7 +102,7 @@ var inspect_action: Dictionary = {
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure","card_spice"]}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure"]}}],
 				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT:{
 							"modify_parent_card": false,
 				}}]}
@@ -2478,7 +2478,7 @@ func add_keywords() -> void:
 	
 	var keyword_inspect: KeywordData = KeywordData.new("keyword_inspect")
 	keyword_inspect.keyword_name = "Inspect"
-	keyword_inspect.keyword_text_bb_code = "Improve values of inspected card by 1. This increases by 1 for 5 cards in exhaust, and by 2 for 15 cards in exhaust."
+	keyword_inspect.keyword_text_bb_code = "Improve values of X random cards in discard pile by 1. Only Rocks and Treasures can be Inspected. This increases by 1 for every 7 cards in exhaust."
 	Global.register_rod(keyword_inspect)
 
 	var keyword_fertilise: KeywordData = KeywordData.new("keyword_fertilise")
@@ -2635,7 +2635,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_explore_green", "card_basic_explore_green","card_reveredcraftsworker","card_rock","card_rock"
+		"card_basic_explore_green", "card_basic_explore_green"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -5132,11 +5132,7 @@ func add_cards_purple() -> void:
 	card_pearlseer.card_values = {"draw_count": 2, "money_amount": 1}
 	card_pearlseer.card_upgrade_value_improvements = {"draw_count": 1}
 	card_pearlseer.card_influence = 5
-	card_pearlseer.card_play_actions = [
-		{
-		Scripts.ACTION_DRAW_GENERATOR: {}
-		},
-		{
+	card_pearlseer.card_play_actions = [		{
 		Scripts.ACTION_PICK_CARDS:
 		{
 			"min_card_amount": 99,
@@ -5146,14 +5142,16 @@ func add_cards_purple() -> void:
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 			"validator_data": [{
-				Scripts.VALIDATOR_CARD_RARITY: {Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.GENERATED]}}
+				Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.GENERATED]}
 			}],
 			"action_data": [
 			{Scripts.ACTION_ADD_MONEY: {}
 			}
 			]
-		}}
-	]
+		}},
+		{
+		Scripts.ACTION_DRAW_GENERATOR: {}
+		}]
 	card_pearlseer.card_play_actions.append(influence_action)
 	card_pearlseer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlseer)
@@ -5445,7 +5443,7 @@ func add_cards_black() -> void:
 		{Scripts.ACTION_PICK_CARDS:{
 			"min_cards_are_required_for_action": true,
 			"random_selection": false,
-			"card_pick_type": HandManager.DISCARD_PILE,
+			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} cards to discard. {1} cards selected",
 			"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 	}}]
@@ -6079,7 +6077,7 @@ func add_cards_green() -> void:
 	card_everymanleader.card_color_id = "color_{0}".format([color])
 	card_everymanleader.card_texture_path = "external/sprites/cards/jade/09_everymanleader.png"
 	card_everymanleader.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_everymanleader.card_description = "Appease twice up to [min_card_amount] cards in discard pile. Return them to your hand."
+	card_everymanleader.card_description = "Appease twice up to [max_card_amount] cards in discard pile. Return them to your hand."
 	card_everymanleader.card_keyword_object_ids = ["keyword_appease"]
 	card_everymanleader.card_type = CardData.CARD_TYPES.SKILL
 	card_everymanleader.card_rarity = CardData.CARD_RARITIES.UNCOMMON

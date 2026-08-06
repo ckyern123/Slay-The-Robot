@@ -1780,7 +1780,7 @@ stretch_mode = 0
 
 [node name="Background2" type="ColorRect" parent="RunScreen/Combat" unique_id=1118416378]
 layout_mode = 0
-offset_right = 1915.0
+offset_right = 1921.0
 offset_bottom = 70.0
 color = Color(0.135517, 0.124494, 0.146491, 1)
 
