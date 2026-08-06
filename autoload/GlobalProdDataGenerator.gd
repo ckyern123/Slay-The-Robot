@@ -425,7 +425,7 @@ func add_artifacts() -> void:
 	#artifact_energy_every_four_turns.artifact_counter_wraparound = true
 	#artifact_energy_every_four_turns.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
 	#artifact_energy_every_four_turns.artifact_counter_max = 4
-	#artifact_energy_every_four_turns.artifact_max_counter_actions = [{Scripts.ACTION_ADD_ARTIFACT_ENERGY: {"energy_amount": 1}}]
+	#artifact_energy_every_four_turns.artifact_maxa_counter_actions = [{Scripts.ACTION_ADD_ARTIFACT_ENERGY: {"energy_amount": 1}}]
 	#
 	#Global.register_rod(artifact_energy_every_four_turns)
 	#
@@ -554,27 +554,26 @@ func add_artifacts() -> void:
 	#Global.register_rod(artifact_improve_explore)
 	
 	### Enables a rest action when obtained, which grants a damage increase at the start of combat
-	#var artifact_improve_explore: ArtifactData = ArtifactData.new("artifact_improve_explore")
-	#artifact_improve_explore.artifact_name = "Barracks"
-	#artifact_improve_explore.artifact_description = "Increases Explore by 1."
-	#artifact_improve_explore.artifact_shop_description = "Increases Explore by 1."
-	##artifact_improve_explore.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
-	#artifact_improve_explore.artifact_counter_reset_on_turn_start = 1
-	#artifact_improve_explore.artifact_counter_max = 1
-	#artifact_improve_explore.artifact_color_id = "color_orange"
-	#artifact_improve_explore.artifact_texture_path = "external/sprites/artifacts/barracks.svg"
-	#artifact_improve_explore.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	#artifact_improve_explore.artifact_first_turn_actions = [{
-		#Scripts.ACTION_APPLY_STATUS: {
-			#"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
-			#"status_effect_object_id": "status_effect_damage_increase",
-			#"custom_key_names": {
-					## convert artifact counter passed in from BaseArtifact, into the status charges
-				#"status_charge_amount": "artifact_counter"
-			#}}
-		#}]
-	#
-	#Global.register_rod(artifact_improve_explore)
+	var artifact_improve_explore: ArtifactData = ArtifactData.new("artifact_improve_explore")
+	artifact_improve_explore.artifact_name = "Barracks"
+	artifact_improve_explore.artifact_description = "Increases Explore by 1."
+	artifact_improve_explore.artifact_shop_description = "Increases Explore by 1."
+	#artifact_improve_explore.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
+	artifact_improve_explore.artifact_counter_reset_on_turn_start = 1
+	artifact_improve_explore.artifact_counter_max = 1
+	artifact_improve_explore.artifact_color_id = "color_orange"
+	artifact_improve_explore.artifact_texture_path = "external/sprites/artifacts/barracks.svg"
+	artifact_improve_explore.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_improve_explore.artifact_add_actions = [{
+		Scripts.ACTION_APPLY_STATUS: {
+			"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
+			"status_effect_object_id": "status_effect_damage_increase",
+			"custom_key_names": {
+					# convert artifact counter passed in from BaseArtifact, into the status charges
+			}}
+		}]
+	
+	Global.register_rod(artifact_improve_explore)
 
 #endregion
 
@@ -4978,7 +4977,7 @@ func add_cards_purple() -> void:
 	var card_pearlregaler: CardData = CardData.new("card_pearlregaler")
 	card_pearlregaler.card_name = "Pearl Regaler"
 	card_pearlregaler.card_color_id = "color_{0}".format([color])
-	card_pearlregaler.card_texture_path = "external/sprites/cards/pearl/07_pearlregalerpng"
+	card_pearlregaler.card_texture_path = "external/sprites/cards/pearl/07_pearlregaler.png"
 	card_pearlregaler.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlregaler.card_description = "Weave [insight_required] Scroll(s). Return up to 1 card to your hand."
 	card_pearlregaler.card_keyword_object_ids = ["keyword_weave","keyword_scroll"]
@@ -5085,19 +5084,16 @@ func add_cards_purple() -> void:
 	card_pearlscribe.card_color_id = "color_{0}".format([color])
 	card_pearlscribe.card_texture_path = "external/sprites/cards/pearl/09_pearlscribe"
 	card_pearlscribe.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearlscribe.card_description = "If you have draw pile 20 or more, gain [insight_amount]{0}. Weave 1 Scroll.".format([Card.INSIGHT_ICON_KEYWORD])
+	card_pearlscribe.card_description = "If you have draw pile 20 or more, gain 2{0}. Weave [number_of_cards] Scroll(s).".format([Card.INSIGHT_ICON_KEYWORD])
 	card_pearlscribe.card_keyword_object_ids = ["keyword_weave","keyword_scroll"]
 	card_pearlscribe.card_type = CardData.CARD_TYPES.SKILL
 	card_pearlscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_pearlscribe.card_requires_target = false
 	card_pearlscribe.card_energy_cost = 1
-	card_pearlscribe.card_values = {"card_influence": 1, "insight_amount": 2,"created_card_object_id":"card_scroll","number_of_cards":1}
-	card_pearlscribe.card_upgrade_value_improvements = {"insight_amount": 1}
+	card_pearlscribe.card_values = {"insight_required":1, "insight_amount":-1,"created_card_object_id":"card_scroll","number_of_cards":1}
+	card_pearlscribe.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_pearlscribe.card_influence = 3
-	var adjust_weave_action: Dictionary = weave_action
-	adjust_weave_action["insight_amount"] = -1
-	adjust_weave_action["insight_required"] = 1
-	card_pearlscribe.card_play_actions.append(adjust_weave_action)
+	card_pearlscribe.card_play_actions.append(weave_action)
 	card_pearlscribe.card_play_actions.append({
 		Scripts.ACTION_VALIDATOR:
 			{
@@ -5105,7 +5101,7 @@ func add_cards_purple() -> void:
 			{Scripts.VALIDATOR_PILE_SIZE: {"card_pick_type": HandManager.DRAW_PILE, "operator":">=","comparison_value":30}}
 			],
 			"action_data": [
-			{Scripts.ACTION_ADD_INSIGHT: {
+			{Scripts.ACTION_ADD_INSIGHT: {"insight_amount":2
 			}},
 			]
 			}
@@ -6865,7 +6861,14 @@ func add_card_packs() -> void:
 	card_pack_grey.exclude_non_standard_rarities = false
 	card_pack_grey.exclude_non_standard_types = false
 	Global.register_rod(card_pack_grey)
-	
+
+	var card_pack_blue: CardPackData = CardPackData.new("card_pack_blue")
+	card_pack_blue.card_pack_color_id = "color_blue"
+	card_pack_blue.exclude_non_standard_rarities = false
+	card_pack_blue.exclude_non_standard_types = false
+	card_pack_blue.card_pack_displays_in_codex = true
+	Global.register_rod(card_pack_blue)
+		
 	var card_pack_black: CardPackData = CardPackData.new("card_pack_black")
 	card_pack_black.card_pack_color_id = "color_black"
 	card_pack_black.card_pack_displays_in_codex = true
