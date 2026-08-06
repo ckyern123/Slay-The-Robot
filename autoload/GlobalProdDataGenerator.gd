@@ -489,7 +489,7 @@ func add_artifacts() -> void:
 			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
 			"pick_draft_cards": false,
 			"draft_from_card_pool": true,
-			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
 			"validator_data": [],
 			# use same rng as player drafting so it counts as draft
 			"rng_name": "rng_card_drafting",
@@ -4575,6 +4575,7 @@ func add_cards_trade() -> void:
 	card_rejuvenating_tome.card_texture_path = "external/sprites/status_effects/book.svg"
 	card_rejuvenating_tome.card_description = "Draw [draw_count], gain [energy_amount]{0}.".format([Card.ENERGY_ICON_KEYWORD])
 	card_rejuvenating_tome.card_type = CardData.CARD_TYPES.SKILL
+	card_rejuvenating_tome.card_is_retained = true
 	card_rejuvenating_tome.card_energy_cost = 0
 	card_rejuvenating_tome.card_influence = 0
 	card_rejuvenating_tome.card_rarity = CardData.CARD_RARITIES.GENERATED
@@ -4594,6 +4595,7 @@ func add_cards_trade() -> void:
 	card_food_manual.card_energy_cost = 0
 	card_food_manual.card_influence = 0
 	card_food_manual.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_food_manual.card_is_retained = true
 	card_food_manual.card_requires_target = false
 	card_food_manual.card_values = {"status_charge_amount": 1}
 	card_food_manual.card_play_actions = [{
@@ -4624,6 +4626,7 @@ func add_cards_trade() -> void:
 	card_preservation_pamphlet.card_keyword_object_ids = ["keyword_retain"]
 	card_preservation_pamphlet.card_type = CardData.CARD_TYPES.SKILL
 	card_preservation_pamphlet.card_energy_cost = 0
+	card_preservation_pamphlet.card_is_retained = true
 	card_preservation_pamphlet.card_influence = 0
 	card_preservation_pamphlet.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_preservation_pamphlet.card_requires_target = false
@@ -4662,6 +4665,7 @@ func add_cards_trade() -> void:
 	card_exploration_tome.card_texture_path = "external/sprites/status_effects/book.svg"
 	card_exploration_tome.card_description = "Increases all {0} values by [status_charge_amount] for the turn.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_exploration_tome.card_type = CardData.CARD_TYPES.SKILL
+	card_exploration_tome.card_is_retained = true
 	card_exploration_tome.card_influence = 0
 	card_exploration_tome.card_energy_cost = 0
 	card_exploration_tome.card_rarity = CardData.CARD_RARITIES.GENERATED
