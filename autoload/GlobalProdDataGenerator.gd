@@ -103,40 +103,9 @@ var inspect_action: Dictionary = {
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure","card_spice"]}}],
-				"action_data": [{
-				Scripts.ACTION_VALIDATOR:
-				{
-				"validator_data":
-					[{Scripts.VALIDATOR_PILE_SIZE:
-						{"card_pick_type":HandManager.EXHAUST_PILE,
-						"operator":">=",
-						"comparison_value": 5}}],
-				"passed_action_data":
-					[{
-						Scripts.ACTION_IMPROVE_CARD_VALUES: {
-						"card_value_improvements":{"ore_amount":1,"money_amount":1},
-						"time_delay": 0.1,
-						"modify_parent_card": false,
-						}},
-						{
-						Scripts.ACTION_VALIDATOR:
-						{
-						"validator_data":
-							[{Scripts.VALIDATOR_PILE_SIZE:
-							{"card_pick_type":HandManager.EXHAUST_PILE,
-							"operator":">=",
-							"comparison_value": 15}}],
-						"passed_action_data":
-							[{
-							Scripts.ACTION_IMPROVE_CARD_VALUES: {
-							"card_value_improvements":{"ore_amount":2,"money_amount":2},
-							"time_delay": 0.1,
+				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT:{
 							"modify_parent_card": false,
-						}}],
-						}
-					}]
-				}
-		}]}
+				}}]}
 		}
 
 var cook_action: Dictionary = {
@@ -415,21 +384,20 @@ func add_artifacts() -> void:
 	#
 	#Global.register_rod(artifact_draw_on_kill)
 	#
-	#var artifact_energy_every_four_turns: ArtifactData = ArtifactData.new("artifact_energy_every_four_turns")
-	#artifact_energy_every_four_turns.artifact_name = "Artifact Every Few Turns"
-	#artifact_energy_every_four_turns.artifact_description = "Gain %s energy every 4 turns. (Gain 1 more energy per 8 insight.)"
-	#artifact_energy_every_four_turns.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
-	#artifact_energy_every_four_turns.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	#artifact_energy_every_four_turns.artifact_color_id = "color_white"
-	#artifact_energy_every_four_turns.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
-	#artifact_energy_every_four_turns.artifact_counter_wraparound = true
-	#artifact_energy_every_four_turns.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
-	#artifact_energy_every_four_turns.artifact_counter_max = 4
-	#artifact_energy_every_four_turns.artifact_maxa_counter_actions = [{Scripts.ACTION_ADD_ARTIFACT_ENERGY: {"energy_amount": 1}}]
-	#
-	#Global.register_rod(artifact_energy_every_four_turns)
-	#
-		#
+	var artifact_energy_every_four_turns: ArtifactData = ArtifactData.new("artifact_energy_every_four_turns")
+	artifact_energy_every_four_turns.artifact_name = "Planner's Office"
+	artifact_energy_every_four_turns.artifact_description = "Gain 1 energy every 4 turns."
+	artifact_energy_every_four_turns.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
+	artifact_energy_every_four_turns.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_energy_every_four_turns.artifact_color_id = "color_white"
+	artifact_energy_every_four_turns.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
+	artifact_energy_every_four_turns.artifact_counter_wraparound = true
+	artifact_energy_every_four_turns.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
+	artifact_energy_every_four_turns.artifact_counter_max = 4
+	artifact_energy_every_four_turns.artifact_max_counter_actions = [{Scripts.ACTION_ADD_ARTIFACT_ENERGY: {"energy_amount": 1}}]
+	
+	Global.register_rod(artifact_energy_every_four_turns)
+	
 	var artifact_inspect_on_exhaust: ArtifactData = ArtifactData.new("artifact_inspect_on_exhaust")
 	artifact_inspect_on_exhaust.artifact_name = "Inspectorate"
 	artifact_inspect_on_exhaust.artifact_texture_path = "external/sprites/artifacts/inspectorate.svg"
@@ -2667,7 +2635,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_explore_green", "card_basic_explore_green"
+		"card_basic_explore_green", "card_basic_explore_green","card_reveredcraftsworker","card_rock","card_rock"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -4947,7 +4915,7 @@ func add_cards_purple() -> void:
 	card_pearldiplomat.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_pearldiplomat.card_requires_target = false
 	card_pearldiplomat.card_energy_cost = 3
-	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice",  "min_card_amount": 2,"max_card_amount":2}
+	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice",  "min_card_amount": 2,"max_card_amount":2, "number_of_cards":1}
 	card_pearldiplomat.card_upgrade_value_improvements = {"min_card_amount": 1,"max_card_amount":1}
 	card_pearldiplomat.card_influence = 5
 	card_pearldiplomat.card_play_actions = [
@@ -5998,6 +5966,7 @@ func add_cards_green() -> void:
 	card_greeninformant.card_values = {"number_of_cards":1,"draw_count": 1,"insight_required":1,"insight_amount":-1}
 	card_greeninformant.card_upgrade_value_improvements = {"draw_count": 1}
 	card_greeninformant.card_play_actions.append(weave_action)
+	card_greeninformant.card_play_actions.append({Scripts.ACTION_DRAW_GENERATOR:{}})
 	card_greeninformant.card_play_actions.append(influence_action)
 	card_greeninformant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_greeninformant)
@@ -6329,7 +6298,7 @@ func add_cards_green() -> void:
 	var card_solverofriddles: CardData = CardData.new("card_solverofriddles")
 	card_solverofriddles.card_name = "Solver of Riddles"
 	card_solverofriddles.card_color_id = "color_{0}".format([color])
-	card_solverofriddles.card_texture_path = "external/sprites/cards/cengkih/15_solverofriddles.png"
+	card_solverofriddles.card_texture_path = "external/sprites/cards/jade/15_solverofriddles.png"
 	card_solverofriddles.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_solverofriddles.card_description = "Exhaust 1 Scroll in hand to gain 2{0}, 2{1}, 2{2}, 2{3}".format([Card.FOOD_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
 	card_solverofriddles.card_type = CardData.CARD_TYPES.SKILL
