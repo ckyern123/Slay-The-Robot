@@ -484,7 +484,7 @@ func add_artifacts() -> void:
 	artifact_check_scroll.artifact_counter_max = 3
 	artifact_check_scroll.artifact_turn_end_actions = []
 	artifact_check_scroll.artifact_counter_wraparound = true
-	artifact_check_scroll.artifact_max_counter_actions = [{Scripts.ACTION_PICK_CARDS:
+	artifact_check_scroll.artifact_max_counter_actions = [{Scripts.ACTION_ADD_BOOKS:{"books_amount":1}},{Scripts.ACTION_PICK_CARDS:
 		{
 			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
 			"pick_draft_cards": false,
@@ -2634,8 +2634,8 @@ func add_characters() -> void:
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_explore_green", "card_basic_explore_green"
+		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green",
+		"card_basic_explore_green", "card_basic_explore_green", "card_greeninformant", "card_recklessenvoy"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -4082,6 +4082,45 @@ func add_card_basics() -> void:
 		card_basic_ore.card_play_actions.append(influence_action)
 		card_basic_ore.card_end_of_turn_actions = end_action_data
 		Global.register_rod(card_basic_ore)
+
+		# Basic block card
+		var card_basic_money: CardData = CardData.new("card_basic_money_{0}".format([colors[i]]))
+		card_basic_money.card_name = "Basic money"
+		card_basic_money.card_color_id = "color_{0}".format([colors[i]])
+		card_basic_money.card_description = "Gain [money_amount]{0}".format([Card.MONEY_ICON_KEYWORD])
+		card_basic_money.card_texture_path = "external/sprites/cards/basic/06_tradingnovice.png"
+		card_basic_money.texture_bg_path = "external/sprites/cards/frames/basicframe.png"
+		card_basic_money.card_type = CardData.CARD_TYPES.SKILL
+		card_basic_money.card_rarity = CardData.CARD_RARITIES.BASIC
+		card_basic_money.card_requires_target = false
+		card_basic_money.card_keyword_object_ids = ["keyword_money"]
+		card_basic_money.card_values = {"money_amount": 1}
+		card_basic_money.card_upgrade_value_improvements = {"money_amount": 1}
+		card_basic_money.card_play_actions = [{
+		Scripts.ACTION_ADD_MONEY: {}
+		}]
+		card_basic_money.card_play_actions.append(influence_action)
+		card_basic_money.card_end_of_turn_actions = end_action_data
+		Global.register_rod(card_basic_money)
+
+
+		# Basic block card
+		var card_basic_weave: CardData = CardData.new("card_basic_weave_{0}".format([colors[i]]))
+		card_basic_weave.card_name = "Basic Weave"
+		card_basic_weave.card_color_id = "color_{0}".format([colors[i]])
+		card_basic_weave.card_description = "Weave [insight_required]."
+		card_basic_weave.card_texture_path = "external/sprites/cards/basic/06_tradingnovice.png"
+		card_basic_weave.texture_bg_path = "external/sprites/cards/frames/basicframe.png"
+		card_basic_weave.card_type = CardData.CARD_TYPES.SKILL
+		card_basic_weave.card_rarity = CardData.CARD_RARITIES.BASIC
+		card_basic_weave.card_requires_target = false
+		card_basic_weave.card_keyword_object_ids = ["keyword_weave"]
+		card_basic_weave.card_values = {"insight_amount": -1,"insight_required": 1,"number_of_cards": 1}
+		card_basic_weave.card_upgrade_value_improvements = {"insight_amount":-1,"insight_required":1,"number_of_cards":1 }
+		card_basic_weave.card_play_actions.append(weave_action)
+		card_basic_weave.card_play_actions.append(influence_action)
+		card_basic_weave.card_end_of_turn_actions = end_action_data
+		Global.register_rod(card_basic_weave)
 		
 				# Basic attack card
 		var card_basic_explore: CardData = CardData.new("card_basic_explore_{0}".format([colors[i]]))
@@ -4190,14 +4229,14 @@ func add_cards_misc() -> void:
 	card_scroll.card_name = "Scroll"
 	card_scroll.card_color_id = "color_{0}".format([color])
 	card_scroll.card_texture_path = "external/sprites/status_effects/insight.svg"
-	card_scroll.card_description = "Draw a card. For every 3rd Scroll played, draft a Book."
+	card_scroll.card_description = "Draw 3 cards. For every 3rd Scroll played, draft a Book."
 	card_scroll.card_type = CardData.CARD_TYPES.SKILL
 	card_scroll.card_energy_cost = 0
 	card_scroll.card_influence = 0
 	card_scroll.card_rarity = CardData.CARD_RARITIES.GENERATED
-	card_scroll.card_requires_target = true
+	card_scroll.card_requires_target = false
 	card_scroll.card_play_destination = HandManager.EXHAUST_PILE
-	card_scroll.card_values = {"draw_count": 1}
+	card_scroll.card_values = {"draw_count": 3}
 	card_scroll.card_play_actions = [
 		{
 			Scripts.ACTION_DRAW_GENERATOR:
@@ -5965,8 +6004,10 @@ func add_cards_green() -> void:
 	card_greeninformant.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_greeninformant.card_requires_target = false
 	card_greeninformant.card_energy_cost = 1
+	card_greeninformant.card_influence = 7
 	card_greeninformant.card_values = {"number_of_cards":1,"draw_count": 1,"insight_required":1,"insight_amount":-1}
 	card_greeninformant.card_upgrade_value_improvements = {"draw_count": 1}
+	card_greeninformant.card_play_validators = [{Scripts.VALIDATOR_INSIGHT:{}}]
 	card_greeninformant.card_play_actions.append(weave_action)
 	card_greeninformant.card_play_actions.append({Scripts.ACTION_DRAW_GENERATOR:{}})
 	card_greeninformant.card_play_actions.append(influence_action)

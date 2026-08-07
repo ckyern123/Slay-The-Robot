@@ -9,9 +9,10 @@ class_name PlayerData
 @export var player_health_max: int = 50
 
 @export var player_money: int = 0
+@export var player_books: int = 0
 @export var player_food: int = 0
 @export var player_food_max: int = 0
-@export var player_ore: int = 3
+@export var player_ore: int = 0
 @export var player_size: int = 0
 @export var player_room: int = 0
 @export var player_insight: int = 0
@@ -255,6 +256,14 @@ func add_insight(amount: int) -> void:
 	player_insight = max(player_insight + amount, 0)
 	var delta: int = player_insight - old_player_insight_amount
 	Signals.player_insight_changed.emit(delta)
+	
+## Adds or subtracts insight from the player
+## If goes into negative amounts, the proper delta will be calculated 
+func add_books(amount: int) -> void:
+	var old_player_books_amount: int = player_money
+	player_books = max(player_books + amount, 0)
+	var delta: int = player_books - old_player_books_amount
+	Signals.player_books_changed.emit(delta)
 	
 		## Adds or subtracts money from the player
 ## If goes into negative amounts, the proper delta will be calculated 

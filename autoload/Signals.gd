@@ -88,6 +88,7 @@ signal player_ore_changed(ore_delta: int)
 signal player_sprawl_changed(influence_delta: int)
 signal player_room_changed(influence_delta: int)
 signal player_insight_changed(insight_delta: int)
+signal player_books_changed(insight_delta: int)
 
 signal player_artifacts_changed # used for updating the ui
 signal player_artifact_added(artifact_data: ArtifactData)

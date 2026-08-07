@@ -155,7 +155,7 @@ func wait() -> void:
 			if Global.player_data.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
 			var deck_total = (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
-			if deck_total >= 100:
+			if deck_total >= 60 and Global.player_data.get_player_artifacts().size() >= 17 and Global.player_data.player_books >= 5:
 				Global.end_run(Global.RUN_ENDS.VICTORY)
 			end_turn()
 
