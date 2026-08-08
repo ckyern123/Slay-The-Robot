@@ -46,9 +46,9 @@ func _ready() -> void:
 		[deck_button, "[color=orange]Deck[/color]\nList of all cards currently owned. Saved between combats", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		
 		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose. /Overhead: Each turn, you lose Food equal to total cards/10)", true, false, true, $TooltipPositions/FoodTooltipPos],
-		[money_label, "[color=orange]Money[/color]\nHow much money you have", true, false, true, $TooltipPositions/MoneyTooltipPos],
-		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have", true, false, true, $TooltipPositions/OreTooltipPos],
-		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have", true, false, true, $TooltipPositions/InsightTooltipPos],
+		[money_label, "[color=orange]Money[/color]\nHow much money you have. Money is used to purchase cards and part of trade orders.", true, false, true, $TooltipPositions/MoneyTooltipPos],
+		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have. Ore is used to forge things and build Artifacts.", true, false, true, $TooltipPositions/OreTooltipPos],
+		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have. Insight is used to weave and cook things.", true, false, true, $TooltipPositions/InsightTooltipPos],
 		[sprawl_label, "[color=orange]Size[/color]\nHow much Size you have. For every 3 cards that exceed Size, you rattle a card in discard pile at the end of turn.", true, false, true, $TooltipPositions/SprawlTooltipPos],
 		[room_label, "[color=orange]Insight[/color]\nHow much Room you have. Room is needed to build Artifacts.", true, false, true, $TooltipPositions/RoomTooltipPos],
 	

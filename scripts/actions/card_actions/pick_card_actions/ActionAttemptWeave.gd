@@ -11,7 +11,7 @@ func perform_action():
 		var number_of_cards: int = action_interceptor_processor.get_shadowed_action_values("number_of_cards", 1)
 		var insight_required: int = action_interceptor_processor.get_shadowed_action_values("insight_required", 1)
 		var difference: int = Global.player_data.player_insight - insight_required
-		if (difference < 1):
+		if (difference < 0):
 			number_of_cards += difference
 			if (number_of_cards > 0):
 				Global.player_data.player_insight -= number_of_cards

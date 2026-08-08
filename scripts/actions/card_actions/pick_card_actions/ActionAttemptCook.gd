@@ -9,14 +9,18 @@ func perform_action():
 	for action_interceptor_processor in action_interceptor_processors:
 		var created_card_object_id: String = action_interceptor_processor.get_shadowed_action_values("created_card_object_id", "")
 		var number_of_cards: int = action_interceptor_processor.get_shadowed_action_values("number_of_cards", 1)
-		var ore_required: int = action_interceptor_processor.get_shadowed_action_values("ore_required", 1)
-		var difference: int = Global.player_data.player_ore - ore_required
-		if (difference < 0):
-			number_of_cards += difference
-			if (number_of_cards) > 0:
-				Global.player_data.player_ore -= number_of_cards
+		var insight_required: int = action_interceptor_processor.get_shadowed_action_values("insight_required", 1)
+		var food_required: int = action_interceptor_processor.get_shadowed_action_values("food_required", 1)
+		var insight_dif: int = Global.player_data.player_insight - insight_required
+		var food_dif: int = Global.player_data.player_food - food_required
+		if (insight_dif < 0 or food_dif < 0):
+			number_of_cards += min([insight_dif,food_dif])
+			if (number_of_cards > 0):
+				Global.player_data.player_insight -= number_of_cards
+				Global.player_data.player_food -= number_of_cards
 		else:
-			Global.player_data.player_ore -= ore_required
+			Global.player_data.player_insight -= insight_required
+			Global.player_data.player_food -= food_required
 		if created_card_object_id != "":
 			for i in number_of_cards:
 				var card_data: CardData = Global.get_card_data_from_prototype(created_card_object_id)

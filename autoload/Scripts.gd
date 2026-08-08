@@ -111,6 +111,7 @@ const ACTION_PICK_DUPLICATE_CARDS: String = "res://scripts/actions/card_actions/
 const ACTION_CREATE_CARDS: String = "res://scripts/actions/card_actions/pick_card_actions/ActionCreateCards.gd"
 const ACTION_ATTEMPT_FORGE: String = "res://scripts/actions/card_actions/pick_card_actions/ActionAttemptForge.gd"
 const ACTION_ATTEMPT_WEAVE: String = "res://scripts/actions/card_actions/pick_card_actions/ActionAttemptWeave.gd"
+const ACTION_ATTEMPT_COOK: String = "res://scripts/actions/card_actions/pick_card_actions/ActionAttemptCook.gd"
 # 	cardset actions; these affect a list of picked cards
 const ACTION_IMPROVE_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveCardValues.gd"
 const ACTION_IMPROVE_INSPECT: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveInspect.gd"
