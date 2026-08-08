@@ -126,38 +126,9 @@ var cook_action: Dictionary = {
 				}
 			}
 			
-var forge_action: Dictionary = {
-		Scripts.ACTION_VALIDATOR:{
-			"validator_data": [{Scripts.VALIDATOR_ORE:{}}],
-			"passed_action_data": [
-				{
-				Scripts.ACTION_CREATE_CARDS: {
-					"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
-					}
-					},
-			{
-				Scripts.ACTION_ADD_ORE:{}
-				}
-				]
-				}
-			}
+var forge_action: Dictionary = {Scripts.ACTION_ATTEMPT_FORGE:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}
 			
-var weave_action: Dictionary = {
-		Scripts.ACTION_VALIDATOR:{
-			"validator_data": [{Scripts.VALIDATOR_INSIGHT:{}}],
-			"passed_action_data": [
-				{
-				Scripts.ACTION_CREATE_CARDS: {
-					"created_card_object_id":"card_scroll",
-					"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
-					}
-					},
-			{
-				Scripts.ACTION_ADD_INSIGHT:{}
-				}
-				]
-				}
-			}
+var weave_action: Dictionary = {Scripts.ACTION_ATTEMPT_WEAVE:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}
 			
 var wield_action: Dictionary = {
 		Scripts.ACTION_PICK_CARDS:
@@ -2627,7 +2598,7 @@ func add_characters() -> void:
 	character_green.character_name = "The Botanist"
 	character_green.character_description = "A former thermonuclear botanist seeking employment after being fired for their previous experiments."
 	character_green.character_color_id = "color_{0}".format([character_color])
-	character_green.character_starting_health = 75
+	#character_green.restarting_health = 75
 	character_green.character_starting_card_draft_card_pack_ids = ["card_pack_prismatic".format([character_color])]
 	character_green.character_starting_artifact_ids = ["artifact_fertiliser", "artifact_check_scroll"]
 	character_green.character_starting_artifact_pack_ids = ["artifact_pack_white", "artifact_pack_{0}".format([character_color])]
@@ -2635,7 +2606,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_explore_green", "card_basic_explore_green", "card_greeninformant", "card_recklessenvoy"
+		"card_basic_explore_green", "card_basic_explore_green",
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -4115,8 +4086,8 @@ func add_card_basics() -> void:
 		card_basic_weave.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_weave.card_requires_target = false
 		card_basic_weave.card_keyword_object_ids = ["keyword_weave"]
-		card_basic_weave.card_values = {"insight_amount": -1,"insight_required": 1,"number_of_cards": 1}
-		card_basic_weave.card_upgrade_value_improvements = {"insight_amount":-1,"insight_required":1,"number_of_cards":1 }
+		card_basic_weave.card_values = {"insight_required": 1,"number_of_cards": 1,"created_card_object_id":"card_scroll"}
+		card_basic_weave.card_upgrade_value_improvements = {"insight_required":1,"number_of_cards":1 }
 		card_basic_weave.card_play_actions.append(weave_action)
 		card_basic_weave.card_play_actions.append(influence_action)
 		card_basic_weave.card_end_of_turn_actions = end_action_data
@@ -4931,8 +4902,8 @@ func add_cards_purple() -> void:
 	card_recklessenvoy.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_recklessenvoy.card_requires_target = true
 	card_recklessenvoy.card_energy_cost = 1
-	card_recklessenvoy.card_values = {"damage": 3, "number_of_attacks":1, "ore_required":1, "ore_amount":-1, "created_card_object_id": "card_sword",  "number_of_cards": 1}
-	card_recklessenvoy.card_upgrade_value_improvements = {"number_of_cards": 1}
+	card_recklessenvoy.card_values = {"damage": 3, "number_of_attacks":1, "ore_required":1, "created_card_object_id": "card_sword",  "number_of_cards": 1}
+	card_recklessenvoy.card_upgrade_value_improvements = {"number_of_cards": 1, "ore_required":1}
 	card_recklessenvoy.card_influence = 3
 	card_recklessenvoy.card_play_actions = [
 		{
@@ -4996,8 +4967,8 @@ func add_cards_purple() -> void:
 	card_pearlregaler.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_pearlregaler.card_requires_target = false
 	card_pearlregaler.card_energy_cost = 1
-	card_pearlregaler.card_values = {"created_card_object_id":"card_scroll","number_of_cards":1,"insight_amount":-1,"insight_required":1}
-	card_pearlregaler.card_upgrade_value_improvements = {"number_of_cards": 2,"insight_amount":-1,"insight_required":1}
+	card_pearlregaler.card_values = {"created_card_object_id":"card_scroll","number_of_cards":1,"insight_required":1}
+	card_pearlregaler.card_upgrade_value_improvements = {"number_of_cards": 2,"insight_required":1}
 	card_pearlregaler.card_influence = 3
 	card_pearlregaler.card_play_actions = [
 				{
@@ -5210,7 +5181,7 @@ func add_cards_purple() -> void:
 	card_mastertactician.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_mastertactician.card_requires_target = false
 	card_mastertactician.card_energy_cost = 2
-	card_mastertactician.card_values = {"created_card_object_id": "card_sword", "ore_required":2, "ore_amount":-2, "number_of_cards": 2,	"min_card_amount": 4,
+	card_mastertactician.card_values = {"created_card_object_id": "card_sword", "ore_required":2, "number_of_cards": 2,	"min_card_amount": 4,
 		"max_card_amount": 4,}
 	card_mastertactician.card_upgrade_value_improvements = {"number_of_cards":1, "min_card_amount": 2,
 		"max_card_amount": 2,"ore_required":1, "ore_amount":-1}
@@ -5506,7 +5477,7 @@ func add_cards_black() -> void:
 	card_reveredcraftsworker.card_influence = 4
 	card_reveredcraftsworker.card_requires_target = false
 	card_reveredcraftsworker.card_energy_cost = 2
-	card_reveredcraftsworker.card_values = {"ore_required":1, "ore_amount":-1,"created_card_object_id": "card_treasure",  "number_of_cards": 1,	"min_card_amount": 2,
+	card_reveredcraftsworker.card_values = {"ore_required":1, "created_card_object_id": "card_treasure",  "number_of_cards": 1,	"min_card_amount": 2,
 				"max_card_amount": 2}
 	card_reveredcraftsworker.card_upgrade_value_improvements = {"number_of_cards": 1,"min_card_amount":1,"max_card_amount":1}
 	card_reveredcraftsworker.card_play_actions.append(inspect_action)
@@ -6005,7 +5976,7 @@ func add_cards_green() -> void:
 	card_greeninformant.card_requires_target = false
 	card_greeninformant.card_energy_cost = 1
 	card_greeninformant.card_influence = 7
-	card_greeninformant.card_values = {"number_of_cards":1,"draw_count": 1,"insight_required":1,"insight_amount":-1}
+	card_greeninformant.card_values = {"number_of_cards":1,"draw_count": 1,"insight_required":1,"created_card_object_id":"card_scroll"}
 	card_greeninformant.card_upgrade_value_improvements = {"draw_count": 1}
 	card_greeninformant.card_play_validators = [{Scripts.VALIDATOR_INSIGHT:{}}]
 	card_greeninformant.card_play_actions.append(weave_action)
@@ -6106,9 +6077,9 @@ func add_cards_green() -> void:
 	card_shockrider.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_shockrider.card_requires_target = true
 	card_shockrider.card_energy_cost = 1
-	card_shockrider.card_values = {"damage":3,"number_of_attacks":1,"ore_amount":-1, "ore_required": 1,"number_of_cards":1,"created_card_object_id":"card_sword", "min_card_amount":1,"max_card_amount":1}
+	card_shockrider.card_values = {"damage":3,"number_of_attacks":1, "ore_required": 1,"number_of_cards":1,"created_card_object_id":"card_sword", "min_card_amount":1,"max_card_amount":1}
 	card_shockrider.card_keyword_object_ids = ["keyword_forge","keyword_sword","keyword_wield"]
-	card_shockrider.card_upgrade_value_improvements = {"damage":1,"ore_amount":-1, "ore_required": 1,"min_card_amount":1,"max_card_amount":1}
+	card_shockrider.card_upgrade_value_improvements = {"damage":1, "ore_required": 1,"min_card_amount":1,"max_card_amount":1}
 	card_shockrider.card_first_upgrade_property_changes = {"card_energy_cost": 1}
 	card_shockrider.card_play_actions.append(wield_action)
 	card_shockrider.card_play_actions.append(forge_action)
@@ -6262,7 +6233,7 @@ func add_cards_green() -> void:
 	card_hoardingstowaway.card_influence = 4
 	card_hoardingstowaway.card_energy_cost = 2
 	card_hoardingstowaway.card_first_upgrade_property_changes = {"card_energy_cost":-1}
-	card_hoardingstowaway.card_values = {"number_of_cards":1,"insight_required":1,"insight_amount":-1}
+	card_hoardingstowaway.card_values = {"number_of_cards":1,"insight_required":1,"created_card_object_id": "card_scroll" }
 	card_hoardingstowaway.card_play_actions = [
 		{
 			Scripts.ACTION_PICK_CARDS:
@@ -6293,7 +6264,7 @@ func add_cards_green() -> void:
 	card_supremerecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_supremerecaster.card_requires_target = false
 	card_supremerecaster.card_energy_cost = 2
-	card_supremerecaster.card_values = {"draw_count":2,"insight_required":1,"insight_amount":-1,"number_of_cards":1}
+	card_supremerecaster.card_values = {"draw_count":2,"insight_required":1,"created_card_object_id": "card_scroll", "number_of_cards":1}
 	card_supremerecaster.card_upgrade_value_improvements = {"draw_count":2}
 	card_supremerecaster.card_play_actions = [{Scripts.ACTION_DRAW_GENERATOR:{}}]
 	card_supremerecaster.card_play_actions.append(cook_action)
@@ -6572,8 +6543,8 @@ func add_cards_gold() -> void:
 	card_reveredsmithy.card_requires_target = false
 	card_reveredsmithy.card_energy_cost = 2
 	card_reveredsmithy.card_influence = 4
-	card_reveredsmithy.card_values = {"ore_required": 2,"ore_amount": -2, "number_of_cards":2, "created_card_object_id":"card_treasure"}
-	card_reveredsmithy.card_upgrade_value_improvements = {"ore_required": 1,"ore_amount": -1, "number_of_cards":1}
+	card_reveredsmithy.card_values = {"ore_required": 2, "number_of_cards":2, "created_card_object_id":"card_treasure"}
+	card_reveredsmithy.card_upgrade_value_improvements = {"ore_required": 1, "number_of_cards":1}
 	card_reveredsmithy.card_play_actions.append(forge_action)
 	card_reveredsmithy.card_play_actions.append(influence_action)
 	card_reveredsmithy.card_end_of_turn_actions = end_action_data
