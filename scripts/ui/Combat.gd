@@ -566,7 +566,7 @@ func _on_player_turn_started():
 		Signals.shop_opened.emit()
 	else:
 		Global.player_data.add_refresh(-1)
-	
+
 	# reset energy
 
 	
@@ -599,7 +599,8 @@ func _on_player_turn_started():
 	# unlock and update hand
 	HandManager.set_disable_hand(false)
 	hand.update_hand_card_display()
-
+	FileLoader.autosave()
+	
 func _on_player_turn_ended():
 	# prevent player from playing cards
 	HandManager.set_disable_hand(true)

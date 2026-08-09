@@ -244,8 +244,6 @@ func _on_artifact_purchased(_artifact_data: ArtifactData):
 	}]
 	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
 	ActionHandler.add_actions(sound_actions)
-	for child in card_container.get_children():
-		child.queue_free()
 	for child in artifact_container.get_children():
 		child.queue_free()
 	_reprice_after_actions_ended()
