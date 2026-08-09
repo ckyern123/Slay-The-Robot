@@ -128,10 +128,13 @@ func _ready():
 func _process(delta:float) -> void:
 	if Input.is_action_just_released("end_turn"):
 		_on_end_turn_button_up()
-	for i in range(0,10):
+	for i in range(1,10):
 		if Input.is_action_just_released("card_{0}".format([i])):
-			if (HandManager.player_hand.size() > i):
-				HandManager.hand.card_data_to_hand_card[HandManager.player_hand[i]].keyboard_attempt()
+			if (HandManager.player_hand.size() >= i):
+				HandManager.hand.card_data_to_hand_card[HandManager.player_hand[i-1]].keyboard_attempt()
+	if (Input.is_action_just_released("card_10")):
+		if (HandManager.player_hand.size() >= 10):
+			HandManager.hand.card_data_to_hand_card[HandManager.player_hand[9]].keyboard_attempt()
 					
 func _on_map_location_selected(location_data: LocationData):
 	# determine what to do when the player visits a new location

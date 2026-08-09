@@ -4865,7 +4865,7 @@ func add_cards_purple() -> void:
 	var card_minnowtrader: CardData = CardData.new("card_minnowtrader")
 	card_minnowtrader.card_name = "Minnow Trader"
 	card_minnowtrader.card_color_id = "color_{0}".format([color])
-	card_minnowtrader.card_texture_path = "external/sprites/cards/pearl/17_minnowtrader.jpg"
+	card_minnowtrader.card_texture_path = "external/sprites/cards/pearl/17_minnowtrader.png"
 	card_minnowtrader.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_minnowtrader.card_description = "Tick down Shop Refresh by [refresh_amount]. Return up to [max_card_amount] card from discard pile to your hand."
 	card_minnowtrader.card_type = CardData.CARD_TYPES.SKILL
@@ -5020,7 +5020,7 @@ func add_cards_purple() -> void:
 	var card_fishsaucemaker: CardData = CardData.new("card_fishsaucemaker")
 	card_fishsaucemaker.card_name = "Fish Sauce Maker"
 	card_fishsaucemaker.card_color_id = "color_{0}".format([color])
-	card_fishsaucemaker.card_texture_path = "external/sprites/cards/pearl/18_fishsaucemaker.jpg"
+	card_fishsaucemaker.card_texture_path = "external/sprites/cards/pearl/18_fishsaucemaker.png"
 	card_fishsaucemaker.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_fishsaucemaker.card_description = "Exhaust a Fish card in discard pile to Fertilise [artifact_charge_increase] and create a Delicacy."
 	card_fishsaucemaker.card_keyword_object_ids = ["keyword_fertilise","keyword_delicacy"]
@@ -5446,7 +5446,7 @@ func add_cards_black() -> void:
 	var card_gardentender: CardData = CardData.new("card_gardentender")
 	card_gardentender.card_name = "Garden Tender"
 	card_gardentender.card_color_id = "color_{0}".format([color])
-	card_gardentender.card_texture_path = "external/sprites/cards/aniseed/16_gardentender.jpg"
+	card_gardentender.card_texture_path = "external/sprites/cards/aniseed/16_gardentender.png"
 	card_gardentender.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_gardentender.card_description = "Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_gardentender.card_keyword_object_ids = ["keyword_fertilise"]
@@ -5465,8 +5465,8 @@ func add_cards_black() -> void:
 	
 	var card_incensestoker: CardData = CardData.new("card_incensestoker")
 	card_incensestoker.card_name = "Incense Stoker"
-	card_incensestoker.card_color_id = "color_{0}".format([color])
-	#card_incensestoker.card_texture_path = "external/sprites/cards/aniseed/04_incensestoker.png"
+	card_incensestoker.card_color_id = "colorc_{0}".format([color])
+	card_incensestoker.card_texture_path = "external/sprites/cards/aniseed/18_incensestoker.png"
 	card_incensestoker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_incensestoker.card_description = "Discard [max_card_amount], gain [energy_amount]{0}.".format([Card.ENERGY_ICON_KEYWORD])
 	#card_incensestoker.card_keyword_object_ids = ["keyword_fertilise"]
@@ -5763,9 +5763,9 @@ func add_cards_black() -> void:
 	var card_peddlerinformant: CardData = CardData.new("card_peddlerinformant")
 	card_peddlerinformant.card_name = "Peddler Informant"
 	card_peddlerinformant.card_color_id = "color_{0}".format([color])
-	card_peddlerinformant.card_texture_path = "external/sprites/cards/aniseed/card_peddlerinformant.png"
+	card_peddlerinformant.card_texture_path = "external/sprites/cards/aniseed/13_peddlerinformant.png"
 	card_peddlerinformant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_peddlerinformant.card_description = "Create [number_of_cards] Scroll, Create 2 Debt. Reshuffle."
+	card_peddlerinformant.card_description = "Create [number_of_cards] Scroll(s), Create 2 Debt. Reshuffle."
 	card_peddlerinformant.card_keyword_object_ids = ["keyword_scroll","keyword_debt"]
 	card_peddlerinformant.card_type = CardData.CARD_TYPES.SKILL
 	card_peddlerinformant.card_rarity = CardData.CARD_RARITIES.RARE
@@ -5963,7 +5963,7 @@ func add_cards_green() -> void:
 	var card_avidsower: CardData = CardData.new("card_avidsower")
 	card_avidsower.card_name = "Avid Sower"
 	card_avidsower.card_color_id = "color_{0}".format([color])
-	card_avidsower.card_texture_path = "external/sprites/cards/jade/16_avidsower.jpg"
+	card_avidsower.card_texture_path = "external/sprites/cards/jade/16_avidsower.png"
 	card_avidsower.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_avidsower.card_description = "Return up to [max_card_amount] cards in your discard pile to the bottom of your draw pile. Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_avidsower.card_keyword_object_ids = ["keyword_fertilise"]
@@ -6333,7 +6333,7 @@ func add_cards_green() -> void:
 	var card_villagehero: CardData = CardData.new("card_villagehero")
 	card_villagehero.card_name = "Village Hero"
 	card_villagehero.card_color_id = "color_{0}".format([color])
-	card_villagehero.card_texture_path = "external/sprites/cards/jade/villagehero.png"
+	card_villagehero.card_texture_path = "external/sprites/cards/jade/14_villagehero.png"
 	card_villagehero.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_villagehero.card_description = "Explore 1{0} for each Faction card in discard pile.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_villagehero.card_type = CardData.CARD_TYPES.ATTACK
@@ -6718,7 +6718,7 @@ func add_cards_gold() -> void:
 	var card_cengkihrecruiter: CardData = CardData.new("card_cengkihrecruiter")
 	card_cengkihrecruiter.card_name = "Cengkih Recruiter"
 	card_cengkihrecruiter.card_color_id = "color_{0}".format([color])
-	card_cengkihrecruiter.card_texture_path = "external/sprites/cards/cengkih/17_cengkihrecruiter.jpg"
+	card_cengkihrecruiter.card_texture_path = "external/sprites/cards/cengkih/16_cengkihrecruiter.png"
 	card_cengkihrecruiter.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_cengkihrecruiter.card_description = "Search your deck for [min_card_amount] random Cengkih cards and add to your hand."
 	card_cengkihrecruiter.card_type = CardData.CARD_TYPES.SKILL
@@ -6820,7 +6820,7 @@ func add_cards_gold() -> void:
 	var card_royalcook: CardData = CardData.new("card_royalcook")
 	card_royalcook.card_name = "Royal Cook"
 	card_royalcook.card_color_id = "color_{0}".format([color])
-	card_royalcook.card_texture_path = "external/sprites/cards/cengkih/17_royalcook.jpg"
+	card_royalcook.card_texture_path = "external/sprites/cards/cengkih/17_royalcook.png"
 	card_royalcook.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_royalcook.card_description = "If you have 20 or more cards in draw pile, gain [insight_amount] insight, then Cook [insight_required] Delicacies."
 	card_royalcook.card_keyword_object_ids = ["keyword_cook"]
