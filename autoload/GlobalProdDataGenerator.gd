@@ -496,7 +496,6 @@ func add_artifacts() -> void:
 					# convert artifact counter passed in from BaseArtifact, into the status charges
 			}}
 		}]
-	
 	Global.register_rod(artifact_improve_explore)
 
 #endregion
@@ -2611,7 +2610,7 @@ func add_characters() -> void:
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green","card_aniseedscribe",
+		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_explore_green", "card_basic_explore_green"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
@@ -4847,7 +4846,7 @@ func add_cards_purple() -> void:
 		Scripts.ACTION_PICK_CARDS: {
 		"min_cards_are_required_for_action": true,
 		"random_selection": false,
-		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to retain. {1} cards selected",
 		"action_data": [
 			{Scripts.ACTION_RETAIN_CARDS:{}},
@@ -6404,8 +6403,8 @@ func add_cards_gold() -> void:
 	card_spiceguard.card_type = CardData.CARD_TYPES.ATTACK
 	card_spiceguard.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_spiceguard.card_requires_target = true
-	card_spiceguard.card_energy_cost = 1
-	card_spiceguard.card_influence = 3
+	card_spiceguard.card_energy_cost = 2
+	card_spiceguard.card_influence = 4
 	card_spiceguard.card_values = {"card_object_id": "card_sword","number_of_cards": 2, "ore_required": 2}
 	card_spiceguard.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_spiceguard.card_play_actions.append(forge_action)

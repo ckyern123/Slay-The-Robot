@@ -217,10 +217,11 @@ func _on_run_ended():
 	unregister_all_custom_ui()
 
 func _on_combat_started(_event_id: String):
-	clear_all_status_effects()
+	print("yes")
+	#clear_all_status_effects()
 	
 func _on_combat_ended():
-	clear_all_status_effects()
+	#clear_all_status_effects()
 	reset_block()
 	update_incoming_damage_amount()
 

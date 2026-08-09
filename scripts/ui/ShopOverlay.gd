@@ -233,8 +233,6 @@ func _on_trade_purchased(_card_data: CardData):
 	}]
 	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
 	ActionHandler.add_actions(sound_actions)
-	for child in card_container.get_children():
-		child.queue_free()
 	for child in trade_container.get_children():
 		child.queue_free()
 	_reprice_after_actions_ended()
