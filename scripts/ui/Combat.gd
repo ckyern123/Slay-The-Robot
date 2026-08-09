@@ -343,8 +343,9 @@ func _on_combat_started(event_id: String):
 	
 	enemy_container.populate_enemies_from_event(current_event)
 	for child in enemy_container.get_children():
-		if (child.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
-			elite_is_present = true
+		for childer in child.get_children():
+			if (childer.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
+				elite_is_present = true
 	if (game_start):
 		start_turn_animation()
 	

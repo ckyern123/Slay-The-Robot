@@ -964,12 +964,12 @@ layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_bottom = 400
 
 [node name="GridContainer" type="GridContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/MarginContainer/CodexCardRGSC/MarginContainer" unique_id=424897675]
 layout_mode = 2
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
+theme_override_constants/h_separation = 64
+theme_override_constants/v_separation = 156
 columns = 6
 
 [node name="Card" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/MarginContainer/CodexCardRGSC/MarginContainer/GridContainer" unique_id=1178610852 instance=ExtResource("14_dohly")]

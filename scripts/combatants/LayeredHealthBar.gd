@@ -111,6 +111,11 @@ func _on_damage_delay_timeout():
 	damage_layer.anchor_right = float(old_health) / max(1, float(old_health_max))
 	var new_anchor_right: float = float(new_health) / max(1, float(old_health_max))
 	old_health = new_health
+	var sound_action_data: Array[Dictionary] = [{
+	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/slash.wav"},
+	}]
+	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+	ActionHandler.add_actions(sound_actions)
 	
 	var damage_tween: Tween = create_tween()
 	damage_tween.tween_property(damage_layer, "anchor_right", new_anchor_right, DAMAGE_TWEEN_TIME)
