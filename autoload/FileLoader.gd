@@ -53,12 +53,12 @@ const MUSIC_TITLE_SCREEN_AUDIO_PATH: String = ""
 # NOTE: See EventData and ActData for overriding these on a case by case basis.
 # NOTE: See ActionGenerator.generate_location_music()
 # NOTE: use an empty string or NO_MUSIC to play no music.
-const MUSIC_SHOP_AUDIO_PATH: String = NO_MUSIC
-const MUSIC_REST_SITE_AUDIO_PATH: String = NO_MUSIC
-const MUSIC_DEFAULT_AMBIENT_AUDIO_PATH: String = NO_MUSIC # non combat (starting/events/chests) music.
-const MUSIC_DEFAULT_COMBAT_AUDIO_PATH: String = NO_MUSIC # standard combat music
-const MUSIC_DEFAULT_MINIBOSS_AUDIO_PATH: String = NO_MUSIC
-const MUSIC_DEFAULT_BOSS_AUDIO_PATH: String = NO_MUSIC
+const MUSIC_SHOP_AUDIO_PATH: String = "external/audio/sounds/mainbg.wav"
+const MUSIC_REST_SITE_AUDIO_PATH: String = "external/audio/sounds/mainbg.wav"
+const MUSIC_DEFAULT_AMBIENT_AUDIO_PATH: String = "external/audio/sounds/mainbg.wav" # non combat (starting/events/chests) music.
+const MUSIC_DEFAULT_COMBAT_AUDIO_PATH: String = "external/audio/sounds/mainbg.wav" # standard combat music
+const MUSIC_DEFAULT_MINIBOSS_AUDIO_PATH: String = "external/audio/sounds/mainbg.wav"
+const MUSIC_DEFAULT_BOSS_AUDIO_PATH: String = "external/audio/sounds/mainbg.wav"
 #endregion
 
 func _ready():

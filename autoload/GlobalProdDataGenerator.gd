@@ -345,6 +345,7 @@ func add_artifacts() -> void:
 	artifact_energy_every_four_turns.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
 	artifact_energy_every_four_turns.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_energy_every_four_turns.artifact_color_id = "color_white"
+	artifact_energy_every_four_turns.artifact_shop_description = "Gains 1 energy every 4 turns."
 	artifact_energy_every_four_turns.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
 	artifact_energy_every_four_turns.artifact_counter_wraparound = true
 	artifact_energy_every_four_turns.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
@@ -867,6 +868,18 @@ func add_status_effects() -> void:
 	status_effect_refresh_reward.status_effect_action_process_times = []
 	
 	Global.register_rod(status_effect_refresh_reward)
+	
+	# Reward (simply to explain what objects of interest do)
+	var status_effect_rattle: StatusEffectData = StatusEffectData.new("status_effect_rattle")
+	status_effect_rattle.status_effect_name = "Rattle"
+	status_effect_rattle.status_effect_texture_path = "external/sprites/status_effects/rattle.svg"
+	status_effect_rattle.status_effect_is_visible = true
+	status_effect_rattle.status_effect_decay_rate = 0
+	status_effect_rattle.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_rattle.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_rattle.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_rattle)
 	
 		# Reward (simply to explain what objects of interest do)
 	var status_effect_insight_reward: StatusEffectData = StatusEffectData.new("status_effect_insight_reward")
@@ -2588,6 +2601,10 @@ func add_characters() -> void:
 	character_green.character_description = "A former thermonuclear botanist seeking employment after being fired for their previous experiments."
 	character_green.character_color_id = "color_{0}".format([character_color])
 	#character_green.restarting_health = 75
+	character_green.character_starting_insight = 3
+	character_green.character_starting_ore = 3
+	character_green.character_starting_money = 20
+	character_green.character_starting_food = 20
 	character_green.character_starting_card_draft_card_pack_ids = ["card_pack_prismatic".format([character_color])]
 	character_green.character_starting_artifact_ids = ["artifact_fertiliser", "artifact_check_scroll"]
 	character_green.character_starting_artifact_pack_ids = ["artifact_pack_white", "artifact_pack_{0}".format([character_color])]
@@ -2595,7 +2612,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_explore_green", "card_basic_explore_green",
+		"card_basic_explore_green", "card_basic_explore_green"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -3156,7 +3173,7 @@ func add_enemies() -> void:
 	wateringhole.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	wateringhole.enemy_actions_on_death = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_charge_increase":2}},{Scripts.ACTION_ADD_REFRESH:{"refresh_amount":-3}}]
+	wateringhole.enemy_actions_on_death = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_charge_increase":2}},{Scripts.ACTION_ADD_REFRESH:{"refresh_amount":3}}]
 	# an attack that hits harder on higher difficulties
 	wateringhole.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3288,7 +3305,7 @@ func add_enemies() -> void:
 	rockface.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	rockface.enemy_actions_on_death = [{Scripts.ACTION_ADD_REFRESH:{"refresh_amount":-2}},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount": 1}}]
+	rockface.enemy_actions_on_death = [{Scripts.ACTION_ADD_REFRESH:{"refresh_amount":2}},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount": 1}}]
 	# an attack that hits harder on higher difficulties
 	rockface.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3420,7 +3437,8 @@ func add_enemies() -> void:
 	den.add_health_bounds(25, 27)
 	den.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	den.enemy_texture_path = "external/sprites/enemies/hobbit-dwelling.png"
-	den.enemy_initial_status_effects = {"status_effect_treasure_reward": 3, "status_effect_size_reward": 5}
+	den.enemy_initial_status_effects = {"status_effect_treasure_reward": 3, "status_effect_size_reward": 5,"status_effect_rattle":1}
+	den.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var den_status_actions: Array[Dictionary] = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -3468,7 +3486,8 @@ func add_enemies() -> void:
 	hideout.add_health_bounds(25, 27)
 	hideout.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	hideout.enemy_texture_path = "external/sprites/enemies/castle.png"
-	hideout.enemy_initial_status_effects = {"status_effect_spice_reward": 2,"status_effect_size_reward": 4}
+	hideout.enemy_initial_status_effects = {"status_effect_spice_reward": 2,"status_effect_size_reward": 4,"status_effect_rattle":1}
+	hideout.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var hideout_status_actions: Array[Dictionary] = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -4015,8 +4034,7 @@ func add_card_basics() -> void:
 		#card_basic_food.card_keyword_object_ids = ["keyword_food"]
 		card_basic_food.card_requires_target = false
 		card_basic_food.card_play_actions = [{
-		Scripts.ACTION_ADD_FOOD: {},
-		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/slash.wav"},
+		Scripts.ACTION_ADD_FOOD: {}
 		}]
 		card_basic_food.card_play_actions.append(influence_action)
 		card_basic_food.card_end_of_turn_actions = end_action_data
@@ -4053,7 +4071,6 @@ func add_card_basics() -> void:
 		card_basic_money.card_type = CardData.CARD_TYPES.SKILL
 		card_basic_money.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_money.card_requires_target = false
-		card_basic_money.card_keyword_object_ids = ["keyword_money"]
 		card_basic_money.card_values = {"money_amount": 2}
 		card_basic_money.card_upgrade_value_improvements = {"money_amount": 1}
 		card_basic_money.card_play_actions = [{
@@ -4096,9 +4113,7 @@ func add_card_basics() -> void:
 		card_basic_explore.card_upgrade_value_improvements = {"damage": 1}
 		#card_basic_explore.card_keyword_object_ids = ["keyword_explore"]
 		card_basic_explore.card_play_actions = [{
-		Scripts.ACTION_ATTACK_GENERATOR: {},
-		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/slash.wav"},
-		}]
+		Scripts.ACTION_ATTACK_GENERATOR: {}}]
 		card_basic_explore.card_play_actions.append(influence_action)
 		card_basic_explore.card_end_of_turn_actions = end_action_data
 		Global.register_rod(card_basic_explore)
@@ -4112,14 +4127,14 @@ func add_cards_misc() -> void:
 	card_fish.card_name = "Fish"
 	card_fish.card_color_id = "color_{0}".format([color])
 	card_fish.card_texture_path = "external/sprites/status_effects/fish.svg"
-	card_fish.card_description = "Gain [food_amount]{0}. Improve by 2{0} when retained.".format([Card.FOOD_ICON_KEYWORD])
+	card_fish.card_description = "Gain [food_amount]{0}. Create another Fish when discarded.".format([Card.FOOD_ICON_KEYWORD])
 	card_fish.card_type = CardData.CARD_TYPES.SKILL
 	card_fish.card_energy_cost = 0
 	card_fish.card_influence = 0
 	card_fish.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_fish.card_requires_target = false
 	card_fish.card_play_destination = HandManager.EXHAUST_PILE
-	card_fish.card_values = {"food_amount": 2, "card_value_improvements": {"food_amount": 2}}
+	card_fish.card_values = {"food_amount": 2, "card_value_improvements": {"food_amount": 1}}
 	card_fish.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_FOOD:
@@ -4127,15 +4142,16 @@ func add_cards_misc() -> void:
 			}
 		}
 		]
-	card_fish.card_retain_actions = [
-		{
-			Scripts.ACTION_IMPROVE_CARD_VALUES: {
-				"time_delay": 0.1,
-				"pick_played_card": true,
-				"modify_parent_card": false,
-			}
-		}
-	]
+	card_fish.card_discard_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_fish","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{"is_manual_discard":false}}]}}]
+	#card_fish.card_retain_actions = [
+		#{
+			#Scripts.ACTION_IMPROVE_CARD_VALUES: {
+				#"time_delay": 0.1,
+				#"pick_played_card": true,
+				#"modify_parent_card": false,
+			#}
+		#}
+	#]
 	Global.register_rod(card_fish)
 	
 	var card_grain: CardData = CardData.new("card_grain")
@@ -4617,7 +4633,7 @@ func add_cards_trade() -> void:
 	card_food_manual.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_food_manual.card_is_retained = true
 	card_food_manual.card_requires_target = false
-	card_food_manual.card_values = {"status_charge_amount": 1}
+	card_food_manual.card_values = {"food_amount": 2}
 	card_food_manual.card_play_actions = [{
 		Scripts.ACTION_PICK_CARDS:
 				{
@@ -4630,6 +4646,7 @@ func add_cards_trade() -> void:
 				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_fish","card_grain"]}}],
 				"action_data": [		{
 				Scripts.ACTION_IMPROVE_CARD_VALUES: {
+				"card_value_improvements":{"food_amount":2},
 				"time_delay": 0.1,
 				"modify_parent_card": false,
 				}
@@ -4815,7 +4832,7 @@ func add_cards_purple() -> void:
 	var card_saltexpert: CardData = CardData.new("card_saltexpert")
 	card_saltexpert.card_name = "Salt Expert"
 	card_saltexpert.card_color_id = "color_{0}".format([color])
-	#card_saltexpert.card_texture_path = "external/sprites/cards/pearl/03_saltexpert.png"
+	card_saltexpert.card_texture_path = "external/sprites/cards/pearl/16_saltexpert.png"
 	card_saltexpert.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_saltexpert.card_description = "Retain up to [max_card_amount] cards in hand. Appease 2 to retained cards."
 	card_saltexpert.card_type = CardData.CARD_TYPES.SKILL
@@ -4848,14 +4865,14 @@ func add_cards_purple() -> void:
 	var card_minnowtrader: CardData = CardData.new("card_minnowtrader")
 	card_minnowtrader.card_name = "Minnow Trader"
 	card_minnowtrader.card_color_id = "color_{0}".format([color])
-	#card_minnowtrader.card_texture_path = "external/sprites/cards/pearl/03_minnowtrader.png"
+	card_minnowtrader.card_texture_path = "external/sprites/cards/pearl/17_minnowtrader.jpg"
 	card_minnowtrader.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_minnowtrader.card_description = "Tick down Shop Refresh by [refresh_amount]. Return up to [max_card_amount] card from discard pile to your hand."
 	card_minnowtrader.card_type = CardData.CARD_TYPES.SKILL
 	card_minnowtrader.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_minnowtrader.card_requires_target = false
 	card_minnowtrader.card_energy_cost = 1
-	card_minnowtrader.card_values = {"min_card_amount":0, "max_card_amount": 1, "refresh_amount": -2}
+	card_minnowtrader.card_values = {"min_card_amount":0, "max_card_amount": 1, "refresh_amount": 2}
 	card_minnowtrader.card_upgrade_value_improvements = {"refresh_amount": 1}
 	card_minnowtrader.card_influence = 3
 	card_minnowtrader.card_play_actions = [
@@ -4878,18 +4895,15 @@ func add_cards_purple() -> void:
 	card_storiedspinner.card_color_id = "color_{0}".format([color])
 	card_storiedspinner.card_texture_path = "external/sprites/cards/pearl/04_storiedspinner.png"
 	card_storiedspinner.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_storiedspinner.card_description = "Draw [draw_count], Explore [damage]{0}.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_storiedspinner.card_description = "Weave [number_of_cards] Missives, Explore [damage]{0}.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_storiedspinner.card_type = CardData.CARD_TYPES.ATTACK
 	card_storiedspinner.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_storiedspinner.card_requires_target = true
 	card_storiedspinner.card_energy_cost = 1
-	card_storiedspinner.card_values = {"draw_count": 1,"damage": 2,"number_of_attacks": 1}
+	card_storiedspinner.card_values = {"number_of_cards": 1, "created_card_object_id":"card_missives", "damage": 2,"number_of_attacks": 1}
 	card_storiedspinner.card_upgrade_value_improvements = {"draw_count": 1}
 	card_storiedspinner.card_influence = 3
 	card_storiedspinner.card_play_actions = [
-		{
-		Scripts.ACTION_DRAW_GENERATOR: {},
-		},
 		{
 		Scripts.ACTION_ATTACK_GENERATOR:
 			{
@@ -4897,6 +4911,7 @@ func add_cards_purple() -> void:
 			}
 		}
 		]
+	card_storiedspinner.card_play_actions.append(weave_action)
 	card_storiedspinner.card_play_actions.append(influence_action)
 	card_storiedspinner.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_storiedspinner)
@@ -5005,7 +5020,7 @@ func add_cards_purple() -> void:
 	var card_fishsaucemaker: CardData = CardData.new("card_fishsaucemaker")
 	card_fishsaucemaker.card_name = "Fish Sauce Maker"
 	card_fishsaucemaker.card_color_id = "color_{0}".format([color])
-	#card_fishsaucemaker.card_texture_path = "external/sprites/cards/pearl/03_fishsaucemaker.png"
+	card_fishsaucemaker.card_texture_path = "external/sprites/cards/pearl/18_fishsaucemaker.jpg"
 	card_fishsaucemaker.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_fishsaucemaker.card_description = "Exhaust a Fish card in discard pile to Fertilise [artifact_charge_increase] and create a Delicacy."
 	card_fishsaucemaker.card_keyword_object_ids = ["keyword_fertilise","keyword_delicacy"]
@@ -5074,7 +5089,7 @@ func add_cards_purple() -> void:
 	var card_pearlscribe: CardData = CardData.new("card_pearlscribe")
 	card_pearlscribe.card_name = "Pearl Scribe"
 	card_pearlscribe.card_color_id = "color_{0}".format([color])
-	card_pearlscribe.card_texture_path = "external/sprites/cards/pearl/09_pearlscribe"
+	card_pearlscribe.card_texture_path = "external/sprites/cards/pearl/09_pearlscribe.png"
 	card_pearlscribe.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlscribe.card_description = "If you have draw pile 20 or more, gain 2{0}. Weave [number_of_cards] Scroll(s).".format([Card.INSIGHT_ICON_KEYWORD])
 	card_pearlscribe.card_keyword_object_ids = ["keyword_weave","keyword_scroll"]
@@ -5207,13 +5222,13 @@ func add_cards_purple() -> void:
 	card_schemingplanner.card_color_id = "color_{0}".format([color])
 	card_schemingplanner.card_texture_path = "external/sprites/cards/pearl/13_schemingplanner.png"
 	card_schemingplanner.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_schemingplanner.card_description = "Gain [money_amount]{0}. Create 2 Debt. Tick down Shop Refresh by 3.".format([Card.MONEY_ICON_KEYWORD])
+	card_schemingplanner.card_description = "Gain [money_amount]{0}. Create 2 Debt. Tick down Shop Refresh by [refresh_amount].".format([Card.MONEY_ICON_KEYWORD])
 	card_schemingplanner.card_keyword_object_ids = ["keyword_debt"]
 	card_schemingplanner.card_type = CardData.CARD_TYPES.SKILL
 	card_schemingplanner.card_rarity = CardData.CARD_RARITIES.RARE
 	card_schemingplanner.card_requires_target = false
 	card_schemingplanner.card_energy_cost = 2
-	card_schemingplanner.card_values = {"money_amount": 8,"refresh_amount":-3, "created_card_object_id": "card_debt","number_of_cards":2}
+	card_schemingplanner.card_values = {"money_amount": 8,"refresh_amount":3, "created_card_object_id": "card_debt","number_of_cards":2}
 	card_schemingplanner.card_upgrade_value_improvements = {"money_amount": 2}
 	card_schemingplanner.card_influence = 4
 	card_schemingplanner.card_play_actions = [
@@ -5431,7 +5446,7 @@ func add_cards_black() -> void:
 	var card_gardentender: CardData = CardData.new("card_gardentender")
 	card_gardentender.card_name = "Garden Tender"
 	card_gardentender.card_color_id = "color_{0}".format([color])
-	#card_gardentender.card_texture_path = "external/sprites/cards/aniseed/04_gardentender.png"
+	card_gardentender.card_texture_path = "external/sprites/cards/aniseed/16_gardentender.jpg"
 	card_gardentender.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_gardentender.card_description = "Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_gardentender.card_keyword_object_ids = ["keyword_fertilise"]
@@ -5590,12 +5605,12 @@ func add_cards_black() -> void:
 	card_peddlerveteran.card_color_id = "color_{0}".format([color])
 	card_peddlerveteran.card_texture_path = "external/sprites/cards/aniseed/09_peddlerveteran.png"
 	card_peddlerveteran.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_peddlerveteran.card_description = "Gain [money_amount]{0}. Tick down Refresh Shop by 2.".format([Card.MONEY_ICON_KEYWORD])
+	card_peddlerveteran.card_description = "Gain [money_amount]{0}. Tick down Refresh Shop by [refresh_amount].".format([Card.MONEY_ICON_KEYWORD])
 	card_peddlerveteran.card_type = CardData.CARD_TYPES.SKILL
 	card_peddlerveteran.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_peddlerveteran.card_requires_target = false
 	card_peddlerveteran.card_energy_cost = 1
-	card_peddlerveteran.card_values = {"money_amount": 2,"refresh_amount":-2}
+	card_peddlerveteran.card_values = {"money_amount": 2,"refresh_amount":2}
 	card_peddlerveteran.card_upgrade_value_improvements = {"money_amount": 2}
 	card_peddlerveteran.card_play_actions = [
 		{
@@ -5713,7 +5728,7 @@ func add_cards_black() -> void:
 	var card_royalpurveyor: CardData = CardData.new("card_royalpurveyor")
 	card_royalpurveyor.card_name = "Royal Purveyor"
 	card_royalpurveyor.card_color_id = "color_{0}".format([color])
-	#card_royalpurveyor.card_texture_path = "external/sprites/cards/aniseed/12_royalpurveyor.png"
+	card_royalpurveyor.card_texture_path = "external/sprites/cards/aniseed/17_royalpurveyor.png"
 	card_royalpurveyor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_royalpurveyor.card_description = "Retain all cards in hand. Appease/Repair [card_influence] to Faction and Craft cards. If discarded, Fertilise [artifact_charge_increase]."
 	card_royalpurveyor.card_keyword_object_ids = ["keyword_appease","keyword_repair", "keyword_fertilise"]
@@ -5897,7 +5912,7 @@ func add_cards_green() -> void:
 
 		},
 		{
-		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}
+		Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
 		}]
 	card_youngmentor.card_play_actions.append(influence_action)
 	card_youngmentor.card_end_of_turn_actions = end_action_data
@@ -5927,7 +5942,7 @@ func add_cards_green() -> void:
 	var card_commercialcropper: CardData = CardData.new("card_commercialcropper")
 	card_commercialcropper.card_name = "Commercial Cropper"
 	card_commercialcropper.card_color_id = "color_{0}".format([color])
-	#card_commercialcropper.card_texture_path = "external/sprites/cards/jade/03_commercialcropper.png"
+	card_commercialcropper.card_texture_path = "external/sprites/cards/jade/17_commercialcropper.png"
 	card_commercialcropper.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_commercialcropper.card_description = "Fertilise [artifact_charge_increase]. Tick down Shop Refresh by [refresh_amount]".format([Card.EXPLORE_ICON_KEYWORD])
 	card_commercialcropper.card_keyword_object_ids = ["keyword_fertilise"]
@@ -5948,7 +5963,7 @@ func add_cards_green() -> void:
 	var card_avidsower: CardData = CardData.new("card_avidsower")
 	card_avidsower.card_name = "Avid Sower"
 	card_avidsower.card_color_id = "color_{0}".format([color])
-	#card_avidsower.card_texture_path = "external/sprites/cards/jade/03_avidsower.png"
+	card_avidsower.card_texture_path = "external/sprites/cards/jade/16_avidsower.jpg"
 	card_avidsower.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_avidsower.card_description = "Return up to [max_card_amount] cards in your discard pile to the bottom of your draw pile. Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_avidsower.card_keyword_object_ids = ["keyword_fertilise"]
@@ -6048,7 +6063,7 @@ func add_cards_green() -> void:
 	var card_mysticsower: CardData = CardData.new("card_mysticsower")
 	card_mysticsower.card_name = "Mystic Sower"
 	card_mysticsower.card_color_id = "color_{0}".format([color])
-	#card_mysticsower.card_texture_path = "external/sprites/cards/jade/07_mysticsower.png"
+	card_mysticsower.card_texture_path = "external/sprites/cards/jade/07_facetrecaster.png"
 	card_mysticsower.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_mysticsower.card_description = "Create [number_of_cards] Grains. Put up to 2 cards from your discard pile to the bottom of your draw pile."
 	card_mysticsower.card_type = CardData.CARD_TYPES.SKILL
@@ -6204,7 +6219,7 @@ func add_cards_green() -> void:
 	var card_gardenmystic: CardData = CardData.new("card_gardenmystic")
 	card_gardenmystic.card_name = "Garden Mystic"
 	card_gardenmystic.card_color_id = "color_{0}".format([color])
-	#card_gardenmystic.card_texture_path = "external/sprites/cards/jade/11_gardenmystic.png"
+	card_gardenmystic.card_texture_path = "external/sprites/cards/jade/18_gardenmystic.png"
 	card_gardenmystic.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_gardenmystic.card_description = "Cook [number_of_cards] Delicacy. When discarded, Fertilise [artifact_charge_increase] instead."
 	card_gardenmystic.card_keyword_object_ids = ["keyword_cook", "keyword_delicacy", "keyword_fertiliser"]
@@ -6229,10 +6244,10 @@ func add_cards_green() -> void:
 	Global.register_rod(card_gardenmystic)
 	
 	var card_staticrecaster: CardData = CardData.new("card_staticrecaster")
-	card_staticrecaster.card_name = "Cengkih Recruiter"
+	card_staticrecaster.card_name = "Static Recaster"
 	card_staticrecaster.card_color_id = "color_{0}".format([color])
-	card_staticrecaster.card_texture_path = "external/sprites/cards/cengkih/11_staticrecaster.png"
-	card_staticrecaster.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_staticrecaster.card_texture_path = "external/sprites/cards/jade/19_staticrecaster.png"
+	card_staticrecaster.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_staticrecaster.card_description = "Search your draw pile for up to [max_card_amount] Jade cards and play them."
 	card_staticrecaster.card_type = CardData.CARD_TYPES.SKILL
 	card_staticrecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6703,7 +6718,7 @@ func add_cards_gold() -> void:
 	var card_cengkihrecruiter: CardData = CardData.new("card_cengkihrecruiter")
 	card_cengkihrecruiter.card_name = "Cengkih Recruiter"
 	card_cengkihrecruiter.card_color_id = "color_{0}".format([color])
-	card_cengkihrecruiter.card_texture_path = "external/sprites/cards/cengkih/11_cengkihrecruiter.png"
+	card_cengkihrecruiter.card_texture_path = "external/sprites/cards/cengkih/17_cengkihrecruiter.jpg"
 	card_cengkihrecruiter.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_cengkihrecruiter.card_description = "Search your deck for [min_card_amount] random Cengkih cards and add to your hand."
 	card_cengkihrecruiter.card_type = CardData.CARD_TYPES.SKILL
@@ -6790,7 +6805,7 @@ func add_cards_gold() -> void:
 	card_intrepidcollector.card_upgrade_value_improvements = {"money_amount":1,"damage":1}
 	card_intrepidcollector.card_play_actions = [
 		{
-			Scripts.ACTION_ADD_REFRESH:{"refresh_amount":-2}
+			Scripts.ACTION_ADD_REFRESH:{"refresh_amount":2}
 		},
 		{
 			Scripts.ACTION_ATTACK_GENERATOR:{
@@ -6805,7 +6820,7 @@ func add_cards_gold() -> void:
 	var card_royalcook: CardData = CardData.new("card_royalcook")
 	card_royalcook.card_name = "Royal Cook"
 	card_royalcook.card_color_id = "color_{0}".format([color])
-	card_royalcook.card_texture_path = "external/sprites/cards/cengkih/13_royalcook.png"
+	card_royalcook.card_texture_path = "external/sprites/cards/cengkih/17_royalcook.jpg"
 	card_royalcook.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_royalcook.card_description = "If you have 20 or more cards in draw pile, gain [insight_amount] insight, then Cook [insight_required] Delicacies."
 	card_royalcook.card_keyword_object_ids = ["keyword_cook"]

@@ -15,13 +15,23 @@ func perform_action():
 			number_of_cards += difference
 			if (number_of_cards > 0):
 				Global.player_data.player_insight -= number_of_cards
+				var sound_action_data: Array[Dictionary] = [{
+				Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/weave.wav"},
+				}]
+				var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+				ActionHandler.add_actions(sound_actions)
 		else:
 			Global.player_data.player_insight -= insight_required
+			var sound_action_data: Array[Dictionary] = [{
+			Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/weave.wav"},
+			}]
+			var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+			ActionHandler.add_actions(sound_actions)
 		if created_card_object_id != "":
 			for i in number_of_cards:
 				var card_data: CardData = Global.get_card_data_from_prototype(created_card_object_id)
 				picked_cards.append(card_data)
-	
+
 	# overwrite picked_cards action value with the generated cards, for child cardset actions
 	# as this action doesn't require user input, "picked_cards" action value and picked_cards are the same
 	values["picked_cards"] = picked_cards

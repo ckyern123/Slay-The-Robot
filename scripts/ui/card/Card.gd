@@ -380,6 +380,9 @@ func create_image_fade(texture: Texture) -> void:
 	influence_fade_container.add_child(image_fade)
 	image_fade.init(texture)
 
+func keyboard_attempt():
+	card_selected.emit(self)
+	
 func _on_button_gui_input(event: InputEvent):
 	if event.is_action_released("left_click"):
 		card_selected.emit(self)
@@ -471,4 +474,10 @@ func _on_card_banished(_card_data: CardData, _in_limbo: bool):
 		_attempt_hand_glow()
 
 func _on_card_drawn(_card_data: CardData):
+	var sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
+		}]
+	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+	ActionHandler.add_actions(sound_actions)
 	_attempt_hand_glow()
+	

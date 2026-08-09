@@ -177,7 +177,9 @@ func _ready():
 	
 	### Test data generation
 	#GlobalTestDataGenerator.generate_test_data()
-	
+	#var transf: Transform2D = get_viewport().get_screen_transform()
+	var vector: Vector2i = Vector2i(1920, 1080)
+	DisplayServer.window_set_min_size(vector)
 	### Testing flags
 	ProfileData.ENABLE_ALL_DIFFICULTIES = true
 	StatsHandler.TRACK_RUN_HISTORY = true

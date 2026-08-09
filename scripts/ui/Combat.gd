@@ -56,6 +56,7 @@ const refresh_texture_path = "sprites/refresh.svg"
 
 var end_turn_object: CombatEndTurn = null
 var game_start: bool = true
+var elite_is_present: bool = false
 
 func _ready():
 	FileLoader.load_texture(money_texture_path)
@@ -78,7 +79,7 @@ func _ready():
 	
 	Signals.combat_started.connect(_on_combat_started)
 	Signals.combat_ended.connect(_on_combat_ended)
-	
+
 	Signals.player_turn_started.connect(_on_player_turn_started)
 	Signals.player_turn_ended.connect(_on_player_turn_ended)
 	Signals.enemy_turn_ended.connect(_on_enemy_turn_ended)
@@ -91,6 +92,7 @@ func _ready():
 	update_combat_display()
 	player.update_player_display(Global.player_data)
 
+	#end_turn_button.gui_input.connect(_on_button_gui_input)
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
@@ -123,6 +125,14 @@ func _ready():
 	HandManager.card_destination_to_ui_elements[HandManager.DISCARD_PILE] = discard_pile_button
 	HandManager.card_destination_to_ui_elements[HandManager.EXHAUST_PILE] = exhaust_pile_button
 
+func _process(delta:float) -> void:
+	if Input.is_action_just_released("end_turn"):
+		_on_end_turn_button_up()
+	for i in range(0,10):
+		if Input.is_action_just_released("card_{0}".format([i])):
+			if (HandManager.player_hand.size() > i):
+				HandManager.hand.card_data_to_hand_card[HandManager.player_hand[i]].keyboard_attempt()
+					
 func _on_map_location_selected(location_data: LocationData):
 	# determine what to do when the player visits a new location
 	var location_type: int = location_data.location_type
@@ -212,18 +222,42 @@ func _on_card_queue_refunded():
 
 func _on_player_money_changed(_delta: int = 0):
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
+	if (_delta > 0):
+		var sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/money.mp3"},
+		}]
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(money_fade_container, FileLoader.load_texture(money_texture_path))
 func _on_player_ore_changed(_delta: int = 0):
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
+	if (_delta > 0):
+		var sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/ore.wav"},
+		}]
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(ore_fade_container, FileLoader.load_texture(ore_texture_path))		
 func _on_player_insight_changed(_delta: int = 0):
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
+	if (_delta>0):
+		var sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/insight.wav"},
+		}]
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(insight_fade_container, FileLoader.load_texture(insight_texture_path))	
 func _on_player_food_changed(_delta: int = 0):
 	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
+	if (_delta > 0):
+		var sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/food.wav"},
+		}]
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(food_fade_container, FileLoader.load_texture(food_texture_path))
 func _on_player_sprawl_changed(_delta: int = 0):
@@ -272,7 +306,10 @@ func _on_enemy_killed(enemy: Enemy):
 	ActionHandler.add_actions(generated_actions)
 	if ActionHandler.actions_being_performed:
 		await ActionHandler.actions_ended
-	if (combat_end_button.visible == false):
+	if (enemy.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
+		elite_is_present = true
+		
+	if (combat_end_button.visible == false and !elite_is_present):
 		combat_end_button.visible = true
 	
 func _on_enemy_death_animation_finished(_enemy: Enemy):
@@ -302,6 +339,9 @@ func _on_combat_started(event_id: String):
 		current_event = Global.get_event_data(event_id)
 	
 	enemy_container.populate_enemies_from_event(current_event)
+	for child in enemy_container.get_children():
+		if (child.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
+			elite_is_present = true
 	if (game_start):
 		start_turn_animation()
 	
@@ -606,6 +646,10 @@ func _on_enemy_turn_ended():
 func _on_end_turn_button_up():
 	queue_end_turn(CombatEndTurn.END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS)
 
+func _on_button_gui_input(event: InputEvent):
+	if event.is_action_released("end_turn"):
+		_on_end_turn_button_up()
+		
 func _on_combat_end_button_up():
 	#queue_end_turn(CombatEndTurn.END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS)
 	end_combat()
