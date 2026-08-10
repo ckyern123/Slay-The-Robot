@@ -125,7 +125,7 @@ func perform_action() -> void:
 				var chance_array: Array = LocationData.LOCATION_TYPES.values()
 				chance_array.pop_back()
 				location.location_type = chance_array.pick_random()					
-				if k <= 6:
+				if k <= 5:
 					if location.location_type == LocationData.LOCATION_TYPES.PLAINS:
 						location.icon_texture_path = "external/sprites/locations/plains.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/plains.png"
@@ -146,7 +146,7 @@ func perform_action() -> void:
 						location.location_event_pool_object_id = act_data.act_easy_desert_event_pool_object_id
 						location.icon_texture_path = "external/sprites/locations/desert.svg"
 						location.location_background_texture_path = "external/sprites/backgrounds/desert.png"
-				elif k > 6 and k < 12:
+				elif k > 5 and k < 10:
 					if location.location_type == LocationData.LOCATION_TYPES.PLAINS:
 						location.location_event_pool_object_id = act_data.act_medium_plains_event_pool_object_id
 						location.icon_texture_path = "external/sprites/locations/plains.svg"

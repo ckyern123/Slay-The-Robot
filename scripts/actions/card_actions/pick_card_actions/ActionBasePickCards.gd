@@ -100,7 +100,8 @@ func perform_action():
 	var min_cards_are_required: bool = get_min_cards_are_required_for_action()
 	var random_selection: bool = get_action_value("random_selection", false) 	# to select the cards randomly without player input
 	var min_card_amount: int = get_card_pick_min_amount()
-	
+	var right_most: bool = get_action_value("right_most", false)
+	var left_most: bool = get_action_value("left_most", false)
 	# parent card type automatically sets parameters
 	var card_pick_type: String = get_card_pick_type()
 	if card_pick_type == ActionBasePickCards.PICK_PARENT_CARD:
@@ -141,6 +142,15 @@ func perform_action():
 			await Global.get_tree().process_frame # add a delay to allow ActionHandler to catch up with async to avoid infinite hang
 			perform_async_action()
 			return
+		elif (left_most or right_most):
+			if (right_most):
+				for i in range(0,min_card_amount):
+					picked_cards.append(pickable_cards[len(pickable_cards)-1-i])
+			else:
+				for i in range(0,min_card_amount):
+					picked_cards.append(pickable_cards[i])
+			await Global.get_tree().process_frame # add a delay to allow ActionHandler to catch up with async to avoid infinite hang
+			perform_async_action()
 		else:
 			# prompt the user for card input
 			async_awaiting = true 
