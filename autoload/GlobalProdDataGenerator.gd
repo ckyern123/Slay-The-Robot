@@ -1976,6 +1976,17 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_plains)
 	
+		
+	var event_pool_act_1_medium_plains: EventPoolData = EventPoolData.new("event_pool_act_1_plains_medium")
+	event_pool_act_1_medium_plains.add_events_to_pool(
+		event_act_1_medium_plains_1,
+		[
+		event_act_1_medium_plains_1,
+		event_act_1_medium_plains_2,
+		event_act_1_medium_plains_3,
+		])
+	Global.register_rod(event_pool_act_1_medium_plains)
+			
 	var event_pool_act_1_hard_plains: EventPoolData = EventPoolData.new("event_pool_act_1_plains_hard")
 	event_pool_act_1_hard_plains.add_events_to_pool(
 		event_act_1_hard_plains_1,
@@ -1997,6 +2008,17 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_forest)
 	
+	var event_pool_act_1_medium_forest: EventPoolData = EventPoolData.new("event_pool_act_1_forest_medium")
+	event_pool_act_1_medium_forest.add_events_to_pool(
+		event_act_1_medium_forest_1,
+		[
+		event_act_1_medium_forest_1,
+		event_act_1_medium_forest_2,
+		event_act_1_medium_forest_3,
+		])
+		
+	Global.register_rod(event_pool_act_1_medium_forest)
+		
 	var event_pool_act_1_hard_forest: EventPoolData = EventPoolData.new("event_pool_act_1_forest_hard")
 	event_pool_act_1_hard_forest.add_events_to_pool(
 		event_act_1_hard_forest_1,
@@ -2018,6 +2040,17 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_desert)
 	
+	var event_pool_act_1_medium_desert: EventPoolData = EventPoolData.new("event_pool_act_1_desert_medium")
+	event_pool_act_1_medium_desert.add_events_to_pool(
+		event_act_1_medium_desert_1,
+		[
+		event_act_1_medium_desert_1,
+		event_act_1_medium_desert_2,
+		event_act_1_medium_desert_3,
+		])
+	
+	Global.register_rod(event_pool_act_1_medium_desert)
+		
 	var event_pool_act_1_hard_desert: EventPoolData = EventPoolData.new("event_pool_act_1_desert_hard")
 	event_pool_act_1_hard_desert.add_events_to_pool(
 		event_act_1_hard_desert_1,
@@ -2039,6 +2072,17 @@ func add_events() -> void:
 		])
 	Global.register_rod(event_pool_act_1_easy_coast)
 	
+	var event_pool_act_1_medium_coast: EventPoolData = EventPoolData.new("event_pool_act_1_coast_medium")
+	event_pool_act_1_medium_coast.add_events_to_pool(
+		event_act_1_medium_coast_1,
+		[
+		event_act_1_medium_coast_1,
+		event_act_1_medium_coast_2,
+		event_act_1_medium_coast_3,
+		])
+		
+	Global.register_rod(event_pool_act_1_medium_coast)
+	
 	var event_pool_act_1_hard_coast: EventPoolData = EventPoolData.new("event_pool_act_1_coast_hard")
 	event_pool_act_1_hard_coast.add_events_to_pool(
 		event_act_1_hard_coast_1,
@@ -2059,6 +2103,17 @@ func add_events() -> void:
 		event_act_1_easy_swamp_3,
 		])
 	Global.register_rod(event_pool_act_1_easy_swamp)
+	
+	var event_pool_act_1_medium_swamp: EventPoolData = EventPoolData.new("event_pool_act_1_swamp_medium")
+	event_pool_act_1_medium_swamp.add_events_to_pool(
+		event_act_1_medium_swamp_1,
+		[
+		event_act_1_medium_swamp_1,
+		event_act_1_medium_swamp_2,
+		event_act_1_medium_swamp_3,
+		])
+		
+	Global.register_rod(event_pool_act_1_medium_swamp)
 	
 	var event_pool_act_1_hard_swamp: EventPoolData = EventPoolData.new("event_pool_act_1_swamp_hard")
 	event_pool_act_1_hard_swamp.add_events_to_pool(
