@@ -9,11 +9,12 @@ func perform_action():
 	
 	for action_interceptor_processor in action_interceptor_processors:
 		var draw_count: int = action_interceptor_processor.get_shadowed_action_values("draw_count", 1)
+		var first_pos: bool = action_interceptor_processor.get_shadowed_action_values("first_pos", false)
 		draw_count = max(0, draw_count)
 
 		var generated_draw_actions: Array[BaseAction] = []
 		for i in draw_count:
-			var action_data: Array[Dictionary] = [{Scripts.ACTION_DRAW: {}}]
+			var action_data: Array[Dictionary] = [{Scripts.ACTION_DRAW: {"first_pos":first_pos}}]
 			var draw_action: Array[BaseAction] = ActionGenerator.create_actions(parent_combatant, card_play_request, targets, action_data, self)
 			generated_draw_actions += draw_action
 		

@@ -369,7 +369,7 @@ func set_hand_invalid_card_pick_visibility(invalid_cards_visible: bool) -> void:
 
 ## Factory method for making Card ui components.
 ## Automatically registers the card to the hand as well.
-func create_cards_in_hand(cards: Array[CardData]) -> Array[Card]:
+func create_cards_in_hand(cards: Array[CardData],first_pos: bool = false) -> Array[Card]:
 	var created_cards: Array[Card] = []
 
 	for card_data: CardData in cards:
@@ -381,6 +381,8 @@ func create_cards_in_hand(cards: Array[CardData]) -> Array[Card]:
 		
 		var card: Card = Scenes.CARD.instantiate()
 		card_container.add_child(card)
+		if (first_pos):
+			card_container.move_child(card,0)
 		card.init(card_data, 0, true, true)
 		
 		card.card_hovered.connect(_on_card_hovered)

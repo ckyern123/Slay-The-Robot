@@ -48,6 +48,22 @@ var influence_action: Dictionary = 		{
 				]
 		}
 	}
+
+var sweep_action_data: Array[Dictionary] = [
+	{Scripts.ACTION_DRAW_GENERATOR:{"first_pos":true}},
+	{
+	Scripts.ACTION_PICK_CARDS:
+	{
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"right_most": true,
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
+		"action_data": [
+		{Scripts.ACTION_DISCARD_CARDS:{}}
+		]
+	}
+	}]
 var sift_action_data: Array[Dictionary] = [{
 	Scripts.ACTION_PICK_CARDS:
 	{
@@ -72,7 +88,7 @@ var sift_faction_data: Array[Dictionary] = [{
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
 		"action_data": [
-		{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_CARD_RARITY:{"card_rarities_exclude":[CardData.CARD_RARITIES.GENERATED]}}], "passed_action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}
+		{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}], "passed_action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}
 		]
 	}
 	},
@@ -2547,6 +2563,16 @@ func add_keywords() -> void:
 	keyword_weave.keyword_text_bb_code = "Spend 1 Insight to create a Scroll."
 	Global.register_rod(keyword_weave)
 	
+	var keyword_sweep: KeywordData = KeywordData.new("keyword_sweep")
+	keyword_sweep.keyword_name = "Sweep X"
+	keyword_sweep.keyword_text_bb_code = "Discard X rightmost cards, then draw leftmost cards."
+	Global.register_rod(keyword_sweep)
+	
+	var keyword_sift: KeywordData = KeywordData.new("keyword_sift")
+	keyword_sift.keyword_name = "Sift X for Y"
+	keyword_sift.keyword_text_bb_code = "Draw X cards, then discard cards that are not Y."
+	Global.register_rod(keyword_sift)
+	
 	var keyword_wield: KeywordData = KeywordData.new("keyword_wield")
 	keyword_wield.keyword_name = "Wield"
 	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile."
@@ -4460,7 +4486,7 @@ func add_cards_misc() -> void:
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 		"validator_data": [
-			{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}
 		],
 		"action_data": [
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
@@ -4905,7 +4931,7 @@ func add_cards_purple() -> void:
 		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 		"validator_data": [
-			{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}
 		],
 		"action_data": [
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
@@ -4976,7 +5002,7 @@ func add_cards_purple() -> void:
 			{Scripts.ACTION_RETAIN_CARDS:{}},
 			{
 				Scripts.ACTION_VALIDATOR:{
-					"validator_data":[{Scripts.VALIDATOR_CARD_RARITY:{"card_rarities_exclude":[CardData.CARD_RARITIES.GENERATED]}}],
+					"validator_data":[{Scripts.VALIDATOR_CARD_TYPES:{"card_rarities_type":[CardData.CARD_TYPES.FACTION]}}],
 					"passed_action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":2}}]
 				}
 			}]
@@ -5093,7 +5119,7 @@ func add_cards_purple() -> void:
 		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 		"validator_data": [
-			{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}
 		],
 		"action_data": [
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {"card_influence": 1
@@ -5474,7 +5500,7 @@ func add_cards_purple() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_TYPES: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 				"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {}}]
 		}}
 	]
@@ -5541,8 +5567,7 @@ func add_cards_black() -> void:
 	card_fishwrangler.card_description = "Explore [damage]{0}. Create [number_of_cards] Fish. Fertilise [artifact_charge_increase]".format([Card.EXPLORE_ICON_KEYWORD])
 	card_fishwrangler.card_keyword_object_ids = ["keyword_fertilise"]
 	card_fishwrangler.card_type = CardData.CARD_TYPES.FACTION
-
-	card_aniseedemissary.card_subtype = CardData.CARD_SUBTYPES.ANISEED
+	card_fishwrangler.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_fishwrangler.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_fishwrangler.card_requires_target = true
 	card_fishwrangler.card_energy_cost = 1
@@ -5569,7 +5594,8 @@ func add_cards_black() -> void:
 	card_spicepicker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_spicepicker.card_description = "Create [number_of_cards] Spice.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_spicepicker.card_keyword_object_ids = ["keyword_spice"]
-	card_spicepicker.card_type = CardData.CARD_TYPES.SKILL
+	card_spicepicker.card_type = CardData.CARD_TYPES.FACTION
+	card_spicepicker.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_spicepicker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_spicepicker.card_requires_target = false
 	card_spicepicker.card_energy_cost = 2
@@ -5591,7 +5617,8 @@ func add_cards_black() -> void:
 	card_gardentender.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_gardentender.card_description = "Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_gardentender.card_keyword_object_ids = ["keyword_fertilise"]
-	card_gardentender.card_type = CardData.CARD_TYPES.SKILL
+	card_gardentender.card_type = CardData.CARD_TYPES.FACTION
+	card_gardentender.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_gardentender.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_gardentender.card_requires_target = false
 	card_gardentender.card_influence = 4
@@ -5610,6 +5637,7 @@ func add_cards_black() -> void:
 	card_incensestoker.card_texture_path = "external/sprites/cards/aniseed/18_incensestoker.png"
 	card_incensestoker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_incensestoker.card_description = "Discard [max_card_amount], gain [energy_amount]{0}.".format([Card.ENERGY_ICON_KEYWORD])
+	card_incensestoker.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	#card_incensestoker.card_keyword_object_ids = ["keyword_fertilise"]
 	card_incensestoker.card_type = CardData.CARD_TYPES.SKILL
 	card_incensestoker.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5638,7 +5666,8 @@ func add_cards_black() -> void:
 	card_reveredcraftsworker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_reveredcraftsworker.card_description = "Forge [number_of_cards] Treasure. Inspect [min_card_amount]."
 	card_reveredcraftsworker.card_keyword_object_ids = ["keyword_forge","keyword_treasure","keyword_inspect"]
-	card_reveredcraftsworker.card_type = CardData.CARD_TYPES.SKILL
+	card_reveredcraftsworker.card_type = CardData.CARD_TYPES.FACTION
+	card_reveredcraftsworker.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_reveredcraftsworker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_reveredcraftsworker.card_influence = 4
 	card_reveredcraftsworker.card_requires_target = false
@@ -5658,7 +5687,8 @@ func add_cards_black() -> void:
 	card_cartographersassistant.card_texture_path = "external/sprites/cards/aniseed/06_cartographersassistant.png"
 	card_cartographersassistant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_cartographersassistant.card_description = "Explore [damage]{0}. Consume [ore_required]{1} to gain [insight_amount]{2}.".format([Card.EXPLORE_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
-	card_cartographersassistant.card_type = CardData.CARD_TYPES.ATTACK
+	card_cartographersassistant.card_type = CardData.CARD_TYPES.FACTION
+	card_cartographersassistant.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_cartographersassistant.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_cartographersassistant.card_requires_target = true
 	card_cartographersassistant.card_energy_cost = 1
@@ -5686,7 +5716,8 @@ func add_cards_black() -> void:
 	card_flintlockmage.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_flintlockmage.card_description = "Forge [number_of_cards] Sword. Draw [draw_count], then discard a card."
 	card_flintlockmage.card_keyword_object_ids = ["keyword_forge","keyword_sword"]
-	card_flintlockmage.card_type = CardData.CARD_TYPES.SKILL
+	card_flintlockmage.card_type = CardData.CARD_TYPES.FACTION
+	card_flintlockmage.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_flintlockmage.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockmage.card_requires_target = false
 	card_flintlockmage.card_energy_cost = 1
@@ -5720,7 +5751,8 @@ func add_cards_black() -> void:
 	card_aniseedscribe.card_texture_path = "external/sprites/cards/aniseed/08_aniseedscribe.png"
 	card_aniseedscribe.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_aniseedscribe.card_description = "Draw [draw_count]. If discard pile is empty, gain [insight_amount]{0}.".format([Card.INSIGHT_ICON_KEYWORD])
-	card_aniseedscribe.card_type = CardData.CARD_TYPES.SKILL
+	card_aniseedscribe.card_type = CardData.CARD_TYPES.FACTION
+	card_aniseedscribe.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_aniseedscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_aniseedscribe.card_requires_target = false
 	card_aniseedscribe.card_energy_cost = 2
@@ -5747,7 +5779,8 @@ func add_cards_black() -> void:
 	card_peddlerveteran.card_texture_path = "external/sprites/cards/aniseed/09_peddlerveteran.png"
 	card_peddlerveteran.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_peddlerveteran.card_description = "Gain [money_amount]{0}. Tick down Refresh Shop by [refresh_amount].".format([Card.MONEY_ICON_KEYWORD])
-	card_peddlerveteran.card_type = CardData.CARD_TYPES.SKILL
+	card_peddlerveteran.card_type = CardData.CARD_TYPES.FACTION
+	card_peddlerveteran.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_peddlerveteran.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_peddlerveteran.card_requires_target = false
 	card_peddlerveteran.card_energy_cost = 1
@@ -5771,7 +5804,8 @@ func add_cards_black() -> void:
 	card_intrepidsailor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_intrepidsailor.card_description = "Explore [damage]{0}. Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
 	card_intrepidsailor.card_keyword_object_ids = ["keyword_wield"]
-	card_intrepidsailor.card_type = CardData.CARD_TYPES.ATTACK
+	card_intrepidsailor.card_type = CardData.CARD_TYPES.FACTION
+	card_intrepidsailor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_intrepidsailor.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_intrepidsailor.card_requires_target = true
 	card_intrepidsailor.card_energy_cost = 3
@@ -5795,7 +5829,8 @@ func add_cards_black() -> void:
 	card_keeneyedbuccaneer.card_texture_path = "external/sprites/cards/aniseed/11_keeneyedbuccaneer.png"
 	card_keeneyedbuccaneer.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_keeneyedbuccaneer.card_description = "Shuffle your discard pile into your draw pile. Explore 1{0} for each Sword in your draw pile.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_keeneyedbuccaneer.card_type = CardData.CARD_TYPES.ATTACK
+	card_keeneyedbuccaneer.card_type = CardData.CARD_TYPES.FACTION
+	card_keeneyedbuccaneer.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_keeneyedbuccaneer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_keeneyedbuccaneer.card_requires_target = true
 	card_keeneyedbuccaneer.card_energy_cost = 1
@@ -5835,7 +5870,8 @@ func add_cards_black() -> void:
 	card_aniseedtaxcollector.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_aniseedtaxcollector.card_description = "Exhaust up to 1 card in hand, then Inspect [min_card_amount]."
 	card_aniseedtaxcollector.card_keyword_object_ids = ["keyword_inspect"]
-	card_aniseedtaxcollector.card_type = CardData.CARD_TYPES.SKILL
+	card_aniseedtaxcollector.card_type = CardData.CARD_TYPES.FACTION
+	card_aniseedtaxcollector.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_aniseedtaxcollector.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_aniseedtaxcollector.card_requires_target = false
 	card_aniseedtaxcollector.card_energy_cost = 2
@@ -5855,7 +5891,8 @@ func add_cards_black() -> void:
 	card_royalpurveyor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_royalpurveyor.card_description = "Retain all cards in hand. Appease/Repair [card_influence] to Faction and Craft cards. If discarded, Fertilise [artifact_charge_increase]."
 	card_royalpurveyor.card_keyword_object_ids = ["keyword_appease","keyword_repair", "keyword_fertilise"]
-	card_royalpurveyor.card_type = CardData.CARD_TYPES.SKILL
+	card_royalpurveyor.card_type = CardData.CARD_TYPES.FACTION
+	card_royalpurveyor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_royalpurveyor.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_royalpurveyor.card_requires_target = false
 	card_royalpurveyor.card_energy_cost = 2
@@ -5890,10 +5927,11 @@ func add_cards_black() -> void:
 	card_peddlerinformant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_peddlerinformant.card_description = "Create [number_of_cards] Scroll(s), Create 2 Debt. Reshuffle."
 	card_peddlerinformant.card_keyword_object_ids = ["keyword_scroll","keyword_debt"]
-	card_peddlerinformant.card_type = CardData.CARD_TYPES.SKILL
+	card_peddlerinformant.card_type = CardData.CARD_TYPES.FACTION
+	card_peddlerinformant.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_peddlerinformant.card_rarity = CardData.CARD_RARITIES.RARE
 	card_peddlerinformant.card_requires_target = false
-	card_peddlerinformant.card_energy_cost = 2
+	card_peddlerinformant.card_energy_cost = 1
 	card_peddlerinformant.card_values = {"created_card_object_id":"card_scroll","number_of_cards":1}
 	card_peddlerinformant.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_peddlerinformant.card_play_actions = [
@@ -5920,7 +5958,8 @@ func add_cards_black() -> void:
 	card_taxfarmer.card_texture_path = "external/sprites/cards/aniseed/14_taxfarmer.png"
 	card_taxfarmer.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_taxfarmer.card_description = "Gain 1{0} for every 2 cards in draw pile.".format([Card.MONEY_ICON_KEYWORD])
-	card_taxfarmer.card_type = CardData.CARD_TYPES.SKILL
+	card_taxfarmer.card_type = CardData.CARD_TYPES.FACTION
+	card_taxfarmer.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_taxfarmer.card_rarity = CardData.CARD_RARITIES.RARE
 	card_taxfarmer.card_requires_target = false
 	card_taxfarmer.card_energy_cost = 3
@@ -5942,7 +5981,8 @@ func add_cards_black() -> void:
 	card_swashbucklingchamp.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_swashbucklingchamp.card_description = "Explore [damage]{0}, then improve and wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_swashbucklingchamp.card_keyword_object_ids = ["keyword_wield"]
-	card_swashbucklingchamp.card_type = CardData.CARD_TYPES.ATTACK
+	card_swashbucklingchamp.card_type = CardData.CARD_TYPES.FACTION
+	card_swashbucklingchamp.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_swashbucklingchamp.card_rarity = CardData.CARD_RARITIES.RARE
 	card_swashbucklingchamp.card_requires_target = true
 	card_swashbucklingchamp.card_energy_cost = 2
@@ -5984,7 +6024,8 @@ func add_cards_green() -> void:
 	card_cofferskeeper.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_cofferskeeper.card_description = "Gain [food_amount]{0}, [ore_amount]{1}, [money_amount]{2}. Create [number_of_cards] Debt.".format([Card.FOOD_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
 	card_cofferskeeper.card_keyword_object_ids = ["keyword_debt"]
-	card_cofferskeeper.card_type = CardData.CARD_TYPES.SKILL
+	card_cofferskeeper.card_type = CardData.CARD_TYPES.FACTION
+	card_cofferskeeper.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_cofferskeeper.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_cofferskeeper.card_requires_target = false
 	card_cofferskeeper.card_energy_cost = 1
@@ -6014,7 +6055,8 @@ func add_cards_green() -> void:
 	card_youngmentor.card_texture_path = "external/sprites/cards/jade/02_youngmentor.png"
 	card_youngmentor.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_youngmentor.card_description = "Create [number_of_cards] Fish, discard up to 2 cards."
-	card_youngmentor.card_type = CardData.CARD_TYPES.SKILL
+	card_youngmentor.card_type = CardData.CARD_TYPES.FACTION
+	card_youngmentor.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_youngmentor.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_youngmentor.card_requires_target = false
 	card_youngmentor.card_energy_cost = 1
@@ -6047,7 +6089,8 @@ func add_cards_green() -> void:
 	card_luckfinder.card_texture_path = "external/sprites/cards/jade/03_luckfinder.png"
 	card_luckfinder.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_luckfinder.card_description = "Explore [damage]{0}. Draw 2, then discard 2 cards.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_luckfinder.card_type = CardData.CARD_TYPES.ATTACK
+	card_luckfinder.card_type = CardData.CARD_TYPES.FACTION
+	card_luckfinder.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_luckfinder.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_luckfinder.card_requires_target = true
 	card_luckfinder.card_energy_cost = 1
@@ -6084,7 +6127,8 @@ func add_cards_green() -> void:
 	card_commercialcropper.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_commercialcropper.card_description = "Fertilise [artifact_charge_increase]. Tick down Shop Refresh by [refresh_amount]".format([Card.EXPLORE_ICON_KEYWORD])
 	card_commercialcropper.card_keyword_object_ids = ["keyword_fertilise"]
-	card_commercialcropper.card_type = CardData.CARD_TYPES.SKILL
+	card_commercialcropper.card_type = CardData.CARD_TYPES.FACTION
+	card_commercialcropper.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_commercialcropper.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_commercialcropper.card_requires_target = false
 	card_commercialcropper.card_energy_cost = 1
@@ -6105,7 +6149,8 @@ func add_cards_green() -> void:
 	card_avidsower.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_avidsower.card_description = "Return up to [max_card_amount] cards in your discard pile to the bottom of your draw pile. Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_avidsower.card_keyword_object_ids = ["keyword_fertilise"]
-	card_avidsower.card_type = CardData.CARD_TYPES.SKILL
+	card_avidsower.card_type = CardData.CARD_TYPES.FACTION
+	card_avidsower.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_avidsower.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_avidsower.card_requires_target = false
 	card_avidsower.card_influence = 3
@@ -6133,7 +6178,8 @@ func add_cards_green() -> void:
 	card_greeninformant.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_greeninformant.card_description = "Draw [draw_count], then Weave [number_of_cards] Missives."
 	card_greeninformant.card_keyword_object_ids = ["keyword_weave"]
-	card_greeninformant.card_type = CardData.CARD_TYPES.SKILL
+	card_greeninformant.card_type = CardData.CARD_TYPES.FACTION
+	card_greeninformant.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_greeninformant.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_greeninformant.card_requires_target = false
 	card_greeninformant.card_energy_cost = 1
@@ -6152,7 +6198,8 @@ func add_cards_green() -> void:
 	card_goldenconscript.card_texture_path = "external/sprites/cards/jade/05_goldenconscript.png"
 	card_goldenconscript.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_goldenconscript.card_description = "Explore [damage]{0}, then draw [draw_count].".format([Card.EXPLORE_ICON_KEYWORD])
-	card_goldenconscript.card_type = CardData.CARD_TYPES.ATTACK
+	card_goldenconscript.card_type = CardData.CARD_TYPES.FACTION
+	card_goldenconscript.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_goldenconscript.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_goldenconscript.card_requires_target = true
 	card_goldenconscript.card_energy_cost = 1
@@ -6173,7 +6220,8 @@ func add_cards_green() -> void:
 	card_militantoutsourcer.card_texture_path = "external/sprites/cards/jade/06_militantoutsourcer.png"
 	card_militantoutsourcer.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_militantoutsourcer.card_description = "Explore [damage]{0}. Return 1 card from your discard pile to your hand.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_militantoutsourcer.card_type = CardData.CARD_TYPES.ATTACK
+	card_militantoutsourcer.card_type = CardData.CARD_TYPES.FACTION
+	card_militantoutsourcer.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_militantoutsourcer.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_militantoutsourcer.card_requires_target = true
 	card_militantoutsourcer.card_energy_cost = 1
@@ -6203,7 +6251,8 @@ func add_cards_green() -> void:
 	card_mysticsower.card_texture_path = "external/sprites/cards/jade/07_facetrecaster.png"
 	card_mysticsower.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_mysticsower.card_description = "Create [number_of_cards] Grains. Put up to 2 cards from your discard pile to the bottom of your draw pile."
-	card_mysticsower.card_type = CardData.CARD_TYPES.SKILL
+	card_mysticsower.card_type = CardData.CARD_TYPES.FACTION
+	card_mysticsower.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_mysticsower.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_mysticsower.card_requires_target = false
 	card_mysticsower.card_energy_cost = 1
@@ -6234,7 +6283,8 @@ func add_cards_green() -> void:
 	card_shockrider.card_texture_path = "external/sprites/cards/jade/08_shockrider.png"
 	card_shockrider.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_shockrider.card_description = "Explore [damage]{0}. Forge [ore_required] Sword, Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
-	card_shockrider.card_type = CardData.CARD_TYPES.ATTACK
+	card_shockrider.card_type = CardData.CARD_TYPES.FACTION
+	card_shockrider.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_shockrider.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_shockrider.card_requires_target = true
 	card_shockrider.card_energy_cost = 1
@@ -6256,7 +6306,8 @@ func add_cards_green() -> void:
 	card_everymanleader.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_everymanleader.card_description = "Appease twice up to [max_card_amount] cards in discard pile. Return them to your hand."
 	card_everymanleader.card_keyword_object_ids = ["keyword_appease"]
-	card_everymanleader.card_type = CardData.CARD_TYPES.SKILL
+	card_everymanleader.card_type = CardData.CARD_TYPES.FACTION
+	card_everymanleader.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_everymanleader.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_everymanleader.card_requires_target = false
 	card_everymanleader.card_energy_cost = 2
@@ -6270,7 +6321,7 @@ func add_cards_green() -> void:
 			"random_selection": false,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPES: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND:{}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"card_influence":2,
 			"time_delay": 0.1,
@@ -6289,7 +6340,8 @@ func add_cards_green() -> void:
 	card_inspiredgossipmonger.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_inspiredgossipmonger.card_description = "Rattle all cards in discard pile to gain [insight_amount]{0}.".format([Card.INSIGHT_ICON_KEYWORD])
 	card_inspiredgossipmonger.card_keyword_object_ids = ["keyword_rattle"]
-	card_inspiredgossipmonger.card_type = CardData.CARD_TYPES.SKILL
+	card_inspiredgossipmonger.card_type = CardData.CARD_TYPES.FACTION
+	card_inspiredgossipmonger.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_inspiredgossipmonger.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_inspiredgossipmonger.card_requires_target = false
 	card_inspiredgossipmonger.card_energy_cost = 1
@@ -6308,7 +6360,7 @@ func add_cards_green() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"card_influence":-1,
 			"time_delay": 0.1,
@@ -6326,7 +6378,8 @@ func add_cards_green() -> void:
 	card_wizenedforager.card_texture_path = "external/sprites/cards/jade/11_wizenedforager.png"
 	card_wizenedforager.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_wizenedforager.card_description = "Create 3 Grains. When discarded, create [number_of_cards] Fish instead."
-	card_wizenedforager.card_type = CardData.CARD_TYPES.SKILL
+	card_wizenedforager.card_type = CardData.CARD_TYPES.FACTION
+	card_wizenedforager.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_wizenedforager.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_wizenedforager.card_requires_target = false
 	card_wizenedforager.card_energy_cost = 1
@@ -6360,7 +6413,8 @@ func add_cards_green() -> void:
 	card_gardenmystic.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_gardenmystic.card_description = "Cook [number_of_cards] Delicacy. When discarded, Fertilise [artifact_charge_increase] instead."
 	card_gardenmystic.card_keyword_object_ids = ["keyword_cook", "keyword_delicacy", "keyword_fertilise"]
-	card_gardenmystic.card_type = CardData.CARD_TYPES.SKILL
+	card_gardenmystic.card_type = CardData.CARD_TYPES.FACTION
+	card_gardenmystic.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_gardenmystic.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_gardenmystic.card_requires_target = false
 	card_gardenmystic.card_energy_cost = 1
@@ -6386,7 +6440,8 @@ func add_cards_green() -> void:
 	card_staticrecaster.card_texture_path = "external/sprites/cards/jade/19_staticrecaster.png"
 	card_staticrecaster.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_staticrecaster.card_description = "Search your draw pile for up to [max_card_amount] Jade cards and play them."
-	card_staticrecaster.card_type = CardData.CARD_TYPES.SKILL
+	card_staticrecaster.card_type = CardData.CARD_TYPES.FACTION
+	card_staticrecaster.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_staticrecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_staticrecaster.card_requires_target = false
 	card_staticrecaster.card_energy_cost = 3
@@ -6420,7 +6475,8 @@ func add_cards_green() -> void:
 	card_hoardingstowaway.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_hoardingstowaway.card_description = "Weave [number_of_cards], then return all Craft cards to your hand."
 	card_hoardingstowaway.card_keyword_object_ids = ["keyword_weave","keyword_scroll"]
-	card_hoardingstowaway.card_type = CardData.CARD_TYPES.SKILL
+	card_hoardingstowaway.card_type = CardData.CARD_TYPES.FACTION
+	card_hoardingstowaway.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_hoardingstowaway.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_hoardingstowaway.card_requires_target = false
 	card_hoardingstowaway.card_influence = 4
@@ -6453,7 +6509,8 @@ func add_cards_green() -> void:
 	card_supremerecaster.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_supremerecaster.card_description = "Weave a Scroll, Cook a Delicacy, then Draw [draw_count]."
 	card_supremerecaster.card_keyword_object_ids = ["keyword_weave","keyword_scroll", "keyword_cook", "keyword_delicacy"]
-	card_supremerecaster.card_type = CardData.CARD_TYPES.SKILL
+	card_supremerecaster.card_type = CardData.CARD_TYPES.FACTION
+	card_supremerecaster.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_supremerecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_supremerecaster.card_requires_target = false
 	card_supremerecaster.card_energy_cost = 2
@@ -6473,7 +6530,8 @@ func add_cards_green() -> void:
 	card_villagehero.card_texture_path = "external/sprites/cards/jade/14_villagehero.png"
 	card_villagehero.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_villagehero.card_description = "Explore 1{0} for each Faction card in discard pile.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_villagehero.card_type = CardData.CARD_TYPES.ATTACK
+	card_villagehero.card_type = CardData.CARD_TYPES.FACTION
+	card_villagehero.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_villagehero.card_rarity = CardData.CARD_RARITIES.RARE
 	card_villagehero.card_requires_target = true
 	card_villagehero.card_energy_cost = 2
@@ -6489,7 +6547,7 @@ func add_cards_green() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to add. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPES: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 			"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
 			"multiplied_values": ["damage"],
 			"action_data": [{Scripts.ACTION_ATTACK_GENERATOR: {
@@ -6508,7 +6566,8 @@ func add_cards_green() -> void:
 	card_solverofriddles.card_texture_path = "external/sprites/cards/jade/15_solverofriddles.png"
 	card_solverofriddles.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_solverofriddles.card_description = "Exhaust 1 Scroll in hand to gain 2{0}, 2{1}, 2{2}, 2{3}".format([Card.FOOD_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
-	card_solverofriddles.card_type = CardData.CARD_TYPES.SKILL
+	card_solverofriddles.card_type = CardData.CARD_TYPES.FACTION
+	card_solverofriddles.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_solverofriddles.card_rarity = CardData.CARD_RARITIES.RARE
 	card_solverofriddles.card_requires_target = false
 	card_solverofriddles.card_energy_cost = 2
@@ -6542,7 +6601,8 @@ func add_cards_gold() -> void:
 	card_spiceguard.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_spiceguard.card_description = "Forge [number_of_cards] Swords.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_spiceguard.card_keyword_object_ids = ["keyword_forge","keyword_sword"]
-	card_spiceguard.card_type = CardData.CARD_TYPES.ATTACK
+	card_spiceguard.card_type = CardData.CARD_TYPES.FACTION
+	card_spiceguard.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_spiceguard.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_spiceguard.card_requires_target = true
 	card_spiceguard.card_energy_cost = 2
@@ -6561,7 +6621,8 @@ func add_cards_gold() -> void:
 	card_cengkihemissary.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_cengkihemissary.card_description = "Appease [min_card_amount] random cards in discard pile."
 	card_cengkihemissary.card_keyword_object_ids = ["keyword_appease"]
-	card_cengkihemissary.card_type = CardData.CARD_TYPES.SKILL
+	card_cengkihemissary.card_type = CardData.CARD_TYPES.FACTION
+	card_cengkihemissary.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cengkihemissary.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_cengkihemissary.card_requires_target = false
 	card_cengkihemissary.card_energy_cost = 1
@@ -6576,7 +6637,7 @@ func add_cards_gold() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to rattle. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"card_influence":1,
 			"time_delay": 0.1,
@@ -6595,7 +6656,8 @@ func add_cards_gold() -> void:
 	card_happysailor.card_texture_path = "external/sprites/cards/cengkih/03_happysailor.png"
 	card_happysailor.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_happysailor.card_description = "Explore [damage]{0}. Draw [draw_count].".format([Card.EXPLORE_ICON_KEYWORD])
-	card_happysailor.card_type = CardData.CARD_TYPES.ATTACK
+	card_happysailor.card_type = CardData.CARD_TYPES.FACTION
+	card_happysailor.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_happysailor.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_happysailor.card_requires_target = true
 	card_happysailor.card_energy_cost = 3
@@ -6619,7 +6681,8 @@ func add_cards_gold() -> void:
 	card_shucker.card_texture_path = "external/sprites/cards/cengkih/04_shucker.png"
 	card_shucker.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_shucker.card_description = "Create [number_of_cards] Fish. Gain [money_amount]{0}.".format([Card.MONEY_ICON_KEYWORD])
-	card_shucker.card_type = CardData.CARD_TYPES.SKILL
+	card_shucker.card_type = CardData.CARD_TYPES.FACTION
+	card_shucker.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_shucker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_shucker.card_requires_target = false
 	card_shucker.card_energy_cost = 1
@@ -6642,7 +6705,8 @@ func add_cards_gold() -> void:
 	card_foresttracker.card_texture_path = "external/sprites/cards/cengkih/05_foresttracker.png"
 	card_foresttracker.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_foresttracker.card_description = "Explore [damage]. Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
-	card_foresttracker.card_type = CardData.CARD_TYPES.ATTACK
+	card_foresttracker.card_type = CardData.CARD_TYPES.FACTION
+	card_foresttracker.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_foresttracker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_foresttracker.card_requires_target = true
 	card_foresttracker.card_energy_cost = 1
@@ -6663,7 +6727,8 @@ func add_cards_gold() -> void:
 	card_flintlockschooner.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_flintlockschooner.card_description = "Repair all Crafts in discard pile by [card_influence]. Wield [min_card_amount]."
 	card_flintlockschooner.card_keyword_object_ids = ["keyword_repair", "keyword_wield"]
-	card_flintlockschooner.card_type = CardData.CARD_TYPES.SKILL
+	card_flintlockschooner.card_type = CardData.CARD_TYPES.FACTION
+	card_flintlockschooner.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_flintlockschooner.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_flintlockschooner.card_requires_target = false
 	card_flintlockschooner.card_energy_cost = 3
@@ -6707,7 +6772,8 @@ func add_cards_gold() -> void:
 	card_reveredsmithy.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_reveredsmithy.card_description = "Forge [ore_required] Treasures."
 	card_reveredsmithy.card_keyword_object_ids = ["keyword_forge","keyword_treasure"]
-	card_reveredsmithy.card_type = CardData.CARD_TYPES.SKILL
+	card_reveredsmithy.card_type = CardData.CARD_TYPES.FACTION
+	card_reveredsmithy.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_reveredsmithy.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_reveredsmithy.card_requires_target = false
 	card_reveredsmithy.card_energy_cost = 2
@@ -6725,7 +6791,8 @@ func add_cards_gold() -> void:
 	card_ravineexplorer.card_texture_path = "external/sprites/cards/cengkih/08_ravineexplorer.png"
 	card_ravineexplorer.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_ravineexplorer.card_description = "Explore [damage]{0}. If you've completed an expedition, create 1 Grain and 1 Fish.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_ravineexplorer.card_type = CardData.CARD_TYPES.ATTACK
+	card_ravineexplorer.card_type = CardData.CARD_TYPES.FACTION
+	card_ravineexplorer.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_ravineexplorer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_ravineexplorer.card_requires_target = true
 	card_ravineexplorer.card_energy_cost = 1
@@ -6762,7 +6829,8 @@ func add_cards_gold() -> void:
 	card_flintlockcrier.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_flintlockcrier.card_description = "Return up to [max_card_amount] cards from your discard pile to your hand. Rattle them. You gain [energy_amount]{0}.".format([Card.ENERGY_ICON_KEYWORD])
 	card_flintlockcrier.card_keyword_object_ids = ["keyword_rattle"]
-	card_flintlockcrier.card_type = CardData.CARD_TYPES.SKILL
+	card_flintlockcrier.card_type = CardData.CARD_TYPES.FACTION
+	card_flintlockcrier.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_flintlockcrier.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockcrier.card_requires_target = false
 	card_flintlockcrier.card_energy_cost = 3
@@ -6799,7 +6867,8 @@ func add_cards_gold() -> void:
 	card_cunningeyedguard.card_texture_path = "external/sprites/cards/cengkih/10_cunningeyedguard.png"
 	card_cunningeyedguard.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_cunningeyedguard.card_description = "Discard [min_card_amount] cards, then Explore [damage]{0}.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_cunningeyedguard.card_type = CardData.CARD_TYPES.ATTACK
+	card_cunningeyedguard.card_type = CardData.CARD_TYPES.FACTION
+	card_cunningeyedguard.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cunningeyedguard.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_cunningeyedguard.card_requires_target = true
 	card_cunningeyedguard.card_energy_cost = 2
@@ -6834,7 +6903,8 @@ func add_cards_gold() -> void:
 	card_cengkihrecruiter.card_texture_path = "external/sprites/cards/cengkih/16_cengkihrecruiter.png"
 	card_cengkihrecruiter.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_cengkihrecruiter.card_description = "Search your deck for [min_card_amount] random Cengkih cards and add to your hand."
-	card_cengkihrecruiter.card_type = CardData.CARD_TYPES.SKILL
+	card_cengkihrecruiter.card_type = CardData.CARD_TYPES.FACTION
+	card_cengkihrecruiter.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cengkihrecruiter.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_cengkihrecruiter.card_requires_target = false
 	card_cengkihrecruiter.card_energy_cost = 1
@@ -6870,7 +6940,8 @@ func add_cards_gold() -> void:
 	card_cengkihscribe.card_texture_path = "external/sprites/cards/cengkih/11_cengkihscribe.png"
 	card_cengkihscribe.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_cengkihscribe.card_description = "Randomly return [min_card_amount] Craft cards from your discard pile to your hand. If you have 8 or more cards in your hand, gain [insight_amount] Insight."
-	card_cengkihscribe.card_type = CardData.CARD_TYPES.SKILL
+	card_cengkihscribe.card_type = CardData.CARD_TYPES.FACTION
+	card_cengkihscribe.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cengkihscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_cengkihscribe.card_requires_target = false
 	card_cengkihscribe.card_energy_cost = 2
@@ -6894,7 +6965,7 @@ func add_cards_gold() -> void:
 				"action_data": [
 				{
 					Scripts.ACTION_ADD_CARDS_TO_HAND:{
-						
+				
 					}}]
 			}
 		}
@@ -6909,7 +6980,8 @@ func add_cards_gold() -> void:
 	card_intrepidcollector.card_texture_path = "external/sprites/cards/cengkih/12_intrepidcollector.png"
 	card_intrepidcollector.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_intrepidcollector.card_description = "Explore [damage]{0}. If you completed an expedition, gain [money_amount]{1}. Tick down Shop Refresh by 2.".format([Card.EXPLORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
-	card_intrepidcollector.card_type = CardData.CARD_TYPES.ATTACK
+	card_intrepidcollector.card_type = CardData.CARD_TYPES.FACTION
+	card_intrepidcollector.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_intrepidcollector.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_intrepidcollector.card_requires_target = true
 	card_intrepidcollector.card_energy_cost = 1
@@ -6937,7 +7009,8 @@ func add_cards_gold() -> void:
 	card_royalcook.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_royalcook.card_description = "If you have 20 or more cards in draw pile, gain [insight_amount] insight, then Cook [insight_required] Delicacies."
 	card_royalcook.card_keyword_object_ids = ["keyword_cook"]
-	card_royalcook.card_type = CardData.CARD_TYPES.SKILL
+	card_royalcook.card_type = CardData.CARD_TYPES.FACTION
+	card_royalcook.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_royalcook.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_royalcook.card_requires_target = false
 	card_royalcook.card_energy_cost = 1
@@ -6961,7 +7034,8 @@ func add_cards_gold() -> void:
 	card_cengkihnoble.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_cengkihnoble.card_description = "Draw 2 cards. Gain 2{0}. Create 1 Debt.".format([Card.ENERGY_ICON_KEYWORD])
 	card_cengkihnoble.card_keyword_object_ids = ["keyword_debt"]
-	card_cengkihnoble.card_type = CardData.CARD_TYPES.SKILL
+	card_cengkihnoble.card_type = CardData.CARD_TYPES.FACTION
+	card_cengkihnoble.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cengkihnoble.card_rarity = CardData.CARD_RARITIES.RARE
 	card_cengkihnoble.card_requires_target = false
 	card_cengkihnoble.card_energy_cost = 1
@@ -6988,7 +7062,8 @@ func add_cards_gold() -> void:
 	card_tradingenvoy.card_texture_path = "external/sprites/cards/cengkih/14_tradingenvoy.png"
 	card_tradingenvoy.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_tradingenvoy.card_description = "Exhaust up to 2 cards in hand to gain [money_amount]{0} each.".format([Card.MONEY_ICON_KEYWORD])
-	card_tradingenvoy.card_type = CardData.CARD_TYPES.SKILL
+	card_tradingenvoy.card_type = CardData.CARD_TYPES.FACTION
+	card_tradingenvoy.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_tradingenvoy.card_rarity = CardData.CARD_RARITIES.RARE
 	card_tradingenvoy.card_requires_target = false
 	card_tradingenvoy.card_energy_cost = 1
@@ -7021,7 +7096,8 @@ func add_cards_gold() -> void:
 	card_provisionalcaptain.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_provisionalcaptain.card_description = "Rattle all cards in discard pile. Wield all Swords in discard pile."
 	card_provisionalcaptain.card_keyword_object_ids = ["keyword_rattle","keyword_wield"]
-	card_provisionalcaptain.card_type = CardData.CARD_TYPES.SKILL
+	card_provisionalcaptain.card_type = CardData.CARD_TYPES.FACTION
+	card_provisionalcaptain.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_provisionalcaptain.card_rarity = CardData.CARD_RARITIES.RARE
 	card_provisionalcaptain.card_requires_target = false
 	card_provisionalcaptain.card_energy_cost = 1
@@ -7050,7 +7126,7 @@ func add_cards_gold() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
-				"validator_data":[{Scripts.VALIDATOR_CARD_RARITY:[{"card_rarities_exclude":[CardData.CARD_RARITIES.GENERATED]}]}],
+				"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:[{"card_types":[CardData.CARD_TYPES.FACTION]}]}],
 				"action_data": [
 				{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-1}}]
 				}
