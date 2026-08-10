@@ -641,9 +641,9 @@ func draw_cards(number_of_cards: int, hand_card_count_max: int, first_pos: bool 
 		
 		# draw
 		var card_data: CardData = HandManager.player_draw.pop_back()
-		HandManager.player_hand.append(card_data)
+		HandManager.player_hand.push_front(card_data)
 		
-		var _card: Card = hand.create_cards_in_hand([card_data], first_pos)[0]
+		var _card: Card = hand.create_cards_in_hand([card_data], true)[0]
 		# perform draw actions
 		if len(card_data.card_draw_actions) > 0:
 			_perform_card_actions(card_data, [null], card_data.card_draw_actions, false, false)

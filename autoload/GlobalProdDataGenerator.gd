@@ -69,7 +69,7 @@ var sift_action_data: Array[Dictionary] = [{
 	{
 		"min_cards_are_required_for_action": false,
 		"random_selection": false,
-		"left_most": true,
+		"right_most": true,
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
 		"action_data": [
@@ -4874,7 +4874,7 @@ func add_cards_purple() -> void:
 	card_cunningtrader.card_color_id = "color_{0}".format([color])
 	card_cunningtrader.card_texture_path = "external/sprites/cards/pearl/02_cunningtrader.png"
 	card_cunningtrader.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_cunningtrader.card_description = "Gains [ore_amount]{0}. Create 1 Debt.".format([Card.ORE_ICON_KEYWORD])
+	card_cunningtrader.card_description = "Gain [ore_amount]{0}. Create 1 Debt.".format([Card.ORE_ICON_KEYWORD])
 	card_cunningtrader.card_keyword_object_ids = ["keyword_debt"]
 	card_cunningtrader.card_type = CardData.CARD_TYPES.SKILL
 	card_cunningtrader.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -4905,20 +4905,17 @@ func add_cards_purple() -> void:
 	card_pearlemissary.card_color_id = "color_{0}".format([color])
 	card_pearlemissary.card_texture_path = "external/sprites/cards/pearl/01_pearlemissary.png"
 	card_pearlemissary.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearlemissary.card_description = "Draws [draw_count]. When discarded, randomly Appease 2 cards in discard pile."
+	card_pearlemissary.card_description = "Sweep [min_card_amount] and Draw [draw_count]. When discarded, randomly Appease 2 cards in discard pile."
 	card_pearlemissary.card_keyword_object_ids = ["keyword_appease"]
 	card_pearlemissary.card_type = CardData.CARD_TYPES.FACTION
 	card_pearlemissary.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_pearlemissary.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_pearlemissary.card_requires_target = false
 	card_pearlemissary.card_energy_cost = 1
-	card_pearlemissary.card_values = {"card_influence": 1,"draw_count": 2}
+	card_pearlemissary.card_values = {"card_influence": 1,"draw_count": 3, "min_card_amount": 2, "max_card_amount": 2}
 	card_pearlemissary.card_upgrade_value_improvements = {"draw_count": 1}
 	card_pearlemissary.card_influence = 3
-	card_pearlemissary.card_play_actions = [
-		{
-		Scripts.ACTION_DRAW_GENERATOR: {},
-		}]
+	card_pearlemissary.card_play_actions = sweep_action_data
 	card_pearlemissary.card_play_actions.append(influence_action)
 	card_pearlemissary.card_end_of_turn_actions = end_action_data
 
@@ -5002,7 +4999,7 @@ func add_cards_purple() -> void:
 			{Scripts.ACTION_RETAIN_CARDS:{}},
 			{
 				Scripts.ACTION_VALIDATOR:{
-					"validator_data":[{Scripts.VALIDATOR_CARD_TYPES:{"card_rarities_type":[CardData.CARD_TYPES.FACTION]}}],
+					"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}],
 					"passed_action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":2}}]
 				}
 			}]
@@ -5101,7 +5098,7 @@ func add_cards_purple() -> void:
 	card_pearldiplomat.card_color_id = "color_{0}".format([color])
 	card_pearldiplomat.card_texture_path = "external/sprites/cards/pearl/06_pearldiplomat.png"
 	card_pearldiplomat.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Appease [max_card_amount] Cards in discard pile."
+	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Sift [draw_count] for Pearl. Appease [max_card_amount] Cards in discard pile."
 	card_pearldiplomat.card_keyword_object_ids = ["keyword_spice","keyword_appease"]
 	card_pearldiplomat.card_type = CardData.CARD_TYPES.FACTION
 	card_pearldiplomat.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -5500,7 +5497,7 @@ func add_cards_purple() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_TYPES: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
+				"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 				"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {}}]
 		}}
 	]
@@ -6321,7 +6318,7 @@ func add_cards_green() -> void:
 			"random_selection": false,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_TYPES: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND:{}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"card_influence":2,
 			"time_delay": 0.1,
@@ -6547,7 +6544,7 @@ func add_cards_green() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to add. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_TYPES: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 			"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
 			"multiplied_values": ["damage"],
 			"action_data": [{Scripts.ACTION_ATTACK_GENERATOR: {
