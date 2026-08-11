@@ -7,7 +7,8 @@ func perform_action():
 	for action_interceptor_processor in action_interceptor_processors:
 		var hand_card_count_max: int = action_interceptor_processor.get_shadowed_action_values("hand_card_count_max", HandManager.PLAYER_DEFAULT_HAND_CARD_COUNT_MAX)
 		var first_pos: bool = action_interceptor_processor.get_shadowed_action_values("first_pos",false)
-		HandManager.draw_cards(1, hand_card_count_max, first_pos)
+		var check_max: bool = action_interceptor_processor.get_shadowed_action_values("check_max",false)
+		HandManager.draw_cards(1, hand_card_count_max, first_pos, check_max)
 
 func _to_string():
 	return "Draw Action"

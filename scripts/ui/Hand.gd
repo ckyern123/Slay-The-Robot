@@ -59,7 +59,7 @@ var middle: float = (size[0] / 2) - MIDDLE_OFFSET # calculate middle X position 
 
 # y offsets for when the player hovers over a card
 const CARD_UNHOVERED_HEIGHT = 0.0
-const CARD_HOVERED_HEIGHT = -50
+const CARD_HOVERED_HEIGHT = -120
 
 const CARD_PICK_POSITIONS: Array = [
 	[0.0],
@@ -73,7 +73,7 @@ const CARD_PICK_POSITIONS: Array = [
 	[-2.75, -2.25, -1.5, -0.75, 0.0, 0.75 ,1.5, 2.25, 2.75],
 	[-3.25, -2.75, -2.25, -1.5, -0.75, 0.75 ,1.5, 2.25, 2.75, 3.25],
 ]
-const CARD_PICK_Y_OFFSET = -500 # Where picked cards in hand appear relative to the Hand container
+const CARD_PICK_Y_OFFSET = -600 # Where picked cards in hand appear relative to the Hand container
 
 
 func _ready():
@@ -187,14 +187,19 @@ func update_hand_card_hover(hovered_card: Card = null) -> void:
 		var card_in_hand: Card = card_data_to_hand_card.get(card_data)
 		if card_in_hand == null:
 			continue
-		
 		if hovered_card == card_in_hand and hovered_card and not hovered_card.is_picked:
 			# hovered card
-			card_in_hand.position.y = CARD_HOVERED_HEIGHT - 50
+			var tween = card_in_hand.create_tween()
+			tween.tween_property(card_in_hand,"position",Vector2(card_in_hand.position.x,CARD_HOVERED_HEIGHT),0.1)
+			tween.set_ease(Tween.EaseType.EASE_OUT)
+			#card_in_hand.position.y = CARD_HOVERED_HEIGHT
 			card_in_hand.z_index = 50
 		else:
 			# unhovered cards
-			card_in_hand.position.y = CARD_UNHOVERED_HEIGHT
+			var tween = card_in_hand.create_tween()
+			tween.tween_property(card_in_hand,"position",Vector2(card_in_hand.position.x,CARD_UNHOVERED_HEIGHT),0.1)
+			tween.set_ease(Tween.EaseType.EASE_OUT)
+		#	card_in_hand.position.y = CARD_UNHOVERED_HEIGHT
 			card_in_hand.z_index = z_index_counter
 			z_index_counter += 1
 

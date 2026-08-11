@@ -19,6 +19,7 @@ class_name PlayerData
 @export var player_refresh: int = 4
 @export var blight: int = 0
 @export var player_spice_exhaust: int = 0
+@export var max_card_layover: int = 0
 
 var player_energy: int = 3 # in combat energy. Not saved.
 ## The energy the player gains each turn. This can be modified.

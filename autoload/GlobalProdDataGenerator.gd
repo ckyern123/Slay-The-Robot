@@ -84,45 +84,92 @@ var sift_faction_data: Array[Dictionary] = [{
 	{
 		"min_cards_are_required_for_action": false,
 		"random_selection": false,
-		"right_most": true,
+		"left_most": true,
+		"custom_key_names":{"min_card_amount":"draw_count","max_card_amount":"draw_count", "slice_num":"draw_count"},
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-		"action_data": [
-		{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}], "passed_action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}
-		]
-	}
-	},
-	{Scripts.ACTION_DRAW_GENERATOR:{}}]
+		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types_exclude":[CardData.CARD_TYPES.FACTION]}}],
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
+	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
 
-var sift_craft_data: Array[Dictionary] = [{
+var sift_pearl_data: Array[Dictionary] = [{
 	Scripts.ACTION_PICK_CARDS:
 	{
 		"min_cards_are_required_for_action": false,
 		"random_selection": false,
-		"right_most": true,
+		"left_most": true,
+		"custom_key_names":{"min_card_amount":"draw_count","max_card_amount":"draw_count", "slice_num":"draw_count"},
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-		"action_data": [
-		{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.CRAFT]}}], "passed_action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}
-		]
-	}
-	},
-	{Scripts.ACTION_DRAW_GENERATOR:{}}]
+		"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes_exclude":[CardData.CARD_SUBTYPES.PEARL]}}],
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
+	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
+
+var sift_cengkih_data: Array[Dictionary] = [{
+	Scripts.ACTION_PICK_CARDS:
+	{
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"left_most": true,
+		"custom_key_names":{"min_card_amount":"draw_count","max_card_amount":"draw_count", "slice_num":"draw_count"},
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes_exclude":[CardData.CARD_SUBTYPES.CENGKIH]}}],
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
+	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
+
+var sift_aniseed_data: Array[Dictionary] = [{
+	Scripts.ACTION_PICK_CARDS:
+	{
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"left_most": true,
+		"custom_key_names":{"min_card_amount":"draw_count","max_card_amount":"draw_count", "slice_num":"draw_count"},
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes_exclude":[CardData.CARD_SUBTYPES.ANISEED]}}],
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
+	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
+
+var sift_jade_data: Array[Dictionary] = [{
+	Scripts.ACTION_PICK_CARDS:
+	{
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"left_most": true,
+		"custom_key_names":{"min_card_amount":"draw_count","max_card_amount":"draw_count", "slice_num":"draw_count"},
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes_exclude":[CardData.CARD_SUBTYPES.JADE]}}],
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
+	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
+
 
 var sift_food_data: Array[Dictionary] = [{
 	Scripts.ACTION_PICK_CARDS:
 	{
 		"min_cards_are_required_for_action": false,
 		"random_selection": false,
-		"right_most": true,
+		"left_most": true,
+		"custom_key_names":{"min_card_amount":"draw_count","max_card_amount":"draw_count", "slice_num":"draw_count"},
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-		"action_data": [
-		{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_subtypes":[CardData.CARD_SUBTYPES.FOOD]}}], "passed_action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}
-		]
-	}
-	},
-	{Scripts.ACTION_DRAW_GENERATOR:{}}]
+		"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes_exclude":[CardData.CARD_SUBTYPES.FOOD]}}],
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
+	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
+
+var sift_craft_data: Array[Dictionary] = [{
+	Scripts.ACTION_PICK_CARDS:
+	{
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"left_most": true,
+		"custom_key_names":{"min_card_amount":"draw_count","max_card_amount":"draw_count", "slice_num":"draw_count"},
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types_exclude":[CardData.CARD_TYPES.CRAFT]}}],
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
+	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
 	
 var durability_action_data: Array[Dictionary] = [
 			# check flag when drawn	
@@ -2750,7 +2797,7 @@ func add_characters() -> void:
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green",
+		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green", "card_flintlockmage","card_sword","card_sword","card_flintlockmage","card_flintlockmage","card_flintlockmage","card_sword","card_sword","card_flintlockmage","card_flintlockmage","card_sword","card_sword","card_sword","card_sword","card_sword","card_sword","card_sword","card_sword","card_sword","card_sword",
 		"card_basic_explore_green", "card_basic_explore_green"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
@@ -5711,32 +5758,16 @@ func add_cards_black() -> void:
 	card_flintlockmage.card_color_id = "color_{0}".format([color])
 	card_flintlockmage.card_texture_path = "external/sprites/cards/aniseed/07_flintlockmage.png"
 	card_flintlockmage.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_flintlockmage.card_description = "Forge [number_of_cards] Sword. Draw [draw_count], then discard a card."
-	card_flintlockmage.card_keyword_object_ids = ["keyword_forge","keyword_sword"]
+	card_flintlockmage.card_description = "Forge [number_of_cards] Sword(s). Sift [min_card_amount] for Crafts."
+	card_flintlockmage.card_keyword_object_ids = ["keyword_forge","keyword_sword", "keyword_sift"]
 	card_flintlockmage.card_type = CardData.CARD_TYPES.FACTION
 	card_flintlockmage.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_flintlockmage.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockmage.card_requires_target = false
 	card_flintlockmage.card_energy_cost = 1
-	card_flintlockmage.card_values = {"ore_required":1, "ore_amount":-1,"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":2}
-	card_flintlockmage.card_upgrade_value_improvements = {"ore_required":1, "ore_amount":-1,"draw_count": 1}
-	card_flintlockmage.card_play_actions = [
-		{
-		Scripts.ACTION_PICK_CARDS:{
-			"min_card_amount": 1,
-			"max_card_amount": 1,
-			"min_cards_are_required_for_action": true,
-			"card_pick_type": HandManager.HAND_PILE,
-			"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-			"random_selection": false,
-			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {
-			}
-			}]
-		}},
-		{
-		Scripts.ACTION_DRAW_GENERATOR: {}
-		},
-		]
+	card_flintlockmage.card_values = {"ore_required":1, "ore_amount":-1,"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":8}
+	card_flintlockmage.card_upgrade_value_improvements = {"ore_required":1, "ore_amount":-1,"draw_count":4, "min_card_amount":1, "max_card_amount":1}
+	card_flintlockmage.card_play_actions = sift_food_data
 	card_flintlockmage.card_play_actions.append(forge_action)
 	card_flintlockmage.card_play_actions.append(influence_action)
 	card_flintlockmage.card_end_of_turn_actions = end_action_data

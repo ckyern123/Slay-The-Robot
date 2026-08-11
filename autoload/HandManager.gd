@@ -624,11 +624,13 @@ func _on_card_turn_influence_changed(card_data: CardData):
 ## Can take a hand_card_count_max which restricts cards beyond the hand size limit.
 ## NOTE: This will almost always be called multiple times with card_number = 1 since each
 ## draw will be seperated on the stack as its own action.
-func draw_cards(number_of_cards: int, hand_card_count_max: int, first_pos: bool = false) -> void:
+func draw_cards(number_of_cards: int, hand_card_count_max: int, first_pos: bool = false, check_max: bool = false) -> void:
 	for i in number_of_cards:
 		# hand full, stop drawing and move drawn card to discard
 		if len(HandManager.player_hand) >= hand_card_count_max:
 			Signals.card_hand_limit_reached.emit()
+			if (check_max):
+				Global.player_data.max_card_layover += 1
 			break
 		# check if enough cards to draw
 		if len(HandManager.player_draw) == 0:
@@ -672,8 +674,8 @@ func add_cards_to_hand(cards: Array[CardData], hand_card_count_max: int = HandMa
 		if not player_hand.has(card_data):
 			if len(HandManager.player_hand) < hand_card_count_max:
 				HandManager.move_card_to_limbo(card_data)
-				var card: Card = hand.create_cards_in_hand([card_data])[0]
-				HandManager.player_hand.append(card_data)
+				var card: Card = hand.create_cards_in_hand([card_data], true)[0]
+				HandManager.player_hand.push_front(card_data)
 
 				Signals.card_added_to_hand.emit(card_data)
 			else:

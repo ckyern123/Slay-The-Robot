@@ -94,7 +94,8 @@ func perform_action():
 	# determine if its possible to select the cards from the input card set
 	# the number of min cards and min requirement determine if the action is performable
 	# and if its automatically performed
-	var pickable_cards: Array[CardData] = get_pickable_cards() # automatically obtain list of pickable cards from an input set
+	var slice_num: int = get_action_value("slice_num", 0) 	# get partial viewing
+	var pickable_cards: Array[CardData] = get_pickable_cards(slice_num) # automatically obtain list of pickable cards from an input set
 	
 	# card selection params
 	var min_cards_are_required: bool = get_min_cards_are_required_for_action()
@@ -264,8 +265,12 @@ func get_card_pick_can_back_out() -> bool:
 
 ## Gets all cards that meet pickable criteria from a given input list of cards.
 ## This factors in additonal validators that can be supplied.
-func get_pickable_cards() -> Array[CardData]:
+func get_pickable_cards(slice_num: int = 0) -> Array[CardData]:
 	var input_cardset: Array[CardData] = get_input_cardset()
+	if (slice_num > 0):
+		var slice_num_final = slice_num - Global.player_data.max_card_layover
+		input_cardset = input_cardset.slice(0,slice_num_final)
+	Global.player_data.max_card_layover = 0
 	var pickable_cards: Array[CardData] = []
 	var parent_card: CardData = get_action_card_data()
 	
