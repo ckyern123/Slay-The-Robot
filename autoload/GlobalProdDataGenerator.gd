@@ -5257,7 +5257,6 @@ func add_cards_purple() -> void:
 		Scripts.ACTION_ATTACK_GENERATOR:{}
 		}
 	]
-	card_dregpilferer.card_play_actions.append(weave_action)
 	card_dregpilferer.card_play_actions.append(influence_action)
 	card_dregpilferer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_dregpilferer)
@@ -6607,7 +6606,33 @@ func add_cards_green() -> void:
 	card_supremerecaster.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_supremerecaster)
 	
-		
+	var card_unrulysourcer: CardData = CardData.new("card_unrulysourcer")
+	card_unrulysourcer.card_name = "Village Hero"
+	card_unrulysourcer.card_color_id = "color_{0}".format([color])
+	card_unrulysourcer.card_texture_path = "external/sprites/cards/jade/14_unrulysourcer.png"
+	card_unrulysourcer.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
+	card_unrulysourcer.card_description = "Explore [damage]{0}, Gain [food_amount]{1}.\nFRONTIER: If not in Frontier, create 1 Rebel.".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
+	card_unrulysourcer.card_type = CardData.CARD_TYPES.FACTION
+	card_unrulysourcer.card_subtype = CardData.CARD_SUBTYPES.JADE
+	card_unrulysourcer.card_rarity = CardData.CARD_RARITIES.RARE
+	card_unrulysourcer.card_requires_target = true
+	card_unrulysourcer.card_energy_cost = 1
+	card_unrulysourcer.card_values = {"damage":3,"food_amount":3, "number_of_attacks":1}
+	card_unrulysourcer.card_upgrade_value_improvements = {"damage":1,"food_amount":1}
+	card_unrulysourcer.card_glow_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
+	card_unrulysourcer.card_play_actions = [{
+		Scripts.ACTION_VALIDATOR:{
+			"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],
+			"failed_action_data":[{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rebel","number_of_cards":1}}]
+		}
+	},
+			{Scripts.ACTION_ATTACK_GENERATOR:{}
+		}]
+	card_unrulysourcer.card_play_actions.append(influence_action)
+	card_unrulysourcer.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_unrulysourcer)
+	
+	
 	var card_villagehero: CardData = CardData.new("card_villagehero")
 	card_villagehero.card_name = "Village Hero"
 	card_villagehero.card_color_id = "color_{0}".format([color])
@@ -7148,11 +7173,11 @@ func add_cards_gold() -> void:
 	card_noblesorter.card_keyword_object_ids = ["keyword_cook"]
 	card_noblesorter.card_type = CardData.CARD_TYPES.FACTION
 	card_noblesorter.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
-	card_noblesorter.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_noblesorter.card_rarity = CardData.CARD_RARITIES.RARE
 	card_noblesorter.card_requires_target = false
 	card_noblesorter.card_energy_cost = 1
 	card_noblesorter.card_influence = 3
-	card_noblesorter.card_values = {"discard_count":4,"draw_count":2,}
+	card_noblesorter.card_values = {"discard_count":4,"draw_count":3,}
 	card_noblesorter.card_upgrade_value_improvements = {"draw_count":1}
 	card_noblesorter.card_play_actions = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -7216,7 +7241,7 @@ func add_cards_gold() -> void:
 	card_cengkihascetic.card_keyword_object_ids = ["keyword_frontier"]
 	card_cengkihascetic.card_type = CardData.CARD_TYPES.FACTION
 	card_cengkihascetic.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
-	card_cengkihascetic.card_rarity = CardData.CARD_RARITIES.RARE
+	card_cengkihascetic.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_cengkihascetic.card_requires_target = false
 	card_cengkihascetic.card_energy_cost = 0
 	card_cengkihascetic.card_influence = 3
