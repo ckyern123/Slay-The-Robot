@@ -329,8 +329,38 @@ func get_card_description(selected_target: BaseCombatant = null) -> String:
 		FileLoader.load_texture(room_texture_path)
 		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,room_texture_path])
 		modified_description_bb_code = modified_description_bb_code.replace(ROOM_ICON_KEYWORD, image_bb_code)
+	
+	if card_data.card_description.contains("Appease"):
+		var keyword_bb_code: String = "[color=plum]{0}[/color]".format(["Appease"])
+		modified_description_bb_code = modified_description_bb_code.replace("Appease", keyword_bb_code)
 		
+	if card_data.card_description.contains("Fertilise"):
+		var keyword_bb_code: String = "[color=spring_green]{0}[/color]".format(["Fertilise"])
+		modified_description_bb_code = modified_description_bb_code.replace("Fertilise", keyword_bb_code)
 		
+	if card_data.card_description.contains("Sweep"):
+		var keyword_bb_code: String = "[color=yellow]{0}[/color]".format(["Sweep"])
+		modified_description_bb_code = modified_description_bb_code.replace("Sweep", keyword_bb_code)
+		
+	if card_data.card_description.contains("Sift"):
+		var keyword_bb_code: String = "[color=yellow]{0}[/color]".format(["Sift"])
+		modified_description_bb_code = modified_description_bb_code.replace("Sift", keyword_bb_code)
+		
+	if card_data.card_description.contains("Rattle"):
+		var keyword_bb_code: String = "[color=orange_red]{0}[/color]".format(["Rattle"])
+		modified_description_bb_code = modified_description_bb_code.replace("Rattle", keyword_bb_code)
+		
+	if card_data.card_description.contains("Forge"):
+		var keyword_bb_code: String = "[color=aqua]{0}[/color]".format(["Forge"])
+		modified_description_bb_code = modified_description_bb_code.replace("Forge", keyword_bb_code)
+		
+	if card_data.card_description.contains("Weave"):
+		var keyword_bb_code: String = "[color=aqua]{0}[/color]".format(["Weave"])
+		modified_description_bb_code = modified_description_bb_code.replace("Weave", keyword_bb_code)
+		
+	if card_data.card_description.contains("Cook"):
+		var keyword_bb_code: String = "[color=aqua]{0}[/color]".format(["Cook"])
+		modified_description_bb_code = modified_description_bb_code.replace("Cook", keyword_bb_code)
 	return modified_description_bb_code
 
 func _clear_card_decorators() -> void:
