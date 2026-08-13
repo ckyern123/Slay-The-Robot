@@ -2424,16 +2424,16 @@ text = "End Turn"
 [node name="SelectTargetLabel" type="Label" parent="RunScreen/Combat" unique_id=198237144]
 unique_name_in_owner = true
 visible = false
-z_index = 1
+z_index = 20
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 50.0
-offset_top = 450.0
-offset_right = -1634.0
-offset_bottom = 498.0
+offset_left = 750.0
+offset_top = 200.0
+offset_right = -861.0
+offset_bottom = 293.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 42
 text = "Select a target"
 horizontal_alignment = 1
 
@@ -2441,8 +2441,8 @@ horizontal_alignment = 1
 z_index = -1
 layout_mode = 0
 offset_left = -5.0
-offset_right = 245.0
-offset_bottom = 40.0
+offset_right = 303.0
+offset_bottom = 100.0
 color = Color(0.21525201, 0.09841467, 0.0016030668, 1)
 
 [node name="TurnOverlay" type="Control" parent="RunScreen/Combat" unique_id=253104370]

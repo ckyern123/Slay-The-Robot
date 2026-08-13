@@ -220,6 +220,11 @@ func _on_card_selected(card: Card):
 	# check if playing or picking cards
 	if (upgrade_on_display):
 		_hide_upgrade_card()
+	#var sound_action_data: Array[Dictionary] = [{
+	#Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
+	#}]
+	#var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+	#ActionHandler.add_actions(sound_actions)
 	if current_card_pick_action == null:
 		### playing
 		# cannot play cards with a disabled hand
@@ -259,10 +264,10 @@ func _on_card_right_clicked(card: Card):
 	_unprompt_target()
 	if ActionHandler.actions_being_performed:
 		return # cannot right click while actions happening
-	if (!upgrade_on_display):
-		_display_upgrade_card(card)
-	else:
-		_hide_upgrade_card()
+	#if (!upgrade_on_display):
+		#_display_upgrade_card(card)
+	#else:
+	#	_hide_upgrade_card()
 	if hand_disabled:
 		return # cannot right click cards with a disabled hand
 	if len(HandManager.card_play_queue) > 0:
@@ -275,13 +280,16 @@ func _display_upgrade_card(card: Card):
 	# use remaining screen size to determine which side of the card should display
 	var screen_size: Vector2 = DisplayServer.window_get_size()
 	var card_visual_global_pos: Vector2 = card.card_visual.global_position
-	var card_right_side_pos: Vector2 = card_visual_global_pos + Vector2(card.size.x + CARD_KEYWORD_PANEL_MARGIN_X, -200)
-	var card_left_side_pos: Vector2 = card_visual_global_pos - Vector2(display_upgrade_container.size.x + CARD_KEYWORD_PANEL_MARGIN_X, -200)
+	var card_right_side_pos: Vector2 = card_visual_global_pos + Vector2(card.size.x, -300)
+	var card_left_side_pos: Vector2 = card_visual_global_pos - Vector2(display_upgrade_container.size.x, -300)
+	var tween = create_tween()
 	var display_upgrade_card: Card = Scenes.CARD.instantiate()
 	display_card_data = Global.get_card_data_from_prototype(card.card_data.object_id)
 	display_upgrade_container.add_child(display_upgrade_card)
 	display_card_data.fake_upgrade_card()
 	display_upgrade_card.init(display_card_data, 0, false, false)
+	display_upgrade_card.modulate = Color(0,0,0,0)
+	tween.tween_property(display_upgrade_card, "modulate", Color(1, 1, 1, 1), 0.2).set_trans(Tween.TRANS_SINE)
 	display_upgrade_card.update_card_display()
 	display_upgrade_card.z_index = 51
 	if card_right_side_pos.x + CARD_KEYWORD_RIGHT_SCREEN_SIZE_MARGIN < screen_size.x:

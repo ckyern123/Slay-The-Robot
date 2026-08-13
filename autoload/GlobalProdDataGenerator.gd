@@ -2702,12 +2702,12 @@ func add_keywords() -> void:
 	Global.register_rod(keyword_appease)
 	
 	var keyword_repair: KeywordData = KeywordData.new("keyword_repair")
-	keyword_repair.keyword_name = "repair"
+	keyword_repair.keyword_name = "Repair"
 	keyword_repair.keyword_text_bb_code = "Increases a Craft card's durability by 1 (Does not affect cards with exhaust)."
 	Global.register_rod(keyword_repair)
 	
 	var keyword_rattle: KeywordData = KeywordData.new("keyword_rattle")
-	keyword_rattle.keyword_name = "rattle"
+	keyword_rattle.keyword_name = "Rattle"
 	keyword_rattle.keyword_text_bb_code = "Decreases a Faction card's influence by 1."
 	Global.register_rod(keyword_rattle)
 	
@@ -4174,7 +4174,7 @@ func add_card_decorators() -> void:
 	card_decorator_extra_draw.card_decorator_label_value_name = "decorator_value_extra_draw"
 	card_decorator_extra_draw.card_decorator_post_draw_actions = [
 		{
-			# check flag when drawn
+			# check flag when drawns
 			Scripts.ACTION_VALIDATOR: {
 				"validator_data":
 				[
@@ -6002,7 +6002,7 @@ func add_cards_black() -> void:
 	card_royalpurveyor.card_texture_path = "external/sprites/cards/aniseed/17_royalpurveyor.png"
 	card_royalpurveyor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_royalpurveyor.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease/Repair [card_influence] to Faction and Craft cards. \nON DISCARD: Fertilise [artifact_charge_increase]."
-	card_royalpurveyor.card_keyword_object_ids = ["keyword_sweep", "keyword_appease","keyword_repair", "keyword_fertilise"]
+	card_royalpurveyor.card_keyword_object_ids = ["keyword_appease","keyword_repair", "keyword_fertilise"]
 	card_royalpurveyor.card_type = CardData.CARD_TYPES.FACTION
 	card_royalpurveyor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_royalpurveyor.card_rarity = CardData.CARD_RARITIES.UNCOMMON
