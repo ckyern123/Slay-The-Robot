@@ -2636,6 +2636,11 @@ func add_keywords() -> void:
 	keyword_sift.keyword_text_bb_code = "Draw X cards, then discard cards that are not Y."
 	Global.register_rod(keyword_sift)
 	
+	var keyword_frontier: KeywordData = KeywordData.new("keyword_frontier")
+	keyword_frontier.keyword_name = "Frontier"
+	keyword_frontier.keyword_text_bb_code = "Gain bonus effect if it is one of the two rightmost cards in hand."
+	Global.register_rod(keyword_frontier)
+	
 	var keyword_wield: KeywordData = KeywordData.new("keyword_wield")
 	keyword_wield.keyword_name = "Wield"
 	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile."
@@ -2643,7 +2648,7 @@ func add_keywords() -> void:
 	
 	var keyword_cook: KeywordData = KeywordData.new("keyword_cook")
 	keyword_cook.keyword_name = "Cook"
-	keyword_cook.keyword_text_bb_code = "Spend 1 food and 1 insight to create a Delicacy."
+	keyword_cook.keyword_text_bb_code = "Spend 1 Food and 1 Insight to create a Delicacy."
 	Global.register_rod(keyword_cook)
 	
 	var keyword_inspect: KeywordData = KeywordData.new("keyword_inspect")
@@ -2658,12 +2663,12 @@ func add_keywords() -> void:
 
 	var keyword_sword: KeywordData = KeywordData.new("keyword_sword")
 	keyword_sword.keyword_name = "Sword"
-	keyword_sword.keyword_text_bb_code = "Craft that explores 2. Can be Wielded. Has 2 durability."
+	keyword_sword.keyword_text_bb_code = "Craft that Explores 2. Can be Wielded. Has 2 Durability."
 	Global.register_rod(keyword_sword)
 	
 	var keyword_debt: KeywordData = KeywordData.new("keyword_debt")
 	keyword_debt.keyword_name = "Debt"
-	keyword_debt.keyword_text_bb_code = "Craft that cannot be played. Lose 1 Money at the end of turn. Has 2 durability."
+	keyword_debt.keyword_text_bb_code = "Craft that cannot be played. Lose 1 Money at the end of turn. Has 2 Durability."
 	Global.register_rod(keyword_debt)
 	
 	var keyword_spice: KeywordData = KeywordData.new("keyword_spice")
@@ -4428,7 +4433,7 @@ func add_cards_misc() -> void:
 	card_missives.card_name = "missives"
 	card_missives.card_color_id = "color_{0}".format([color])
 	card_missives.card_texture_path = "external/sprites/status_effects/insight.svg"
-	card_missives.card_description = "Sweep [discard_count], Draw [draw_count]."
+	card_missives.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]."
 	card_missives.card_type = CardData.CARD_TYPES.CRAFT
 	card_missives.card_subtype = CardData.CARD_SUBTYPES.WOVEN
 	card_missives.card_energy_cost = 0
@@ -4963,7 +4968,7 @@ func add_cards_purple() -> void:
 	card_pearlemissary.card_color_id = "color_{0}".format([color])
 	card_pearlemissary.card_texture_path = "external/sprites/cards/pearl/01_pearlemissary.png"
 	card_pearlemissary.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearlemissary.card_description = "Sweep [discard_count] and Draw [draw_count]. When discarded, randomly Appease 2 cards in discard pile."
+	card_pearlemissary.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. When discarded, randomly Appease 2 cards in discard pile."
 	card_pearlemissary.card_keyword_object_ids = ["keyword_appease"]
 	card_pearlemissary.card_type = CardData.CARD_TYPES.FACTION
 	card_pearlemissary.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -5673,7 +5678,7 @@ func add_cards_black() -> void:
 	card_fishwrangler.card_texture_path = "external/sprites/cards/aniseed/03_fishwrangler.png"
 	card_fishwrangler.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_fishwrangler.card_description = "Create [number_of_cards] Fish, then Sift [draw_count] for Resource cards".format([Card.EXPLORE_ICON_KEYWORD])
-	card_fishwrangler.card_keyword_object_ids = ["keyword_fertilise"]
+	card_fishwrangler.card_keyword_object_ids = ["keyword_fish", "keyword_sift"]
 	card_fishwrangler.card_type = CardData.CARD_TYPES.FACTION
 	card_fishwrangler.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_fishwrangler.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5832,6 +5837,25 @@ func add_cards_black() -> void:
 	card_flintlockmage.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockmage)
 	
+	var card_flintlockswiftshot: CardData = CardData.new("card_flintlockswiftshot")
+	card_flintlockswiftshot.card_name = "Flintlock Swiftshot"
+	card_flintlockswiftshot.card_color_id = "color_{0}".format([color])
+	card_flintlockswiftshot.card_texture_path = "external/sprites/cards/aniseed/07_flintlockswiftshot.png"
+	card_flintlockswiftshot.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
+	card_flintlockswiftshot.card_description = "Explore [damage]{0}\nON DISCARD: Improve Explore{0} by 1."
+	card_flintlockswiftshot.card_keyword_object_ids = ["keyword_forge","keyword_sword", "keyword_sift"]
+	card_flintlockswiftshot.card_type = CardData.CARD_TYPES.FACTION
+	card_flintlockswiftshot.card_subtype = CardData.CARD_SUBTYPES.ANISEED
+	card_flintlockswiftshot.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	card_flintlockswiftshot.card_requires_target = true
+	card_flintlockswiftshot.card_energy_cost = 2
+	card_flintlockswiftshot.card_values = {"damage":2}
+	card_flintlockswiftshot.card_first_upgrade_property_changes = {"energy_cost":-1}
+	card_flintlockswiftshot.card_discard_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"card_value_improvements":{"damage":1}}}]
+	card_flintlockswiftshot.card_play_actions.append(influence_action)
+	card_flintlockswiftshot.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_flintlockswiftshot)
+	
 	var card_aniseedscribe: CardData = CardData.new("card_aniseedscribe")
 	card_aniseedscribe.card_name = "Aniseed Scribe"
 	card_aniseedscribe.card_color_id = "color_{0}".format([color])
@@ -5956,7 +5980,7 @@ func add_cards_black() -> void:
 	card_aniseedtaxcollector.card_color_id = "color_{0}".format([color])
 	card_aniseedtaxcollector.card_texture_path = "external/sprites/cards/aniseed/12_aniseedtaxcollector.png"
 	card_aniseedtaxcollector.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_aniseedtaxcollector.card_description = "Sweep [discard_count] and Draw [draw_count], then Inspect [min_card_amount]."
+	card_aniseedtaxcollector.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count], then Inspect [min_card_amount]."
 	card_aniseedtaxcollector.card_keyword_object_ids = ["keyword_inspect"]
 	card_aniseedtaxcollector.card_type = CardData.CARD_TYPES.FACTION
 	card_aniseedtaxcollector.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -5977,7 +6001,7 @@ func add_cards_black() -> void:
 	card_royalpurveyor.card_color_id = "color_{0}".format([color])
 	card_royalpurveyor.card_texture_path = "external/sprites/cards/aniseed/17_royalpurveyor.png"
 	card_royalpurveyor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_royalpurveyor.card_description = "Sweep [discard_count] and Draw [draw_count]. Appease/Repair [card_influence] to Faction and Craft cards. \nON DISCARD: Fertilise [artifact_charge_increase]."
+	card_royalpurveyor.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease/Repair [card_influence] to Faction and Craft cards. \nON DISCARD: Fertilise [artifact_charge_increase]."
 	card_royalpurveyor.card_keyword_object_ids = ["keyword_sweep", "keyword_appease","keyword_repair", "keyword_fertilise"]
 	card_royalpurveyor.card_type = CardData.CARD_TYPES.FACTION
 	card_royalpurveyor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -6009,7 +6033,7 @@ func add_cards_black() -> void:
 	card_royalpurveyor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_royalpurveyor)
 	
-	
+
 	var card_peddlerinformant: CardData = CardData.new("card_peddlerinformant")
 	card_peddlerinformant.card_name = "Peddler Informant"
 	card_peddlerinformant.card_color_id = "color_{0}".format([color])
@@ -6042,6 +6066,77 @@ func add_cards_black() -> void:
 	card_peddlerinformant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_peddlerinformant)
 	
+	var card_grandunifier: CardData = CardData.new("card_grandunifier")
+	card_grandunifier.card_name = "Grand Unifier"
+	card_grandunifier.card_color_id = "color_{0}".format([color])
+	card_grandunifier.card_texture_path = "external/sprites/cards/aniseed/13_grandunifier.png"
+	card_grandunifier.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
+	card_grandunifier.card_description = "Sift [draw_count] for Faction cards. Then, you gain 1{0} for each Faction subtype (Aniseed, Cengkih, Jade, Pearl) in hand.".format([Card.ENERGY_ICON_KEYWORD])
+	card_grandunifier.card_keyword_object_ids = ["keyword_sift"]
+	card_grandunifier.card_type = CardData.CARD_TYPES.FACTION
+	card_grandunifier.card_subtype = CardData.CARD_SUBTYPES.ANISEED
+	card_grandunifier.card_rarity = CardData.CARD_RARITIES.RARE
+	card_grandunifier.card_requires_target = false
+	card_grandunifier.card_energy_cost = 2
+	card_grandunifier.card_values = {"draw_count":4}
+	card_grandunifier.card_upgrade_value_improvements = {"draw_count":2}
+	card_grandunifier.card_play_actions = [		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":1,
+			"max_card_amount":1,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.HAND_PILE,
+			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.PEARL]}}],
+			"action_data": [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
+		}
+		},
+		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":1,
+			"max_card_amount":1,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.HAND_PILE,
+			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.ANISEED]}}],
+			"action_data": [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
+		}
+		},
+		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":1,
+			"max_card_amount":1,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.HAND_PILE,
+			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.JADE]}}],
+			"action_data": [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
+		}
+		},
+		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":1,
+			"max_card_amount":1,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.HAND_PILE,
+			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.CENGKIH]}}],
+			"action_data": [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
+		}
+		},]
+	for action in sift_faction_data:
+		card_grandunifier.card_play_actions.append(action)
+	card_grandunifier.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_grandunifier)
+	
 	var card_taxfarmer: CardData = CardData.new("card_taxfarmer")
 	card_taxfarmer.card_name = "Tax Farmer"
 	card_taxfarmer.card_color_id = "color_{0}".format([color])
@@ -6069,7 +6164,7 @@ func add_cards_black() -> void:
 	card_swashbucklingchamp.card_color_id = "color_{0}".format([color])
 	card_swashbucklingchamp.card_texture_path = "external/sprites/cards/aniseed/15_swashbucklingchamp.png"
 	card_swashbucklingchamp.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_swashbucklingchamp.card_description = "Explore [damage]{0}, then improve and wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_swashbucklingchamp.card_description = "Explore [damage]{0}, then Improve, Repair 2, and Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_swashbucklingchamp.card_keyword_object_ids = ["keyword_wield"]
 	card_swashbucklingchamp.card_type = CardData.CARD_TYPES.FACTION
 	card_swashbucklingchamp.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -6089,6 +6184,7 @@ func add_cards_black() -> void:
 			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
 			"action_data": [{
 			Scripts.ACTION_PLAY_CARDS: {}},
+			{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":2}},
 			{
 			Scripts.ACTION_IMPROVE_CARD_VALUES: {
 				"card_value_improvements":{"damage":1},
@@ -6252,7 +6348,7 @@ func add_cards_green() -> void:
 	card_greeninformant.card_color_id = "color_{0}".format([color])
 	card_greeninformant.card_texture_path = "external/sprites/cards/jade/04_greeninformant.png"
 	card_greeninformant.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_greeninformant.card_description = "Sweep [discard_count] and Draw [draw_count], then Weave [number_of_cards] Missive.\nON DISCARD: Gain [food_amount]{0}.".format([Card.FOOD_ICON_KEYWORD])
+	card_greeninformant.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count], then Weave [number_of_cards] Missive.\nON DISCARD: Gain [food_amount]{0}.".format([Card.FOOD_ICON_KEYWORD])
 	card_greeninformant.card_keyword_object_ids = ["keyword_weave"]
 	card_greeninformant.card_type = CardData.CARD_TYPES.FACTION
 	card_greeninformant.card_subtype = CardData.CARD_SUBTYPES.JADE
@@ -6298,7 +6394,7 @@ func add_cards_green() -> void:
 	card_militantoutsourcer.card_color_id = "color_{0}".format([color])
 	card_militantoutsourcer.card_texture_path = "external/sprites/cards/jade/06_militantoutsourcer.png"
 	card_militantoutsourcer.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_militantoutsourcer.card_description = "Explore [damage]{0}. Sweep [discard_count] and Draw [draw_count].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_militantoutsourcer.card_description = "Explore [damage]{0}. Discard [discard_count] rightmost cards, then draw [draw_count].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_militantoutsourcer.card_type = CardData.CARD_TYPES.FACTION
 	card_militantoutsourcer.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_militantoutsourcer.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6383,7 +6479,7 @@ func add_cards_green() -> void:
 	card_everymanleader.card_color_id = "color_{0}".format([color])
 	card_everymanleader.card_texture_path = "external/sprites/cards/jade/09_everymanleader.png"
 	card_everymanleader.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_everymanleader.card_description = "Sweep [discard_count] and Draw [draw_count] [max_card_amount] cards in discard pile. Appease 2 to all Faction cards in hand."
+	card_everymanleader.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease 2 to all Faction cards in hand."
 	card_everymanleader.card_keyword_object_ids = ["keyword_appease"]
 	card_everymanleader.card_type = CardData.CARD_TYPES.FACTION
 	card_everymanleader.card_subtype = CardData.CARD_SUBTYPES.JADE
@@ -7169,7 +7265,7 @@ func add_cards_gold() -> void:
 	card_noblesorter.card_color_id = "color_{0}".format([color])
 	card_noblesorter.card_texture_path = "external/sprites/cards/cengkih/17_noblesorter.png"
 	card_noblesorter.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_noblesorter.card_description = "Sweep [discard_count], Draw [draw_count]. Appease all cards in hand by 3."
+	card_noblesorter.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease all cards in hand by 3."
 	card_noblesorter.card_keyword_object_ids = ["keyword_cook"]
 	card_noblesorter.card_type = CardData.CARD_TYPES.FACTION
 	card_noblesorter.card_subtype = CardData.CARD_SUBTYPES.CENGKIH

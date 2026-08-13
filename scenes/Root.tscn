@@ -2394,6 +2394,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="DisplayUpgradeContainer" type="Control" parent="RunScreen/Combat/Hand" unique_id=777560378]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="HandSizeExceededRect" type="ColorRect" parent="RunScreen/Combat" unique_id=1165565327]
 unique_name_in_owner = true
 visible = false

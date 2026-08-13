@@ -9,10 +9,22 @@ const CARD_TWEEN_TIME: float = 0.2
 ## During hand related card pick actions, invalid cards will appear transparent.
 const INVALID_CARD_ALPHA: float = 0.3
 
+var follow_mouse: bool = false # if the tooltip should constantly update its position over the mouse when proc'ed
+var lock_x: bool = false # when following mouse, lock x coord to a given offset
+var lock_y: bool = false # when following mouse, lock y coord to a given offset
+var offset_x: float = 0.0 # offset when following mouse
+var offset_y: float = 0.0 # offset when following mouse
+
+const CARD_KEYWORD_PANEL_MARGIN_X: float = 6.0 # how far the tooltip should display away from Card
+const CARD_KEYWORD_RIGHT_SCREEN_SIZE_MARGIN: float = 200 # how much screen space must be left on the right side of a card to display the tooltips on the right side
+
 # General Nodes
 @onready var player: BaseCombatant = $%Player
 @onready var combat = $%Combat
 @onready var card_container: Control = %CardContainer
+@onready var display_upgrade_container: Control = %DisplayUpgradeContainer
+@onready var upgrade_on_display: bool = false
+@onready var display_card_data: CardData = null
 
 # a debugging component for displaying hand's physical size
 # should be the same size and position of Hand
@@ -206,6 +218,8 @@ func update_hand_card_hover(hovered_card: Card = null) -> void:
 func _on_card_selected(card: Card):
 	# card clicked, attempt to do something with it
 	# check if playing or picking cards
+	if (upgrade_on_display):
+		_hide_upgrade_card()
 	if current_card_pick_action == null:
 		### playing
 		# cannot play cards with a disabled hand
@@ -245,14 +259,45 @@ func _on_card_right_clicked(card: Card):
 	_unprompt_target()
 	if ActionHandler.actions_being_performed:
 		return # cannot right click while actions happening
+	if (!upgrade_on_display):
+		_display_upgrade_card(card)
+	else:
+		_hide_upgrade_card()
 	if hand_disabled:
 		return # cannot right click cards with a disabled hand
 	if len(HandManager.card_play_queue) > 0:
 		return # cannot right click cards while cards queued
 	_perform_card_right_click_actions(card)
 
-### Targeting
+func _display_upgrade_card(card: Card):
+	display_upgrade_container.visible = true
+	
+	# use remaining screen size to determine which side of the card should display
+	var screen_size: Vector2 = DisplayServer.window_get_size()
+	var card_visual_global_pos: Vector2 = card.card_visual.global_position
+	var card_right_side_pos: Vector2 = card_visual_global_pos + Vector2(card.size.x + CARD_KEYWORD_PANEL_MARGIN_X, -200)
+	var card_left_side_pos: Vector2 = card_visual_global_pos - Vector2(display_upgrade_container.size.x + CARD_KEYWORD_PANEL_MARGIN_X, -200)
+	var display_upgrade_card: Card = Scenes.CARD.instantiate()
+	display_card_data = Global.get_card_data_from_prototype(card.card_data.object_id)
+	display_upgrade_container.add_child(display_upgrade_card)
+	display_card_data.fake_upgrade_card()
+	display_upgrade_card.init(display_card_data, 0, false, false)
+	display_upgrade_card.update_card_display()
+	display_upgrade_card.z_index = 51
+	if card_right_side_pos.x + CARD_KEYWORD_RIGHT_SCREEN_SIZE_MARGIN < screen_size.x:
+		# right side of card
+		display_upgrade_container.global_position = card_right_side_pos
+	else:
+		# left side of card
+		display_upgrade_container.global_position = card_left_side_pos
+	upgrade_on_display = true
 
+func _hide_upgrade_card():
+	for child in display_upgrade_container.get_children():
+		child.queue_free()
+	display_upgrade_container.visible = false
+	upgrade_on_display = false
+	
 func _on_background_button_up():
 	current_selected_card = null
 	_unprompt_target()

@@ -93,7 +93,7 @@ const STANDARD_CARD_RARITIES: Array[int] = [CARD_RARITIES.COMMON, CARD_RARITIES.
 @export var card_requires_target: bool = true
 
 # Card Values
-## Calues on the card like attack/block amount.
+## Values on the card like attack/block amount.
 ## These are fallback values used by the card's actions and can be modified.
 ## See BaseAction.get_action_value() for more.
 ## Display them in card_description with [card_value_name], eg [block] or [damage].
@@ -371,6 +371,22 @@ func upgrade_card(upgrade_count: int = 1, bypass_upgrade_max = false) -> void:
 			card_upgrade_amount += 1
 			
 			Signals.card_upgraded.emit(self)
+			
+## Upgrades a card, overwriting properities and improving any card values.
+func fake_upgrade_card(upgrade_count: int = 1, bypass_upgrade_max = false) -> void:
+	for _i in upgrade_count:
+		# check if upgrade possible
+		if (card_upgrade_amount < card_upgrade_amount_max) or bypass_upgrade_max:
+			# perform first upgrade mutations
+			if card_upgrade_amount == 0:
+				# overwrite card_values on first upgrade
+				update_card_values(card_first_upgrade_value_changes)
+				# overwrite CardData's own properties on the first upgrade
+				set_card_properties(card_first_upgrade_property_changes)
+			
+			# improve card values each upgrade
+			improve_card_values(card_upgrade_value_improvements)
+			card_upgrade_amount += 1
 
 func transform_card(new_card_object_id: String) -> void:
 	# transforms a card, overwriting the values of a card with that of a new card prototype id's values
