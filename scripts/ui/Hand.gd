@@ -103,7 +103,7 @@ func _ready():
 	
 	Signals.enemy_clicked.connect(_on_enemy_clicked)
 	Signals.enemy_hovered.connect(_on_enemy_hovered)
-	
+	Signals.card_created.connect(_on_card_created)
 	confirm_pick_button.button_up.connect(_on_confirm_pick_button_up)
 	
 	background_button.button_up.connect(_on_background_button_up)
@@ -278,7 +278,14 @@ func _on_card_upgraded(card_data: CardData):
 		cardplay_on_display = true
 	display_cardplay_container.visible = true
 	_display_cardplay(card_data,"upgrade")
-	
+
+func _on_card_created(card_data: CardData):
+	if (!cardplay_on_display):
+		cardplay_on_display = true
+	display_cardplay_container.visible = true
+	if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
+		_display_cardplay(card_data,"created")
+		
 func _display_upgrade_card(card: Card):
 	display_upgrade_container.visible = true
 	
@@ -335,8 +342,20 @@ func _display_cardplay(card_data: CardData, property: String = ""):
 			tween3.tween_property(display_cardplay_card, "modulate", Color(0, 0, 0, 0), 0.2).set_trans(Tween.TRANS_SINE)
 			await get_tree().create_timer(0.2).timeout
 			display_cardplay_card.queue_free()
-			
-
+		"created":
+			#display_cardplay_card.modulate = Color(0,0,0,0)
+			display_cardplay_card.scale = Vector2(0.5,0.5)
+			var destination_ui_element: Control = HandManager.card_destination_to_ui_elements.get(HandManager.DISCARD_PILE, null)
+			var destination_position: Vector2 = destination_ui_element.global_position + (destination_ui_element.size / 2)
+			var tween = create_tween()
+			#tween.tween_property(display_cardplay_card, "modulate", Color(1, 1, 1, 1), 0.1).set_trans(Tween.TRANS_SINE)
+			var tween3 = create_tween()
+			tween3.tween_property(display_cardplay_card,"position",destination_position,1)
+			await get_tree().create_timer(0.4).timeout
+			var tween2 = create_tween()
+		#	tween2.tween_property(display_cardplay_card, "modulate", Color(0, 0, 0, 0), 0.2).set_trans(Tween.TRANS_SINE)
+			await get_tree().create_timer(0.2).timeout
+			display_cardplay_card.queue_free()
 
 ## Spawns an animated effect over the combatant
 ## Used for things like imacts

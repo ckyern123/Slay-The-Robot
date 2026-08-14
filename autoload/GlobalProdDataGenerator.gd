@@ -1606,8 +1606,8 @@ func add_events() -> void:
 	event_act_1_easy_plains_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_plains_1.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
-		{"field_patch": 1},
-		{"rock": 1}]
+		{"field_patch": 1, "pond": 1},
+		{"rock": 1,"mound": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_1)
 	
@@ -1615,16 +1615,16 @@ func add_events() -> void:
 	event_act_1_easy_plains_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_plains_2.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
-		{"field_patch": 1},
-		{"pond": 1}]
+		{"field_patch": 1, "rock": 1},
+		{"pond": 1, "mound": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_2)
 	
 	var event_act_1_easy_plains_3: EventData = EventData.new("event_act_1_easy_plains_3")
 	event_act_1_easy_plains_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_plains_3.event_weighted_enemy_object_ids = [
-		{"field_patch": 1},
-		{"field_patch": 1},
+		{"field_patch": 1, "rock": 1},
+		{"field_patch": 1, "pond": 1},
 		{"mound": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_3)
@@ -1633,8 +1633,8 @@ func add_events() -> void:
 	event_act_1_medium_plains_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_plains_1.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
-		{"rock": 1},
-		{"pond": 1},
+		{"rock": 1, "field_patch":1},
+		{"pond": 1, "field_patch": 1},
 		{"chargedvista": 0.5}
 		]
 	
@@ -1644,9 +1644,9 @@ func add_events() -> void:
 	event_act_1_medium_plains_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_plains_2.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
-		{"rock": 1},
-		{"rock": 1},
-		{"animalherd": 0.5}
+		{"rock": 1,"field_patch": 1},
+		{"rock": 1, "pond": 1},
+		{"animalherd": 0.5, "charged_vista":1}
 		]
 	
 	Global.register_rod(event_act_1_medium_plains_2)
@@ -1655,16 +1655,16 @@ func add_events() -> void:
 	event_act_1_medium_plains_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_plains_3.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
-		{"field_patch": 1},
-		{"chargedvista": 0.5},
+		{"field_patch": 1, "pond": 1},
+		{"chargedvista": 0.5,"rock": 1},
 		{"animalherd": 0.5}
 		]
 		
 	var event_act_1_hard_plains_1: EventData = EventData.new("event_act_1_hard_plains_1")
 	event_act_1_hard_plains_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_plains_1.event_weighted_enemy_object_ids = [
-		{"field_patch": 1},
-		{"rock": 1},
+		{"field_patch": 1, "animal_herd": 0.5},
+		{"rock": 1, "animal_herd": 0.5},
 		{"chargedvista": 1}
 		]
 	
@@ -1674,8 +1674,8 @@ func add_events() -> void:
 	event_act_1_hard_plains_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_plains_2.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
-		{"rock": 1},
-		{"rock": 1},
+		{"rock": 1,"charged_vista": 0.5},
+		{"rock": 1, "charged_vista": 0.5},
 		{"animalherd": 1}
 		]
 	
@@ -1685,7 +1685,7 @@ func add_events() -> void:
 	event_act_1_hard_plains_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_plains_3.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
-		{"field_patch": 1},
+		{"field_patch": 1, "pond": 1},
 		{"chargedvista": 1},
 		{"animalherd": 1}
 		]
@@ -1697,7 +1697,7 @@ func add_events() -> void:
 	var event_act_1_easy_desert_1: EventData = EventData.new("event_act_1_easy_desert_1")
 	event_act_1_easy_desert_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_desert_1.event_weighted_enemy_object_ids = [
-		{"boulder": 1},
+		{"boulder": 1, "barrenwastes": 0.5},
 		{"boulder": 1},
 		{"boulder": 1},
 		{"barrenwastes":0.6}
@@ -1709,7 +1709,7 @@ func add_events() -> void:
 	event_act_1_easy_desert_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_desert_2.event_weighted_enemy_object_ids = [
 		{"boulder": 1},
-		{"boulder": 1},
+		{"boulder": 1, "barrenwastes": 0.5},
 		{"bigboulder":1},
 		]
 	
@@ -1719,7 +1719,7 @@ func add_events() -> void:
 	event_act_1_easy_desert_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_desert_3.event_weighted_enemy_object_ids = [
 		{"boulder": 1},
-		{"boulder": 1},
+		{"boulder": 1, "bigboulder": 0.5},
 		{"mound": 1},
 		{"barrenwastes":0.6},
 		]
@@ -1811,8 +1811,8 @@ func add_events() -> void:
 	event_act_1_easy_forest_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_forest_2.event_weighted_enemy_object_ids = [
 		{"forestmulch": 1},
-		{"forestmulch": 1},
-		{"forestmulch": 1},
+		{"forestmulch": 1, "forestfloor": 1},
+		{"forestmulch": 1, "forestfloor": 1},
 		]
 	
 	Global.register_rod(event_act_1_easy_forest_2)
@@ -1834,7 +1834,7 @@ func add_events() -> void:
 	event_act_1_medium_forest_1.event_weighted_enemy_object_ids = [
 		{"forestmulch": 1},
 		{"forestmulch": 1},
-		{"forestmulch": 1},
+		{"forestmulch": 1, "forestfloor": 1},
 		{"den": 1},
 		]
 	
@@ -1854,9 +1854,9 @@ func add_events() -> void:
 	var event_act_1_medium_forest_3: EventData = EventData.new("event_act_1_medium_forest_3")
 	event_act_1_medium_forest_3.event_death_message_bbcode = "Died to medium event"
 	event_act_1_medium_forest_3.event_weighted_enemy_object_ids = [
-		{"forestmulch": 1},
-		{"forestfloor": 1},
-		{"forestfloor": 1},
+		{"forestmulch": 1, "forestfloor": 1},
+		{"forestfloor": 1,"den": 1},
+		{"forestfloor": 1, "hideout": 0.5},
 		]
 	
 	Global.register_rod(event_act_1_medium_forest_3)
@@ -1865,8 +1865,8 @@ func add_events() -> void:
 	var event_act_1_hard_forest_1: EventData = EventData.new("event_act_1_hard_forest_1")
 	event_act_1_hard_forest_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_forest_1.event_weighted_enemy_object_ids = [
-		{"forestfloor": 1},
-		{"forestfloor": 1},
+		{"forestfloor": 1,"hideout":1, "den": 1},
+		{"forestfloor": 1,"hideout": 1},
 		{"den": 1},
 		]
 	
@@ -1875,8 +1875,8 @@ func add_events() -> void:
 	var event_act_1_hard_forest_2: EventData = EventData.new("event_act_1_hard_forest_2")
 	event_act_1_hard_forest_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_forest_2.event_weighted_enemy_object_ids = [
-		{"forestfloor": 1},
-		{"forestfloor": 1},
+		{"forestfloor": 1, "hideout":1, "den": 1},
+		{"forestmulch": 1,"den":1},
 		{"hideout": 1},
 		]
 	
@@ -1900,7 +1900,7 @@ func add_events() -> void:
 	event_act_1_easy_coast_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_coast_1.event_weighted_enemy_object_ids = [
 		{"shore": 1},
-		{"shore": 1},
+		{"shore": 1, "sandbed": 0.5},
 		{"shore":1},
 		{"rockface": 0.5},
 		]
@@ -1911,7 +1911,7 @@ func add_events() -> void:
 	event_act_1_easy_coast_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_coast_2.event_weighted_enemy_object_ids = [
 		{"shore": 1},
-		{"shore": 1},
+		{"shore": 1, "sandbed": 0.3},
 		{"rockface": 1},
 		]
 	
@@ -1921,8 +1921,8 @@ func add_events() -> void:
 	event_act_1_easy_coast_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_coast_3.event_weighted_enemy_object_ids = [
 		{"shore": 1},
-		{"rockface": 1},
-		{"rockface": 1},
+		{"shore": 1, "rockface": 1},
+		{"rockface": 1, "cave": 0.5},
 		]
 	
 	Global.register_rod(event_act_1_easy_coast_3)
@@ -1935,9 +1935,9 @@ func add_events() -> void:
 	event_act_1_medium_coast_1.event_death_message_bbcode = "Died to medium event"
 	event_act_1_medium_coast_1.event_weighted_enemy_object_ids = [
 		{"shore": 1},
-		{"shore": 1},
+		{"shore": 1, "rockface": 1},
 		{"sandbed":1},
-		{"cave": 0.5},
+		{"cave": 1, "sandbed": 1},
 		]
 	
 	Global.register_rod(event_act_1_medium_coast_1)
@@ -1947,7 +1947,7 @@ func add_events() -> void:
 	event_act_1_medium_coast_2.event_weighted_enemy_object_ids = [
 		{"shore": 1},
 		{"sandbed": 1},
-		{"sandbed": 1},
+		{"sandbed": 1, "cave": 0.4},
 		]
 	
 	Global.register_rod(event_act_1_medium_coast_2)
@@ -1956,7 +1956,7 @@ func add_events() -> void:
 	event_act_1_medium_coast_3.event_death_message_bbcode = "Died to medium event"
 	event_act_1_medium_coast_3.event_weighted_enemy_object_ids = [
 		{"shore": 1},
-		{"rockface": 1},
+		{"rockface": 1, "sandbed": 0.5},
 		{"sandbed": 1},
 		]
 	
@@ -1977,8 +1977,9 @@ func add_events() -> void:
 	event_act_1_hard_coast_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_coast_2.event_weighted_enemy_object_ids = [
 		{"cave": 1},
-		{"shore": 1},
-		{"shore": 1},
+		{"sandbed": 1},
+		{"shore": 1, "rockface": 1},
+		{"shore": 1, "rockface": 1},
 		]
 	
 	Global.register_rod(event_act_1_hard_coast_2)
@@ -2000,8 +2001,8 @@ func add_events() -> void:
 	event_act_1_easy_swamp_1.event_weighted_enemy_object_ids = [
 		{"dryfield": 1},
 		{"dryfield": 1},
-		{"dryfield": 1},
-		{"infestedwaters": 0.5},
+		{"dryfield": 1, "infestedwaters": 0.5},
+		{"infestedwaters": 0.5, "mangroveroots": 0.5},
 		{"mangroveroots": 0.4}
 		]
 	
@@ -2011,9 +2012,9 @@ func add_events() -> void:
 	event_act_1_easy_swamp_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_swamp_2.event_weighted_enemy_object_ids = [
 		{"dryfield": 1},
-		{"dryfield": 1},
+		{"dryfield": 1, "infestedwaters": 0.5},
 		{"infestedwaters":1},
-		{"mangroveroots": 0.4}
+		{"mangroveroots": 0.4, "dryfield": 0.5}
 		]
 	
 	Global.register_rod(event_act_1_easy_swamp_2)
@@ -2022,8 +2023,8 @@ func add_events() -> void:
 	event_act_1_easy_swamp_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_easy_swamp_3.event_weighted_enemy_object_ids = [
 		{"dryfield": 1},
-		{"dryfield": 1},
-		{"dryfield": 1},
+		{"dryfield": 1, "infestedwaters": 1},
+		{"dryfield": 1, "infestedwaters": 1},
 		{"mangroveroots": 1}
 		]
 	
@@ -2034,8 +2035,8 @@ func add_events() -> void:
 	event_act_1_medium_swamp_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_swamp_1.event_weighted_enemy_object_ids = [
 		{"dryfield": 1},
-		{"mangroveroots": 1},
-		{"mangroveroots": 1},
+		{"mangroveroots": 1, "brackishbeds": 1},
+		{"mangroveroots": 1, "brackishbeds": 1},
 		{"infestedwaters": 1}
 		]
 	
@@ -2044,8 +2045,8 @@ func add_events() -> void:
 	var event_act_1_medium_swamp_2: EventData = EventData.new("event_act_1_medium_swamp_2")
 	event_act_1_medium_swamp_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_swamp_2.event_weighted_enemy_object_ids = [
-		{"mangroveroots": 1},
-		{"mangroveroots": 1},
+		{"mangroveroots": 1, "infestedwaters": 1},
+		{"mangroveroots": 1, "dryfield": 1},
 		{"brackishbeds": 1},
 		]
 	
@@ -2054,8 +2055,8 @@ func add_events() -> void:
 	var event_act_1_medium_swamp_3: EventData = EventData.new("event_act_1_medium_swamp_3")
 	event_act_1_medium_swamp_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_swamp_3.event_weighted_enemy_object_ids = [
-		{"mangroveroots": 1},
-		{"infestedwaters": 1},
+		{"mangroveroots": 1, "brackishbeds": 1},
+		{"infestedwaters": 1, "hut": 1},
 		{"brackishbeds":1}
 		]
 	
@@ -2065,10 +2066,10 @@ func add_events() -> void:
 	var event_act_1_hard_swamp_1: EventData = EventData.new("event_act_1_hard_swamp_1")
 	event_act_1_hard_swamp_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_swamp_1.event_weighted_enemy_object_ids = [
-		{"mangroveroots": 1},
+		{"mangroveroots": 1, "brackishbeds": 1},
+		{"brackishbeds": 1, "infestedwaters": 1},
 		{"brackishbeds": 1},
-		{"brackishbeds": 1},
-		{"infestedwaters": 1}
+		{"infestedwaters": 1, "hut": 1}
 		]
 	
 	Global.register_rod(event_act_1_hard_swamp_1)
@@ -2079,6 +2080,7 @@ func add_events() -> void:
 		{"brackishbeds": 1},
 		{"infestedwaters": 1},
 		{"hut": 1},
+		{"hut": 1},
 		]
 	
 	Global.register_rod(event_act_1_hard_swamp_2)
@@ -2086,8 +2088,8 @@ func add_events() -> void:
 	var event_act_1_hard_swamp_3: EventData = EventData.new("event_act_1_hard_swamp_3")
 	event_act_1_hard_swamp_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_swamp_3.event_weighted_enemy_object_ids = [
-		{"mangroveroots": 1},
-		{"mangroveroots": 1},
+		{"dryfield": 1},
+		{"mangroveroots": 1,"brackishbeds":1},
 		{"hut": 1},
 		{"brackishbeds":1}
 		]
@@ -3354,16 +3356,36 @@ func add_enemies() -> void:
 	chargedvista.add_health_bounds(30, 37)
 	chargedvista.add_health_bounds(49, 52, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	chargedvista.enemy_texture_path = "external/sprites/enemies/chargedvista.png"
+	chargedvista.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	chargedvista.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	chargedvista.enemy_initial_status_effects = {"status_effect_size_reward": 5,"status_effect_room_reward": 2}
+	chargedvista.enemy_initial_status_effects = {"status_effect_size_reward": 5,"status_effect_room_reward": 2,"status_effect_rattle":1}
 	chargedvista.enemy_actions_on_death = [{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 5}},{Scripts.ACTION_ADD_ROOM:{"room_amount": 2}}]
 	# an attack that hits harder on higher difficulties
+	var chargedvista_status_actions: Array[Dictionary] = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount": 1,
+		"max_card_amount": 1,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+		"validator_data": [
+			{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
+		],
+		"action_data": [
+			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+				"card_influence": -1,
+			}},
+			]
+		}
+	}]
+	# an attack that hits harder on higher difficulties
 	chargedvista.add_intent_state([
-		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
-		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, "",{"intent_block":1},chargedvista_status_actions),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},chargedvista_status_actions),
 	])
 		
 	var _chargedvista_anim: AnimationData = chargedvista.add_standard_animations(
@@ -3710,7 +3732,7 @@ func add_enemies() -> void:
 		}},{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 5}}]
 	# an attack that hits harder on higher difficulties
 	den.add_intent_state([
-		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1},den_status_actions),
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},den_status_actions),
 	])
 		
@@ -3759,7 +3781,7 @@ func add_enemies() -> void:
 		}},{Scripts.ACTION_ADD_KINGDOM_SIZE: {"size_amount": 4}}]
 	# an attack that hits harder on higher difficulties
 	hideout.add_intent_state([
-		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, "",{"intent_block":1},hideout_status_actions),
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},hideout_status_actions),
 	])
 		
@@ -4378,7 +4400,7 @@ func add_cards_misc() -> void:
 	card_fish.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_fish.card_requires_target = false
 	card_fish.card_play_destination = HandManager.EXHAUST_PILE
-	card_fish.card_values = {"food_amount": 2, "card_value_improvements": {"food_amount": 1}}
+	card_fish.card_values = {"food_amount": 1, "card_value_improvements": {"food_amount": 1}}
 	card_fish.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_FOOD:
@@ -6844,10 +6866,10 @@ func add_cards_gold() -> void:
 	card_spiceguard.card_type = CardData.CARD_TYPES.FACTION
 	card_spiceguard.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_spiceguard.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_spiceguard.card_requires_target = true
+	card_spiceguard.card_requires_target = false
 	card_spiceguard.card_energy_cost = 2
 	card_spiceguard.card_influence = 4
-	card_spiceguard.card_values = {"card_object_id": "card_sword","number_of_cards": 2, "ore_required": 2}
+	card_spiceguard.card_values = {"created_card_object_id": "card_sword","number_of_cards": 2, "ore_required": 2}
 	card_spiceguard.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_spiceguard.card_play_actions.append(forge_action)
 	card_spiceguard.card_play_actions.append(influence_action)
