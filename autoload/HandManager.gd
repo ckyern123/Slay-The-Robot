@@ -458,11 +458,7 @@ func _play_card(card_play_request: CardPlayRequest) -> void:
 	var is_duplicate_play: bool = card_play_request.is_duplicate_play
 	var send_signal: bool = not is_duplicate_play
 	HandManager.move_card_to_pile(card_play_request.card_data, card_origin_pile, card_destination_pile, card_destination_strategy, PLAYER_DEFAULT_HAND_CARD_COUNT_MAX, true, send_signal)
-	var sound_action_data: Array[Dictionary] = [{
-	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/explore.wav"},
-	}]
-	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
-	ActionHandler.add_actions(sound_actions)
+
 	hand.combat.update_combat_display()
 
 ## Discard non-retained cards, exhaust ethereal cards, and perform specific end of turn card actions

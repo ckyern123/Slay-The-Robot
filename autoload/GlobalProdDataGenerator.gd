@@ -46,7 +46,8 @@ var influence_action: Dictionary = 		{
 							}
 					}
 				]
-		}
+		},
+			Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/explore.wav"}
 	}
 	
 var sweep_action_data: Array[Dictionary] = [
@@ -4698,8 +4699,8 @@ func add_cards_trade() -> void:
 	card_trade1.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade1.card_requires_target = false
 	card_trade1.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade1.card_values = {"ore_amount": randi_range(-2, -3),"money_amount":randi_range(4, 6)}
-	card_trade1.card_play_validators = [{Scripts.VALIDATOR_ORE:{"ore_required":abs(card_trade1.card_values["ore_amount"])}}]
+	#card_trade1.card_values = {"ore_amount": randi_range(-2, -3),"money_amount":randi_range(4, 6),"ore_required":1}
+	card_trade1.card_play_validators = [{Scripts.VALIDATOR_ORE:{}}]
 	card_trade1.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_ORE:
@@ -4724,8 +4725,8 @@ func add_cards_trade() -> void:
 	card_trade2.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade2.card_requires_target = false
 	card_trade2.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade2.card_values = {"food_amount": randi_range(-4, -8),"money_amount":randi_range(9, 12)}
-	card_trade2.card_play_validators = [{Scripts.VALIDATOR_FOOD:{"food_required":abs(card_trade2.card_values["food_amount"])}}]
+	card_trade2.card_values = {}
+	card_trade2.card_play_validators = [{Scripts.VALIDATOR_FOOD:{}}]
 	card_trade2.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_FOOD:
@@ -4750,8 +4751,8 @@ func add_cards_trade() -> void:
 	card_trade3.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade3.card_requires_target = false
 	card_trade3.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade3.card_values = {"insight_amount": randi_range(-2, -3),"money_amount":randi_range(9, 15)}
-	card_trade3.card_play_validators = [{Scripts.VALIDATOR_INSIGHT:{"insight_required":abs(card_trade3.card_values["insight_amount"])}}]
+	card_trade3.card_values = {}
+	card_trade3.card_play_validators = [{Scripts.VALIDATOR_INSIGHT:{}}]
 	card_trade3.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_INSIGHT:
@@ -4776,8 +4777,8 @@ func add_cards_trade() -> void:
 	card_trade4.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade4.card_requires_target = false
 	card_trade4.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade4.card_values = {"ore_amount": randi_range(4, 6),"money_amount":randi_range(-4, -6)}
-	card_trade4.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":abs(card_trade4.card_values["money_amount"])}}]
+	#card_trade4.card_values = {"ore_amount": randi_range(4, 6),"money_amount":randi_range(-4, -6)}
+	card_trade4.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade4.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
@@ -4802,8 +4803,8 @@ func add_cards_trade() -> void:
 	card_trade5.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade5.card_requires_target = false
 	card_trade5.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade5.card_values = {"food_amount": randi_range(4, 8),"money_amount":randi_range(-4, -6)}
-	card_trade5.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":abs(card_trade5.card_values["money_amount"])}}]
+	#card_trade5.card_values = {"food_amount": randi_range(4, 8),"money_amount":randi_range(-4, -6)}
+	card_trade5.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade5.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
@@ -4828,8 +4829,8 @@ func add_cards_trade() -> void:
 	card_trade6.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade6.card_requires_target = false
 	card_trade6.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade6.card_values = {"insight_amount": randi_range(1, 3),"money_amount":randi_range(-9, -15)}
-	card_trade6.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":abs(card_trade6.card_values["money_amount"])}}]
+	#card_trade6.card_values = {"insight_amount": randi_range(1, 3),"money_amount":randi_range(-9, -15)}
+	card_trade6.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade6.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
@@ -6383,7 +6384,7 @@ func add_cards_green() -> void:
 	card_greeninformant.card_texture_path = "external/sprites/cards/jade/04_greeninformant.png"
 	card_greeninformant.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_greeninformant.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count], then Weave [number_of_cards] Missive.\nON DISCARD: Gain [food_amount]{0}.".format([Card.FOOD_ICON_KEYWORD])
-	card_greeninformant.card_keyword_object_ids = ["keyword_weave"]
+	card_greeninformant.card_keyword_object_ids = ["keyword_weave","keyword_missives"]
 	card_greeninformant.card_type = CardData.CARD_TYPES.FACTION
 	card_greeninformant.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_greeninformant.card_rarity = CardData.CARD_RARITIES.COMMON

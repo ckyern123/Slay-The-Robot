@@ -9,7 +9,7 @@ extends BaseMenu
 @onready var music_volume_slider: HSlider = %MusicVolumeSlider
 
 @onready var mute_background_check_button: CheckButton = %MuteBackgroundCheckButton
-
+@onready var tutorial_check_button: CheckButton = %TutorialCheckButton
 func _ready():
 	super()
 	mute_background_check_button.toggled.connect(_on_mute_background_button_toggled)

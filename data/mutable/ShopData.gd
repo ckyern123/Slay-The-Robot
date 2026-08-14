@@ -69,7 +69,25 @@ func visit_shop() -> void:
 		### Generate Items
 		# generates shop cards
 		var generated_trade: Array[CardData] = Random.generate_unweighted_card_draft_from_card_pack_id(rng_shop,"card_pack_grey",ShopData.GENERATED_TRADE_COUNT)
-		
+		for card in generated_trade:
+			if card.object_id == "card_trade1":
+				var ore_amount: int = randi_range(-2, -3)
+				card.update_card_values({"ore_amount": ore_amount,"ore_required":abs(ore_amount), "money_amount":randi_range(5, 7)})
+			if card.object_id == "card_trade2":
+				var food_amount: int = randi_range(-4, -8)
+				card.update_card_values({"food_amount": food_amount,"food_required":abs(food_amount), "money_amount":randi_range(9, 12)})
+			if card.object_id == "card_trade3":
+				var insight_amount: int = randi_range(-2, -3)
+				card.update_card_values({"insight_amount": insight_amount,"insight_required":abs(insight_amount), "money_amount":randi_range(9, 15)})
+			if card.object_id == "card_trade4":
+				var money_amount: int = randi_range(-4, -8)
+				card.update_card_values({"money_amount": money_amount,"money_required":abs(money_amount), "ore_amount":randi_range(4, 7)})
+			if card.object_id == "card_trade5":
+				var money_amount: int = randi_range(-5, -9)
+				card.update_card_values({"money_amount": money_amount,"money_required":abs(money_amount), "food_amount":randi_range(9, 12)})
+			if card.object_id == "card_trade6":
+				var money_amount: int = randi_range(-8, -12)
+				card.update_card_values({"money_amount": money_amount,"money_required":abs(money_amount), "insight_amount":randi_range(1, 3)})
 		if (first_time):
 			available_artifact_ids = Global.player_data.player_artifact_pool
 			for item in available_artifact_ids:
