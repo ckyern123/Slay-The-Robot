@@ -2656,7 +2656,7 @@ func add_keywords() -> void:
 	
 	var keyword_inspect: KeywordData = KeywordData.new("keyword_inspect")
 	keyword_inspect.keyword_name = "Inspect"
-	keyword_inspect.keyword_text_bb_code = "Improve values of X random cards in discard pile by 1. Only Rocks and Treasures can be Inspected. This increases by 1 for every 7 cards in exhaust."
+	keyword_inspect.keyword_text_bb_code = "Improve values of X random cards in discard pile by 1. Only Rocks and Treasures can be Inspected. This increases by 1 for every 10 cards in exhaust."
 	Global.register_rod(keyword_inspect)
 
 	var keyword_fertilise: KeywordData = KeywordData.new("keyword_fertilise")
@@ -2696,7 +2696,7 @@ func add_keywords() -> void:
 	
 	var keyword_missives: KeywordData = KeywordData.new("keyword_missives")
 	keyword_missives.keyword_name = "Missives"
-	keyword_missives.keyword_text_bb_code = "Craft that draws 3 cards. Has 2 durability."
+	keyword_missives.keyword_text_bb_code = "Craft that discards 2 rightmost cards and draws 4. Has 2 durability."
 	Global.register_rod(keyword_missives)		
 	
 	var keyword_appease: KeywordData = KeywordData.new("keyword_appease")
@@ -5101,6 +5101,7 @@ func add_cards_purple() -> void:
 	card_saltexpert.card_texture_path = "external/sprites/cards/pearl/16_saltexpert.png"
 	card_saltexpert.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_saltexpert.card_description = "Retain up to [max_card_amount] cards in hand. Appease 2 to retained cards."
+	card_saltexpert.card_keyword_object_ids = ["keyword_appease"]
 	card_saltexpert.card_type = CardData.CARD_TYPES.FACTION
 	card_saltexpert.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_saltexpert.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5298,7 +5299,7 @@ func add_cards_purple() -> void:
 	card_dregpilferer.card_texture_path = "external/sprites/cards/pearl/19_dregpilferer.png"
 	card_dregpilferer.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_dregpilferer.card_description = "Explore [damage]{0}.\nFRONTIER: Create [number_of_cards] Treasure.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_dregpilferer.card_keyword_object_ids = ["keyword_weave","keyword_treasure"]
+	card_dregpilferer.card_keyword_object_ids = ["keyword_weave","keyword_frontier", "keyword_treasure"]
 	card_dregpilferer.card_type = CardData.CARD_TYPES.FACTION
 	card_dregpilferer.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_dregpilferer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5433,7 +5434,7 @@ func add_cards_purple() -> void:
 	card_pearlsmuggler.card_texture_path = "external/sprites/cards/pearl/10_pearlsmuggler.png"
 	card_pearlsmuggler.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlsmuggler.card_description = "Sift [draw_count] for Faction cards. Wield [max_card_amount]."
-	card_pearldiplomat.card_keyword_object_ids = ["keyword_wield"]
+	card_pearldiplomat.card_keyword_object_ids = ["keyword_sift", "keyword_wield"]
 	card_pearlsmuggler.card_type = CardData.CARD_TYPES.FACTION
 	card_pearlsmuggler.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_pearlsmuggler.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5456,6 +5457,7 @@ func add_cards_purple() -> void:
 	card_pearlseer.card_texture_path = "external/sprites/cards/pearl/11_pearlseer.png"
 	card_pearlseer.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlseer.card_description = "Sift [draw_count] for Craft cards, then gain [money_amount]{0} for each generated card in hand.".format([Card.MONEY_ICON_KEYWORD])
+	card_pearlseer.card_keyword_object_ids = ["keyword_sift"]
 	card_pearlseer.card_type = CardData.CARD_TYPES.FACTION
 	card_pearlseer.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_pearlseer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5899,7 +5901,7 @@ func add_cards_black() -> void:
 	card_flintlockswiftshot.card_color_id = "color_{0}".format([color])
 	card_flintlockswiftshot.card_texture_path = "external/sprites/cards/aniseed/20_flintlockswiftshot.png"
 	card_flintlockswiftshot.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_flintlockswiftshot.card_description = "Explore [damage]{0}\nON DISCARD: Improve Explore{0} by 1."
+	card_flintlockswiftshot.card_description = "Explore [damage]{0}\nON DISCARD: Improve Explore{0} by 1.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_flintlockswiftshot.card_keyword_object_ids = ["keyword_forge","keyword_sword", "keyword_sift"]
 	card_flintlockswiftshot.card_type = CardData.CARD_TYPES.FACTION
 	card_flintlockswiftshot.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -6428,6 +6430,7 @@ func add_cards_green() -> void:
 	card_goldenconscript.card_texture_path = "external/sprites/cards/jade/05_goldenconscript.png"
 	card_goldenconscript.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_goldenconscript.card_description = "Explore [damage]{0}, then Sift [draw_count] for Jade cards.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_goldenconscript.card_keyword_object_ids = ["keyword_sift"]
 	card_goldenconscript.card_type = CardData.CARD_TYPES.FACTION
 	card_goldenconscript.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_goldenconscript.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6765,6 +6768,7 @@ func add_cards_green() -> void:
 	card_unrulysourcer.card_texture_path = "external/sprites/cards/jade/20_unrulysourcer.png"
 	card_unrulysourcer.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_unrulysourcer.card_description = "Explore [damage]{0}, Gain [food_amount]{1}.\nFRONTIER: If not in Frontier, create 1 Rebel.".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
+	card_unrulysourcer.card_keyword_object_ids = ["keyword_frontier"]
 	card_unrulysourcer.card_type = CardData.CARD_TYPES.FACTION
 	card_unrulysourcer.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_unrulysourcer.card_rarity = CardData.CARD_RARITIES.RARE
@@ -6991,6 +6995,7 @@ func add_cards_gold() -> void:
 	card_foresttracker.card_texture_path = "external/sprites/cards/cengkih/05_foresttracker.png"
 	card_foresttracker.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_foresttracker.card_description = "Explore [damage]{0}.\nFRONTIER: Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
+	card_foresttracker.card_keyword_object_ids = ["keyword_frontier","keyword_fertilise"]
 	card_foresttracker.card_type = CardData.CARD_TYPES.FACTION
 	card_foresttracker.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_foresttracker.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -7323,7 +7328,7 @@ func add_cards_gold() -> void:
 	card_noblesorter.card_texture_path = "external/sprites/cards/cengkih/20_noblesorter.png"
 	card_noblesorter.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_noblesorter.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease all cards in hand by 3."
-	card_noblesorter.card_keyword_object_ids = ["keyword_cook"]
+	card_noblesorter.card_keyword_object_ids = ["keyword_appease"]
 	card_noblesorter.card_type = CardData.CARD_TYPES.FACTION
 	card_noblesorter.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_noblesorter.card_rarity = CardData.CARD_RARITIES.RARE
