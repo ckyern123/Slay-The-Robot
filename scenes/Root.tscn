@@ -1754,7 +1754,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1900,11 +1899,11 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_left = 150.0
 offset_top = 70.0
-offset_right = 350.0
-offset_bottom = 162.0
+offset_right = 303.0
+offset_bottom = 199.0
 bbcode_enabled = true
 text = "Victory Objectives:
-Number of cards total: 60
+Total number of cards: 60
 Artifacts built: 15
 Books drafted: 5"
 
@@ -1924,7 +1923,7 @@ offset_top = 92.0
 offset_right = 202.0
 offset_bottom = 142.0
 bbcode_enabled = true
-text = "Sprawl:"
+text = "Size:"
 
 [node name="SprawlFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=228372623]
 unique_name_in_owner = true
@@ -2313,6 +2312,7 @@ grow_vertical = 2
 theme_override_constants/separation = 20
 
 [node name="BookContainer" type="VBoxContainer" parent="RunScreen/Combat/ShopOverlay" unique_id=2135255811]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -3081,10 +3081,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 26.0
-offset_top = -2.0
-offset_right = 26.0
-offset_bottom = -2.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -3177,6 +3177,39 @@ mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
+[node name="TradeTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1389270593]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.19427083
+anchor_top = 0.07777778
+anchor_right = 0.4375
+anchor_bottom = 0.42407408
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ArtifactTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1636831156]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.440625
+anchor_top = 0.07685185
+anchor_right = 0.68385416
+anchor_bottom = 0.42314816
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="CardTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1148552679]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6859375
+anchor_top = 0.08148148
+anchor_right = 0.9291667
+anchor_bottom = 0.42777777
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
 [node name="FoodTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=2094616792]
 layout_mode = 1
 anchors_preset = -1
@@ -3191,10 +3224,21 @@ metadata/_edit_use_anchors_ = true
 [node name="SprawlTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1072154485]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.040625
+anchor_left = 0.022395832
 anchor_top = 0.18240741
-anchor_right = 0.1265625
+anchor_right = 0.096354164
 anchor_bottom = 0.23703703
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="RefreshTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=738179992]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0953125
+anchor_top = 0.10462963
+anchor_right = 0.19322917
+anchor_bottom = 0.15925926
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3202,10 +3246,21 @@ metadata/_edit_use_anchors_ = true
 [node name="RoomTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=92220567]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0359375
+anchor_left = 0.022916667
 anchor_top = 0.23703703
-anchor_right = 0.121875
-anchor_bottom = 0.29166666
+anchor_right = 0.094791666
+anchor_bottom = 0.2962963
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ObjectivesTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=943137326]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.09739583
+anchor_top = 0.18055555
+anchor_right = 0.20208333
+anchor_bottom = 0.28611112
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3213,10 +3268,21 @@ metadata/_edit_use_anchors_ = true
 [node name="EnergyTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1639367285]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.013541667
-anchor_top = 0.68796295
-anchor_right = 0.24020836
-anchor_bottom = 0.76796293
+anchor_left = 0.055208333
+anchor_top = 0.66851854
+anchor_right = 0.15052083
+anchor_bottom = 0.7731481
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="DrawTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1107452338]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0046875
+anchor_top = 0.837037
+anchor_right = 0.1
+anchor_bottom = 0.9416666
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3239,6 +3305,17 @@ anchor_left = 0.79677016
 anchor_top = 0.7925926
 anchor_right = 0.9567702
 anchor_bottom = 0.96402156
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="EndCombatTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1534100272]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.83489585
+anchor_top = 0.6703704
+anchor_right = 0.9948959
+anchor_bottom = 0.8417994
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true

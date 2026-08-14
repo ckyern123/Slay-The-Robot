@@ -21,10 +21,15 @@ class_name Tooltip
 @onready var discard_pile_button: TextureButton = %DiscardPile
 @onready var exhaust_pile_button: TextureButton = %ExhaustPile
 @onready var end_turn_button: Button = %EndTurnButton
-
+@onready var card_container = $"../RunScreen/Combat/ShopOverlay/CardContainer"
+@onready var trade_container = $"../RunScreen/Combat/ShopOverlay/TradeContainer"
+@onready var artifact_container = $"../RunScreen/Combat/ShopOverlay/ArtifactContainer"
+@onready var shop_refresh = %ShopRefreshLabel
+@onready var objectives_label = %ObjectivesLabel 
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var tooltip_label: RichTextLabel = $PanelContainer/TooltipLabel
 @onready var keyword_container: KeywordContainer = $KeywordContainer
+@onready var end_combat_button = %CombatEndButton
 
 var follow_mouse: bool = false # if the tooltip should constantly update its position over the mouse when proc'ed
 var lock_x: bool = false # when following mouse, lock x coord to a given offset
@@ -45,19 +50,24 @@ func _ready() -> void:
 		[map_button, "[color=orange]Map[/color]\nOpens map for this act", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		[deck_button, "[color=orange]Deck[/color]\nList of all cards currently owned. Saved between combats", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		
-		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose. /Overhead: Each turn, you lose Food equal to total cards/10)", true, false, true, $TooltipPositions/FoodTooltipPos],
-		[money_label, "[color=orange]Money[/color]\nHow much money you have. Money is used to purchase cards and part of trade orders.", true, false, true, $TooltipPositions/MoneyTooltipPos],
+		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose. /Overhead: Each turn, you lose Food equal to total cards/10", true, false, true, $TooltipPositions/FoodTooltipPos],
+		[money_label, "[color=orange]Money[/color]\nHow much money you have. Money is used to purchase cards and fulfil trade orders.", true, false, true, $TooltipPositions/MoneyTooltipPos],
 		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have. Ore is used to forge things and build Artifacts.", true, false, true, $TooltipPositions/OreTooltipPos],
-		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have. Insight is used to weave and cook things.", true, false, true, $TooltipPositions/InsightTooltipPos],
-		[sprawl_label, "[color=orange]Size[/color]\nHow much Size you have. For every 3 cards that exceed Size, you rattle a card in discard pile at the end of turn.", true, false, true, $TooltipPositions/SprawlTooltipPos],
-		[room_label, "[color=orange]Insight[/color]\nHow much Room you have. Room is needed to build Artifacts.", true, false, true, $TooltipPositions/RoomTooltipPos],
-	
+		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have. Insight is used to weave and cook things. Scrolls are woven things that are used to draft Books.", true, false, true, $TooltipPositions/InsightTooltipPos],
+		[sprawl_label, "[color=orange]Size[/color]\nYour kingdom's Size is the amount of cards you can support before it becomes unstable. For every 3 cards that exceed Size, you rattle a card in discard pile at the end of turn.", true, false, true, $TooltipPositions/SprawlTooltipPos],
+		[room_label, "[color=orange]Room[/color]\nHow much Room you have. Room is needed to build Artifacts.", true, false, true, $TooltipPositions/RoomTooltipPos],
+		[card_container, "[color=orange]Purchase cards[/color]\nPurchase cards. Cards cost Money. You can only purchase one card for each Shop Refresh.", true, false, true, $TooltipPositions/RoomTooltipPos],
+		[artifact_container, "[color=orange]Artifacts[/color]\nPurchase an artifact blueprint. To acquire the artifact, play the Blueprint card and pay 8 Ore. You can only purhcase one blueprint per Shop Refresh", true, false, true, $TooltipPositions/ArtifactTooltipPos],
+		[trade_container, "[color=orange]Trade orders[/color]\nGain a Trade order card. Play the card to trade resources. Each order can only be used once. You can only gain one Trade order card per Shop Refresh.", true, false, true, $TooltipPositions/TradeTooltipPos],
+		[shop_refresh, "[color=orange]Shop Refresh[/color]\nWhen this counter is at zero, the shop is refreshed.", true, false, true, $TooltipPositions/RefreshTooltipPos],
+		[objectives_label, "[color=orange]Objectives[/color]\nTo win the game, complete these objectives\nThe total number of cards you have can be seen at the Size counter\nArtifacts are built by purchasing blueprint cards and playing them\n.Books are drafted every three times Scrolls are played.", true, false, true, $TooltipPositions/ObjectivesTooltipPos],
+				
 		[energy, "[color=orange]Energy[/color]\nUsed to play cards", false, false, false, $TooltipPositions/EnergyTooltipPos],
-		[draw_pile_button, "[color=orange]Draw Pile[/color]\nThese cards will be drawn", false, false, false, $TooltipPositions/EnergyTooltipPos],
-		
-		[exhaust_pile_button, "[color=orange]Exhaust Pile[/color]\nThese cards have been removed from play", false, false, false, $TooltipPositions/ExhaustTooltipPos],
+		[draw_pile_button, "[color=orange]Draw Pile[/color]\nThese cards will be drawn", false, false, false, $TooltipPositions/DrawTooltipPos],
+		[exhaust_pile_button, "[color=orange]Exhaust Pile[/color]\nThese cards have been removed from play", false, false, false, $TooltipPositions/ExhaustTooltipPos],	
 		[discard_pile_button, "[color=orange]Discard Pile[/color]\nThese cards will be reshuffled back", false, false, false, $TooltipPositions/DiscardTooltipPos],
-		[end_turn_button, "[color=orange]End Turn[/color]\nEnds your turn", false, false, false, $TooltipPositions/DiscardTooltipPos],
+		[end_turn_button, "[color=orange]End Turn[/color]\nEnds your turn", false, false, false, $TooltipPositions/EndCombatTooltipPos],
+		[end_combat_button, "[color=orange]End Combat[/color]\nEnds this combat to visit a new location. You gain this button after completing an expedition.\n If a dangerous expedition is present (represented by the red skull), you need to complete that expedition first before this appears.", false, false, false, $TooltipPositions/EndCombatTooltipPos],
 		]
 	
 	for component_tooltip: Array in component_tooltip_data:
