@@ -1845,7 +1845,7 @@ func add_events() -> void:
 		{"forestmulch": 1},
 		{"forestmulch": 1},
 		{"forestfloor": 1},
-		{"hideout": 0.6},
+		{"hideout": 0.6,"den":0.6},
 		]
 	
 	Global.register_rod(event_act_1_medium_forest_2)
@@ -2793,6 +2793,39 @@ func add_combat_vfx_animations() -> void:
 		"external/sprites/animated_effects/impact_default/vfx_impact_default_14.png",
 	], 25)
 	Global.register_rod(animation_vfx_impact_default)
+	
+	var animation_vfx_fire: AnimationData = AnimationData.new("animation_vfx_fire")
+	animation_vfx_fire.add_vfx_animations([
+		"external/sprites/animated_effects/fire/comp_0001.png",
+		"external/sprites/animated_effects/fire/comp_0002.png",
+		"external/sprites/animated_effects/fire/comp_0003.png",
+		"external/sprites/animated_effects/fire/comp_0004.png",
+		"external/sprites/animated_effects/fire/comp_0005.png",
+		"external/sprites/animated_effects/fire/comp_0006.png",
+		"external/sprites/animated_effects/fire/comp_0007.png",
+		"external/sprites/animated_effects/fire/comp_0008.png",
+		"external/sprites/animated_effects/fire/comp_0009.png",
+		"external/sprites/animated_effects/fire/comp_0010.png",
+		"external/sprites/animated_effects/fire/comp_0011.png",
+		"external/sprites/animated_effects/fire/comp_0012.png",
+		"external/sprites/animated_effects/fire/comp_0013.png",
+		"external/sprites/animated_effects/fire/comp_0014.png",
+		"external/sprites/animated_effects/fire/comp_0015.png",
+		"external/sprites/animated_effects/fire/comp_0016.png",
+		"external/sprites/animated_effects/fire/comp_0017.png",
+		"external/sprites/animated_effects/fire/comp_0018.png",
+		"external/sprites/animated_effects/fire/comp_0019.png",
+		"external/sprites/animated_effects/fire/comp_0020.png",
+		"external/sprites/animated_effects/fire/comp_0021.png",
+		"external/sprites/animated_effects/fire/comp_0022.png",
+		"external/sprites/animated_effects/fire/comp_0023.png",
+		"external/sprites/animated_effects/fire/comp_0024.png",
+		"external/sprites/animated_effects/fire/comp_0025.png",
+		"external/sprites/animated_effects/fire/comp_0026.png",
+		"external/sprites/animated_effects/fire/comp_0027.png",
+		"external/sprites/animated_effects/fire/comp_0028.png",
+	],0, 35)
+	Global.register_rod(animation_vfx_fire)
 #endregion
 
 #region Characters
@@ -2819,7 +2852,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green","card_royalpurveyor"
+		"card_basic_explore_green", "card_basic_explore_green"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -4260,6 +4293,7 @@ func add_card_basics() -> void:
 		card_basic_ore.card_requires_target = false
 		card_basic_ore.card_keyword_object_ids = ["keyword_ore"]
 		card_basic_ore.card_values = {"ore_amount": 1}
+		card_basic_ore.card_influence = 3
 		card_basic_ore.card_upgrade_value_improvements = {"ore_amount": 1}
 		card_basic_ore.card_play_actions = [{
 		Scripts.ACTION_ADD_ORE: {}
@@ -5238,7 +5272,7 @@ func add_cards_purple() -> void:
 	var card_dregpilferer: CardData = CardData.new("card_dregpilferer")
 	card_dregpilferer.card_name = "Dreg Pilferer"
 	card_dregpilferer.card_color_id = "color_{0}".format([color])
-	card_dregpilferer.card_texture_path = "external/sprites/cards/pearl/07_dregpilferer.png"
+	card_dregpilferer.card_texture_path = "external/sprites/cards/pearl/19_dregpilferer.png"
 	card_dregpilferer.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_dregpilferer.card_description = "Explore [damage]{0}.\nFRONTIER: Create [number_of_cards] Treasure.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_dregpilferer.card_keyword_object_ids = ["keyword_weave","keyword_treasure"]
@@ -5514,23 +5548,23 @@ func add_cards_purple() -> void:
 	Global.register_rod(card_courthand)
 	
 		
-	var card_portdowager: CardData = CardData.new("card_portdowager")
-	card_portdowager.card_name = "Port Dowager"
-	card_portdowager.card_color_id = "color_{0}".format([color])
-	card_portdowager.card_texture_path = "external/sprites/cards/pearl/14_portdowager.png"
-	card_portdowager.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_portdowager.card_description = "Inspect [min_card_amount]\nFRONTIER: Return up to 3 cards from your discard pile to your hand."
-	card_portdowager.card_keyword_object_ids = ["keyword_spice"]
-	card_portdowager.card_type = CardData.CARD_TYPES.FACTION
-	card_portdowager.card_subtype = CardData.CARD_SUBTYPES.PEARL
-	card_portdowager.card_rarity = CardData.CARD_RARITIES.RARE
-	card_portdowager.card_requires_target = false
-	card_portdowager.card_energy_cost = 2
-	card_portdowager.card_values = {"min_card_amount":3,"max_card_amount":3}
-	card_portdowager.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
-	card_portdowager.card_influence = 4
-	card_portdowager.card_glow_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
-	card_portdowager.card_play_actions = [
+	var card_portoverseer: CardData = CardData.new("card_portoverseer")
+	card_portoverseer.card_name = "Port Overseer"
+	card_portoverseer.card_color_id = "color_{0}".format([color])
+	card_portoverseer.card_texture_path = "external/sprites/cards/pearl/20_portoverseer.png"
+	card_portoverseer.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
+	card_portoverseer.card_description = "Inspect [min_card_amount]\nFRONTIER: Return up to 3 cards from your discard pile to your hand."
+	card_portoverseer.card_keyword_object_ids = ["keyword_inspect","keyword_frontier"]
+	card_portoverseer.card_type = CardData.CARD_TYPES.FACTION
+	card_portoverseer.card_subtype = CardData.CARD_SUBTYPES.PEARL
+	card_portoverseer.card_rarity = CardData.CARD_RARITIES.RARE
+	card_portoverseer.card_requires_target = false
+	card_portoverseer.card_energy_cost = 2
+	card_portoverseer.card_values = {"min_card_amount":3,"max_card_amount":3}
+	card_portoverseer.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
+	card_portoverseer.card_influence = 4
+	card_portoverseer.card_glow_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
+	card_portoverseer.card_play_actions = [
 		{
 		Scripts.ACTION_VALIDATOR:
 			{
@@ -5546,10 +5580,10 @@ func add_cards_purple() -> void:
 			}
 		}
 	]
-	card_portdowager.card_play_actions.append(influence_action)
-	card_portdowager.card_end_of_turn_actions = end_action_data
+	card_portoverseer.card_play_actions.append(influence_action)
+	card_portoverseer.card_end_of_turn_actions = end_action_data
 	
-	Global.register_rod(card_portdowager)
+	Global.register_rod(card_portoverseer)
 	
 	var card_wizenedcommander: CardData = CardData.new("card_wizenedcommander")
 	card_wizenedcommander.card_name = "Court Hand"
@@ -5840,7 +5874,7 @@ func add_cards_black() -> void:
 	var card_flintlockswiftshot: CardData = CardData.new("card_flintlockswiftshot")
 	card_flintlockswiftshot.card_name = "Flintlock Swiftshot"
 	card_flintlockswiftshot.card_color_id = "color_{0}".format([color])
-	card_flintlockswiftshot.card_texture_path = "external/sprites/cards/aniseed/07_flintlockswiftshot.png"
+	card_flintlockswiftshot.card_texture_path = "external/sprites/cards/aniseed/20_flintlockswiftshot.png"
 	card_flintlockswiftshot.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_flintlockswiftshot.card_description = "Explore [damage]{0}\nON DISCARD: Improve Explore{0} by 1."
 	card_flintlockswiftshot.card_keyword_object_ids = ["keyword_forge","keyword_sword", "keyword_sift"]
@@ -6069,7 +6103,7 @@ func add_cards_black() -> void:
 	var card_grandunifier: CardData = CardData.new("card_grandunifier")
 	card_grandunifier.card_name = "Grand Unifier"
 	card_grandunifier.card_color_id = "color_{0}".format([color])
-	card_grandunifier.card_texture_path = "external/sprites/cards/aniseed/13_grandunifier.png"
+	card_grandunifier.card_texture_path = "external/sprites/cards/aniseed/19_grandunifier.png"
 	card_grandunifier.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_grandunifier.card_description = "Sift [draw_count] for Faction cards. Then, you gain 1{0} for each Faction subtype (Aniseed, Cengkih, Jade, Pearl) in hand.".format([Card.ENERGY_ICON_KEYWORD])
 	card_grandunifier.card_keyword_object_ids = ["keyword_sift"]
@@ -6703,9 +6737,9 @@ func add_cards_green() -> void:
 	Global.register_rod(card_supremerecaster)
 	
 	var card_unrulysourcer: CardData = CardData.new("card_unrulysourcer")
-	card_unrulysourcer.card_name = "Village Hero"
+	card_unrulysourcer.card_name = "Unruly Sourcer"
 	card_unrulysourcer.card_color_id = "color_{0}".format([color])
-	card_unrulysourcer.card_texture_path = "external/sprites/cards/jade/14_unrulysourcer.png"
+	card_unrulysourcer.card_texture_path = "external/sprites/cards/jade/20_unrulysourcer.png"
 	card_unrulysourcer.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_unrulysourcer.card_description = "Explore [damage]{0}, Gain [food_amount]{1}.\nFRONTIER: If not in Frontier, create 1 Rebel.".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
 	card_unrulysourcer.card_type = CardData.CARD_TYPES.FACTION
@@ -6820,9 +6854,9 @@ func add_cards_gold() -> void:
 	Global.register_rod(card_spiceguard)
 
 	var card_courtmarshall: CardData = CardData.new("card_courtmarshall")
-	card_courtmarshall.card_name = "Spice Guard"
+	card_courtmarshall.card_name = "Court Marshall"
 	card_courtmarshall.card_color_id = "color_{0}".format([color])
-	card_courtmarshall.card_texture_path = "external/sprites/cards/cengkih/01_courtmarshall.png"
+	card_courtmarshall.card_texture_path = "external/sprites/cards/cengkih/18_courtmarshall.png"
 	card_courtmarshall.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_courtmarshall.card_description = "Explore [damage]{0}.\n FRONTIER: Explore [custom_damage] instead.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_courtmarshall.card_keyword_object_ids = ["keyword_frontier"]
@@ -7263,7 +7297,7 @@ func add_cards_gold() -> void:
 	var card_noblesorter: CardData = CardData.new("card_noblesorter")
 	card_noblesorter.card_name = "Noble Sorter"
 	card_noblesorter.card_color_id = "color_{0}".format([color])
-	card_noblesorter.card_texture_path = "external/sprites/cards/cengkih/17_noblesorter.png"
+	card_noblesorter.card_texture_path = "external/sprites/cards/cengkih/20_noblesorter.png"
 	card_noblesorter.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_noblesorter.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease all cards in hand by 3."
 	card_noblesorter.card_keyword_object_ids = ["keyword_cook"]
@@ -7331,7 +7365,7 @@ func add_cards_gold() -> void:
 	var card_cengkihascetic: CardData = CardData.new("card_cengkihascetic")
 	card_cengkihascetic.card_name = "Cengkih Ascetic"
 	card_cengkihascetic.card_color_id = "color_{0}".format([color])
-	card_cengkihascetic.card_texture_path = "external/sprites/cards/cengkih/13_cengkihascetic.png"
+	card_cengkihascetic.card_texture_path = "external/sprites/cards/cengkih/19_cengkihascetic.png"
 	card_cengkihascetic.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_cengkihascetic.card_description = "FRONTIER: Gain [ore_amount]{0} and [insight_amount]{1}.".format([Card.ORE_ICON_KEYWORD, Card.INSIGHT_ICON_KEYWORD])
 	card_cengkihascetic.card_keyword_object_ids = ["keyword_frontier"]

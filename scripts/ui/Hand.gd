@@ -23,7 +23,9 @@ const CARD_KEYWORD_RIGHT_SCREEN_SIZE_MARGIN: float = 200 # how much screen space
 @onready var combat = $%Combat
 @onready var card_container: Control = %CardContainer
 @onready var display_upgrade_container: Control = %DisplayUpgradeContainer
+@onready var display_cardplay_container: Control = %DisplayCardplayContainer
 @onready var upgrade_on_display: bool = false
+@onready var cardplay_on_display: bool = false
 @onready var display_card_data: CardData = null
 
 # a debugging component for displaying hand's physical size
@@ -94,6 +96,7 @@ func _ready():
 	Signals.combat_started.connect(_on_combat_started)
 	Signals.combat_ended.connect(_on_combat_ended)
 	Signals.run_ended.connect(_on_run_ended)
+	Signals.card_upgraded.connect(_on_card_upgraded)
 	
 	Signals.card_pick_requested.connect(_on_card_pick_requested)
 	Signals.card_pick_confirmed.connect(_on_card_pick_confirmed)
@@ -220,11 +223,7 @@ func _on_card_selected(card: Card):
 	# check if playing or picking cards
 	if (upgrade_on_display):
 		_hide_upgrade_card()
-	#var sound_action_data: Array[Dictionary] = [{
-	#Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
-	#}]
-	#var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
-	#ActionHandler.add_actions(sound_actions)
+
 	if current_card_pick_action == null:
 		### playing
 		# cannot play cards with a disabled hand
@@ -264,16 +263,22 @@ func _on_card_right_clicked(card: Card):
 	_unprompt_target()
 	if ActionHandler.actions_being_performed:
 		return # cannot right click while actions happening
-	#if (!upgrade_on_display):
-		#_display_upgrade_card(card)
-	#else:
-	#	_hide_upgrade_card()
+	if (!upgrade_on_display):
+		_display_upgrade_card(card)
+	else:
+		_hide_upgrade_card()
 	if hand_disabled:
 		return # cannot right click cards with a disabled hand
 	if len(HandManager.card_play_queue) > 0:
 		return # cannot right click cards while cards queued
 	_perform_card_right_click_actions(card)
 
+func _on_card_upgraded(card_data: CardData):
+	if (!cardplay_on_display):
+		cardplay_on_display = true
+	display_cardplay_container.visible = true
+	_display_cardplay(card_data,"upgrade")
+	
 func _display_upgrade_card(card: Card):
 	display_upgrade_container.visible = true
 	
@@ -299,6 +304,53 @@ func _display_upgrade_card(card: Card):
 		# left side of card
 		display_upgrade_container.global_position = card_left_side_pos
 	upgrade_on_display = true
+	
+func _display_cardplay(card_data: CardData, property: String = ""):
+	display_cardplay_container.visible = true
+	cardplay_on_display = true
+	# use remaining screen size to determine which side of the card should display
+	#var screen_size: Vector2 = DisplayServer.window_get_size()
+	#var card_visual_global_pos: Vector2 = card.card_visual.global_position
+	#var card_right_side_pos: Vector2 = card_visual_global_pos + Vector2(card.size.x, -300)
+	#var card_left_side_pos: Vector2 = card_visual_global_pos - Vector2(display_cardplay_container.size.x, -300)
+
+	var display_cardplay_card: Card = Scenes.CARD.instantiate()
+	var display_card_data: CardData = Global.get_card_data_from_prototype(card_data.object_id)
+	display_cardplay_container.add_child(display_cardplay_card)
+	display_cardplay_card.init(display_card_data, 0, false, false)
+	display_cardplay_card.z_index = 51
+
+	match property:
+		"upgrade":
+			create_effect_animation("animation_vfx_fire")
+			var tween = create_tween()
+			tween.tween_property(display_cardplay_card, "modulate:v", 16, 0.1).set_trans(Tween.TRANS_SINE)
+			await get_tree().create_timer(0.1).timeout
+			display_card_data.fake_upgrade_card()
+			display_cardplay_card.update_card_display()
+			var tween2 = create_tween()
+			tween2.tween_property(display_cardplay_card, "modulate:v", 1, 0.2).set_trans(Tween.TRANS_SINE)
+			await get_tree().create_timer(1).timeout
+			var tween3 = create_tween()
+			tween3.tween_property(display_cardplay_card, "modulate", Color(0, 0, 0, 0), 0.2).set_trans(Tween.TRANS_SINE)
+			await get_tree().create_timer(0.2).timeout
+			display_cardplay_card.queue_free()
+			
+
+
+## Spawns an animated effect over the combatant
+## Used for things like imacts
+func create_effect_animation(animation_id: String) -> void:
+	var animation_data: AnimationData = Global.get_animation_data(animation_id)
+	if animation_data == null:
+		return
+	
+	var animated_combat_effect: AnimatedCombatEffect = Scenes.COMBAT_EFFECT_ANIMATION.instantiate()
+	animated_combat_effect.position = animated_combat_effect.position + Vector2(80,140)
+	display_cardplay_container.add_child(animated_combat_effect)
+	animated_combat_effect.init(animation_data)
+
+
 
 func _hide_upgrade_card():
 	for child in display_upgrade_container.get_children():

@@ -772,6 +772,11 @@ func shuffle_draw(shuffle_discard_into_draw: bool = true, is_reshuffle: bool = t
 	# overwrite draw pile with bucket shuffled cards
 	HandManager.player_draw = shuffled_draw
 	
+	var sound_action_data: Array[Dictionary] = [{
+	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/shuffle.wav"},
+	}]
+	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+	ActionHandler.add_actions(sound_actions)
 	# deck shuffle on first turn not counted as a deck reshuffle event
 	Signals.card_deck_shuffled.emit(is_reshuffle)
 

@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://2v3l4akte4yb"]
 
+[ext_resource type="SpriteFrames" uid="uid://br6fjak8w8xl1" path="res://animations/fire_animation.tres" id="1_ug8tf"]
 [ext_resource type="Script" uid="uid://dokdy8t8qhci2" path="res://scripts/combatants/AnimatedCombatEffect.gd" id="1_xglci"]
 
 [node name="AnimatedCombatEffect" type="AnimatedSprite2D" unique_id=177804956]
+sprite_frames = ExtResource("1_ug8tf")
+frame_progress = 0.06315302
 script = ExtResource("1_xglci")
