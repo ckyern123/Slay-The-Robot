@@ -77,13 +77,14 @@ func wait() -> void:
 				"action_data": [
 				{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 					"card_influence": -1
-				}},
-				]
+				}}]
 			}}]
 				var influence_actions: Array = ActionGenerator.create_actions(null, null, [], influence_action_data, null)
 				ActionHandler.add_actions(influence_actions)
+				Signals.tween_discard.emit()
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
+			
 			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			
@@ -145,6 +146,7 @@ func wait() -> void:
 			}}]
 				var influence_actions: Array = ActionGenerator.create_actions(null, null, [], influence_action_data, null)
 				ActionHandler.add_actions(influence_actions)
+				Signals.tween_discard.emit()
 			while len(HandManager.card_play_queue) > 0 or ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
 			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())

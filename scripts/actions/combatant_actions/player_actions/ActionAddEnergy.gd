@@ -11,7 +11,7 @@ func perform_action():
 		# max energy (permanent)
 		var energy_amount_max: int = action_interceptor_processor.get_shadowed_action_values("energy_amount_max", 0)
 		Global.player_data.player_energy_max = max(Global.player_data.player_energy_max + energy_amount_max, 1)
-		
+		print(str(energy_amount))
 		Signals.energy_changed.emit()
 
 func _to_string():

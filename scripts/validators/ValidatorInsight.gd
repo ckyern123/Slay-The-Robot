@@ -3,6 +3,4 @@ extends BaseValidator
 
 func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[String, Variant]) -> bool:
 	var insight_amount: int = values.get("insight_required", 0)
-	print(insight_amount)
-	print(Global.player_data.player_insight)
 	return Global.player_data.player_insight >= insight_amount

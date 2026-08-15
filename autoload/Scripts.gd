@@ -65,6 +65,7 @@ const ACTION_ADD_FOOD: String = "res://scripts/actions/combatant_actions/player_
 const ACTION_ADD_REFRESH: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddRefresh.gd"
 const ACTION_ADD_ROOM: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddRoom.gd"
 const ACTION_ADD_INSIGHT: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddInsight.gd"
+const ACTION_TWEEN_DISCARD: String = "res://scripts/actions/combatant_actions/player_actions/ActionTweenDiscard.gd"
 const ACTION_ADD_BOOKS: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddBooks.gd"
 const ACTION_ADD_ORE: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddOre.gd"
 const ACTION_ADD_KINGDOM_SIZE: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddKingdomSize.gd"

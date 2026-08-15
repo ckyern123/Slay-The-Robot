@@ -76,9 +76,9 @@ func _ready():
 	Signals.player_refresh_changed.connect(_on_player_refresh_changed)
 	Signals.enemy_killed.connect(_on_enemy_killed)
 	Signals.enemy_death_animation_finished.connect(_on_enemy_death_animation_finished)
-	
+
 	Signals.combat_started.connect(_on_combat_started)
-	Signals.combat_ended.connect(_on_combat_ended)
+#	Signals.combat_ended.connect(_on_combat_ended)
 
 	Signals.player_turn_started.connect(_on_player_turn_started)
 	Signals.player_turn_ended.connect(_on_player_turn_ended)
@@ -86,6 +86,7 @@ func _ready():
 	Signals.enemy_turn_started.connect(_on_enemy_turn_started)
 	
 	Signals.end_turn_requested.connect(_on_end_turn_requested)
+	Signals.tween_discard.connect(_on_tween_discard)
 	
 	end_turn_button.button_up.connect(_on_end_turn_button_up)
 	combat_end_button.button_up.connect(_on_combat_end_button_up)
@@ -355,8 +356,7 @@ func _on_combat_started(event_id: String):
 
 	update_combat_display()
 	
-func _on_combat_ended():
-	print("lol2")
+#func _on_combat_ended():
 	#set_combat_display_visibility(false)
 	
 ## Helper method to cut down on code bloat. Used in player/enemy turn logic to short circuit
@@ -679,6 +679,13 @@ func _reset_turn_end_queue() -> void:
 		end_turn_object.disable()
 		end_turn_object = null
 
+func _on_tween_discard() -> void:
+	var tween = create_tween()
+	tween.tween_property(discard_pile_button, "modulate", Color.RED, 0.2).set_trans(Tween.TRANS_SINE)
+	await get_tree().create_timer(0.2).timeout
+	var tween2 = create_tween()
+	tween2.tween_property(discard_pile_button, "modulate", Color(1, 1, 1, 1), 0.2).set_trans(Tween.TRANS_SINE)
+	
 func _on_run_started():
 	background_button.texture_normal = FileLoader.load_texture("external/sprites/base_map.jpg")
 	visible = true
@@ -701,8 +708,8 @@ func _on_run_ended():
 	game_start = true
 	combat_end_button.visible = false
 
-func start_combat() -> void:
-	print("lol")#_reset_turn_end_queue()
+#func start_combat() -> void:
+	#_reset_turn_end_queue()
 
 ## Performs end of combat logic and signals end of combat
 func end_combat() -> void:

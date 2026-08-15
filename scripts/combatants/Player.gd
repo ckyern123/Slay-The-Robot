@@ -216,8 +216,7 @@ func _on_run_ended():
 	clear_all_status_effects()
 	unregister_all_custom_ui()
 
-func _on_combat_started(_event_id: String):
-	print("yes")
+#func _on_combat_started(_event_id: String):
 	#clear_all_status_effects()
 	
 func _on_combat_ended():

@@ -651,7 +651,7 @@ func draw_cards(number_of_cards: int, hand_card_count_max: int, first_pos: bool 
 			_perform_card_actions(card_data, [null], card_data.card_draw_actions, false, false)
 		
 		Signals.card_drawn.emit(card_data)
-		
+	
 	# rerender hand
 	hand.tween_hand()
 
