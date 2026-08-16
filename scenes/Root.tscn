@@ -198,7 +198,7 @@ location = 1
 [sub_resource type="Shortcut" id="Shortcut_elxq6"]
 events = [SubResource("InputEventKey_i7igs")]
 
-[node name="Root" type="Control" unique_id=1705146557]
+[node name="MapLabel" type="Control" unique_id=1705146557]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -387,6 +387,7 @@ layout_mode = 2
 
 [node name="CharacterFoodLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control" unique_id=1228433366]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
@@ -399,11 +400,12 @@ grow_vertical = 2
 layout_direction = 2
 theme = ExtResource("2_bi5lp")
 theme_override_font_sizes/font_size = 17
-text = "HP: "
+text = "Food: "
 vertical_alignment = 1
 
 [node name="CharacterMoneyLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control" unique_id=948848595]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
@@ -420,13 +422,14 @@ text = "Money:"
 
 [node name="CharacterOreLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control" unique_id=1172254633]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 120.0
+offset_left = 300.0
 offset_top = -12.0
-offset_right = 323.0
+offset_right = 503.0
 offset_bottom = 12.0
 grow_vertical = 2
 layout_direction = 2
@@ -436,13 +439,14 @@ text = "Money:"
 
 [node name="CharacterInsightLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control" unique_id=1513724685]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 120.0
+offset_left = 600.0
 offset_top = -12.0
-offset_right = 323.0
+offset_right = 803.0
 offset_bottom = 12.0
 grow_vertical = 2
 layout_direction = 2
@@ -679,6 +683,13 @@ theme_override_constants/margin_bottom = 3
 [node name="CustomRunModifierButtonContainer" type="VBoxContainer" parent="TitleScreen/NewRunMenu/CustomModifiers/VBoxContainer/ScrollContainer/MarginContainer" unique_id=365388524]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="DummyCard" parent="TitleScreen/NewRunMenu" unique_id=1234656898 instance=ExtResource("14_dohly")]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 200.0
+offset_right = 720.0
+offset_bottom = 520.0
 
 [node name="SettingsMenu" type="Control" parent="TitleScreen" unique_id=1483683366 node_paths=PackedStringArray("navigation_button_to_menu")]
 visible = false
@@ -1754,7 +1765,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1763,6 +1773,7 @@ script = ExtResource("12_elxq6")
 [node name="Combat" type="Control" parent="RunScreen" unique_id=797179111]
 unique_name_in_owner = true
 process_mode = 1
+visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -1901,7 +1912,7 @@ layout_mode = 0
 offset_left = 150.0
 offset_top = 70.0
 offset_right = 303.0
-offset_bottom = 199.0
+offset_bottom = 370.0
 bbcode_enabled = true
 text = "Victory Objectives:
 Total number of cards: 60
@@ -2354,13 +2365,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -704.0
+offset_left = -971.0
 offset_top = -396.0
 offset_right = 830.0
-offset_bottom = 404.0
+offset_bottom = 498.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
+color = Color(0.08627451, 0.09803922, 0.003921569, 0.8156863)
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/Combat/CardPicking" unique_id=663104816]
 unique_name_in_owner = true
@@ -2369,8 +2380,9 @@ anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -180.0
-offset_bottom = -157.0
+offset_top = -230.0
+offset_right = -8.0
+offset_bottom = -206.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Pick X cards"
@@ -2695,7 +2707,7 @@ layout_mode = 0
 offset_left = 32.0
 offset_top = 64.0
 offset_right = 1168.0
-offset_bottom = 184.0
+offset_bottom = 364.0
 theme_override_font_sizes/font_size = 50
 text = "Victory"
 horizontal_alignment = 1
@@ -2839,23 +2851,25 @@ script = ExtResource("10_bwtvr")
 layout_mode = 0
 offset_right = 1980.0
 offset_bottom = 1087.0
-color = Color(0.203922, 0.188235, 0.215686, 0.631373)
+color = Color(0.32122225, 0.13349116, 0, 0.8)
 
 [node name="BackButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=414985548]
 layout_mode = 0
 offset_left = 136.0
-offset_top = 514.0
-offset_right = 280.0
-offset_bottom = 545.0
-text = "<----"
+offset_top = 411.0
+offset_right = 334.0
+offset_bottom = 525.0
+text = "<----
+GO BACK
+<-----"
 
 [node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=575565750]
 layout_mode = 0
 offset_left = 905.0
 offset_top = 210.0
-offset_right = 1049.0
-offset_bottom = 241.0
-text = "Confirm"
+offset_right = 1133.0
+offset_bottom = 274.0
+text = "CONFIRM"
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/CardSelectionOverlay" unique_id=1269392340]
 layout_mode = 0
@@ -2950,7 +2964,7 @@ script = ExtResource("14_fc5ht")
 layout_mode = 0
 offset_right = 1980.0
 offset_bottom = 1080.0
-color = Color(0.203922, 0.188235, 0.215686, 0.631373)
+color = Color(0.33486474, 0.050581418, 0.056362472, 1)
 
 [node name="Background2" type="ColorRect" parent="RunScreen/Map" unique_id=1738550303]
 layout_mode = 1
@@ -2967,23 +2981,15 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.701961, 0.67451, 0.721569, 1)
 
-[node name="Label" type="Label" parent="RunScreen/Map/Background2" unique_id=466257665]
+[node name="MapLabel" type="RichTextLabel" parent="RunScreen/Map/Background2" unique_id=1603227691]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 899.0
 offset_top = 50.0
-offset_right = 1236.0
-offset_bottom = 391.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-text = "Plains: Food, Rock, Fertiliser, Size, Room
-
-Desert: Rock, Shop Refresh, Room,  Insight
-
-Coast: Fish, Treasure, Shop Refresh, Insight
-
-Forest: Money,  Fertiliser, Insight, Spice, Treasure, Room, Size
-
-Swamp: Size, Delicacy, Insight"
+offset_right = 1369.0
+offset_bottom = 850.0
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
 
 [node name="BackButton" type="Button" parent="RunScreen/Map" unique_id=478791985]
 layout_mode = 0
@@ -3082,10 +3088,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 1.0
-offset_bottom = 1.0
+offset_left = -13.0
+offset_top = -15.0
+offset_right = -13.0
+offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2

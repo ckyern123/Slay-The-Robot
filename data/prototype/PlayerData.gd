@@ -10,6 +10,7 @@ class_name PlayerData
 
 @export var player_money: int = 20
 @export var player_books: int = 0
+@export var player_artifact_count: int = 0
 @export var player_food: int = 20
 @export var player_food_max: int = 0
 @export var player_ore: int = 5
@@ -585,11 +586,13 @@ func add_artifact(artifact_id: String) -> void:
 			var artifact_script_asset: Resource = load(artifact_data.artifact_script_path)
 			var artifact_script: BaseArtifact = artifact_script_asset.new(artifact_data)
 			artifact_script.add_artifact()
+			player_artifact_count += 1
 			Signals.player_artifacts_changed.emit()
 			Signals.player_artifact_added.emit(artifact_data)
 			
 			# remove artifact from spawn pool in case it wasn't already
 			remove_artifact_from_pool(artifact_data.object_id)
+
 
 ## Removes an artifact of a given type from player. If remove_multiples = true all instances of
 ## a given type will be removed.

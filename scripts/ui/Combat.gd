@@ -10,15 +10,16 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var insight_label: RichTextLabel = %InsightLabel
 @onready var sprawl_label: RichTextLabel = %SprawlLabel
 @onready var room_label: RichTextLabel = %RoomLabel
-@onready var shop_refresh_label: RichTextLabel = %ShopRefreshLabel
-@onready var food_fade_container = %FoodFadeContainer
-@onready var money_fade_container = %MoneyFadeContainer
-@onready var ore_fade_container = %OreFadeContainer
-@onready var insight_fade_container = %InsightFadeContainer
-@onready var sprawl_fade_container = %SprawlFadeContainer
-@onready var room_fade_container = %RoomFadeContainer
-@onready var refresh_fade_container = %RefreshFadeContainer
+@onready var objectives_label: RichTextLabel = %ObjectivesLabel
 
+@onready var shop_refresh_label: RichTextLabel = %ShopRefreshLabel
+@onready var food_fade_container: Node2D = %FoodFadeContainer
+@onready var money_fade_container: Node2D = %MoneyFadeContainer
+@onready var ore_fade_container: Node2D = %OreFadeContainer
+@onready var insight_fade_container: Node2D = %InsightFadeContainer
+@onready var sprawl_fade_container: Node2D = %SprawlFadeContainer
+@onready var room_fade_container: Node2D = %RoomFadeContainer
+@onready var refresh_fade_container: Node2D = %RefreshFadeContainer
 const money_texture_path = "sprites/rupee.svg"
 const food_texture_path = "sprites/oat.svg"
 const ore_texture_path = "sprites/ore.svg"
@@ -84,7 +85,8 @@ func _ready():
 	Signals.player_turn_ended.connect(_on_player_turn_ended)
 	Signals.enemy_turn_ended.connect(_on_enemy_turn_ended)
 	Signals.enemy_turn_started.connect(_on_enemy_turn_started)
-	
+	Signals.player_artifacts_changed.connect(_on_player_artifacts_changed)
+	Signals.player_books_changed.connect(_on_player_books_changed)
 	Signals.end_turn_requested.connect(_on_end_turn_requested)
 	Signals.tween_discard.connect(_on_tween_discard)
 	
@@ -273,6 +275,7 @@ func _on_player_sprawl_changed(_delta: int = 0):
 		sprawl_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Size"])  % [calc,Global.player_data.player_size]
 	if (_delta != 0):
 		create_image_fade(sprawl_fade_container, FileLoader.load_texture(sprawl_texture_path))
+	update_objectives_label()
 func _on_player_room_changed(_delta: int = 0):
 	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room
 	if (_delta != 0):
@@ -373,6 +376,19 @@ func _end_combat_check() -> bool:
 		combat_is_ended = true
 	return combat_is_ended
 
+func update_objectives_label() -> void:
+	var calc: int = (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())
+	objectives_label.text = "Victory Objectives:
+\nTotal number of cards: {0}/60
+\nArtifacts built: {1}/15
+\nBooks drafted: {2}/5".format([calc,Global.player_data.player_artifact_count,Global.player_data.player_books])	
+	
+func _on_player_artifacts_changed() -> void:
+	update_objectives_label()
+
+func _on_player_books_changed() -> void:
+	update_objectives_label()
+	
 func perform_enemy_turn():
 	# generates enemy actions and performs them in order
 	var enemies: Array[Enemy] = Global.get_alive_enemies()
