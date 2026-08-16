@@ -59,11 +59,6 @@ func damage(_damage: int, bypass_block: bool = false) -> Array[int]:
 	var bypassed_damage: int = _damage # raw unblocked damage
 	var bypassed_damage_capped: int = 0 # damage done that does not factor in overkill damage
 	var overkill_damage: int = 0 # damage done past 0
-	var sound_action_data: Array[Dictionary] = [{
-		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/slash.wav"},
-		}]
-	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
-	ActionHandler.add_actions(sound_actions)
 
 	if player_data.player_block > 0 and not bypass_block:
 		if player_data.player_block > _damage:

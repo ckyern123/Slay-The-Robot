@@ -2883,7 +2883,7 @@ func add_characters() -> void:
 	var character_green: CharacterData = CharacterData.new("character_{0}".format([character_color]))
 	character_green.character_player_id = "player_{0}".format([character_color])
 	character_green.character_name = "WELCOME"
-	character_green.character_description = "To start, just start the run. IMPORTANT NOTE: Most cards in this game have an additional stats called Influence (represented by Purple Heart). Everytime they are played, it goes up by 1. If it reaches 7, the next time the card is played, it is upgraded (To preview card upgrade, right click it). Every time it is not played, it goes down by 1. If it goes to 0, it becomes a Rebel, a useless and detrimental card."
+	character_green.character_description = "To start, just start the run. KEY SHORTCUTS: Number keys can be used to play cards at a position in hand; Press E to End Turn; Right click to preview card upgrade.\nIMPORTANT NOTE: Most cards in this game have an additional stats called Influence (represented by Purple Heart). Everytime they are played, it goes up by 1. If it reaches 7, the next time the card is played, it is upgraded (To preview card upgrade, right click it). Every time it is not played, it goes down by 1. If it goes to 0, it becomes a Rebel, a useless and detrimental card."
 	character_green.character_color_id = "color_{0}".format([character_color])
 	#character_green.restarting_health = 75
 	character_green.character_starting_insight = 3
@@ -3474,11 +3474,11 @@ func add_enemies() -> void:
 	wateringhole.add_health_bounds(11, 13, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	wateringhole.enemy_texture_path = "external/sprites/enemies/wateringhole.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
-	wateringhole.enemy_initial_status_effects = {"status_effect_fertiliser_reward": 2,"status_effect_refresh_reward": 3}
+	wateringhole.enemy_initial_status_effects = {"status_effect_money_reward": 2,"status_effect_fertiliser_reward": 2,"status_effect_refresh_reward": 3}
 	wateringhole.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	wateringhole.enemy_actions_on_death = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_charge_increase":2}},{Scripts.ACTION_ADD_REFRESH:{"refresh_amount":3}}]
+	wateringhole.enemy_actions_on_death = [{Scripts.ACTION_ADD_MONEY:{"money_amount":2}},{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_charge_increase":2}},{Scripts.ACTION_ADD_REFRESH:{"refresh_amount":3}}]
 	# an attack that hits harder on higher difficulties
 	wateringhole.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3486,7 +3486,7 @@ func add_enemies() -> void:
 	])
 		
 	var _wateringhole_anim: AnimationData = wateringhole.add_standard_animations(
-		["external/sprites/enemies/rock.png"]
+		["external/sprites/enemies/wateringhole.png"]
 	)
 	Global.register_rod(wateringhole)
 	Global.register_rod(_wateringhole_anim)
@@ -3994,7 +3994,7 @@ func add_enemies() -> void:
 	Global.register_rod(_infestedwaters_anim)
 	
 		# enemy that negates the first damage instance against it
-	var hut: EnemyData = EnemyData.new("hut")
+	var hut: EnemyData = EnemyData.new("huat")
 	hut.enemy_name = "Hut"
 	hut.add_health_bounds(20, 27)
 	hut.add_health_bounds(23, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
@@ -6167,9 +6167,10 @@ func add_cards_black() -> void:
 	card_intrepidsailor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_intrepidsailor.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_intrepidsailor.card_requires_target = true
-	card_intrepidsailor.card_energy_cost = 3
-	card_intrepidsailor.card_values = {"damage": 4,"number_of_attacks":1, "min_card_amount": 2,
-		"max_card_amount": 2, "food_required":2,"food_amount":-2}
+	card_intrepidsailor.card_energy_cost = 2
+	card_intrepidsailor.card_influence = 4
+	card_intrepidsailor.card_values = {"damage": 4,"number_of_attacks":1, "min_card_amount": 4,
+		"max_card_amount": 4}
 	card_intrepidsailor.card_upgrade_value_improvements = {"damage":1,"min_card_amount": 2,"max_card_amount": 2}
 	card_intrepidsailor.card_play_actions.append(wield_action)
 	card_intrepidsailor.card_play_actions.append(
