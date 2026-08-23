@@ -4492,7 +4492,7 @@ func add_card_basics() -> void:
 		card_basic_explore.card_color_id = "color_{0}".format([colors[i]])
 		card_basic_explore.card_description = "Explore [damage]{0}".format([Card.EXPLORE_ICON_KEYWORD])
 		card_basic_explore.card_texture_path = "external/sprites/cards/basic/07_sailingnovice.png"
-		card_basic_explore.card_type = CardData.CARD_TYPES.ATTACK
+		card_basic_explore.card_type = CardData.CARD_TYPES.FACTION
 		card_basic_explore.card_requires_target = true
 		card_basic_explore.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_explore.card_keyword_object_ids = []
@@ -4843,7 +4843,7 @@ func add_cards_trade() -> void:
 	card_trade1.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade1.card_requires_target = false
 	card_trade1.card_play_destination = HandManager.EXHAUST_PILE
-	#card_trade1.card_values = {"ore_amount": randi_range(-2, -3),"money_amount":randi_range(4, 6),"ore_required":1}
+	card_trade1.card_values = {"ore_amount": -3,"money_amount":5,"ore_required":3}
 	card_trade1.card_play_validators = [{Scripts.VALIDATOR_ORE:{}}]
 	card_trade1.card_play_actions = [
 		{
@@ -4869,7 +4869,7 @@ func add_cards_trade() -> void:
 	card_trade2.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade2.card_requires_target = false
 	card_trade2.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade2.card_values = {}
+	card_trade2.card_values = {"food_amount":-3,"food_required":3,"money_amount":6}
 	card_trade2.card_play_validators = [{Scripts.VALIDATOR_FOOD:{}}]
 	card_trade2.card_play_actions = [
 		{
@@ -4895,7 +4895,7 @@ func add_cards_trade() -> void:
 	card_trade3.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade3.card_requires_target = false
 	card_trade3.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade3.card_values = {}
+	card_trade3.card_values = {"insight_amount":-1,"insight_required":1,"money_amount":5}
 	card_trade3.card_play_validators = [{Scripts.VALIDATOR_INSIGHT:{}}]
 	card_trade3.card_play_actions = [
 		{
@@ -4921,7 +4921,7 @@ func add_cards_trade() -> void:
 	card_trade4.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade4.card_requires_target = false
 	card_trade4.card_play_destination = HandManager.EXHAUST_PILE
-	#card_trade4.card_values = {"ore_amount": randi_range(4, 6),"money_amount":randi_range(-4, -6)}
+	card_trade4.card_values = {"ore_amount": 5,"money_amount":3,"money_required":-3}
 	card_trade4.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade4.card_play_actions = [
 		{
@@ -4947,7 +4947,7 @@ func add_cards_trade() -> void:
 	card_trade5.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade5.card_requires_target = false
 	card_trade5.card_play_destination = HandManager.EXHAUST_PILE
-	#card_trade5.card_values = {"food_amount": randi_range(4, 8),"money_amount":randi_range(-4, -6)}
+	card_trade5.card_values = {"food_amount": 6,"money_amount":-3,"money_required":3}
 	card_trade5.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade5.card_play_actions = [
 		{
@@ -4973,7 +4973,7 @@ func add_cards_trade() -> void:
 	card_trade6.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade6.card_requires_target = false
 	card_trade6.card_play_destination = HandManager.EXHAUST_PILE
-	#card_trade6.card_values = {"insight_amount": randi_range(1, 3),"money_amount":randi_range(-9, -15)}
+	card_trade6.card_values = {"insight_amount": 1,"money_amount":-3,"money_required":3}
 	card_trade6.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade6.card_play_actions = [
 		{

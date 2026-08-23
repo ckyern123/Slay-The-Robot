@@ -14,6 +14,7 @@ func perform_action():
 			var parent_card_data: CardData = null
 			if modify_parent_card:
 				if card_data.parent_card == null:
+					print(card_data.object_id)
 					DebugLogger.log_error("No parent card found. Are you modifying the permanent version?")
 				else:
 					parent_card_data = card_data.parent_card

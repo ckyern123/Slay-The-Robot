@@ -349,13 +349,8 @@ func _display_cardplay(card_data: CardData, property: String = ""):
 			#var destination_position: Vector2 = destination_ui_element.global_position - (destination_ui_element.size / 2) - Vector2(50,100)
 			var destination_position: Vector2 = Vector2(1603,811)
 			var tween = create_tween()
-			#tween.tween_property(display_cardplay_card, "modulate", Color(1, 1, 1, 1), 0.1).set_trans(Tween.TRANS_SINE)
-			var tween3 = create_tween()
-			tween3.tween_property(display_cardplay_card,"position",destination_position,0.5)
-			await get_tree().create_timer(0.4).timeout
-			var tween2 = create_tween()
-		#	tween2.tween_property(display_cardplay_card, "modulate", Color(0, 0, 0, 0), 0.2).set_trans(Tween.TRANS_SINE)
-			await get_tree().create_timer(0.2).timeout
+			tween.tween_property(display_cardplay_card,"position",destination_position,0.5)
+			await get_tree().create_timer(0.5).timeout
 			display_cardplay_card.queue_free()
 
 ## Spawns an animated effect over the combatant
