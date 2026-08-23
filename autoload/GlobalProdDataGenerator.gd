@@ -4921,7 +4921,7 @@ func add_cards_trade() -> void:
 	card_trade4.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade4.card_requires_target = false
 	card_trade4.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade4.card_values = {"ore_amount": 5,"money_amount":3,"money_required":-3}
+	card_trade4.card_values = {"ore_amount": 5,"money_amount":-3,"money_required":3}
 	card_trade4.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade4.card_play_actions = [
 		{
@@ -7084,10 +7084,10 @@ func add_cards_gold() -> void:
 	card_courtmarshall.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_courtmarshall.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_courtmarshall.card_requires_target = true
-	card_courtmarshall.card_energy_cost = 2
-	card_courtmarshall.card_influence = 4
+	card_courtmarshall.card_energy_cost = 1
+	card_courtmarshall.card_influence = 3
 	card_courtmarshall.card_values = {"damage": 3, "custom_damage": 5}
-	card_courtmarshall.card_upgrade_value_improvements = {"damage": 4, "custom_damage": 8}
+	card_courtmarshall.card_upgrade_value_improvements = {"damage": 1, "custom_damage": 2}
 	card_courtmarshall.card_glow_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
 	card_courtmarshall.card_play_actions = [
 		{Scripts.ACTION_VALIDATOR:{
