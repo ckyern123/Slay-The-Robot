@@ -4982,7 +4982,7 @@ func add_cards_trade() -> void:
 			}
 		},
 		{
-			Scripts.ACTION_ADD_ORE:
+			Scripts.ACTION_ADD_INSIGHT:
 			{
 			}
 		}]
