@@ -386,7 +386,7 @@ func update_objectives_label() -> void:
 func _on_player_artifacts_changed() -> void:
 	update_objectives_label()
 
-func _on_player_books_changed() -> void:
+func _on_player_books_changed(delta: int) -> void:
 	update_objectives_label()
 	
 func perform_enemy_turn():

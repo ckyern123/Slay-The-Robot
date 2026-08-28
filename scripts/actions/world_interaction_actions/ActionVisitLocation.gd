@@ -13,7 +13,7 @@ func perform_action() -> void:
 		# null out shop data
 		#Global.player_data.player_shop_data = null
 		#Global.player_data.blight -= 2
-		Global.player_data.add_room(1)
+		#Global.player_data.add_room(1)
 		# autosave
 		var autosave_before_visit: bool = action_interceptor_processor.get_shadowed_action_values("autosave_before_visit", true)
 		if autosave_before_visit:
