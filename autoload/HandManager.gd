@@ -37,6 +37,7 @@ var player_draw: Array[CardData] = []
 var player_discard: Array[CardData] = []
 var player_exhaust: Array[CardData] = []
 
+# condition to generate deck, triggers only when combat/run starts. 
 var first_time: bool = false
 
 # magic strings for the various pile names. Used for HandManager.get_pile(), card pick actions, and CardData destinations.
