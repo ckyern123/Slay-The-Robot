@@ -465,7 +465,7 @@ func add_artifacts() -> void:
 			{Scripts.VALIDATOR_CARD_ID: {"card_object_ids":["card_grain"]}}
 		],
 		"action_data": [
-		{Scripts.ACTION_IMPROVE_CARD_VALUES:{"card_value_improvements": {"food_amount": 1}}}
+		{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "card_value_improvements": {"food_amount": 1}}}
 			]
 		}
 	}]
@@ -1650,7 +1650,7 @@ func add_events() -> void:
 	event_act_1_easy_plains_1.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"field_patch": 1, "pond": 1},
-		{"rock": 1,"mound": 1}]
+		{"rock": 1,"mound": 1},{"chargedvista": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_1)
 	
@@ -1659,7 +1659,7 @@ func add_events() -> void:
 	event_act_1_easy_plains_2.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"field_patch": 1, "rock": 1},
-		{"pond": 1, "mound": 1}]
+		{"pond": 1, "mound": 1},{"chargedvista": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_2)
 	
@@ -1668,7 +1668,7 @@ func add_events() -> void:
 	event_act_1_easy_plains_3.event_weighted_enemy_object_ids = [
 		{"field_patch": 1, "rock": 1},
 		{"field_patch": 1, "pond": 1},
-		{"mound": 1}]
+		{"mound": 1},{"chargedvista": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_3)
 	
@@ -3705,7 +3705,7 @@ func add_enemies() -> void:
 	forestmulch.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	forestmulch.enemy_actions_on_death = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser","artifact_charge_increase":4}},{Scripts.ACTION_c:{"money_amount":2}}]
+	forestmulch.enemy_actions_on_death = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser","artifact_charge_increase":4}},{Scripts.ACTION_ADD_MONEY:{"money_amount":2}}]
 	# an attack that hits harder on higher difficulties
 	forestmulch.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -4505,7 +4505,7 @@ func add_card_basics() -> void:
 		card_basic_explore.card_requires_target = true
 		card_basic_explore.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_explore.card_keyword_object_ids = []
-		card_basic_explore.card_values = {"damage": 2,"number_of_attacks":1}
+		card_basic_explore.card_values = {"damage": 55,"number_of_attacks":1}
 		card_basic_explore.card_upgrade_value_improvements = {"damage": 1}
 		#card_basic_explore.card_keyword_object_ids = ["keyword_explore"]
 		card_basic_explore.card_play_actions = [{

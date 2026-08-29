@@ -314,7 +314,7 @@ func _on_enemy_killed(enemy: Enemy):
 	if ActionHandler.actions_being_performed:
 		await ActionHandler.actions_ended
 	if (enemy.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
-		elite_is_present = true
+		elite_is_present = false
 		
 	if (combat_end_button.visible == false and !elite_is_present):
 		combat_end_button.visible = true
