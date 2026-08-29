@@ -601,12 +601,12 @@ func add_artifacts() -> void:
 
 	var artifact_check_scroll: ArtifactData = ArtifactData.new("artifact_check_scroll")
 	artifact_check_scroll.artifact_name = "Artifact Check Scroll"
-	artifact_check_scroll.artifact_description = "Draft a Book after 3 Scroll plays."
+	artifact_check_scroll.artifact_description = "Draft a Book after 4 Scroll plays."
 	artifact_check_scroll.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BASIC
 	artifact_check_scroll.artifact_color_id = "color_red"
 	artifact_check_scroll.artifact_texture_path = "external/sprites/artifacts/artifact_red.png"
 	artifact_check_scroll.artifact_script_path = "res://scripts/artifacts/ArtifactCheckScroll.gd"
-	artifact_check_scroll.artifact_counter_max = 3
+	artifact_check_scroll.artifact_counter_max = 4
 	artifact_check_scroll.artifact_turn_end_actions = []
 	artifact_check_scroll.artifact_counter_wraparound = true
 	artifact_check_scroll.artifact_max_counter_actions = [{Scripts.ACTION_ADD_BOOKS:{"books_amount":1}},{Scripts.ACTION_PICK_CARDS:
@@ -1650,7 +1650,7 @@ func add_events() -> void:
 	event_act_1_easy_plains_1.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"field_patch": 1, "pond": 1},
-		{"rock": 1,"mound": 1},{"chargedvista": 1}]
+		{"rock": 1,"mound": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_1)
 	
@@ -1659,7 +1659,7 @@ func add_events() -> void:
 	event_act_1_easy_plains_2.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
 		{"field_patch": 1, "rock": 1},
-		{"pond": 1, "mound": 1},{"chargedvista": 1}]
+		{"pond": 1, "mound": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_2)
 	
@@ -1668,7 +1668,7 @@ func add_events() -> void:
 	event_act_1_easy_plains_3.event_weighted_enemy_object_ids = [
 		{"field_patch": 1, "rock": 1},
 		{"field_patch": 1, "pond": 1},
-		{"mound": 1},{"chargedvista": 1}]
+		{"mound": 1}]
 	
 	Global.register_rod(event_act_1_easy_plains_3)
 	
@@ -2658,7 +2658,7 @@ func add_keywords() -> void:
 	
 	var keyword_ore: KeywordData = KeywordData.new("keyword_ore")
 	keyword_ore.keyword_name = "Ore"
-	keyword_ore.keyword_text_bb_code = "Ore is used to make Crafts and Artifacts."
+	keyword_ore.keyword_text_bb_code = "Ore is used to make Crafts and aifacts."
 	Global.register_rod(keyword_ore)
 	
 	var keyword_forge: KeywordData = KeywordData.new("keyword_forge")
@@ -2891,7 +2891,7 @@ func add_characters() -> void:
 	character_green.character_starting_money = 20
 	character_green.character_starting_food = 20
 	character_green.character_starting_card_draft_card_pack_ids = ["card_pack_prismatic".format([character_color])]
-	character_green.character_starting_artifact_ids = ["artifact_fertiliser", "artifact_check_scroll","artifact_energy_every_four_turns"]
+	character_green.character_starting_artifact_ids = ["artifact_fertiliser", "artifact_check_scroll"]
 	character_green.character_starting_artifact_pack_ids = ["artifact_pack_white", "artifact_pack_{0}".format([character_color])]
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
@@ -4505,7 +4505,7 @@ func add_card_basics() -> void:
 		card_basic_explore.card_requires_target = true
 		card_basic_explore.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_explore.card_keyword_object_ids = []
-		card_basic_explore.card_values = {"damage": 55,"number_of_attacks":1}
+		card_basic_explore.card_values = {"damage": 2,"number_of_attacks":1}
 		card_basic_explore.card_upgrade_value_improvements = {"damage": 1}
 		#card_basic_explore.card_keyword_object_ids = ["keyword_explore"]
 		card_basic_explore.card_play_actions = [{
@@ -4603,7 +4603,7 @@ func add_cards_misc() -> void:
 	card_scroll.card_name = "Scroll"
 	card_scroll.card_color_id = "color_{0}".format([color])
 	card_scroll.card_texture_path = "external/sprites/status_effects/insight.svg"
-	card_scroll.card_description = "For every 3rd time a Scroll is played, draft a Book."
+	card_scroll.card_description = "For every 4th time a Scroll is played, draft a Book."
 	card_scroll.card_type = CardData.CARD_TYPES.CRAFT
 	card_scroll.card_subtype = CardData.CARD_SUBTYPES.WOVEN
 	card_scroll.card_energy_cost = 0
@@ -4798,7 +4798,7 @@ func add_cards_misc() -> void:
 	card_blueprint.card_play_destination = HandManager.EXHAUST_PILE
 	card_blueprint.card_requires_target = false
 	card_blueprint.card_values = {"ore_amount": -8,"artifact_id":""}
-	card_blueprint.card_play_validators = [{Scripts.VALIDATOR_ORE:{"ore_required":8}},{Scripts.VALIDATOR_ROOM:{"room_amount":1}}]
+	card_blueprint.card_play_validators = [{Scripts.VALIDATOR_ORE:{"ore_required":8}},{Scripts.VALIDATOR_ROOM:{"room_required":1}}]
 	card_blueprint.card_play_actions = [
 			{Scripts.ACTION_ADD_ORE:{"ore_amount":-8}},
 			{Scripts.ACTION_ADD_ARTIFACT:{
@@ -4996,6 +4996,33 @@ func add_cards_trade() -> void:
 			}
 		}]
 	Global.register_rod(card_trade6)
+	
+	var card_trade7: CardData = CardData.new("card_trade7")
+	card_trade7.card_name = "Trade6"
+	card_trade7.card_color_id = "color_{0}".format([color])
+	card_trade7.card_texture_path = "external/sprites/cards/basic/01_trade.png"
+	card_trade7.card_description = "[money_amount]{0}. Gain [room_amount]{1}.".format([Card.MONEY_ICON_KEYWORD,Card.ROOM_ICON_KEYWORD])
+	card_trade7.card_type = CardData.CARD_TYPES.ORDER
+	card_trade7.card_energy_cost = 0
+	card_trade7.card_influence = 0
+	card_trade7.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_trade7.card_requires_target = false
+	card_trade7.card_play_destination = HandManager.EXHAUST_PILE
+	card_trade7.card_values = {"room_amount": 1,"money_amount":-3,"money_required":3}
+	card_trade7.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
+	card_trade7.card_play_actions = [
+		{
+			Scripts.ACTION_ADD_MONEY:
+			{
+			}
+		},
+		{
+			Scripts.ACTION_ADD_ROOM:
+			{
+			}
+		}]
+	Global.register_rod(card_trade7)
+	
 	
 	var card_rejuvenating_tome: CardData = CardData.new("card_rejuvenating_tome")
 	card_rejuvenating_tome.card_name = "Rejuvenating Tome"
@@ -5662,8 +5689,8 @@ func add_cards_purple() -> void:
 	card_pearlseer.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_pearlseer.card_requires_target = false
 	card_pearlseer.card_energy_cost = 3
-	card_pearlseer.card_values = {"draw_count": 2, "money_amount": 1}
-	card_pearlseer.card_upgrade_value_improvements = {"draw_count": 1}
+	card_pearlseer.card_values = {"draw_count": 7, "money_amount": 1}
+	card_pearlseer.card_upgrade_value_improvements = {"draw_count": 3}
 	card_pearlseer.card_influence = 5
 	card_pearlseer.card_play_actions = [		{
 		Scripts.ACTION_PICK_CARDS:
@@ -5936,7 +5963,7 @@ func add_cards_black() -> void:
 	card_fishwrangler.card_texture_path = "external/sprites/cards/aniseed/03_fishwrangler.png"
 	card_fishwrangler.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_fishwrangler.card_description = "Create [number_of_cards] Fish, then Sift [draw_count] for Resource cards".format([Card.EXPLORE_ICON_KEYWORD])
-	card_fishwrangler.card_keyword_object_ids = ["keyword_fish", "keyword_sift"]
+	card_fishwrangler.card_keyword_object_ids = ["keyword_sift"]
 	card_fishwrangler.card_type = CardData.CARD_TYPES.FACTION
 	card_fishwrangler.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_fishwrangler.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6194,45 +6221,45 @@ func add_cards_black() -> void:
 	card_intrepidsailor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_intrepidsailor)
 
-	var card_aniseeddispensary: CardData = CardData.new("card_aniseeddispensary")
-	card_aniseeddispensary.card_name = "Aniseed Dispensary"
-	card_aniseeddispensary.card_color_id = "color_{0}".format([color])
-	card_aniseeddispensary.card_texture_path = "external/sprites/cards/aniseed/11_aniseeddispensary.png"
-	card_aniseeddispensary.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_aniseeddispensary.card_description = "Shuffle your discard pile into your draw pile. Explore 1{0} for each Sword in your draw pile.\nON DISCARD: Gain [energy_amount]{1}.".format([Card.EXPLORE_ICON_KEYWORD,Card.ENERGY_ICON_KEYWORD])
-	card_aniseeddispensary.card_type = CardData.CARD_TYPES.FACTION
-	card_aniseeddispensary.card_subtype = CardData.CARD_SUBTYPES.ANISEED
-	card_aniseeddispensary.card_rarity = CardData.CARD_RARITIES.UNCOMMON
-	card_aniseeddispensary.card_requires_target = true
-	card_aniseeddispensary.card_energy_cost = 1
-	card_aniseeddispensary.card_values = {"damage": 1,"number_of_attacks":1,"energy_amount":1}
-	card_aniseeddispensary.card_upgrade_value_improvements = {"damage":1}
-	card_aniseeddispensary.card_play_actions = [
-		{
-		Scripts.ACTION_RESHUFFLE: {}
-		},
-		{
-		Scripts.ACTION_PICK_CARDS: {
-			"min_card_amount": 99,
-			"max_card_amount": 99,
-			"min_cards_are_required_for_action": false,
-			"random_selection": true,
-			"card_pick_type": HandManager.DRAW_PILE,
-			"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
-			"validator_data":[{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
-			"action_data": [
-				{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
-				"multiplied_values": ["damage"],
-				"action_data": [{Scripts.ACTION_ATTACK_GENERATOR: {
-				"time_delay": 0.5
-				}}]
-				}}]
-		}
-		}]
-	card_aniseeddispensary.card_play_actions.append(influence_action)
-	card_aniseeddispensary.card_discard_actions = [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
-	card_aniseeddispensary.card_end_of_turn_actions = end_action_data
-	Global.register_rod(card_aniseeddispensary)
+	#var card_aniseeddispensary: CardData = CardData.new("card_aniseeddispensary")
+	#card_aniseeddispensary.card_name = "Aniseed Dispensary"
+	#card_aniseeddispensary.card_color_id = "color_{0}".format([color])
+	#card_aniseeddispensary.card_texture_path = "external/sprites/cards/aniseed/11_aniseeddispensary.png"
+	#card_aniseeddispensary.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
+	#card_aniseeddispensary.card_description = "Shuffle your discard pile into your draw pile. Explore 1{0} for each Sword in your draw pile.\nON DISCARD: Gain [energy_amount]{1}.".format([Card.EXPLORE_ICON_KEYWORD,Card.ENERGY_ICON_KEYWORD])
+	#card_aniseeddispensary.card_type = CardData.CARD_TYPES.FACTION
+	#card_aniseeddispensary.card_subtype = CardData.CARD_SUBTYPES.ANISEED
+	#card_aniseeddispensary.card_rarity = CardData.CARD_RARITIES.UNCOMMON
+	#card_aniseeddispensary.card_requires_target = true
+	#card_aniseeddispensary.card_energy_cost = 1
+	#card_aniseeddispensary.card_values = {"damage": 1,"number_of_attacks":1,"energy_amount":1}
+	#card_aniseeddispensary.card_upgrade_value_improvements = {"damage":1}
+	#card_aniseeddispensary.card_play_actions = [
+		#{
+		#Scripts.ACTION_RESHUFFLE: {}
+		#},
+		#{
+		#Scripts.ACTION_PICK_CARDS: {
+			#"min_card_amount": 99,
+			#"max_card_amount": 99,
+			#"min_cards_are_required_for_action": false,
+			#"random_selection": true,
+			#"card_pick_type": HandManager.DRAW_PILE,
+			#"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
+			#"validator_data":[{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
+			#"action_data": [
+				#{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
+				#"multiplied_values": ["damage"],
+				#"action_data": [{Scripts.ACTION_ATTACK_GENERATOR: {
+				#"time_delay": 0.5
+				#}}]
+				#}}]
+		#}
+		#}]
+	#card_aniseeddispensary.card_play_actions.append(influence_action)
+	#card_aniseeddispensary.card_discard_actions = [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
+	#card_aniseeddispensary.card_end_of_turn_actions = end_action_data
+	#Global.register_rod(card_aniseeddispensary)
 	
 			
 	var card_keeneyedbuccaneer: CardData = CardData.new("card_keeneyedbuccaneer")
@@ -6250,9 +6277,6 @@ func add_cards_black() -> void:
 	card_keeneyedbuccaneer.card_upgrade_value_improvements = {"damage":1}
 	card_keeneyedbuccaneer.card_play_actions = [
 		{
-		Scripts.ACTION_RESHUFFLE: {}
-		},
-		{
 		Scripts.ACTION_PICK_CARDS: {
 			"min_card_amount": 99,
 			"max_card_amount": 99,
@@ -6269,7 +6293,9 @@ func add_cards_black() -> void:
 				}}]
 				}}]
 		}
-		}]
+		},		{
+		Scripts.ACTION_RESHUFFLE: {}
+		},]
 	card_keeneyedbuccaneer.card_play_actions.append(influence_action)
 	card_keeneyedbuccaneer.card_discard_actions = [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
 	card_keeneyedbuccaneer.card_end_of_turn_actions = end_action_data
@@ -6706,20 +6732,20 @@ func add_cards_green() -> void:
 	card_militantoutsourcer.card_energy_cost = 1
 	card_militantoutsourcer.card_values = {"damage":2,"number_of_attacks":1,"draw_count":2,"discard_count":1}
 	card_militantoutsourcer.card_upgrade_value_improvements = {"damage":2}
-	card_militantoutsourcer.card_play_actions = [
-		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}},
-		{
+	card_militantoutsourcer.card_play_actions = [{Scripts.ACTION_DRAW_GENERATOR:{}},
+					{
 		Scripts.ACTION_PICK_CARDS: {
 		"min_card_amount": 1,
 		"max_card_amount": 1,
 		"min_cards_are_required_for_action": false,
 		"random_selection": false,
-		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose up to {0} card(s) to return. {1} cards selected",
 		"action_data": [
-			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
+			{Scripts.ACTION_DISCARD_CARDS:{}}]
 		}
-		}]
+		},{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}},
+]
 	card_militantoutsourcer.card_play_actions.append(influence_action)
 	card_militantoutsourcer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_militantoutsourcer)
