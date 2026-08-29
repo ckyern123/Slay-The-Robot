@@ -406,6 +406,12 @@ func test_serialization() -> void:
 
 ## Gets all data on the player and converts it into a json safe format
 func save_game(file_dir: String = SAVE_DIR_PATH, file_name: String = SAVE_FILE_NAME) -> void:
+	var player_update_data: PlayerData = Global.player_data
+	Global.player_data.player_draw = HandManager.player_draw
+	Global.player_data.player_hand = HandManager.player_hand
+	Global.player_data.player_discard = HandManager.player_discard
+	Global.player_data.player_exhaust = HandManager.player_exhaust
+	Global.player_data.player_current_energy = Global.player_data.player_energy
 	var player_dict: Dictionary = Global.player_data.get_serializable_properties_to_json_patch()
 	save_json(file_dir, file_name, player_dict)
 

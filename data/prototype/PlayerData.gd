@@ -24,6 +24,7 @@ class_name PlayerData
 
 var player_energy: int = 3 # in combat energy. Not saved.
 ## The energy the player gains each turn. This can be modified.
+@export var player_current_energy: int = 0
 @export var player_energy_max: int = 3
 
 var player_block: int = 0 # in combat block. Not saved.
@@ -54,6 +55,9 @@ var player_block: int = 0 # in combat block. Not saved.
 ## for the first time at a location and autosaves happen when you reach a location.
 ## Consider removing the @export flag unless you want to save the game while at a shop.
 @export var player_shop_data: ShopData = null
+
+# Conditions used to check game states
+@export var new_game: bool = true
 
 #region RNG
 @export var player_run_seed: int = 0
@@ -205,6 +209,10 @@ var player_reward_consumable_rarity_cache: Dictionary[int, Array] = {}
 ## The player's permanent deck, persisting between combat. Changes to cards here will be
 ## permanent.
 @export var player_deck: Array[CardData] = []
+@export var player_draw: Array[CardData] = []
+@export var player_hand: Array[CardData] = []
+@export var player_discard: Array[CardData] = []
+@export var player_exhaust: Array[CardData] = []
 
 
 # Statuses

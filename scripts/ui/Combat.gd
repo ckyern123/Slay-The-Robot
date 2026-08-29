@@ -50,12 +50,17 @@ const refresh_texture_path = "sprites/refresh.svg"
 @onready var chest = $Chest
 @onready var shop = $Shop
 
+
+
 @onready var background_button: TextureButton = %BackgroundButton
 
 @onready var end_turn_button: Button = $EndTurnButton
 @onready var combat_end_button: TextureButton = $CombatEndButton
 
 var end_turn_object: CombatEndTurn = null
+
+# condition so it doesn't count as turn start on load
+@onready var no_need_generate: bool = false
 var game_start: bool = true
 var elite_is_present: bool = false
 
@@ -236,6 +241,7 @@ func _on_player_money_changed(_delta: int = 0):
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(money_fade_container, FileLoader.load_texture(money_texture_path))
+		
 func _on_player_ore_changed(_delta: int = 0):
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
 	if (_delta > 0):
@@ -246,6 +252,7 @@ func _on_player_ore_changed(_delta: int = 0):
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(ore_fade_container, FileLoader.load_texture(ore_texture_path))		
+		
 func _on_player_insight_changed(_delta: int = 0):
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
 	if (_delta>0):
@@ -256,6 +263,7 @@ func _on_player_insight_changed(_delta: int = 0):
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(insight_fade_container, FileLoader.load_texture(insight_texture_path))	
+		
 func _on_player_food_changed(_delta: int = 0):
 	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
 	if (_delta > 0):
@@ -266,6 +274,7 @@ func _on_player_food_changed(_delta: int = 0):
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(food_fade_container, FileLoader.load_texture(food_texture_path))
+		
 func _on_player_sprawl_changed(_delta: int = 0):
 	var calc: int = (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())
 	var sprawl: int = Global.player_data.player_size
@@ -276,10 +285,12 @@ func _on_player_sprawl_changed(_delta: int = 0):
 	if (_delta != 0):
 		create_image_fade(sprawl_fade_container, FileLoader.load_texture(sprawl_texture_path))
 	update_objectives_label()
+	
 func _on_player_room_changed(_delta: int = 0):
 	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room
 	if (_delta != 0):
 		create_image_fade(room_fade_container, FileLoader.load_texture(room_texture_path))
+		
 func _on_player_refresh_changed(_delta: int = 0):
 	shop_refresh_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, refresh_texture_path, "Shop Refresh"]) % Global.player_data.player_refresh
 	if (Global.player_data.player_refresh <= 0):
@@ -511,7 +522,13 @@ func perform_enemy_turn():
 	else:
 		Signals.enemy_turn_ended.emit()
 
-
+# loads turn without triggering on_player_start. Called when player reloads the game.
+func load_turn():
+	_reset_turn_end_queue()
+	Global.player_data.player_energy = Global.player_data.player_current_energy
+	#Signals.energy_changed.emit()
+	no_need_generate = false
+	update_combat_display()
 	
 func _on_player_turn_started():
 	# prevent player from playing cards manually
@@ -710,6 +727,7 @@ func _on_run_started():
 	_on_player_refresh_changed()
 	_on_player_insight_changed()
 	_on_player_money_changed()
+	no_need_generate = !Global.player_data.new_game
 	
 	# load energy
 	var character_data: CharacterData = Global.get_player_character_data()
@@ -749,7 +767,10 @@ func start_turn():
 	# called from animation player
 	_reset_turn_end_queue()
 	update_combat_display()
-	Signals.player_turn_started.emit()
+	if (!no_need_generate):
+		Signals.player_turn_started.emit()
+	else:
+		load_turn()
 
 func create_image_fade(fade_container: Node2D, texture: Texture) -> void:
 	var image_fade: ImageFade = Scenes.IMAGE_PROC_FADE.instantiate()

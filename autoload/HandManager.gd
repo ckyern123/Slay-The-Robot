@@ -118,6 +118,61 @@ func generate_combat_deck() -> Array[CardData]:
 		combat_deck.append(copied_card)
 	return combat_deck
 
+## Iterates over each card in the player's hand, making a copy of it and assigning the parent to the copied card
+## This is done at the start of combat.
+func generate_combat_hand() -> Array[CardData]:
+	var combat_hand: Array[CardData] = []
+	for card_data in Global.player_data.player_hand:
+		var copied_card = card_data.duplicate(true)
+		copied_card.parent_card = card_data
+		combat_hand.append(copied_card)
+	return combat_hand
+
+## Iterates over each card in the player's deck, making a copy of it and assigning the parent to the copied card
+## This is done at the start of combat.
+func generate_combat_draw() -> Array[CardData]:
+	var combat_draw: Array[CardData] = []
+	for card_data in Global.player_data.player_draw:
+		var copied_card = card_data.duplicate(true)
+		copied_card.parent_card = card_data
+		combat_draw.append(copied_card)
+	return combat_draw
+
+## Iterates over each card in the player's discard, making a copy of it and assigning the parent to the copied card
+## This is done at the start of combat.
+func generate_combat_discard() -> Array[CardData]:
+	var combat_discard: Array[CardData] = []
+	for card_data in Global.player_data.player_discard:
+		var copied_card = card_data.duplicate(true)
+		copied_card.parent_card = card_data
+		combat_discard.append(copied_card)
+	return combat_discard
+	
+	## Iterates over each card in the player's exhaust, making a copy of it and assigning the parent to the copied card
+## This is done at the start of combat.
+func generate_combat_exhaust() -> Array[CardData]:
+	var combat_exhaust: Array[CardData] = []
+	for card_data in Global.player_data.player_exhaust:
+		var copied_card = card_data.duplicate(true)
+		copied_card.parent_card = card_data
+		combat_exhaust.append(copied_card)
+	return combat_exhaust
+
+## Gets the player's deck ready for combat.
+func restart_deck() -> void:
+	#var combat_deck: Array[CardData] = generate_combat_deck()
+	#player_deck = combat_deck	# copy deck into player's draw pile
+	player_discard = generate_combat_discard()
+	player_exhaust = generate_combat_exhaust()
+	player_draw = generate_combat_draw()
+	var hand_dup: Array[CardData] = generate_combat_hand()
+	hand_dup.reverse()
+	add_cards_to_hand(hand_dup)
+#	_empty_custom_piles()
+	
+#	hand.clear_hand_cards()
+#	shuffle_draw(true, false)
+
 ## Gets the player's deck ready for combat.
 func reset_deck() -> void:
 	var combat_deck: Array[CardData] = generate_combat_deck()
@@ -572,11 +627,18 @@ func refund_card_queue():
 #region Signals
 func _on_combat_started(_event_id: String):
 	hand._unprompt_target()
+	
 	if !first_time:
 		HandManager.cards_retained_this_turn.clear()
 		HandManager.cards_with_modified_turn_energy.clear()
 		HandManager.clear_card_queue()
-		HandManager.reset_deck()
+		if (Global.player_data.new_game):
+			print("Deck is reset")
+			HandManager.reset_deck()
+			Global.player_data.new_game = false
+		else:
+			print("deck is restarted")
+			HandManager.restart_deck()
 		first_time = true
 	
 func _on_combat_ended():
