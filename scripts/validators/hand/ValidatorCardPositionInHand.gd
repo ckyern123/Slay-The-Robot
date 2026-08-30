@@ -28,7 +28,7 @@ func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[S
 		"left":
 			return index_of_card <= 3
 		"right":
-			return index_of_card >= size_of_hand - 2
+			return index_of_card >= size_of_hand - 1
 		"center", _:
 			var center_index: int = len(hand) / 2
 			if size_of_hand % 2 == 0:

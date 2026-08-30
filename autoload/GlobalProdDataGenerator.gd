@@ -2683,7 +2683,7 @@ func add_keywords() -> void:
 	
 	var keyword_frontier: KeywordData = KeywordData.new("keyword_frontier")
 	keyword_frontier.keyword_name = "Frontier"
-	keyword_frontier.keyword_text_bb_code = "Gain bonus effect if it is one of the two rightmost cards in hand."
+	keyword_frontier.keyword_text_bb_code = "Gain bonus effect if it is the rightmost card in hand."
 	Global.register_rod(keyword_frontier)
 	
 	var keyword_wield: KeywordData = KeywordData.new("keyword_wield")
@@ -5452,7 +5452,7 @@ func add_cards_purple() -> void:
 	card_pearldiplomat.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_pearldiplomat.card_requires_target = false
 	card_pearldiplomat.card_energy_cost = 3
-	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice", "draw_count":5, "min_card_amount": 2,"max_card_amount":2, "number_of_cards":1}
+	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice", "draw_count":6, "min_card_amount": 2,"max_card_amount":2, "number_of_cards":1}
 	card_pearldiplomat.card_upgrade_value_improvements = {"min_card_amount": 1,"max_card_amount":1}
 	card_pearldiplomat.card_influence = 5
 	card_pearldiplomat.card_play_actions = [
@@ -5472,7 +5472,7 @@ func add_cards_purple() -> void:
 		}
 		},
 	]
-	for el in sift_action_data:
+	for el in sift_pearl_data:
 		card_pearldiplomat.card_play_actions.append(el)
 	card_pearldiplomat.card_play_actions.append(		{
 			Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
@@ -6001,7 +6001,7 @@ func add_cards_black() -> void:
 	card_fishwrangler.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_fishwrangler.card_requires_target = false
 	card_fishwrangler.card_energy_cost = 1
-	card_fishwrangler.card_values = {"created_card_object_id": "card_fish","number_of_cards":1, "draw_count": 3}
+	card_fishwrangler.card_values = {"created_card_object_id": "card_fish","number_of_cards":1, "draw_count": 4}
 	card_fishwrangler.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_fishwrangler.card_play_actions = sift_resource_data
 	card_fishwrangler.card_play_actions.append(
@@ -6146,8 +6146,8 @@ func add_cards_black() -> void:
 	card_flintlockmage.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockmage.card_requires_target = false
 	card_flintlockmage.card_energy_cost = 1
-	card_flintlockmage.card_values = {"ore_required":1, "ore_amount":-1,"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":4}
-	card_flintlockmage.card_upgrade_value_improvements = {"ore_required":1, "ore_amount":-1,"draw_count":4}
+	card_flintlockmage.card_values = {"ore_required":1, "ore_amount":-1,"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":5}
+	card_flintlockmage.card_upgrade_value_improvements = {"ore_required":1, "ore_amount":-1,"draw_count":1}
 	card_flintlockmage.card_play_actions = sift_food_data
 	card_flintlockmage.card_play_actions.append(forge_action)
 	card_flintlockmage.card_play_actions.append(influence_action)
@@ -6610,7 +6610,7 @@ func add_cards_green() -> void:
 	card_youngmentor.card_values = {"draw_count":3,"damage":2,"number_of_attacks":1}
 	card_youngmentor.card_upgrade_value_improvements = {"damage":2}
 	card_youngmentor.card_play_actions.append({Scripts.ACTION_ATTACK_GENERATOR:{}})
-	for action in sift_action_data:
+	for action in sift_resource_data:
 		card_youngmentor.card_play_actions.append(action)
 	card_youngmentor.card_play_actions.append(influence_action)
 	card_youngmentor.card_end_of_turn_actions = end_action_data
@@ -6738,7 +6738,7 @@ func add_cards_green() -> void:
 	card_goldenconscript.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_goldenconscript.card_requires_target = true
 	card_goldenconscript.card_energy_cost = 1
-	card_goldenconscript.card_values = {"card_influence":1,"draw_count": 3,"damage":3,"number_of_attacks":1}
+	card_goldenconscript.card_values = {"card_influence":1,"draw_count": 4,"damage":3,"number_of_attacks":1}
 	card_goldenconscript.card_upgrade_value_improvements = {"draw_count":1,"damage":1}
 	card_goldenconscript.card_play_actions = [
 		{
@@ -7056,7 +7056,7 @@ func add_cards_green() -> void:
 	card_supremerecaster.card_rarity = CardData.CARD_RARITIES.RARE
 	card_supremerecaster.card_requires_target = false
 	card_supremerecaster.card_energy_cost = 2
-	card_supremerecaster.card_values = {"draw_count":2,"insight_required":1,"created_card_object_id": "card_scroll", "number_of_cards":1}
+	card_supremerecaster.card_values = {"draw_count":4,"insight_required":1,"created_card_object_id": "card_scroll", "number_of_cards":1}
 	card_supremerecaster.card_upgrade_value_improvements = {"draw_count":2}
 	card_supremerecaster.card_play_actions = sift_craft_data
 	card_supremerecaster.card_play_actions.append(cook_action)
@@ -7274,17 +7274,21 @@ func add_cards_gold() -> void:
 	card_shucker.card_color_id = "color_{0}".format([color])
 	card_shucker.card_texture_path = "external/sprites/cards/cengkih/04_shucker.png"
 	card_shucker.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_shucker.card_keyword_object_ids = ["keyword_sift"]
-	card_shucker.card_description = "Create [number_of_cards] Fish. Sift [draw_count] for Resource cards.".format([Card.MONEY_ICON_KEYWORD])
+	card_shucker.card_keyword_object_ids = ["keyword_sift","keyword_frontier"]
+	card_shucker.card_description = "Create [number_of_cards] Fish.\nFRONTIER: Gain [money_amount]{0}.".format([Card.MONEY_ICON_KEYWORD])
 	card_shucker.card_type = CardData.CARD_TYPES.FACTION
 	card_shucker.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_shucker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_shucker.card_requires_target = false
 	card_shucker.card_energy_cost = 1
 	card_shucker.card_influence = 3
-	card_shucker.card_values = {"money_amount":1,"created_card_object_id":"card_fish","number_of_cards":1,"draw_count":3}
-	card_shucker.card_upgrade_value_improvements = {"money_amount": 1,"draw_count":1}
-	card_shucker.card_play_actions = sift_action_data
+	card_shucker.card_values = {"money_amount":3,"created_card_object_id":"card_fish","number_of_cards":1}
+	card_shucker.card_upgrade_value_improvements = {"number_of_cards":1}
+	card_shucker.card_glow_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
+	card_shucker.card_play_actions = [
+		{Scripts.ACTION_VALIDATOR:
+			{"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],"passed_action_data":[{Scripts.ACTION_ADD_MONEY:{"money_amount":3}}]}},
+		]
 	card_shucker.card_play_actions.append(
 	{Scripts.ACTION_CREATE_CARDS: {
 			"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
