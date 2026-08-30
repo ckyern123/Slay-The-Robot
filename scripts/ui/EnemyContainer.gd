@@ -110,7 +110,6 @@ func get_enemies() -> Array[EnemyData]:
 	var saved_enemy_data: Array[EnemyData] = []
 	for enemy in automatic_enemy_container.get_children():
 		saved_enemy_data.append(enemy.enemy_data)
-		print(enemy.enemy_data.object_id)
 	for enemy in positional_enemy_container.get_children():
 		saved_enemy_data.append(enemy.enemy_data)
 	return saved_enemy_data
