@@ -21,7 +21,6 @@ class_name PlayerData
 @export var blight: int = 0
 @export var player_spice_exhaust: int = 0
 @export var max_card_layover: int = 0
-
 var player_energy: int = 3 # in combat energy. Not saved.
 ## The energy the player gains each turn. This can be modified.
 @export var player_current_energy: int = 0
@@ -213,6 +212,8 @@ var player_reward_consumable_rarity_cache: Dictionary[int, Array] = {}
 @export var player_hand: Array[CardData] = []
 @export var player_discard: Array[CardData] = []
 @export var player_exhaust: Array[CardData] = []
+
+@export var current_enemies: Array[EnemyData] = []
 
 
 # Statuses

@@ -190,6 +190,86 @@ func populate_shop() -> void:
 			# initialize button with payload
 			artifact_shop_button.init(purchase_artifact_action)
 
+func load_shop() -> void:
+	var shop_data: ShopData = Global.player_data.player_shop_data
+	if shop_data != null:
+		#shop_data.visit_shop()	# ensure the shop is populated
+		
+		### populate shop cards
+		var shop_cards: Array[CardData] = shop_data.shop_cards
+		for card_data in shop_cards:
+			# create card button asset
+			var card_shop_button: BaseShopButton = Scenes.CARD_SHOP_BUTTON.instantiate()
+			card_container.add_child(card_shop_button)
+			
+			# generate action payload
+			var card_price: int = shop_data.get_shop_card_price(card_data)
+			
+			var purchase_card_action_data: Array[Dictionary] = [
+				{
+				Scripts.ACTION_SHOP_PURCHASE_ITEMS: {
+					"card_data": card_data,
+					"money_amount": card_price,
+					}
+				}
+			]
+			
+			var purchase_card_action: BaseAction = ActionGenerator.create_actions(null, null, [], purchase_card_action_data, null)[0]
+			
+			# initialize button with payload
+			card_shop_button.init(purchase_card_action)
+
+		### populate shop trade
+		var shop_trade: Array[CardData] = shop_data.shop_trade
+		for trade_data in shop_trade:
+			# create card button asset
+			var card_shop_button: BaseShopButton = Scenes.CARD_SHOP_BUTTON.instantiate()
+			trade_container.add_child(card_shop_button)
+			
+			# generate action payload
+			var card_price: int = shop_data.get_shop_card_price(trade_data)
+			
+			var purchase_card_action_data: Array[Dictionary] = [
+				{
+				Scripts.ACTION_SHOP_PURCHASE_ITEMS: {
+					"card_data": trade_data,
+					"money_amount": card_price,
+					}
+				}
+			]
+			
+			var purchase_card_action: BaseAction = ActionGenerator.create_actions(null, null, [], purchase_card_action_data, null)[0]
+			
+			# initialize button with payload
+			card_shop_button.init(purchase_card_action)
+			
+		### populate shop artifacts
+		var shop_artifacts: Array[ArtifactData] = shop_data.get_shop_artifact_options()
+		for artifact in artifact_container.get_children():
+			artifact_container.remove_child(artifact)
+			artifact.queue_free()
+		for artifact_data in shop_artifacts:
+			# create artifact button asset
+			var artifact_shop_button: BaseShopButton = Scenes.ARTIFACT_SHOP_BUTTON.instantiate()
+			artifact_container.add_child(artifact_shop_button)
+			
+			# generate action payload
+			var artifact_id: String = artifact_data.object_id
+			var artifact_price: int = shop_data.get_shop_artifact_price(artifact_id)
+			
+			var purchase_artifact_action_data: Array[Dictionary] = [
+				{
+				Scripts.ACTION_SHOP_PURCHASE_ITEMS: {
+					"artifact_id": artifact_id,
+					"money_amount": artifact_price,
+					}
+				}
+			]
+			
+			var purchase_artifact_action: BaseAction = ActionGenerator.create_actions(null, null, [], purchase_artifact_action_data, null)[0]
+			
+			# initialize button with payload
+			artifact_shop_button.init(purchase_artifact_action)
 func clear_shop():
 	for child in card_container.get_children():
 		child.queue_free()

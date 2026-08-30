@@ -355,8 +355,7 @@ func _on_combat_started(event_id: String):
 		current_location.location_visited = true
 	else:
 		current_event = Global.get_event_data(event_id)
-	
-	enemy_container.populate_enemies_from_event(current_event)
+	enemy_container.populate_enemies_from_event(current_event, no_need_generate)
 	for child in enemy_container.get_children():
 		for childer in child.get_children():
 			if (childer.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
@@ -527,6 +526,7 @@ func load_turn():
 	_reset_turn_end_queue()
 	Global.player_data.player_energy = Global.player_data.player_current_energy
 	#Signals.energy_changed.emit()
+	shop_overlay.load_shop()
 	no_need_generate = false
 	update_combat_display()
 	
@@ -632,6 +632,7 @@ func _on_player_turn_started():
 	# unlock and update hand
 	HandManager.set_disable_hand(false)
 	hand.update_hand_card_display()
+	Global.player_data.current_enemies = enemy_container.get_enemies()
 	FileLoader.autosave()
 	
 func _on_player_turn_ended():
@@ -737,6 +738,7 @@ func _on_run_started():
 			energy.texture_normal = FileLoader.load_texture(color_data.color_energy_icon_texture_path)
 	
 func _on_run_ended():
+
 	visible = false
 	_reset_turn_end_queue()
 	game_start = true

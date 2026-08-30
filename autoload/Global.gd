@@ -300,7 +300,6 @@ enum RUN_ENDS {QUIT, LOSS, VICTORY}
 func end_run(run_end_state: int = RUN_ENDS.QUIT) -> void:
 	match run_end_state:
 		RUN_ENDS.QUIT:
-			FileLoader.autosave()
 			pass # no changes, run should be autosaved already
 		RUN_ENDS.LOSS:
 			FileLoader.delete_save()

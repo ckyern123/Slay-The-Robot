@@ -2985,9 +2985,8 @@ color = Color(0.701961, 0.67451, 0.721569, 1)
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 899.0
-offset_top = 50.0
 offset_right = 1369.0
-offset_bottom = 850.0
+offset_bottom = 700.0
 theme_override_font_sizes/normal_font_size = 28
 bbcode_enabled = true
 
