@@ -604,7 +604,7 @@ func add_artifacts() -> void:
 	artifact_check_scroll.artifact_description = "Draft a Book after 4 Scroll plays."
 	artifact_check_scroll.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BASIC
 	artifact_check_scroll.artifact_color_id = "color_red"
-	artifact_check_scroll.artifact_texture_path = "external/sprites/artifacts/artifact_red.png"
+	artifact_check_scroll.artifact_texture_path = "external/sprites/status_effects/insight.svg"
 	artifact_check_scroll.artifact_script_path = "res://scripts/artifacts/ArtifactCheckScroll.gd"
 	artifact_check_scroll.artifact_counter_max = 4
 	artifact_check_scroll.artifact_turn_end_actions = []
@@ -2883,7 +2883,7 @@ func add_characters() -> void:
 	var character_green: CharacterData = CharacterData.new("character_{0}".format([character_color]))
 	character_green.character_player_id = "player_{0}".format([character_color])
 	character_green.character_name = "WELCOME"
-	character_green.character_description = "To start, just start the run. KEY SHORTCUTS: Number keys can be used to play cards at a position in hand; Press E to End Turn; Right click to preview card upgrade.\nIMPORTANT NOTE: Most cards in this game have an additional stats called Influence (represented by Purple Heart). Everytime they are played, it goes up by 1. If it reaches 7, the next time the card is played, it is upgraded (To preview card upgrade, right click it). Every time it is not played, it goes down by 1. If it goes to 0, it becomes a Rebel, a useless and detrimental card."
+	character_green.character_description = "To start, just start the run. KEY SHORTCUTS: Number keys can be used to play cards at a position in hand; Press E to End Turn; Right click to preview card upgrade.\n\nIMPORTANT NOTE: Most cards in this game have an additional stats called Influence (represented by Purple Heart). Everytime they are played, it goes up by 1. If it reaches 7, the next time the card is played, it is upgraded (To preview card upgrade, right click it). \n\n Every time it is not played and remains in hand at the end of turn, the card's influence goes down by 1. If it goes to 0, it becomes a Rebel, a useless and detrimental card."
 	character_green.character_color_id = "color_{0}".format([character_color])
 	#character_green.restarting_health = 75
 	character_green.character_starting_insight = 3
@@ -4523,7 +4523,7 @@ func add_cards_misc() -> void:
 	card_fish.card_name = "Fish"
 	card_fish.card_color_id = "color_{0}".format([color])
 	card_fish.card_texture_path = "external/sprites/status_effects/fish.svg"
-	card_fish.card_description = "Gain [food_amount]{0}. When discarded, improve {0} by 1.".format([Card.FOOD_ICON_KEYWORD])
+	card_fish.card_description = "Gain [food_amount]{0}. When discarded, improve {0} by 2.".format([Card.FOOD_ICON_KEYWORD])
 	card_fish.card_type = CardData.CARD_TYPES.SKILL
 	card_fish.card_subtype = CardData.CARD_SUBTYPES.FOOD
 	card_fish.card_energy_cost = 0
@@ -4531,7 +4531,7 @@ func add_cards_misc() -> void:
 	card_fish.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_fish.card_requires_target = false
 	card_fish.card_play_destination = HandManager.EXHAUST_PILE
-	card_fish.card_values = {"food_amount": 1, "card_value_improvements": {"food_amount": 1}}
+	card_fish.card_values = {"food_amount": 0, "card_value_improvements": {"food_amount": 2}}
 	card_fish.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_FOOD:
@@ -4842,7 +4842,7 @@ func add_cards_trade() -> void:
 #region Trade
 	var color: String = "grey"
 	var card_trade1: CardData = CardData.new("card_trade1")
-	card_trade1.card_name = "Trade1"
+	card_trade1.card_name = "Sell Ore"
 	card_trade1.card_color_id = "color_{0}".format([color])
 	card_trade1.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade1.card_description = "[ore_amount]{0}. Gain [money_amount]{1}.".format([Card.ORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
@@ -4868,7 +4868,7 @@ func add_cards_trade() -> void:
 	Global.register_rod(card_trade1)	
 	
 	var card_trade2: CardData = CardData.new("card_trade2")
-	card_trade2.card_name = "Trade2"
+	card_trade2.card_name = "Sell Food"
 	card_trade2.card_color_id = "color_{0}".format([color])
 	card_trade2.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade2.card_description = "[food_amount]{0}. Gain [money_amount]{1}.".format([Card.FOOD_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
@@ -4894,7 +4894,7 @@ func add_cards_trade() -> void:
 	Global.register_rod(card_trade2)
 	
 	var card_trade3: CardData = CardData.new("card_trade3")
-	card_trade3.card_name = "Trade3"
+	card_trade3.card_name = "Sell Insight"
 	card_trade3.card_color_id = "color_{0}".format([color])
 	card_trade3.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade3.card_description = "[insight_amount]{0}. Gain [money_amount]{1}.".format([Card.INSIGHT_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
@@ -4920,7 +4920,7 @@ func add_cards_trade() -> void:
 	Global.register_rod(card_trade3)
 	
 	var card_trade4: CardData = CardData.new("card_trade4")
-	card_trade4.card_name = "Trade4"
+	card_trade4.card_name = "Buy Ore"
 	card_trade4.card_color_id = "color_{0}".format([color])
 	card_trade4.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade4.card_description = "[money_amount]{0}. Gain [ore_amount]{1}.".format([Card.MONEY_ICON_KEYWORD,Card.ORE_ICON_KEYWORD])
@@ -4946,7 +4946,7 @@ func add_cards_trade() -> void:
 	Global.register_rod(card_trade4)
 	
 	var card_trade5: CardData = CardData.new("card_trade5")
-	card_trade5.card_name = "Trade5"
+	card_trade5.card_name = "Buy Food"
 	card_trade5.card_color_id = "color_{0}".format([color])
 	card_trade5.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade5.card_description = "[money_amount]{0}. Gain [food_amount]{1}.".format([Card.MONEY_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
@@ -4972,7 +4972,7 @@ func add_cards_trade() -> void:
 	Global.register_rod(card_trade5)
 	
 	var card_trade6: CardData = CardData.new("card_trade6")
-	card_trade6.card_name = "Trade6"
+	card_trade6.card_name = "Buy Insight"
 	card_trade6.card_color_id = "color_{0}".format([color])
 	card_trade6.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade6.card_description = "[money_amount]{0}. Gain [insight_amount]{1}.".format([Card.MONEY_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
@@ -4998,7 +4998,7 @@ func add_cards_trade() -> void:
 	Global.register_rod(card_trade6)
 	
 	var card_trade7: CardData = CardData.new("card_trade7")
-	card_trade7.card_name = "Trade6"
+	card_trade7.card_name = "Buy Room"
 	card_trade7.card_color_id = "color_{0}".format([color])
 	card_trade7.card_texture_path = "external/sprites/cards/basic/01_trade.png"
 	card_trade7.card_description = "[money_amount]{0}. Gain [room_amount]{1}.".format([Card.MONEY_ICON_KEYWORD,Card.ROOM_ICON_KEYWORD])
@@ -5219,7 +5219,7 @@ func add_cards_purple() -> void:
 	card_cunningtrader.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_cunningtrader.card_description = "Gain [ore_amount]{0}. Create 1 Debt.\nON DISCARD: Gain [money_amount]{1}".format([Card.ORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
 	card_cunningtrader.card_keyword_object_ids = ["keyword_debt"]
-	card_cunningtrader.card_type = CardData.CARD_TYPES.SKILL
+	card_cunningtrader.card_type = CardData.CARD_TYPES.FACTION
 	card_cunningtrader.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_cunningtrader.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_cunningtrader.card_requires_target = false
@@ -5935,6 +5935,38 @@ func add_cards_black() -> void:
 	card_aniseedemissary.card_end_of_turn_actions = end_action_data
 
 	Global.register_rod(card_aniseedemissary)
+	
+	var card_humblemerchant: CardData = CardData.new("card_humblemerchant")
+	card_humblemerchant.card_name = "Humble Merchant"
+	card_humblemerchant.card_color_id = "color_{0}".format([color])
+	card_humblemerchant.card_texture_path = "external/sprites/cards/aniseed/21_humblemerchant.png"
+	card_humblemerchant.card_description = "Draft a Trade Order."
+	#card_humblemerchant.card_keyword_object_ids = ["keyword_inspect"]
+	card_humblemerchant.card_type = CardData.CARD_TYPES.FACTION
+	card_humblemerchant.card_subtype = CardData.CARD_SUBTYPES.ANISEED
+	card_humblemerchant.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_humblemerchant.card_requires_target = false
+	card_humblemerchant.card_energy_cost = 1
+	#card_humblemerchant.card_values = {"damage": 2, "min_card_amount": 1, "max_card_amount": 1}
+	#card_humblemerchant.card_upgrade_value_improvements = {"min_card_amount": 1,"max_card_amount": 1}
+	card_humblemerchant.card_first_upgrade_property_changes = {"card_energy_cost":-1}
+	card_humblemerchant.card_influence = 3
+	card_humblemerchant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
+	card_humblemerchant.card_play_actions = [		{Scripts.ACTION_PICK_CARDS:
+		{
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"validator_data": [],
+			# use same rng as player drafting so it counts as draft
+			"rng_name": "rng_card_drafting",
+			"draft_card_pack_id": "card_pack_grey"
+		}}]
+	card_humblemerchant.card_play_actions.append(influence_action)
+	card_humblemerchant.card_end_of_turn_actions = end_action_data
+
+	Global.register_rod(card_humblemerchant)
 		
 	var card_eagersailor: CardData = CardData.new("card_eagersailor")
 	card_eagersailor.card_name = "Eager Sailor"
@@ -6032,7 +6064,7 @@ func add_cards_black() -> void:
 	card_incensestoker.card_description = "Discard [max_card_amount], gain [energy_amount]{0}.".format([Card.ENERGY_ICON_KEYWORD])
 	card_incensestoker.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	#card_incensestoker.card_keyword_object_ids = ["keyword_fertilise"]
-	card_incensestoker.card_type = CardData.CARD_TYPES.SKILL
+	card_incensestoker.card_type = CardData.CARD_TYPES.FACTION
 	card_incensestoker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_incensestoker.card_requires_target = false
 	card_incensestoker.card_influence = 4
@@ -7355,7 +7387,7 @@ func add_cards_gold() -> void:
 	var card_esteemedmerchant: CardData = CardData.new("card_esteemedmerchant")
 	card_esteemedmerchant.card_name = "Esteemed Merchant"
 	card_esteemedmerchant.card_color_id = "color_{0}".format([color])
-	card_esteemedmerchant.card_texture_path = "external/sprites/cards/cengkih/07_esteemedmerchant.png"
+	card_esteemedmerchant.card_texture_path = "external/sprites/cards/cengkih/21_esteemedmerchant.png"
 	card_esteemedmerchant.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_esteemedmerchant.card_description = "Draft Trade Orders twice."
 	#card_esteemedmerchant.card_keyword_object_ids = ["keyword_forge","keyword_treasure"]
@@ -7550,7 +7582,7 @@ func add_cards_gold() -> void:
 	card_cengkihscribe.card_color_id = "color_{0}".format([color])
 	card_cengkihscribe.card_texture_path = "external/sprites/cards/cengkih/11_cengkihscribe.png"
 	card_cengkihscribe.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_cengkihscribe.card_description = "Randomly return [min_card_amount] Craft cards from your discard pile to your hand. If you have 8 or more cards in your hand, gain [insight_amount] Insight."
+	card_cengkihscribe.card_description = "Randomly return [min_card_amount] Craft cards from your discard pile to your hand. If you have 8 or more cards in your hand, gain [insight_amount]{0}.".format([Card.INSIGHT_ICON_KEYWORD])
 	card_cengkihscribe.card_type = CardData.CARD_TYPES.FACTION
 	card_cengkihscribe.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cengkihscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
