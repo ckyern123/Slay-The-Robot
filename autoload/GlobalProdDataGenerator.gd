@@ -1807,7 +1807,7 @@ func add_events() -> void:
 		{"boulder": 1},
 		{"boulder": 1,"wateringhole":1},
 		{"bigboulder": 1},
-		{"barren_wastes": 0.6},
+		{"barrenwastes": 0.6},
 		{"islandanomaly":1,"banditroost":1}
 		]
 	
@@ -1840,7 +1840,7 @@ func add_events() -> void:
 	event_act_1_hard_desert_3.event_weighted_enemy_object_ids = [
 		{"boulder": 1},
 		{"bigboulder": 1},
-		{"barren_wastes": 1,"wateringhole":1},
+		{"barrenwastes": 1,"wateringhole":1},
 		{"islandanomaly":1}
 		]
 	
@@ -3825,12 +3825,12 @@ func add_enemies() -> void:
 		EnemyIntentData.new("intent_debt", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},banditroost_status_actions),
 	])
 	banditroost.add_intent_state([
-		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, "",{"intent_block":1}),
 		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
 	])
 		
 	var _banditroost_anim: AnimationData = banditroost.add_standard_animations(
-		["external/sprites/enemies/forest.png"]
+		["external/sprites/enemies/banditroost.png"]
 	)
 
 	Global.register_rod(banditroost)
@@ -4547,7 +4547,7 @@ func add_card_basics() -> void:
 		card_basic_explore.card_requires_target = true
 		card_basic_explore.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_explore.card_keyword_object_ids = []
-		card_basic_explore.card_values = {"damage": 2,"number_of_attacks":1}
+		card_basic_explore.card_values = {"damage": 33,"number_of_attacks":1}
 		card_basic_explore.card_upgrade_value_improvements = {"damage": 1}
 		#card_basic_explore.card_keyword_object_ids = ["keyword_explore"]
 		card_basic_explore.card_play_actions = [{
