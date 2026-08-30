@@ -1052,7 +1052,7 @@ func add_status_effects() -> void:
 	
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_rattle: StatusEffectData = StatusEffectData.new("status_effect_rattle")
-	status_effect_rattle.status_effect_name = "Rattle"
+	status_effect_rattle.status_effect_name = "Rattles Discard Per Turn"
 	status_effect_rattle.status_effect_texture_path = "external/sprites/status_effects/rattle.svg"
 	status_effect_rattle.status_effect_is_visible = true
 	status_effect_rattle.status_effect_decay_rate = 0
@@ -1061,6 +1061,18 @@ func add_status_effects() -> void:
 	status_effect_rattle.status_effect_action_process_times = []
 	
 	Global.register_rod(status_effect_rattle)
+	
+		# Reward (simply to explain what objects of interest do)
+	var status_effect_debt_once: StatusEffectData = StatusEffectData.new("status_effect_debt_once")
+	status_effect_debt_once.status_effect_name = "Creates Debt Once"
+	status_effect_debt_once.status_effect_texture_path = "external/sprites/cards/basic/cash.png"
+	status_effect_debt_once.status_effect_is_visible = true
+	status_effect_debt_once.status_effect_decay_rate = 0
+	status_effect_debt_once.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_debt_once.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_debt_once.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_debt_once)
 	
 		# Reward (simply to explain what objects of interest do)
 	var status_effect_insight_reward: StatusEffectData = StatusEffectData.new("status_effect_insight_reward")
@@ -1782,10 +1794,9 @@ func add_events() -> void:
 	event_act_1_medium_desert_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_desert_2.event_weighted_enemy_object_ids = [
 		{"boulder": 1, "wateringhole":1},
-		{"boulder": 1},
+		{"boulder": 1,"banditroost":1},
 		{"boulder": 1,"wateringhole":1},
-		{"bigboulder": 1},
-		{"islandanomaly":0.6}
+		{"bigboulder": 1,"banditroost":1},
 		]
 	
 	Global.register_rod(event_act_1_medium_desert_2)
@@ -1797,7 +1808,7 @@ func add_events() -> void:
 		{"boulder": 1,"wateringhole":1},
 		{"bigboulder": 1},
 		{"barren_wastes": 0.6},
-		{"islandanomaly":0.6}
+		{"islandanomaly":1,"banditroost":1}
 		]
 	
 	Global.register_rod(event_act_1_medium_desert_3)
@@ -1808,7 +1819,7 @@ func add_events() -> void:
 		{"boulder": 1,"wateringhole":1},
 		{"bigboulder": 1},
 		{"barrenwastes": 1,"abandonedoutpost":1},
-		{"barrenwastes": 1}
+		{"barrenwastes": 1,"banditroost":1}
 		]
 	
 	Global.register_rod(event_act_1_hard_desert_1)
@@ -1872,7 +1883,7 @@ func add_events() -> void:
 	var event_act_1_medium_forest_1: EventData = EventData.new("event_act_1_medium_forest_1")
 	event_act_1_medium_forest_1.event_death_message_bbcode = "Died to medium event"
 	event_act_1_medium_forest_1.event_weighted_enemy_object_ids = [
-		{"forestmulch": 1, "conspicuouspatch":1},
+		{"forestmulch": 1, "conspicuouspatch":1,"banditroost":1},
 		{"forestmulch": 1,"abandonedoutpost":1, "animalherd": 1},
 		{"forestmulch": 1, "forestfloor": 1},
 		{"den": 1},
@@ -1885,7 +1896,7 @@ func add_events() -> void:
 	event_act_1_medium_forest_2.event_weighted_enemy_object_ids = [
 		{"forestmulch": 1, "forestfloor":1, "mound": 1},
 		{"forestmulch": 1,"conspicuouspatch":1},
-		{"forestfloor": 1, "mound": 1},
+		{"forestfloor": 1, "mound": 1,"banditroost":1},
 		{"hideout": 1,"den":1},
 		]
 	
@@ -1894,7 +1905,7 @@ func add_events() -> void:
 	var event_act_1_medium_forest_3: EventData = EventData.new("event_act_1_medium_forest_3")
 	event_act_1_medium_forest_3.event_death_message_bbcode = "Died to medium event"
 	event_act_1_medium_forest_3.event_weighted_enemy_object_ids = [
-		{"forestmulch": 1, "forestfloor": 1, "animalherd":1},
+		{"forestmulch": 1, "forestfloor": 1, "animalherd":1,"banditroost":1},
 		{"forestfloor": 1,"den": 1},
 		{"forestfloor": 1, "hideout": 0.5},
 		]
@@ -1916,7 +1927,7 @@ func add_events() -> void:
 	event_act_1_hard_forest_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_forest_2.event_weighted_enemy_object_ids = [
 		{"forestfloor": 1, "hideout":1, "den": 1},
-		{"forestmulch": 1,"den":1,"abandonedoutpost": 1},
+		{"forestmulch": 1,"den":1,"abandonedoutpost": 1,"banditroost":1},
 		{"hideout": 1},
 		]
 	
@@ -1925,7 +1936,7 @@ func add_events() -> void:
 	var event_act_1_hard_forest_3: EventData = EventData.new("event_act_1_hard_forest_3")
 	event_act_1_hard_forest_3.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_forest_3.event_weighted_enemy_object_ids = [
-		{"forestmulch": 1,"mound": 1},
+		{"forestmulch": 1,"mound": 1,"banditroost":1},
 		{"forestmulch": 1,"conspicuouspatch":1},
 		{"forestfloor": 1,"hideout":1},
 		{"den": 1},
@@ -2076,7 +2087,7 @@ func add_events() -> void:
 	var event_act_1_medium_swamp_1: EventData = EventData.new("event_act_1_medium_swamp_1")
 	event_act_1_medium_swamp_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_swamp_1.event_weighted_enemy_object_ids = [
-		{"dryfield": 1,"conspicuouspatch":1},
+		{"dryfield": 1,"conspicuouspatch":1,"banditroost":1},
 		{"mangroveroots": 1, "brackishbeds": 1,"infestedwaters":1},
 		{"mangroveroots": 1, "brackishbeds": 1},
 		{"infestedwaters": 1,"conspicuouspatch":1}
@@ -2088,7 +2099,7 @@ func add_events() -> void:
 	event_act_1_medium_swamp_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_medium_swamp_2.event_weighted_enemy_object_ids = [
 		{"mangroveroots": 1, "infestedwaters": 1,"hideout":1},
-		{"mangroveroots": 1, "dryfield": 1},
+		{"mangroveroots": 1, "dryfield": 1,"banditroost":1},
 		{"brackishbeds": 1,"abandonedpost":1},
 		]
 	
@@ -2108,8 +2119,8 @@ func add_events() -> void:
 	var event_act_1_hard_swamp_1: EventData = EventData.new("event_act_1_hard_swamp_1")
 	event_act_1_hard_swamp_1.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_swamp_1.event_weighted_enemy_object_ids = [
-		{"mangroveroots": 1, "brackishbeds": 1,"conspicuouspatch":1},
-		{"brackishbeds": 1, "infestedwaters": 1},
+		{"mangroveroots": 1, "brackishbeds": 1,"conspicuouspatch":1,"banditroost":1},
+		{"brackishbeds": 1, "infestedwaters": 1,"banditroost":1},
 		{"brackishbeds": 1,"den":1},
 		{"infestedwaters": 1, "hut": 1}
 		]
@@ -2119,7 +2130,7 @@ func add_events() -> void:
 	var event_act_1_hard_swamp_2: EventData = EventData.new("event_act_1_hard_swamp_2")
 	event_act_1_hard_swamp_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_swamp_2.event_weighted_enemy_object_ids = [
-		{"brackishbeds": 1},
+		{"brackishbeds": 1,"banditroost":1},
 		{"infestedwaters": 1},
 		{"hut": 1},
 		{"hut": 1},
@@ -3793,6 +3804,37 @@ func add_enemies() -> void:
 
 	Global.register_rod(abandonedoutpost)
 	Global.register_rod(_abandonedoutpost_anim)
+	
+			# enemy that negates the first damage instance against it
+	var banditroost: EnemyData = EnemyData.new("banditroost")
+	banditroost.enemy_name = "Bandit Roost"
+	banditroost.add_health_bounds(12, 15)
+	banditroost.add_health_bounds(17, 19, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
+	banditroost.enemy_texture_path = "external/sprites/enemies/banditroost.png"
+	banditroost.enemy_initial_status_effects = {"status_effect_size_reward": 3, "status_effect_money_reward": 5, "status_effect_debt_once":1}
+	# initial dummy state used to map initial attack pattern weights on starting combat
+	banditroost.add_intent_state([
+		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_debt":1}),
+		])
+	banditroost.enemy_actions_on_death = [{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 3}},{Scripts.ACTION_ADD_MONEY:{"money_amount":5}}]
+	# an attack that hits harder on higher difficulties
+	var banditroost_status_actions: Array[Dictionary] = [{
+		Scripts.ACTION_CREATE_CARDS:{"created_card_object_id": "card_debt","number_of_cards":2,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	banditroost.add_intent_state([
+		EnemyIntentData.new("intent_debt", DIFFICULTY_STARTING, 0, 0, "", 0, "",{"intent_block":1},banditroost_status_actions),
+		EnemyIntentData.new("intent_debt", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1},banditroost_status_actions),
+	])
+	banditroost.add_intent_state([
+		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
+		EnemyIntentData.new("intent_block", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 0, "", 0, "", {"intent_block":1}),
+	])
+		
+	var _banditroost_anim: AnimationData = banditroost.add_standard_animations(
+		["external/sprites/enemies/forest.png"]
+	)
+
+	Global.register_rod(banditroost)
+	Global.register_rod(_banditroost_anim)
 	
 		# enemy that negates the first damage instance against it
 	var den: EnemyData = EnemyData.new("den")
