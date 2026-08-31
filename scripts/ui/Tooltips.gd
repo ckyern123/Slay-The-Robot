@@ -25,6 +25,7 @@ class_name Tooltip
 @onready var trade_container = $"../RunScreen/Combat/ShopOverlay/TradeContainer"
 @onready var artifact_container = $"../RunScreen/Combat/ShopOverlay/ArtifactContainer"
 @onready var shop_refresh = %ShopRefreshLabel
+@onready var rot_warning = %RotLabel
 @onready var objectives_label = %ObjectivesLabel 
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var tooltip_label: RichTextLabel = $PanelContainer/TooltipLabel
@@ -60,6 +61,7 @@ func _ready() -> void:
 		[artifact_container, "[color=orange]Artifacts[/color]\nPurchase an artifact blueprint. To acquire the artifact, play the Blueprint card and pay 8 Ore. You can only purhcase one blueprint per Shop Refresh", true, false, true, $TooltipPositions/ArtifactTooltipPos],
 		[trade_container, "[color=orange]Trade orders[/color]\nGain a Trade order card. Play the card to trade resources. Each order can only be used once. You can only gain one Trade order card per Shop Refresh.", true, false, true, $TooltipPositions/TradeTooltipPos],
 		[shop_refresh, "[color=orange]Shop Refresh[/color]\nWhen this counter is at zero, the shop is refreshed.", true, false, true, $TooltipPositions/RefreshTooltipPos],
+		[rot_warning, "[color=orange]Rot Warning[/color]\nWhen this counter is at zero, 25-50% of your food will be gone.", true, false, true, $TooltipPositions/RotTooltipPos],
 		[objectives_label, "[color=orange]Objectives[/color]\nTo win the game, complete these objectives\nThe total number of cards you have can be seen at the Size counter\nArtifacts are built by purchasing blueprint cards and playing them\n.Books are drafted every three times Scrolls are played.", true, false, true, $TooltipPositions/ObjectivesTooltipPos],
 				
 		[energy, "[color=orange]Energy[/color]\nUsed to play cards", false, false, false, $TooltipPositions/EnergyTooltipPos],
