@@ -2908,7 +2908,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green"
+		"card_basic_explore_green", "card_basic_explore_green", "card_courtmarshall"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -4547,7 +4547,7 @@ func add_card_basics() -> void:
 		card_basic_explore.card_requires_target = true
 		card_basic_explore.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_explore.card_keyword_object_ids = []
-		card_basic_explore.card_values = {"damage": 33,"number_of_attacks":1}
+		card_basic_explore.card_values = {"damage": 2,"number_of_attacks":1}
 		card_basic_explore.card_upgrade_value_improvements = {"damage": 1}
 		#card_basic_explore.card_keyword_object_ids = ["keyword_explore"]
 		card_basic_explore.card_play_actions = [{
@@ -6159,8 +6159,8 @@ func add_cards_black() -> void:
 	card_cartographersassistant.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_cartographersassistant.card_requires_target = true
 	card_cartographersassistant.card_energy_cost = 1
-	card_cartographersassistant.card_values = {"damage": 2,"number_of_attacks":1, "ore_required": 3 ,"ore_amount": -3, "insight_amount": 1}
-	card_cartographersassistant.card_upgrade_value_improvements = {"damage": 1,"ore_required": -1, "ore_amount": 1}
+	card_cartographersassistant.card_values = {"damage": 2,"number_of_attacks":1, "insight_amount": 1}
+	card_cartographersassistant.card_upgrade_value_improvements = {"damage": 2}
 	card_cartographersassistant.card_play_actions = [
 		{
 		Scripts.ACTION_ATTACK_GENERATOR: {
@@ -6168,8 +6168,8 @@ func add_cards_black() -> void:
 		}
 		},
 		{
-		Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_ORE:{}}],
-			"passed_action_data":[{Scripts.ACTION_ADD_ORE:{}},
+		Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_ORE:{"ore_required":3}}],
+			"passed_action_data":[{Scripts.ACTION_ADD_ORE:{"custom_key_names":{"ore_amount":-3}}},
 			{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]}
 		}]
 	card_cartographersassistant.card_play_actions.append(influence_action)
@@ -7244,8 +7244,8 @@ func add_cards_gold() -> void:
 	card_courtmarshall.card_play_actions = [
 		{Scripts.ACTION_VALIDATOR:{
 			"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],
-			"passed_action_data":[{Scripts.ACTION_ATTACK_GENERATOR:{"custom_key_names":{"damage":"damage"},"number_of_attacks":1}}],
-			"failed_action_data":[{Scripts.ACTION_ATTACK_GENERATOR:{"custom_key_names":{"damage":"custom_damage"},"number_of_attacks":1}}]}}]
+			"failed_action_data":[{Scripts.ACTION_ATTACK_GENERATOR:{"custom_key_names":{"damage":"damage"},"number_of_attacks":1}}],
+			"passed_action_data":[{Scripts.ACTION_ATTACK_GENERATOR:{"custom_key_names":{"damage":"custom_damage"},"number_of_attacks":1}}]}}]
 	card_courtmarshall.card_play_actions.append(influence_action)
 	card_courtmarshall.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_courtmarshall)

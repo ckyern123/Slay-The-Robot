@@ -81,6 +81,8 @@ func wait() -> void:
 			}}]
 				var influence_actions: Array = ActionGenerator.create_actions(null, null, [], influence_action_data, null)
 				ActionHandler.add_actions(influence_actions)
+				
+				#tween animation discard pile
 				Signals.tween_discard.emit()
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended

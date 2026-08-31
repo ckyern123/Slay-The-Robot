@@ -18,6 +18,7 @@ class_name PlayerData
 @export var player_room: int = 0
 @export var player_insight: int = 0
 @export var player_refresh: int = 4
+@export var player_rot: int = 10
 @export var blight: int = 0
 @export var player_spice_exhaust: int = 0
 @export var max_card_layover: int = 0
@@ -292,13 +293,19 @@ func add_room(amount: int) -> void:
 	var delta: int = player_room - old_player_room_amount
 	Signals.player_room_changed.emit(delta)
 
-## Adds or subtracts food from the player
+## Adds or subtracts refresh from the player
 ## If goes into negative amounts, the proper delta will be calculated 
 func add_refresh(amount: int) -> void:
 	var old_player_refresh_amount: int = player_refresh
 	player_refresh = max(player_refresh + amount, 0)
 	var delta: int = player_refresh - old_player_refresh_amount
 	Signals.player_refresh_changed.emit(delta)
+
+func add_rot(amount: int) -> void:
+	var old_player_rot_amount: int = player_rot
+	player_rot = max(player_rot + amount, 0)
+	var delta: int = player_rot - old_player_rot_amount
+	Signals.player_rot_changed.emit(delta)
 	
 ## Gets an rng track for the run. If it does not exist create one.
 func get_player_rng(rng_name: String) -> RandomNumberGenerator:

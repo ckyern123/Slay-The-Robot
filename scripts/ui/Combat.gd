@@ -13,6 +13,7 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var objectives_label: RichTextLabel = %ObjectivesLabel
 
 @onready var shop_refresh_label: RichTextLabel = %ShopRefreshLabel
+@onready var rot_label: RichTextLabel = %RotLabel
 @onready var food_fade_container: Node2D = %FoodFadeContainer
 @onready var money_fade_container: Node2D = %MoneyFadeContainer
 @onready var ore_fade_container: Node2D = %OreFadeContainer
@@ -20,6 +21,7 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var sprawl_fade_container: Node2D = %SprawlFadeContainer
 @onready var room_fade_container: Node2D = %RoomFadeContainer
 @onready var refresh_fade_container: Node2D = %RefreshFadeContainer
+@onready var rot_fade_container: Node2D = %rotFadeContainer
 const money_texture_path = "sprites/rupee.svg"
 const food_texture_path = "sprites/oat.svg"
 const ore_texture_path = "sprites/ore.svg"
@@ -27,6 +29,7 @@ const insight_texture_path = "sprites/scroll.svg"
 const sprawl_texture_path = "sprites/village.svg"
 const room_texture_path = "sprites/tower.svg"
 const refresh_texture_path = "sprites/refresh.svg"
+const rot_texture_path = "sprites/rot.svg"
 
 @onready var energy_count: Label = $Energy/EnergyCount
 @onready var energy: TextureButton = $Energy
@@ -178,6 +181,8 @@ func update_combat_display():
 	_on_player_sprawl_changed()
 	_on_player_room_changed()
 	_on_player_refresh_changed()
+	_on_player_rot_changed()
+		
 func _update_background() -> void:
 	# set the background if possible
 	var background_texture_path: String = ""
@@ -306,6 +311,21 @@ func _on_player_refresh_changed(_delta: int = 0):
 		#var current_event = Global.get_player_event_data()
 		#enemy_container.populate_enemies_from_event(current_event)
 
+func _on_player_rot_changed(_delta: int = 0):
+	rot_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, rot_texture_path, "ROT WARNING"]) % Global.player_data.player_rot
+	if (Global.player_data.player_rot <= 0):
+		var reduced_value: int = Global.player_data.player_food/randi_range(2,4)
+		Global.player_data.add_food(-reduced_value)
+		var sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rot.wav"},
+		}]
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		ActionHandler.add_actions(sound_actions)
+		Global.player_data.player_rot = 10
+		rot_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, rot_texture_path, "ROT WARNING"]) % Global.player_data.player_rot
+		create_image_fade(rot_fade_container, FileLoader.load_texture(rot_texture_path))
+		#var current_event = Global.get_player_event_data()
+		#enemy_container.populate_enemies_from_event(current_event)
 ### Deck Buttons
 
 func _on_deck_button_up():
@@ -599,6 +619,7 @@ func _on_player_turn_started():
 		Signals.shop_opened.emit()
 	else:
 		Global.player_data.add_refresh(-1)
+		Global.player_data.add_rot(-1)
 
 	# reset energy
 
