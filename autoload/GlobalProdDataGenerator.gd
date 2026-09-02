@@ -2719,12 +2719,12 @@ func add_keywords() -> void:
 
 	var keyword_sword: KeywordData = KeywordData.new("keyword_sword")
 	keyword_sword.keyword_name = "Sword"
-	keyword_sword.keyword_text_bb_code = "Craft that Explores 2. Can be Wielded. Has 2 Durability."
+	keyword_sword.keyword_text_bb_code = "Craft that Explores 2. Can be Wielded. Has 3 durability."
 	Global.register_rod(keyword_sword)
 	
 	var keyword_debt: KeywordData = KeywordData.new("keyword_debt")
 	keyword_debt.keyword_name = "Debt"
-	keyword_debt.keyword_text_bb_code = "Craft that cannot be played. Lose 1 Money at the end of turn. Has 2 Durability."
+	keyword_debt.keyword_text_bb_code = "Craft that loses 1 Money at the end of turn. Has 2 durability."
 	Global.register_rod(keyword_debt)
 	
 	var keyword_spice: KeywordData = KeywordData.new("keyword_spice")
@@ -4708,7 +4708,7 @@ func add_cards_misc() -> void:
 	card_sword.card_keyword_object_ids = ["keyword_wield"]
 	card_sword.card_energy_cost = 0
 	card_sword.card_rarity = CardData.CARD_RARITIES.GENERATED
-	card_sword.card_influence = 2
+	card_sword.card_influence = 3
 	card_sword.card_requires_target = true
 	card_sword.card_values = {"damage": 2, "number_of_attacks": 1, "card_influence": -1}
 	card_sword.card_play_actions = [
@@ -7374,8 +7374,8 @@ func add_cards_gold() -> void:
 	card_flintlockschooner.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_flintlockschooner.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_flintlockschooner.card_requires_target = false
-	card_flintlockschooner.card_energy_cost = 3
-	card_flintlockschooner.card_influence = 5
+	card_flintlockschooner.card_energy_cost = 2
+	card_flintlockschooner.card_influence = 4
 	card_flintlockschooner.card_values = {"min_card_amount":2,"max_card_amount":2,"card_influence":1, "draw_count": 4}
 	card_flintlockschooner.card_upgrade_value_improvements = {"min_card_amount":2,"max_card_amount":2, "card_influence":1, "draw_count":2}
 	card_flintlockschooner.card_play_actions = [
