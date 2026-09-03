@@ -93,8 +93,8 @@ func init(_card_data: CardData, angular_offset: float, connect_combat_signals: b
 		card_button.mouse_exited.connect(_on_mouse_exited)
 		keyword_timer.timeout.connect(_on_keyword_timeout)
 	if card_data.card_rarity == CardData.CARD_RARITIES.GENERATED:
-		card_energy_sprite.visible = false
-		card_energy_cost_label.visible = false
+	#	card_energy_sprite.visible = false
+	#	card_energy_cost_label.visible = false
 		if (card_data.card_influence == 0):
 			card_influence_sprite.visible = false
 		else:
@@ -148,8 +148,8 @@ func update_card_display(selected_enemy: Enemy = null) -> void:
 ## can be messed with depending on interception and card play validation
 func _update_energy_display(selected_enemy: Enemy = null) -> void:
 	# flags used for determining playability
-	if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
-		return
+	#if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
+	#	return
 	var card_is_in_hand: bool = _is_card_in_hand()
 	
 	# set the energy texture

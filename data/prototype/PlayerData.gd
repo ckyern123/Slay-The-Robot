@@ -19,6 +19,7 @@ class_name PlayerData
 @export var player_insight: int = 0
 @export var player_refresh: int = 4
 @export var player_rot: int = 10
+@export var player_bandit_chance: int = 0
 @export var blight: int = 0
 @export var player_spice_exhaust: int = 0
 @export var max_card_layover: int = 0
@@ -306,6 +307,12 @@ func add_rot(amount: int) -> void:
 	player_rot = max(player_rot + amount, 0)
 	var delta: int = player_rot - old_player_rot_amount
 	Signals.player_rot_changed.emit(delta)
+	
+func add_bandit(amount: int) -> void:
+	var old_player_bandit_amount: int = player_bandit_chance
+	player_bandit_chance = max(player_bandit_chance + amount, 0)
+	var delta: int = player_bandit_chance - old_player_bandit_amount
+	Signals.player_bandit_changed.emit(delta)
 	
 ## Gets an rng track for the run. If it does not exist create one.
 func get_player_rng(rng_name: String) -> RandomNumberGenerator:

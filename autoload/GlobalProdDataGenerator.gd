@@ -161,7 +161,6 @@ var sift_jade_data: Array[Dictionary] = [{
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
 	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
 
-
 var sift_food_data: Array[Dictionary] = [{
 	Scripts.ACTION_PICK_CARDS:
 	{
@@ -188,7 +187,7 @@ var sift_craft_data: Array[Dictionary] = [{
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]}},
 	{Scripts.ACTION_DRAW_GENERATOR:{"check_max": true}}]
 	
-var durability_action_data: Array[Dictionary] = [
+var uses_action_data: Array[Dictionary] = [
 			# check flag when drawn	
 		{Scripts.ACTION_VALIDATOR: {
 				"validator_data":
@@ -285,6 +284,33 @@ var influence_upgrade_action: Dictionary = {
 	}
 	}
 
+var start_action_data: Array[Dictionary] = [
+		{
+			Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+			[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES:
+					{
+					"card_property_name": "card_influence",
+					"operator": "<=",
+					"comparison_value": 0,
+					"invert_validation": false,
+					}
+				}
+			],
+			"passed_action_data":
+			[
+				{
+				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_into_card_object_id": "card_rebel",
+					"pick_played_card": true
+					},
+				},
+			]
+			}
+		},
+		]
 var end_action_data: Array[Dictionary] = [
 		{
 			Scripts.ACTION_VALIDATOR: {
@@ -601,12 +627,12 @@ func add_artifacts() -> void:
 
 	var artifact_check_scroll: ArtifactData = ArtifactData.new("artifact_check_scroll")
 	artifact_check_scroll.artifact_name = "Artifact Check Scroll"
-	artifact_check_scroll.artifact_description = "Draft a Book after 4 Scroll plays."
+	artifact_check_scroll.artifact_description = "Draft a Book every 5 Scroll plays."
 	artifact_check_scroll.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BASIC
 	artifact_check_scroll.artifact_color_id = "color_red"
-	artifact_check_scroll.artifact_texture_path = "external/sprites/status_effects/insight.svg"
+	artifact_check_scroll.artifact_texture_path = "external/sprites/status_effects/tied-scroll.png"
 	artifact_check_scroll.artifact_script_path = "res://scripts/artifacts/ArtifactCheckScroll.gd"
-	artifact_check_scroll.artifact_counter_max = 4
+	artifact_check_scroll.artifact_counter_max = 5
 	artifact_check_scroll.artifact_turn_end_actions = []
 	artifact_check_scroll.artifact_counter_wraparound = true
 	artifact_check_scroll.artifact_max_counter_actions = [{Scripts.ACTION_ADD_BOOKS:{"books_amount":1}},{Scripts.ACTION_PICK_CARDS:
@@ -1001,7 +1027,54 @@ func add_status_effects() -> void:
 	
 	Global.register_rod(status_effect_fish_reward)
 	
-		
+	# Reward (simply to explain what objects of interest do)
+	var status_effect_sword_reward: StatusEffectData = StatusEffectData.new("status_effect_sword_reward")
+	status_effect_sword_reward.status_effect_name = "Sword"
+	status_effect_sword_reward.status_effect_texture_path = "external/sprites/status_effects/sword.svg"
+	status_effect_sword_reward.status_effect_is_visible = true
+	status_effect_sword_reward.status_effect_decay_rate = 0
+	status_effect_sword_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_sword_reward.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_sword_reward.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_sword_reward)
+
+	# Reward (simply to explain what objects of interest do)
+	var status_effect_appease: StatusEffectData = StatusEffectData.new("status_effect_appease")
+	status_effect_appease.status_effect_name = "Appease"
+	status_effect_appease.status_effect_texture_path = "external/sprites/status_effects/influence_up.svg"
+	status_effect_appease.status_effect_is_visible = true
+	status_effect_appease.status_effect_decay_rate = 0
+	status_effect_appease.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_appease.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_appease.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_appease)
+	
+	# Reward (simply to explain what objects of interest do)
+	var status_effect_rattle_reward: StatusEffectData = StatusEffectData.new("status_effect_rattle_reward")
+	status_effect_rattle_reward.status_effect_name = "Rattle"
+	status_effect_rattle_reward.status_effect_texture_path = "external/sprites/status_effects/influence_down.svg"
+	status_effect_rattle_reward.status_effect_is_visible = true
+	status_effect_rattle_reward.status_effect_decay_rate = 0
+	status_effect_rattle_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_rattle_reward.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_rattle_reward.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_rattle_reward)
+
+	# Reward (simply to explain what objects of interest do)
+	var status_effect_repair: StatusEffectData = StatusEffectData.new("status_effect_repair")
+	status_effect_repair.status_effect_name = "Repair"
+	status_effect_repair.status_effect_texture_path = "external/sprites/status_effects/crate_repair.svg"
+	status_effect_repair.status_effect_is_visible = true
+	status_effect_repair.status_effect_decay_rate = 0
+	status_effect_repair.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_repair.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_repair.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_repair)
+	
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_missives_reward: StatusEffectData = StatusEffectData.new("status_effect_missives_reward")
 	status_effect_missives_reward.status_effect_name = "Missives"
@@ -1053,7 +1126,7 @@ func add_status_effects() -> void:
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_rattle: StatusEffectData = StatusEffectData.new("status_effect_rattle")
 	status_effect_rattle.status_effect_name = "Rattles Discard Per Turn"
-	status_effect_rattle.status_effect_texture_path = "external/sprites/status_effects/rattle.svg"
+	status_effect_rattle.status_effect_texture_path = "external/sprites/status_effects/influence_down.svg"
 	status_effect_rattle.status_effect_is_visible = true
 	status_effect_rattle.status_effect_decay_rate = 0
 	status_effect_rattle.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -1061,6 +1134,18 @@ func add_status_effects() -> void:
 	status_effect_rattle.status_effect_action_process_times = []
 	
 	Global.register_rod(status_effect_rattle)
+	
+		# Reward (simply to explain what objects of interest do)
+	var status_effect_elite: StatusEffectData = StatusEffectData.new("status_effect_elite")
+	status_effect_elite.status_effect_name = "ELITE (You must explore this before venturing forth)"
+	status_effect_elite.status_effect_texture_path = "external/sprites/status_effects/elite.svg"
+	status_effect_elite.status_effect_is_visible = true
+	status_effect_elite.status_effect_decay_rate = 0
+	status_effect_elite.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_elite.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_elite.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_elite)
 	
 		# Reward (simply to explain what objects of interest do)
 	var status_effect_debt_once: StatusEffectData = StatusEffectData.new("status_effect_debt_once")
@@ -1086,6 +1171,17 @@ func add_status_effects() -> void:
 	
 	Global.register_rod(status_effect_insight_reward)
 	
+			# Reward (simply to explain what objects of interest do)
+	var status_effect_scroll_reward: StatusEffectData = StatusEffectData.new("status_effect_scroll_reward")
+	status_effect_scroll_reward.status_effect_name = "Insight"
+	status_effect_scroll_reward.status_effect_texture_path = "external/sprites/status_effects/tied-scroll.png"
+	status_effect_scroll_reward.status_effect_is_visible = true
+	status_effect_scroll_reward.status_effect_decay_rate = 0
+	status_effect_scroll_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_scroll_reward.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_scroll_reward.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_scroll_reward)
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_grain_reward: StatusEffectData = StatusEffectData.new("status_effect_grain_reward")
 	status_effect_grain_reward.status_effect_name = "Grain"
@@ -2669,17 +2765,17 @@ func add_keywords() -> void:
 	
 	var keyword_ore: KeywordData = KeywordData.new("keyword_ore")
 	keyword_ore.keyword_name = "Ore"
-	keyword_ore.keyword_text_bb_code = "Ore is used to make Crafts and aifacts."
+	keyword_ore.keyword_text_bb_code = "Ore is used to make Crafts and artifacts."
 	Global.register_rod(keyword_ore)
 	
 	var keyword_forge: KeywordData = KeywordData.new("keyword_forge")
 	keyword_forge.keyword_name = "Forge"
-	keyword_forge.keyword_text_bb_code = "Spend 1 Ore to create a Craft."
+	keyword_forge.keyword_text_bb_code = "Spend 1{0} to create a Craft.".format([Card.ORE_ICON_KEYWORD])
 	Global.register_rod(keyword_forge)
 	
 	var keyword_weave: KeywordData = KeywordData.new("keyword_weave")
 	keyword_weave.keyword_name = "Weave"
-	keyword_weave.keyword_text_bb_code = "Spend 1 Insight to create a Scroll."
+	keyword_weave.keyword_text_bb_code = "Spend 1{0} to create a Scroll.".format([Card.INSIGHT_ICON_KEYWORD])
 	Global.register_rod(keyword_weave)
 	
 	var keyword_sweep: KeywordData = KeywordData.new("keyword_sweep")
@@ -2698,73 +2794,84 @@ func add_keywords() -> void:
 	Global.register_rod(keyword_frontier)
 	
 	var keyword_wield: KeywordData = KeywordData.new("keyword_wield")
-	keyword_wield.keyword_name = "Wield"
+	keyword_wield.keyword_name = "Wield X"
 	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile."
 	Global.register_rod(keyword_wield)
 	
 	var keyword_cook: KeywordData = KeywordData.new("keyword_cook")
 	keyword_cook.keyword_name = "Cook"
-	keyword_cook.keyword_text_bb_code = "Spend 1 Food and 1 Insight to create a Delicacy."
+	keyword_cook.keyword_text_bb_code = "Spend 1{0} and 1{1} to create a Delicacy.".format([Card.FOOD_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
 	Global.register_rod(keyword_cook)
 	
 	var keyword_inspect: KeywordData = KeywordData.new("keyword_inspect")
 	keyword_inspect.keyword_name = "Inspect"
-	keyword_inspect.keyword_text_bb_code = "Improve values of X random cards in discard pile by 1. Only Rocks and Treasures can be Inspected. This increases by 1 for every 10 cards in exhaust."
+	keyword_inspect.keyword_text_bb_code = "Improve values of X random Rock and Treasure cards in discard pile by 1. This increases by 1 for every 10 cards in exhaust (MAX 3)."
 	Global.register_rod(keyword_inspect)
 
 	var keyword_fertilise: KeywordData = KeywordData.new("keyword_fertilise")
 	keyword_fertilise.keyword_name = "Fertilise"
-	keyword_fertilise.keyword_text_bb_code = "Increases Fertiliser charges by X amount."
+	keyword_fertilise.keyword_status_effect_id = "status_effect_fertiliser_reward"
+	keyword_fertilise.keyword_text_bb_code = "Increases Fertiliser charges by X amount. (Grain cards in draw pile gain 1{0} every time you Fertilise. You Fertilise once every 2 charges.)".format([Card.FOOD_ICON_KEYWORD])
 	Global.register_rod(keyword_fertilise)
 
 	var keyword_sword: KeywordData = KeywordData.new("keyword_sword")
 	keyword_sword.keyword_name = "Sword"
-	keyword_sword.keyword_text_bb_code = "Craft that Explores 2. Can be Wielded. Has 3 durability."
+	keyword_sword.keyword_status_effect_id = "status_effect_sword_reward"
+	keyword_sword.keyword_text_bb_code = "Craft that Explores 2{0}. Can be Wielded. Has 3 uses.".format([Card.EXPLORE_ICON_KEYWORD])
 	Global.register_rod(keyword_sword)
 	
 	var keyword_debt: KeywordData = KeywordData.new("keyword_debt")
 	keyword_debt.keyword_name = "Debt"
-	keyword_debt.keyword_text_bb_code = "Craft that loses 1 Money at the end of turn. Has 2 durability."
+	keyword_debt.keyword_status_effect_id = "status_effect_debt_once"
+	keyword_debt.keyword_text_bb_code = "Craft that loses 1{0} at the end of turn. Has 2 uses.".format([Card.MONEY_ICON_KEYWORD])
 	Global.register_rod(keyword_debt)
 	
 	var keyword_spice: KeywordData = KeywordData.new("keyword_spice")
 	keyword_spice.keyword_name = "Spice"
-	keyword_spice.keyword_text_bb_code = "Craft that appeases all cards in hand. Has 2 durability."
+	keyword_spice.keyword_status_effect_id = "status_effect_spice_reward"
+	keyword_spice.keyword_text_bb_code = "Craft that appeases all cards in hand. Has 2 uses."
 	Global.register_rod(keyword_spice)
 	
 	var keyword_treasure: KeywordData = KeywordData.new("keyword_treasure")
 	keyword_treasure.keyword_name = "Treasure"
-	keyword_treasure.keyword_text_bb_code = "Craft that gains 1 money. Can be inspected. Has 2 durability."
+	keyword_treasure.keyword_status_effect_id = "status_effect_treasure_reward"
+	keyword_treasure.keyword_text_bb_code = "Craft that gains 1{0}. Can be Inspected. Has 2 uses.".format([Card.MONEY_ICON_KEYWORD])
 	Global.register_rod(keyword_treasure)
 		
 	var keyword_delicacy: KeywordData = KeywordData.new("keyword_delicacy")
 	keyword_delicacy.keyword_name = "Delicacy"
-	keyword_delicacy.keyword_text_bb_code = "Craft that gains 2 energy. Has 2 durability."
+	keyword_delicacy.keyword_status_effect_id = "status_effect_delicacy_reward"
+	keyword_delicacy.keyword_text_bb_code = "Craft that gains 3 energy. Has 2 uses.".format([Card.ENERGY_ICON_KEYWORD])
 	Global.register_rod(keyword_delicacy)
 	
 	var keyword_scroll: KeywordData = KeywordData.new("keyword_scroll")
 	keyword_scroll.keyword_name = "Scroll"
-	keyword_scroll.keyword_text_bb_code = "Craft that is used to draft Books. Exhausts on play."
+	keyword_scroll.keyword_status_effect_id = "status_effect_scroll_reward"
+	keyword_scroll.keyword_text_bb_code = "Craft that is used to draft Books. Has 2 uses."
 	Global.register_rod(keyword_scroll)
 	
 	var keyword_missives: KeywordData = KeywordData.new("keyword_missives")
 	keyword_missives.keyword_name = "Missives"
-	keyword_missives.keyword_text_bb_code = "Craft that discards 2 rightmost cards and draws 4. Has 2 durability."
+	keyword_missives.keyword_status_effect_id = "status_effect_missives_reward"
+	keyword_missives.keyword_text_bb_code = "Craft that discards 2 rightmost cards and draws 4. Has Retain and 2 uses."
 	Global.register_rod(keyword_missives)		
 	
 	var keyword_appease: KeywordData = KeywordData.new("keyword_appease")
 	keyword_appease.keyword_name = "Appease"
-	keyword_appease.keyword_text_bb_code = "Increases a Faction card's influence by 1."
+	keyword_appease.keyword_status_effect_id = "status_effect_appease"
+	keyword_appease.keyword_text_bb_code = "Increases a Faction card's influence."
 	Global.register_rod(keyword_appease)
 	
 	var keyword_repair: KeywordData = KeywordData.new("keyword_repair")
 	keyword_repair.keyword_name = "Repair"
-	keyword_repair.keyword_text_bb_code = "Increases a Craft card's durability by 1 (Does not affect cards with exhaust)."
+	keyword_repair.keyword_status_effect_id = "status_effect_repair"
+	keyword_repair.keyword_text_bb_code = "Increases a Craft card's uses (Does not affect cards with exhaust)."
 	Global.register_rod(keyword_repair)
 	
 	var keyword_rattle: KeywordData = KeywordData.new("keyword_rattle")
 	keyword_rattle.keyword_name = "Rattle"
-	keyword_rattle.keyword_text_bb_code = "Decreases a Faction card's influence by 1."
+	keyword_rattle.keyword_status_effect_id = "status_effect_rattle"
+	keyword_rattle.keyword_text_bb_code = "Decreases a Faction card's influence."
 	Global.register_rod(keyword_rattle)
 	
 	var keyword_corrosion: KeywordData = KeywordData.new("keyword_corrosion")
@@ -3423,7 +3530,7 @@ func add_enemies() -> void:
 	chargedvista.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	chargedvista.enemy_initial_status_effects = {"status_effect_size_reward": 5,"status_effect_room_reward": 2,"status_effect_rattle":1}
+	chargedvista.enemy_initial_status_effects = {"status_effect_size_reward": 5,"status_effect_room_reward": 2,"status_effect_rattle":1,"status_effect_elite":1}
 	chargedvista.enemy_actions_on_death = [{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 5}},{Scripts.ACTION_ADD_ROOM:{"room_amount": 2}}]
 	# an attack that hits harder on higher difficulties
 	var chargedvista_status_actions: Array[Dictionary] = [{
@@ -3842,7 +3949,7 @@ func add_enemies() -> void:
 	den.add_health_bounds(25, 27)
 	den.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	den.enemy_texture_path = "external/sprites/enemies/hobbit-dwelling.png"
-	den.enemy_initial_status_effects = {"status_effect_treasure_reward": 3, "status_effect_size_reward": 5,"status_effect_rattle":1}
+	den.enemy_initial_status_effects = {"status_effect_treasure_reward": 3, "status_effect_size_reward": 5,"status_effect_rattle":1,"status_effect_elite":1}
 	den.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var den_status_actions: Array[Dictionary] = [{
@@ -3891,7 +3998,7 @@ func add_enemies() -> void:
 	hideout.add_health_bounds(25, 27)
 	hideout.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	hideout.enemy_texture_path = "external/sprites/enemies/castle.png"
-	hideout.enemy_initial_status_effects = {"status_effect_spice_reward": 2,"status_effect_size_reward": 4,"status_effect_rattle":1}
+	hideout.enemy_initial_status_effects = {"status_effect_spice_reward": 2,"status_effect_size_reward": 4,"status_effect_rattle":1,"status_effect_elite":1}
 	hideout.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var hideout_status_actions: Array[Dictionary] = [{
@@ -4456,28 +4563,6 @@ func add_card_basics() -> void:
 		colors.append(character_data.character_color_id.replace("color_", ""))
 	
 	for i: int in len(colors):
-		# Basic attack card
-		var card_basic_food: CardData = CardData.new("card_basic_food_{0}".format([colors[i]]))
-		card_basic_food.card_name = "Basic Food"
-		card_basic_food.card_color_id = "color_{0}".format([colors[i]])
-		card_basic_food.card_description = "Gain [food_amount] food."
-		card_basic_food.card_texture_path = "external/sprites/cards/{0}/card_basic_attack_{0}.png".format([colors[i]])
-		card_basic_food.card_type = CardData.CARD_TYPES.SKILL
-		card_basic_food.card_rarity = CardData.CARD_RARITIES.BASIC
-		card_basic_food.card_keyword_object_ids = []
-		card_basic_food.card_values = {"food_amount": 1}
-		card_basic_food.card_upgrade_value_improvements = {"food_amount": 1}
-		#card_basic_food.card_keyword_object_ids = ["keyword_food"]
-		card_basic_food.card_requires_target = false
-		card_basic_food.card_play_actions = [{
-		Scripts.ACTION_ADD_FOOD: {}
-		}]
-		card_basic_food.card_play_actions.append(influence_action)
-		card_basic_food.card_end_of_turn_actions = end_action_data
-		
-		Global.register_rod(card_basic_food)
-		
-		# Basic block card
 		var card_basic_ore: CardData = CardData.new("card_basic_ore_{0}".format([colors[i]]))
 		card_basic_ore.card_name = "Basic Ore"
 		card_basic_ore.card_color_id = "color_{0}".format([colors[i]])
@@ -4522,14 +4607,14 @@ func add_card_basics() -> void:
 		var card_basic_weave: CardData = CardData.new("card_basic_weave_{0}".format([colors[i]]))
 		card_basic_weave.card_name = "Basic Weave"
 		card_basic_weave.card_color_id = "color_{0}".format([colors[i]])
-		card_basic_weave.card_description = "Weave [insight_required]."
+		card_basic_weave.card_description = "Weave [insight_required] Scroll."
 		card_basic_weave.card_texture_path = "external/sprites/cards/basic/04_cabinmate.png"
 		card_basic_weave.texture_bg_path = "external/sprites/cards/frames/basicframe.png"
 		card_basic_weave.card_type = CardData.CARD_TYPES.FACTION
 		card_basic_weave.card_rarity = CardData.CARD_RARITIES.BASIC
 		card_basic_weave.card_energy_cost = 2
 		card_basic_weave.card_requires_target = false
-		card_basic_weave.card_keyword_object_ids = ["keyword_weave"]
+		card_basic_weave.card_keyword_object_ids = ["keyword_weave","keyword_scroll"]
 		card_basic_weave.card_values = {"insight_required": 1,"number_of_cards": 1,"created_card_object_id":"card_scroll"}
 		card_basic_weave.card_upgrade_value_improvements = {"insight_required":1,"number_of_cards":1 }
 		card_basic_weave.card_play_actions.append(weave_action)
@@ -4601,7 +4686,6 @@ func add_cards_misc() -> void:
 	card_grain.card_type = CardData.CARD_TYPES.RESOURCE
 	card_grain.card_subtype = CardData.CARD_SUBTYPES.FOOD
 	card_grain.card_energy_cost = 0
-	card_grain.card_durability = 0
 	card_grain.card_influence = 0
 	card_grain.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_grain.card_requires_target = false
@@ -4625,7 +4709,6 @@ func add_cards_misc() -> void:
 	card_rock.card_keyword_object_ids = ["keyword_inspect"]
 	card_rock.card_type = CardData.CARD_TYPES.RESOURCE
 	card_rock.card_energy_cost = 0
-	card_rock.card_durability = 0
 	card_rock.card_influence = 0
 	card_rock.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_rock.card_requires_target = false
@@ -4644,8 +4727,8 @@ func add_cards_misc() -> void:
 	var card_scroll: CardData = CardData.new("card_scroll")
 	card_scroll.card_name = "Scroll"
 	card_scroll.card_color_id = "color_{0}".format([color])
-	card_scroll.card_texture_path = "external/sprites/status_effects/insight.svg"
-	card_scroll.card_description = "For every 4th time a Scroll is played, draft a Book."
+	card_scroll.card_texture_path = "external/sprites/status_effects/tied-scroll.png"
+	card_scroll.card_description = "For every 5th time a Scroll is played, draft a Book."
 	card_scroll.card_type = CardData.CARD_TYPES.CRAFT
 	card_scroll.card_subtype = CardData.CARD_SUBTYPES.WOVEN
 	card_scroll.card_energy_cost = 0
@@ -4655,7 +4738,7 @@ func add_cards_misc() -> void:
 	card_scroll.card_values = {}
 	card_scroll.card_play_actions = [
 		]
-	for action in durability_action_data:
+	for action in uses_action_data:
 		card_scroll.card_play_actions.append(action)
 	Global.register_rod(card_scroll)
 	
@@ -4670,9 +4753,10 @@ func add_cards_misc() -> void:
 	card_missives.card_influence = 3
 	card_missives.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_missives.card_requires_target = false
+	card_missives.card_is_retained = true
 	card_missives.card_values = {"draw_count": 4,"discard_count":2}
 	card_missives.card_play_actions = sweep_action_data
-	for action in durability_action_data:
+	for action in uses_action_data:
 		card_missives.card_play_actions.append(action)
 	Global.register_rod(card_missives)
 	
@@ -4693,7 +4777,7 @@ func add_cards_misc() -> void:
 			Scripts.ACTION_ADD_ENERGY:{}
 		}
 		]
-	for action in durability_action_data:
+	for action in uses_action_data:
 		card_delicacy.card_play_actions.append(action)
 	Global.register_rod(card_delicacy)
 	
@@ -4719,7 +4803,7 @@ func add_cards_misc() -> void:
 			}
 		}
 		]
-	for action in durability_action_data:
+	for action in uses_action_data:
 		card_sword.card_play_actions.append(action)
 	Global.register_rod(card_sword)
 	
@@ -4743,7 +4827,7 @@ func add_cards_misc() -> void:
 			}}
 		]
 		
-	for action in durability_action_data:
+	for action in uses_action_data:
 		card_treasure.card_play_actions.append(action)
 	Global.register_rod(card_treasure)
 		
@@ -4787,12 +4871,12 @@ func add_cards_misc() -> void:
 			]
 		}
 	}]
-	for action in durability_action_data:
+	for action in uses_action_data:
 		card_spice.card_play_actions.append(action)
 	Global.register_rod(card_spice)
 	
 	var card_debt: CardData = CardData.new("card_debt")
-	card_debt.card_name = "debt"
+	card_debt.card_name = "Debt"
 	card_debt.card_color_id = "color_{0}".format([color])
 	card_debt.card_texture_path = "external/sprites/cards/basic/cash.png"
 	card_debt.card_description = "Unplayable. Lose 1{0} at the end of turn.".format([Card.MONEY_ICON_KEYWORD])
@@ -4802,11 +4886,27 @@ func add_cards_misc() -> void:
 	card_debt.card_influence = 2
 	card_debt.card_requires_target = false
 	card_debt.card_is_playable = false
-	for action in durability_action_data:
+	for action in uses_action_data:
 		card_debt.card_end_of_turn_actions.append(action)
 	card_debt.card_end_of_turn_actions.append({Scripts.ACTION_ADD_MONEY:{"money_amount":-1}})
 	Global.register_rod(card_debt)
 
+	var card_bandit: CardData = CardData.new("card_bandit")
+	card_bandit.card_name = "Bandit"
+	card_bandit.card_color_id = "color_{0}".format([color])
+	card_bandit.card_texture_path = "external/sprites/cards/basic/02_sail.png"
+	card_bandit.card_description = "Unplayable.\nFRONTIER: Play to exhaust the card.\nLose 1{0} at the end of turn.".format([Card.FOOD_ICON_KEYWORD])
+	card_bandit.card_keyword_object_ids = ["keyword_frontier"]
+	card_bandit.card_type = CardData.CARD_TYPES.CURSE
+	card_bandit.card_energy_cost = 0
+	card_bandit.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_bandit.card_influence = 0
+	card_bandit.card_requires_target = false
+	card_bandit.card_is_playable = true
+	card_bandit.card_play_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
+	card_bandit.card_play_actions = [{Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION:{"card_destination": HandManager.EXHAUST_PILE}}]
+	card_bandit.card_end_of_turn_actions.append({Scripts.ACTION_ADD_FOOD:{"money_amount":-1}})
+	Global.register_rod(card_bandit)
 
 	var card_rebel: CardData = CardData.new("card_rebel")
 	card_rebel.card_name = "Rebel"
@@ -4832,14 +4932,14 @@ func add_cards_misc() -> void:
 	card_blueprint.card_name = "Blueprint"
 	card_blueprint.card_color_id = "color_{0}".format([color])
 	card_blueprint.card_texture_path = "external/sprites/cards/basic/blueprint.svg"
-	card_blueprint.card_description = "Spend 8{0} to gain [artifact_id].".format([Card.ORE_ICON_KEYWORD])
+	card_blueprint.card_description = "Spend 8{0} and 1{1} to gain [artifact_name]\n([artifact_description])".format([Card.ORE_ICON_KEYWORD, Card.ROOM_ICON_KEYWORD])
 	card_blueprint.card_type = CardData.CARD_TYPES.CRAFT
 	card_blueprint.card_energy_cost = 0
 	card_blueprint.card_influence = 0
 	card_blueprint.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_blueprint.card_play_destination = HandManager.EXHAUST_PILE
 	card_blueprint.card_requires_target = false
-	card_blueprint.card_values = {"ore_amount": -8,"artifact_id":""}
+	card_blueprint.card_values = {"ore_amount": -8,"artifact_name":"","artifact_description":""}
 	card_blueprint.card_play_validators = [{Scripts.VALIDATOR_ORE:{"ore_required":8}},{Scripts.VALIDATOR_ROOM:{"room_required":1}}]
 	card_blueprint.card_play_actions = [
 			{Scripts.ACTION_ADD_ORE:{"ore_amount":-8}},
@@ -5291,7 +5391,7 @@ func add_cards_purple() -> void:
 	card_pearlemissary.card_color_id = "color_{0}".format([color])
 	card_pearlemissary.card_texture_path = "external/sprites/cards/pearl/01_pearlemissary.png"
 	card_pearlemissary.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearlemissary.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. When discarded, randomly Appease 2 cards in discard pile."
+	card_pearlemissary.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count].\nON DISCARD: Randomly Appease 2 cards in discard pile."
 	card_pearlemissary.card_keyword_object_ids = ["keyword_appease"]
 	card_pearlemissary.card_type = CardData.CARD_TYPES.FACTION
 	card_pearlemissary.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -5432,7 +5532,8 @@ func add_cards_purple() -> void:
 	card_storiedspinner.card_color_id = "color_{0}".format([color])
 	card_storiedspinner.card_texture_path = "external/sprites/cards/pearl/04_storiedspinner.png"
 	card_storiedspinner.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_storiedspinner.card_description = "Weave [number_of_cards] Missives, Explore [damage]{0}.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_storiedspinner.card_description = "Weave [number_of_cards] Missive, Explore [damage]{0}.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_storiedspinner.card_keyword_object_ids = ["keyword_weave","keyword_missives"]
 	card_storiedspinner.card_type = CardData.CARD_TYPES.FACTION
 	card_storiedspinner.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_storiedspinner.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5488,7 +5589,7 @@ func add_cards_purple() -> void:
 	card_pearldiplomat.card_texture_path = "external/sprites/cards/pearl/06_pearldiplomat.png"
 	card_pearldiplomat.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Sift [draw_count] for Pearl. Appease [max_card_amount] Cards in discard pile."
-	card_pearldiplomat.card_keyword_object_ids = ["keyword_spice","keyword_appease"]
+	card_pearldiplomat.card_keyword_object_ids = ["keyword_spice","keyword_sift", "keyword_appease"]
 	card_pearldiplomat.card_type = CardData.CARD_TYPES.FACTION
 	card_pearldiplomat.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_pearldiplomat.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -5598,7 +5699,7 @@ func add_cards_purple() -> void:
 	card_fishsaucemaker.card_color_id = "color_{0}".format([color])
 	card_fishsaucemaker.card_texture_path = "external/sprites/cards/pearl/18_fishsaucemaker.png"
 	card_fishsaucemaker.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_fishsaucemaker.card_description = "Exhaust a Fish card in discard pile to Fertilise [artifact_charge_increase] and create a Delicacy."
+	card_fishsaucemaker.card_description = "Exhaust a Fish or Grain card in discard pile to Fertilise [artifact_charge_increase] and create a Delicacy."
 	card_fishsaucemaker.card_keyword_object_ids = ["keyword_fertilise","keyword_delicacy"]
 	card_fishsaucemaker.card_type = CardData.CARD_TYPES.FACTION
 	card_fishsaucemaker.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -5614,7 +5715,7 @@ func add_cards_purple() -> void:
 		"random_selection": false,
 		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to retain. {1} cards selected",
-		"validator_data":[{Scripts.VALIDATOR_CARD_ID:{"card_object_ids":["card_fish"]}}],
+		"validator_data":[{Scripts.VALIDATOR_CARD_ID:{"card_object_ids":["card_fish","card_grain"]}}],
 		"action_data": [
 			{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser"}},
 			{Scripts.ACTION_EXHAUST_CARDS:{}},
@@ -5631,7 +5732,8 @@ func add_cards_purple() -> void:
 	card_flintlockaccountant.card_color_id = "color_{0}".format([color])
 	card_flintlockaccountant.card_texture_path = "external/sprites/cards/pearl/08_flintlockaccountant.png"
 	card_flintlockaccountant.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_flintlockaccountant.card_description = "Return up to [max_card_amount] Crafts from your discard pile to your hand. Repair 3 to selected cards."
+	card_flintlockaccountant.card_keyword_object_ids = ["keyword_repair"]
+	card_flintlockaccountant.card_description = "Return up to [max_card_amount] Crafts from your discard pile to your hand. Repair 3 to returned cards."
 	card_flintlockaccountant.card_type = CardData.CARD_TYPES.FACTION
 	card_flintlockaccountant.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_flintlockaccountant.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5702,7 +5804,7 @@ func add_cards_purple() -> void:
 	card_pearlsmuggler.card_texture_path = "external/sprites/cards/pearl/10_pearlsmuggler.png"
 	card_pearlsmuggler.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_pearlsmuggler.card_description = "Sift [draw_count] for Faction cards. Wield [max_card_amount]."
-	card_pearldiplomat.card_keyword_object_ids = ["keyword_sift", "keyword_wield"]
+	card_pearlsmuggler.card_keyword_object_ids = ["keyword_sift", "keyword_wield"]
 	card_pearlsmuggler.card_type = CardData.CARD_TYPES.FACTION
 	card_pearlsmuggler.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_pearlsmuggler.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -5818,7 +5920,7 @@ func add_cards_purple() -> void:
 	card_courthand.card_texture_path = "external/sprites/cards/pearl/14_courthand.png"
 	card_courthand.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_courthand.card_description = "Create [number_of_cards] Spice."
-	card_courthand.card_keyword_object_ids = ["keyword_spice"]
+	card_courthand.card_keyword_object_ids = ["keyword_spice","keyword_appease"]
 	card_courthand.card_type = CardData.CARD_TYPES.FACTION
 	card_courthand.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_courthand.card_rarity = CardData.CARD_RARITIES.RARE
@@ -5974,6 +6076,7 @@ func add_cards_black() -> void:
 		}
 	)
 	card_aniseedemissary.card_play_actions.append(influence_action)
+	card_aniseedemissary.card_draw_actions = start_action_data
 	card_aniseedemissary.card_end_of_turn_actions = end_action_data
 
 	Global.register_rod(card_aniseedemissary)
@@ -6006,6 +6109,7 @@ func add_cards_black() -> void:
 			"draft_card_pack_id": "card_pack_grey"
 		}}]
 	card_humblemerchant.card_play_actions.append(influence_action)
+	#card_humblemerchant.card_draw_actions = end_action_data
 	card_humblemerchant.card_end_of_turn_actions = end_action_data
 
 	Global.register_rod(card_humblemerchant)
@@ -6060,7 +6164,7 @@ func add_cards_black() -> void:
 	card_spicepicker.card_texture_path = "external/sprites/cards/aniseed/04_spicepicker.png"
 	card_spicepicker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_spicepicker.card_description = "Create [number_of_cards] Spice.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_spicepicker.card_keyword_object_ids = ["keyword_spice"]
+	card_spicepicker.card_keyword_object_ids = ["keyword_spice","keyword_appease"]
 	card_spicepicker.card_type = CardData.CARD_TYPES.FACTION
 	card_spicepicker.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_spicepicker.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6153,7 +6257,7 @@ func add_cards_black() -> void:
 	card_cartographersassistant.card_color_id = "color_{0}".format([color])
 	card_cartographersassistant.card_texture_path = "external/sprites/cards/aniseed/06_cartographersassistant.png"
 	card_cartographersassistant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_cartographersassistant.card_description = "Explore [damage]{0}.\nConsume [ore_required]{1} to gain [insight_amount]{2}.".format([Card.EXPLORE_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
+	card_cartographersassistant.card_description = "Explore [damage]{0}.\nConsume 3{1} to gain [insight_amount]{2}.".format([Card.EXPLORE_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
 	card_cartographersassistant.card_type = CardData.CARD_TYPES.FACTION
 	card_cartographersassistant.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_cartographersassistant.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6169,7 +6273,7 @@ func add_cards_black() -> void:
 		},
 		{
 		Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_ORE:{"ore_required":3}}],
-			"passed_action_data":[{Scripts.ACTION_ADD_ORE:{"custom_key_names":{"ore_amount":-3}}},
+			"passed_action_data":[{Scripts.ACTION_ADD_ORE:{"ore_amount":-3}},
 			{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]}
 		}]
 	card_cartographersassistant.card_play_actions.append(influence_action)
@@ -6404,7 +6508,7 @@ func add_cards_black() -> void:
 	card_royalpurveyor.card_color_id = "color_{0}".format([color])
 	card_royalpurveyor.card_texture_path = "external/sprites/cards/aniseed/17_royalpurveyor.png"
 	card_royalpurveyor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_royalpurveyor.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease/Repair [card_influence] to Faction and Craft cards. \nON DISCARD: Fertilise [artifact_charge_increase]."
+	card_royalpurveyor.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease/Repair [card_influence] to Faction and Craft cards in hand. \nON DISCARD: Fertilise [artifact_charge_increase]."
 	card_royalpurveyor.card_keyword_object_ids = ["keyword_appease","keyword_repair", "keyword_fertilise"]
 	card_royalpurveyor.card_type = CardData.CARD_TYPES.FACTION
 	card_royalpurveyor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -6567,8 +6671,8 @@ func add_cards_black() -> void:
 	card_swashbucklingchamp.card_color_id = "color_{0}".format([color])
 	card_swashbucklingchamp.card_texture_path = "external/sprites/cards/aniseed/15_swashbucklingchamp.png"
 	card_swashbucklingchamp.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_swashbucklingchamp.card_description = "Explore [damage]{0}, then Improve, Repair 2, and Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
-	card_swashbucklingchamp.card_keyword_object_ids = ["keyword_wield"]
+	card_swashbucklingchamp.card_description = "Explore [damage]{0}, then Wield [min_card_amount]. Repair 2 and improve Explore {0} by 1 to Wielded cards.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_swashbucklingchamp.card_keyword_object_ids = ["keyword_wield","keyword_sword"]
 	card_swashbucklingchamp.card_type = CardData.CARD_TYPES.FACTION
 	card_swashbucklingchamp.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_swashbucklingchamp.card_rarity = CardData.CARD_RARITIES.RARE
@@ -6635,6 +6739,8 @@ func add_cards_green() -> void:
 		{
 		Scripts.ACTION_ADD_FOOD: {}
 		}]
+		
+	#card_cofferskeeper.card_draw_actions = start_action_data
 	card_cofferskeeper.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cofferskeeper)
 	
@@ -6644,6 +6750,7 @@ func add_cards_green() -> void:
 	card_youngmentor.card_texture_path = "external/sprites/cards/jade/02_youngmentor.png"
 	card_youngmentor.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_youngmentor.card_description = "Explore [damage]{0}, then Sift [draw_count] for Resource cards.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_youngmentor.card_keyword_object_ids = ["keyword_sift"]
 	card_youngmentor.card_type = CardData.CARD_TYPES.FACTION
 	card_youngmentor.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_youngmentor.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6655,6 +6762,7 @@ func add_cards_green() -> void:
 	for action in sift_resource_data:
 		card_youngmentor.card_play_actions.append(action)
 	card_youngmentor.card_play_actions.append(influence_action)
+	#card_youngmentor.card_draw_actions = start_action_data
 	card_youngmentor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_youngmentor)
 	
@@ -6663,7 +6771,7 @@ func add_cards_green() -> void:
 	card_luckfinder.card_color_id = "color_{0}".format([color])
 	card_luckfinder.card_texture_path = "external/sprites/cards/jade/03_luckfinder.png"
 	card_luckfinder.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_luckfinder.card_description = "Explore [damage]{0}. Draw 2, then discard 2 ctraards.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_luckfinder.card_description = "Explore [damage]{0}. Draw 2, then discard 2 cards.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_luckfinder.card_type = CardData.CARD_TYPES.FACTION
 	card_luckfinder.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_luckfinder.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6798,7 +6906,7 @@ func add_cards_green() -> void:
 	card_militantoutsourcer.card_color_id = "color_{0}".format([color])
 	card_militantoutsourcer.card_texture_path = "external/sprites/cards/jade/06_militantoutsourcer.png"
 	card_militantoutsourcer.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_militantoutsourcer.card_description = "Explore [damage]{0}. Discard [discard_count] rightmost cards, then draw [draw_count].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_militantoutsourcer.card_description = "Explore [damage]{0}.\nDiscard [discard_count] rightmost cards, then draw [draw_count].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_militantoutsourcer.card_type = CardData.CARD_TYPES.FACTION
 	card_militantoutsourcer.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_militantoutsourcer.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -7057,7 +7165,7 @@ func add_cards_green() -> void:
 	card_hoardingstowaway.card_color_id = "color_{0}".format([color])
 	card_hoardingstowaway.card_texture_path = "external/sprites/cards/jade/12_hoardingstowaway.png"
 	card_hoardingstowaway.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_hoardingstowaway.card_description = "Weave [number_of_cards], then return all Craft cards to your hand."
+	card_hoardingstowaway.card_description = "Weave [number_of_cards] Scroll, then return all Craft cards to your hand."
 	card_hoardingstowaway.card_keyword_object_ids = ["keyword_weave","keyword_scroll"]
 	card_hoardingstowaway.card_type = CardData.CARD_TYPES.FACTION
 	card_hoardingstowaway.card_subtype = CardData.CARD_SUBTYPES.JADE
@@ -7176,7 +7284,7 @@ func add_cards_green() -> void:
 	card_solverofriddles.card_color_id = "color_{0}".format([color])
 	card_solverofriddles.card_texture_path = "external/sprites/cards/jade/15_solverofriddles.png"
 	card_solverofriddles.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_solverofriddles.card_description = "Exhaust 1 Scroll in hand to gain 2{0}, 2{1}, 2{2}, 2{3}".format([Card.FOOD_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
+	card_solverofriddles.card_description = "Exhaust 1 Scroll or Missive in hand to gain 2{0}, 2{1}, 2{2}, 2{3}".format([Card.FOOD_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
 	card_solverofriddles.card_type = CardData.CARD_TYPES.FACTION
 	card_solverofriddles.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_solverofriddles.card_rarity = CardData.CARD_RARITIES.RARE
@@ -7194,7 +7302,7 @@ func add_cards_green() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} Scroll to exhaust. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_ID:{"card_object_ids":["card_scroll"]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_ID:{"card_object_ids":["card_scroll","card_missives"]}}],
 			"action_data": [{Scripts.ACTION_ADD_INSIGHT:{}},{Scripts.ACTION_ADD_MONEY:{}},{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_ADD_FOOD:{}}]
 		}
 		}]
@@ -7230,7 +7338,7 @@ func add_cards_gold() -> void:
 	card_courtmarshall.card_color_id = "color_{0}".format([color])
 	card_courtmarshall.card_texture_path = "external/sprites/cards/cengkih/18_courtmarshall.png"
 	card_courtmarshall.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_courtmarshall.card_description = "Explore [damage]{0}.\n FRONTIER: Explore [custom_damage] instead.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_courtmarshall.card_description = "Explore [damage]{0}.\n FRONTIER: Explore [custom_damage]{0} instead.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_courtmarshall.card_keyword_object_ids = ["keyword_frontier"]
 	card_courtmarshall.card_type = CardData.CARD_TYPES.FACTION
 	card_courtmarshall.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
@@ -7255,7 +7363,7 @@ func add_cards_gold() -> void:
 	card_cengkihemissary.card_color_id = "color_{0}".format([color])
 	card_cengkihemissary.card_texture_path = "external/sprites/cards/cengkih/02_cengkihemissary.png"
 	card_cengkihemissary.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_cengkihemissary.card_description = "Appease [min_card_amount] random cards in discard pile."
+	card_cengkihemissary.card_description = "Appease [min_card_amount] random cards by 2 in discard pile."
 	card_cengkihemissary.card_keyword_object_ids = ["keyword_appease"]
 	card_cengkihemissary.card_type = CardData.CARD_TYPES.FACTION
 	card_cengkihemissary.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
@@ -7263,7 +7371,7 @@ func add_cards_gold() -> void:
 	card_cengkihemissary.card_requires_target = false
 	card_cengkihemissary.card_energy_cost = 1
 	card_cengkihemissary.card_influence = 3
-	card_cengkihemissary.card_values = {"min_card_amount":3, "max_card_amount":3}
+	card_cengkihemissary.card_values = {"min_card_amount":2, "max_card_amount":2}
 	card_cengkihemissary.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
 	card_cengkihemissary.card_play_actions = [
 		{
@@ -7275,7 +7383,7 @@ func add_cards_gold() -> void:
 			"card_pick_text": "Choose {0} card to appease. {1} cards selected",
 			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-			"card_influence":1,
+			"card_influence":2,
 			"time_delay": 0.1,
 			"modify_parent_card": false,
 		}}]
@@ -7291,22 +7399,18 @@ func add_cards_gold() -> void:
 	card_happysailor.card_color_id = "color_{0}".format([color])
 	card_happysailor.card_texture_path = "external/sprites/cards/cengkih/03_happysailor.png"
 	card_happysailor.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_happysailor.card_description = "Explore [damage]{0}. Draw [draw_count].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_happysailor.card_description = "Explore [damage]{0}. Sift [draw_count] for Resource cards.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_happysailor.card_keyword_object_ids = ["keyword_sift"]
 	card_happysailor.card_type = CardData.CARD_TYPES.FACTION
 	card_happysailor.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_happysailor.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_happysailor.card_requires_target = true
 	card_happysailor.card_energy_cost = 3
 	card_happysailor.card_influence = 5
-	card_happysailor.card_values = {"damage": 4, "number_of_attacks": 1, "draw_count":2}
-	card_happysailor.card_upgrade_value_improvements = {"damage": 2,"draw_count": 1}
-	card_happysailor.card_play_actions = [
-		{
-			Scripts.ACTION_DRAW_GENERATOR:{}},
-		{
-			Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5},
-		},
-	]
+	card_happysailor.card_values = {"damage": 7, "number_of_attacks": 1, "draw_count":5}
+	card_happysailor.card_upgrade_value_improvements = {"damage": 2,"draw_count": 2}
+	card_happysailor.card_play_actions = sift_resource_data
+	card_happysailor.card_play_actions.append({Scripts.ACTION_ATTACK_GENERATOR:{}})
 	card_happysailor.card_play_actions.append(influence_action)
 	card_happysailor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_happysailor)
@@ -7369,7 +7473,7 @@ func add_cards_gold() -> void:
 	card_flintlockschooner.card_texture_path = "external/sprites/cards/cengkih/06_flintlockschooner.png"
 	card_flintlockschooner.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_flintlockschooner.card_description = "Sift [draw_count] for Cengkih. Repair all Crafts in discard pile by [card_influence]. Wield [min_card_amount]."
-	card_flintlockschooner.card_keyword_object_ids = ["keyword_repair", "keyword_wield"]
+	card_flintlockschooner.card_keyword_object_ids = ["keyword_sift", "keyword_repair", "keyword_wield"]
 	card_flintlockschooner.card_type = CardData.CARD_TYPES.FACTION
 	card_flintlockschooner.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_flintlockschooner.card_rarity = CardData.CARD_RARITIES.COMMON

@@ -27,7 +27,6 @@ var parent_card: CardData = null	# the parent card in the player's true deck tha
 
 ## A card's influence. If influence reaches 0, does something.
 @export var card_influence: int = 3
-@export var card_durability: int = 0
 
 ## Determines how a card should be shuffled in the deck on combat start.
 ## These form buckets which are individually shuffled then combined.
@@ -230,10 +229,6 @@ func add_card_influence(card_inf: int) -> void:
 	
 func get_card_influence() -> int:
 	return card_influence
-
-func add_card_durability(card_inf: int) -> void:
-	card_durability = card_durability + card_inf
-	Signals.card_properties_changed.emit(self)
 			
 func set_card_energy_cost_until_played(energy_cost: int) -> void:
 	if energy_cost != card_energy_cost_until_played:

@@ -4,7 +4,7 @@ extends Control
 @onready var card_container: HBoxContainer = $CardContainer
 @onready var artifact_container: VBoxContainer = $ArtifactContainer
 @onready var trade_container: HBoxContainer = $TradeContainer
-
+@onready var shop_artifact_label = %ShopArtifactLabel
 @onready var continue_button: Button = $ContinueButton
 
 @onready var map = $%Map
@@ -23,9 +23,10 @@ func _ready():
 	Signals.artifact_purchased.connect(_on_artifact_purchased)
 	Signals.consumable_purchased.connect(_on_consumable_purchased)
 	Signals.player_money_changed.connect(_on_player_money_changed)
-	
+	FileLoader.load_texture(Card.ore_texture_path)
+	FileLoader.load_texture(Card.room_texture_path)
+	shop_artifact_label.text = "ARTIFACT BLUEPRINTS\nTo build artifacts, first purchase a blueprint card below. Then, play the blueprint card, spend 8[img width={0}]{1}[/img] and 1[img width={0}]{2}[/img] to build the artifact.".format([16,Card.ore_texture_path,Card.room_texture_path])
 	continue_button.button_up.connect(_on_continue_button_up)
-
 func populate_price() -> void:
 	if (!shop_populated):
 		return

@@ -94,7 +94,8 @@ func wait() -> void:
 			Global.player_data.blight -= 0
 			if Global.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
-			if Global.player_data.player_deck.size() >= 100:
+			var deck_total = (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
+			if deck_total >= 60 and Global.player_data.get_player_artifacts().size() >= 17 and Global.player_data.player_books >= 5:
 				Global.end_run(Global.RUN_ENDS.VICTORY)
 			end_turn()
 		END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS, _:
@@ -151,11 +152,10 @@ func wait() -> void:
 				Signals.tween_discard.emit()
 			while len(HandManager.card_play_queue) > 0 or ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
+				
 			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			Global.player_data.add_food(food_count/10)
 			
-			Global.player_data.add_food(Global.player_data.blight/99)
-			Global.player_data.blight -= 0
 			if Global.player_data.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
 			var deck_total = (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())

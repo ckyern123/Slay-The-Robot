@@ -83,6 +83,8 @@ func _ready():
 	Signals.player_room_changed.connect(_on_player_room_changed)
 	Signals.player_insight_changed.connect(_on_player_insight_changed)
 	Signals.player_refresh_changed.connect(_on_player_refresh_changed)
+	Signals.player_rot_changed.connect(_on_player_rot_changed)
+	Signals.player_bandit_changed.connect(_on_player_bandit_changed)
 	Signals.enemy_killed.connect(_on_enemy_killed)
 	Signals.enemy_death_animation_finished.connect(_on_enemy_death_animation_finished)
 
@@ -326,6 +328,18 @@ func _on_player_rot_changed(_delta: int = 0):
 		create_image_fade(rot_fade_container, FileLoader.load_texture(rot_texture_path))
 		#var current_event = Global.get_player_event_data()
 		#enemy_container.populate_enemies_from_event(current_event)
+		
+func _on_player_bandit_changed(_delta: int = 0):
+	var random_int: int = randi_range(0,100)
+	var activate_bandit: bool = (random_int+Global.player_data.player_bandit_chance) > 100
+	if (activate_bandit):
+		var bandit_num: int = ((Global.player_data.player_draw.size() + Global.player_data.player_hand.size() + Global.player_data.player_discard.size()) /10) + (Global.player_data.player_artifact_count/5) + (Global.player_data.player_books/2)
+		var sound_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_bandit","number_of_cards":bandit_num, "action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/bandit.wav"},
+		}]
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		ActionHandler.add_actions(sound_actions)
+		Global.player_data.player_bandit_chance = 0
 ### Deck Buttons
 
 func _on_deck_button_up():
@@ -620,6 +634,7 @@ func _on_player_turn_started():
 	else:
 		Global.player_data.add_refresh(-1)
 		Global.player_data.add_rot(-1)
+		Global.player_data.add_bandit(3)
 
 	# reset energy
 

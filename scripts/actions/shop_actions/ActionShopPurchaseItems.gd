@@ -55,8 +55,9 @@ func perform_action():
 					# generate action data for buying artifact
 					var artifact_data: ArtifactData = Global.get_artifact_data_from_prototype(artifact_id)
 					action_data.append({Scripts.ACTION_ADD_MONEY: {"money_amount": -artifact_price}})
-					action_data.append({Scripts.ACTION_CREATE_CARDS: {"created_card_object_id":"card_blueprint","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}},{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "new_card_values":{"artifact_id":artifact_id}}}]}})
-					#action_data.append({Scripts.ACTION_ADD_ARTIFACT: {"artifact_id": artifact_id}})
+					var artifact_name: String = artifact_data.artifact_name
+					var artifact_desc: String = artifact_data.artifact_description
+					action_data.append({Scripts.ACTION_CREATE_CARDS: {"created_card_object_id":"card_blueprint","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}, {Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "new_card_values":{"artifact_name":artifact_name,"artifact_description":artifact_desc}}}]}})
 					var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], action_data, null)
 					ActionHandler.add_actions(generated_actions)
 					# remove artifact from shop

@@ -21,9 +21,9 @@ class_name Tooltip
 @onready var discard_pile_button: TextureButton = %DiscardPile
 @onready var exhaust_pile_button: TextureButton = %ExhaustPile
 @onready var end_turn_button: Button = %EndTurnButton
-@onready var card_container = $"../RunScreen/Combat/ShopOverlay/CardContainer"
-@onready var trade_container = $"../RunScreen/Combat/ShopOverlay/TradeContainer"
-@onready var artifact_container = $"../RunScreen/Combat/ShopOverlay/ArtifactContainer"
+@onready var card_container = %ShopCardLabel
+@onready var trade_container = %ShopTradeLabel
+@onready var artifact_container = %ShopArtifactLabel
 @onready var shop_refresh = %ShopRefreshLabel
 @onready var rot_warning = %RotLabel
 @onready var objectives_label = %ObjectivesLabel 
@@ -57,9 +57,9 @@ func _ready() -> void:
 		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have. Insight is used to weave and cook things. Scrolls are woven things that are used to draft Books.", true, false, true, $TooltipPositions/InsightTooltipPos],
 		[sprawl_label, "[color=orange]Size[/color]\nYour kingdom's Size is the amount of cards you can support before it becomes unstable. For every 3 cards that exceed Size, you rattle a card in discard pile at the end of turn.", true, false, true, $TooltipPositions/SprawlTooltipPos],
 		[room_label, "[color=orange]Room[/color]\nHow much Room you have. Room is needed to build Artifacts.", true, false, true, $TooltipPositions/RoomTooltipPos],
-		[card_container, "[color=orange]Purchase cards[/color]\nPurchase cards. Cards cost Money. You can only purchase one card for each Shop Refresh.", true, false, true, $TooltipPositions/RoomTooltipPos],
-		[artifact_container, "[color=orange]Artifacts[/color]\nPurchase an artifact blueprint. To acquire the artifact, play the Blueprint card and pay 8 Ore. You can only purhcase one blueprint per Shop Refresh", true, false, true, $TooltipPositions/ArtifactTooltipPos],
-		[trade_container, "[color=orange]Trade orders[/color]\nGain a Trade order card. Play the card to trade resources. Each order can only be used once. You can only gain one Trade order card per Shop Refresh.", true, false, true, $TooltipPositions/TradeTooltipPos],
+		[card_container, "[color=orange]Recruit Faction Cards[/color]\nPurchase cards. Cards cost Money. You can only purchase one card for each Shop Refresh.", true, false, true, $TooltipPositions/CardTooltipPos],
+		[artifact_container, "[color=orange]Artifact Blueprints[/color]\nPurchase an artifact blueprint. To acquire the artifact, play the Blueprint card and pay 8 Ore. You can only purchase one blueprint per Shop Refresh", true, false, true, $TooltipPositions/ArtifactTooltipPos],
+		[trade_container, "[color=orange]Trade orders[/color]\nGain a Trade Order card. Play the card to trade resources. Each order can only be used once. You can only gain one Trade order card per Shop Refresh.", true, false, true, $TooltipPositions/TradeTooltipPos],
 		[shop_refresh, "[color=orange]Shop Refresh[/color]\nWhen this counter is at zero, the shop is refreshed.", true, false, true, $TooltipPositions/RefreshTooltipPos],
 		[rot_warning, "[color=orange]Rot Warning[/color]\nWhen this counter is at zero, 25-50% of your food will be gone.", true, false, true, $TooltipPositions/RotTooltipPos],
 		[objectives_label, "[color=orange]Objectives[/color]\nTo win the game, complete these objectives\nThe total number of cards you have can be seen at the Size counter\nArtifacts are built by purchasing blueprint cards and playing them\n.Books are drafted every three times Scrolls are played.", true, false, true, $TooltipPositions/ObjectivesTooltipPos],
