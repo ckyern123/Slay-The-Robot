@@ -57,7 +57,7 @@ func perform_action():
 					action_data.append({Scripts.ACTION_ADD_MONEY: {"money_amount": -artifact_price}})
 					var artifact_name: String = artifact_data.artifact_name
 					var artifact_desc: String = artifact_data.artifact_description
-					action_data.append({Scripts.ACTION_CREATE_CARDS: {"created_card_object_id":"card_blueprint","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}, {Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "new_card_values":{"artifact_name":artifact_name,"artifact_description":artifact_desc}}}]}})
+					action_data.append({Scripts.ACTION_CREATE_CARDS: {"created_card_object_id":"card_blueprint","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}, {Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "new_card_values":{"artifact_id":artifact_data.object_id,"artifact_name":artifact_name,"artifact_description":artifact_desc}}}]}})
 					var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [], action_data, null)
 					ActionHandler.add_actions(generated_actions)
 					# remove artifact from shop

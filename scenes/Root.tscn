@@ -62,6 +62,7 @@
 [ext_resource type="Texture2D" uid="uid://bwahwdjasjwbb" path="res://sprites/exhaust.svg" id="41_v75fn"]
 [ext_resource type="Script" uid="uid://d2fxhtmdfmtdf" path="res://scripts/ui/general/KeywordContainer.gd" id="42_wtekq"]
 [ext_resource type="Script" uid="uid://c5i0sjwlko88l" path="res://addons/label_font_auto_sizer/rich_label_auto_sizer.gd" id="43_gs3rm"]
+[ext_resource type="Texture2D" uid="uid://b4xnh4rptmkmc" path="res://sprites/border.png" id="46_jiqw6"]
 
 [sub_resource type="Animation" id="Animation_m5prp"]
 resource_name = "end_turn"
@@ -1767,7 +1768,6 @@ columns = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1776,6 +1776,7 @@ script = ExtResource("12_elxq6")
 [node name="Combat" type="Control" parent="RunScreen" unique_id=797179111]
 unique_name_in_owner = true
 process_mode = 1
+visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -2287,12 +2288,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -742.5
-offset_top = -196.0
+offset_top = -198.0
 offset_right = 791.5
-offset_bottom = 196.0
+offset_bottom = 202.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
+color = Color(0, 0, 0.0627451, 0.8862745)
 
 [node name="ShopTradeLabel" type="Label" parent="RunScreen/Combat/ShopOverlay" unique_id=691928315]
 unique_name_in_owner = true
@@ -2303,6 +2304,17 @@ offset_right = 170.0
 offset_bottom = 24.0
 text = "TRADE ORDERS"
 
+[node name="TextureRect" type="TextureRect" parent="RunScreen/Combat/ShopOverlay/ShopTradeLabel" unique_id=444706662]
+visible = false
+z_index = -1
+layout_mode = 0
+offset_left = -20.0
+offset_top = -4.0
+offset_right = 130.0
+offset_bottom = 26.0
+texture = ExtResource("46_jiqw6")
+expand_mode = 1
+
 [node name="ShopArtifactLabel" type="RichTextLabel" parent="RunScreen/Combat/ShopOverlay" unique_id=614743605]
 unique_name_in_owner = true
 layout_mode = 0
@@ -2310,9 +2322,19 @@ offset_left = 550.0
 offset_right = 780.0
 offset_bottom = 150.0
 bbcode_enabled = true
-text = "ARTIFACT BLUEPRINTS
-To build artifacts, first purchase
-a blueprint card below. Then, play the blueprint card, spend  8 Ore and 1 Room to add the artifact."
+text = "ARTIFACT BLUEPRINTS"
+
+[node name="TextureRect3" type="TextureRect" parent="RunScreen/Combat/ShopOverlay/ShopArtifactLabel" unique_id=104365323]
+visible = false
+z_index = -1
+layout_mode = 0
+offset_left = 270.0
+offset_top = -4.0
+offset_right = 520.0
+offset_bottom = 26.0
+texture = ExtResource("46_jiqw6")
+expand_mode = 1
+stretch_mode = 1
 
 [node name="ShopCardLabel" type="Label" parent="RunScreen/Combat/ShopOverlay" unique_id=453283684]
 unique_name_in_owner = true
@@ -2322,6 +2344,18 @@ offset_left = 850.0
 offset_right = 1044.0
 offset_bottom = 24.0
 text = "RECRUIT FACTION CARDS"
+
+[node name="TextureRect2" type="TextureRect" parent="RunScreen/Combat/ShopOverlay/ShopCardLabel" unique_id=1126881471]
+visible = false
+z_index = -1
+layout_mode = 0
+offset_left = -30.0
+offset_top = -4.0
+offset_right = 220.0
+offset_bottom = 26.0
+texture = ExtResource("46_jiqw6")
+expand_mode = 1
+stretch_mode = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="RunScreen/Combat/ShopOverlay" unique_id=2063475107]
 layout_mode = 1
@@ -2354,35 +2388,12 @@ grow_vertical = 2
 theme_override_constants/separation = 70
 
 [node name="ArtifactContainer" type="VBoxContainer" parent="RunScreen/Combat/ShopOverlay" unique_id=899795513]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -218.5
-offset_top = -46.0
-offset_right = 81.5
-offset_bottom = 154.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 20
-
-[node name="BookContainer" type="VBoxContainer" parent="RunScreen/Combat/ShopOverlay" unique_id=2135255811]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -218.5
-offset_top = 34.0
-offset_right = 81.5
-offset_bottom = 234.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 20
+layout_mode = 0
+offset_left = 550.0
+offset_top = 30.0
+offset_right = 950.0
+offset_bottom = 230.0
+theme_override_constants/separation = 65
 
 [node name="ContinueButton" type="Button" parent="RunScreen/Combat/ShopOverlay" unique_id=1269696807]
 visible = false
@@ -2416,7 +2427,7 @@ offset_right = 830.0
 offset_bottom = 498.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.08627451, 0.09803922, 0.003921569, 0.8156863)
+color = Color(0.08627451, 0.09803922, 0.003921569, 0.9098039)
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/Combat/CardPicking" unique_id=663104816]
 unique_name_in_owner = true
@@ -2440,7 +2451,9 @@ offset_left = 500.0
 offset_top = 240.0
 offset_right = 884.0
 offset_bottom = 271.0
-text = "Confirm"
+text = "CONFIRM"
+icon_alignment = 1
+expand_icon = true
 
 [node name="Hand" type="Control" parent="RunScreen/Combat" unique_id=1468352038]
 unique_name_in_owner = true

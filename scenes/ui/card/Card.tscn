@@ -211,10 +211,10 @@ position = Vector2(25, 30)
 [node name="InfluenceLabel" type="RichTextLabel" parent="Pivot/CardVisual/InfluenceSprite" unique_id=1314072638]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 17.0
-offset_top = 15.0
-offset_right = 57.0
-offset_bottom = 55.0
+offset_left = 18.0
+offset_top = 14.0
+offset_right = 58.0
+offset_bottom = 54.0
 theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
 

@@ -25,7 +25,7 @@ func _ready():
 	Signals.player_money_changed.connect(_on_player_money_changed)
 	FileLoader.load_texture(Card.ore_texture_path)
 	FileLoader.load_texture(Card.room_texture_path)
-	shop_artifact_label.text = "ARTIFACT BLUEPRINTS\nTo build artifacts, first purchase a blueprint card below. Then, play the blueprint card, spend 8[img width={0}]{1}[/img] and 1[img width={0}]{2}[/img] to build the artifact.".format([16,Card.ore_texture_path,Card.room_texture_path])
+	#shop_artifact_label.text = "ARTIFACT BLUEPRINTS\nTo build artifacts, first purchase a blueprint card below. Then, play the blueprint card, spend 8[img width={0}]{1}[/img] and 1[img width={0}]{2}[/img] to build the artifact.".format([16,Card.ore_texture_path,Card.room_texture_path])
 	continue_button.button_up.connect(_on_continue_button_up)
 func populate_price() -> void:
 	if (!shop_populated):
