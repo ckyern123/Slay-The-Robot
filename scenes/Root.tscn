@@ -1768,6 +1768,7 @@ columns = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1776,7 +1777,6 @@ script = ExtResource("12_elxq6")
 [node name="Combat" type="Control" parent="RunScreen" unique_id=797179111]
 unique_name_in_owner = true
 process_mode = 1
-visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -2427,7 +2427,7 @@ offset_right = 830.0
 offset_bottom = 498.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.08627451, 0.09803922, 0.003921569, 0.9098039)
+color = Color(0.08627451, 0.09803922, 0.003921569, 0.9490196)
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/Combat/CardPicking" unique_id=663104816]
 unique_name_in_owner = true
