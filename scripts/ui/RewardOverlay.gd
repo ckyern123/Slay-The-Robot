@@ -209,8 +209,11 @@ func _on_combat_ended():
 		return
 	
 	if not Global.is_end_of_run():
-		visible = true
-		populate_reward_display()
+		await get_tree().create_timer(0.5).timeout
+		map.show_map()
+	else:
+		visible = false
+		Signals.run_victory.emit()
 
 func _on_chest_opened():
 	visible = true

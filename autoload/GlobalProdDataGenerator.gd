@@ -5553,14 +5553,14 @@ func add_cards_purple() -> void:
 	card_pearldiplomat.card_color_id = "color_{0}".format([color])
 	card_pearldiplomat.card_texture_path = "external/sprites/cards/pearl/06_pearldiplomat.png"
 	card_pearldiplomat.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Sift [draw_count] for Pearl. Appease [max_card_amount] Cards in discard pile."
-	card_pearldiplomat.card_keyword_object_ids = ["keyword_spice","keyword_sift", "keyword_appease"]
+	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Appease [max_card_amount] random cards in discard pile by 2."
+	card_pearldiplomat.card_keyword_object_ids = ["keyword_spice", "keyword_appease"]
 	card_pearldiplomat.card_type = CardData.CARD_TYPES.FACTION
 	card_pearldiplomat.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_pearldiplomat.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_pearldiplomat.card_requires_target = false
 	card_pearldiplomat.card_energy_cost = 3
-	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice", "draw_count":6, "min_card_amount": 2,"max_card_amount":2, "number_of_cards":1}
+	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice", "min_card_amount": 2,"max_card_amount":2, "number_of_cards":2}
 	card_pearldiplomat.card_upgrade_value_improvements = {"min_card_amount": 1,"max_card_amount":1}
 	card_pearldiplomat.card_influence = 5
 	card_pearldiplomat.card_play_actions = [
@@ -5574,14 +5574,12 @@ func add_cards_purple() -> void:
 			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}
 		],
 		"action_data": [
-			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {"card_influence": 1
+			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {"card_influence": 2
 			}},
 			]
 		}
 		},
 	]
-	for el in sift_pearl_data:
-		card_pearldiplomat.card_play_actions.append(el)
 	card_pearldiplomat.card_play_actions.append(		{
 			Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
 		})

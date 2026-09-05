@@ -89,7 +89,7 @@ func _ready():
 	Signals.enemy_death_animation_finished.connect(_on_enemy_death_animation_finished)
 
 	Signals.combat_started.connect(_on_combat_started)
-#	Signals.combat_ended.connect(_on_combat_ended)
+	Signals.combat_ended.connect(_on_combat_ended)
 
 	Signals.player_turn_started.connect(_on_player_turn_started)
 	Signals.player_turn_ended.connect(_on_player_turn_ended)
@@ -382,6 +382,7 @@ func _on_enemy_death_animation_finished(_enemy: Enemy):
 
 func _on_combat_started(event_id: String):
 	var current_event: EventData = null
+	end_turn_button.visible = true
 	if event_id == "":
 		# if no event is provided, it will be derived from the location
 		var current_location: LocationData = Global.get_player_location_data()
@@ -403,7 +404,8 @@ func _on_combat_started(event_id: String):
 
 	update_combat_display()
 	
-#func _on_combat_ended():
+func _on_combat_ended():
+	end_turn_button.visible = false
 	#set_combat_display_visibility(false)
 	
 ## Helper method to cut down on code bloat. Used in player/enemy turn logic to short circuit
@@ -774,7 +776,6 @@ func _on_run_started():
 			energy.texture_normal = FileLoader.load_texture(color_data.color_energy_icon_texture_path)
 	
 func _on_run_ended():
-
 	visible = false
 	_reset_turn_end_queue()
 	game_start = true

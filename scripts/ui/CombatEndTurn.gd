@@ -93,10 +93,12 @@ func wait() -> void:
 			Global.player_data.add_food(Global.player_data.blight/99)
 			Global.player_data.blight -= 0
 			if Global.player_food <= 0:
-				Global.end_run(Global.RUN_ENDS.LOSS)
+				#Global.end_run(Global.RUN_ENDS.LOSS)
+				Signals.player_killed.emit(Global.get_player())
 			var deck_total = (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			if deck_total >= 60 and Global.player_data.get_player_artifacts().size() >= 17 and Global.player_data.player_books >= 5:
-				Global.end_run(Global.RUN_ENDS.VICTORY)
+				#Global.end_run(Global.RUN_ENDS.VICTORY)
+				Signals.run_victory.emit()
 			end_turn()
 		END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS, _:
 			# default
@@ -157,10 +159,12 @@ func wait() -> void:
 			Global.player_data.add_food(food_count/10)
 			
 			if Global.player_data.player_food <= 0:
-				Global.end_run(Global.RUN_ENDS.LOSS)
+				Signals.player_killed.emit(Global.get_player())
+				#Global.end_run(Global.RUN_ENDS.LOSS)
 			var deck_total = (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
 			if deck_total >= 60 and Global.player_data.get_player_artifacts().size() >= 17 and Global.player_data.player_books >= 5:
-				Global.end_run(Global.RUN_ENDS.VICTORY)
+				#Global.end_run(Global.RUN_ENDS.VICTORY)
+				Signals.run_victory.emit()
 			end_turn()
 
 func disable():
