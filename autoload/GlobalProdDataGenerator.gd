@@ -2978,8 +2978,8 @@ func add_characters() -> void:
 	character_green.character_starting_consumable_pack_ids = ["consumable_pack_white", "consumable_pack_{0}".format([character_color])]
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
-		"card_basic_weave_green", "card_basic_money_green", "card_basic_explore_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green"
+		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
+		"card_basic_explore_green", "card_basic_explore_green",
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -4870,7 +4870,7 @@ func add_cards_misc() -> void:
 	card_bandit.card_is_playable = true
 	card_bandit.card_play_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
 	card_bandit.card_play_actions = [{Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION:{"card_destination": HandManager.EXHAUST_PILE}}]
-	card_bandit.card_end_of_turn_actions.append({Scripts.ACTION_ADD_FOOD:{"money_amount":-1}})
+	card_bandit.card_end_of_turn_actions.append({Scripts.ACTION_ADD_FOOD:{"food_amount":-1}})
 	Global.register_rod(card_bandit)
 
 	var card_rebel: CardData = CardData.new("card_rebel")
@@ -5553,14 +5553,14 @@ func add_cards_purple() -> void:
 	card_pearldiplomat.card_color_id = "color_{0}".format([color])
 	card_pearldiplomat.card_texture_path = "external/sprites/cards/pearl/06_pearldiplomat.png"
 	card_pearldiplomat.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearldiplomat.card_description = "Create [number_of_cards] Spice. Appease [max_card_amount] random cards in discard pile by 2."
-	card_pearldiplomat.card_keyword_object_ids = ["keyword_spice", "keyword_appease"]
+	card_pearldiplomat.card_description = "Sift [draw_count] for Pearl cards. Gain 1{0} for each Pearl card in your hand. Appease [max_card_amount] random cards in discard pile by 2.".format([Card.ENERGY_ICON_KEYWORD])
+	card_pearldiplomat.card_keyword_object_ids = ["keyword_sift", "keyword_appease"]
 	card_pearldiplomat.card_type = CardData.CARD_TYPES.FACTION
 	card_pearldiplomat.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_pearldiplomat.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_pearldiplomat.card_requires_target = false
 	card_pearldiplomat.card_energy_cost = 3
-	card_pearldiplomat.card_values = {"card_influence": 1,"created_card_object_id": "card_spice", "min_card_amount": 2,"max_card_amount":2, "number_of_cards":2}
+	card_pearldiplomat.card_values = {"card_influence": 2, "min_card_amount": 2,"max_card_amount":2, "draw_count":4,"energy_amount":1 }
 	card_pearldiplomat.card_upgrade_value_improvements = {"min_card_amount": 1,"max_card_amount":1}
 	card_pearldiplomat.card_influence = 5
 	card_pearldiplomat.card_play_actions = [
@@ -5580,9 +5580,26 @@ func add_cards_purple() -> void:
 		}
 		},
 	]
-	card_pearldiplomat.card_play_actions.append(		{
-			Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
-		})
+	card_pearldiplomat.card_play_actions.append(
+							{
+			Scripts.ACTION_PICK_CARDS: {
+				"min_card_amount": 99,
+				"max_card_amount": 99,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.HAND_PILE,
+				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
+				"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes":[CardData.CARD_SUBTYPES.PEARL]}}],
+				"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
+				"multiplied_values": ["energy_amount"],
+				"action_data": [{Scripts.ACTION_ADD_ENERGY: {
+					}}]}
+			}]
+				}
+			},
+	)
+	for action in sift_pearl_data:
+		card_pearldiplomat.card_play_actions.append(action)
 	
 	card_pearldiplomat.card_play_actions.append(influence_action)
 	card_pearldiplomat.card_end_of_turn_actions = end_action_data
@@ -7404,28 +7421,17 @@ func add_cards_gold() -> void:
 	card_flintlockschooner.card_color_id = "color_{0}".format([color])
 	card_flintlockschooner.card_texture_path = "external/sprites/cards/cengkih/06_flintlockschooner.png"
 	card_flintlockschooner.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_flintlockschooner.card_description = "Sift [draw_count] for Cengkih. Repair all Crafts in discard pile by [card_influence]. Wield [min_card_amount]."
-	card_flintlockschooner.card_keyword_object_ids = ["keyword_sift", "keyword_repair", "keyword_wield"]
+	card_flintlockschooner.card_description = "Sift [draw_count] for Cengkih cards. Then gain 1{0} for each Cengkih card in hand. Repair all Crafts in discard pile by [card_influence].".format([Card.ENERGY_ICON_KEYWORD])
+	card_flintlockschooner.card_keyword_object_ids = ["keyword_sift", "keyword_repair"]
 	card_flintlockschooner.card_type = CardData.CARD_TYPES.FACTION
 	card_flintlockschooner.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_flintlockschooner.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_flintlockschooner.card_requires_target = false
-	card_flintlockschooner.card_energy_cost = 2
-	card_flintlockschooner.card_influence = 4
-	card_flintlockschooner.card_values = {"min_card_amount":2,"max_card_amount":2,"card_influence":1, "draw_count": 4}
-	card_flintlockschooner.card_upgrade_value_improvements = {"min_card_amount":2,"max_card_amount":2, "card_influence":1, "draw_count":2}
+	card_flintlockschooner.card_energy_cost = 3
+	card_flintlockschooner.card_influence = 5
+	card_flintlockschooner.card_values = {"card_influence":1, "draw_count": 4,"energy_amount":1}
+	card_flintlockschooner.card_upgrade_value_improvements = {"card_influence":1, "draw_count":2}
 	card_flintlockschooner.card_play_actions = [
-		{
-			Scripts.ACTION_PICK_CARDS: {
-				"min_cards_are_required_for_action": false,
-				"random_selection": true,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
-				"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.CRAFT]}}],
-				"action_data": [
-				{Scripts.ACTION_PLAY_CARDS:{}}]
-				}
-			},
 		{
 			Scripts.ACTION_PICK_CARDS: {
 				"min_card_amount": 99,
@@ -7434,9 +7440,25 @@ func add_cards_gold() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
-				"validator_data":[{Scripts.VALIDATOR_CARD_ID:[{"card_object_ids":["card_sword"]}]}],
+				"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.CRAFT]}}],
 				"action_data": [
 				{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{}}]
+				}
+			},
+					{
+			Scripts.ACTION_PICK_CARDS: {
+				"min_card_amount": 99,
+				"max_card_amount": 99,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.HAND_PILE,
+				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
+				"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes":[CardData.CARD_SUBTYPES.CENGKIH]}}],
+				"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
+				"multiplied_values": ["energy_amount"],
+				"action_data": [{Scripts.ACTION_ADD_ENERGY: {
+					}}]}
+			}]
 				}
 			},
 	]
