@@ -613,6 +613,20 @@ func add_artifacts() -> void:
 	
 	Global.register_rod(artifact_check_scroll)
 	
+	var artifact_fish_later: ArtifactData = ArtifactData.new("artifact_fish_later")
+	artifact_fish_later.artifact_name = "Fishing Rod"
+	artifact_fish_later.artifact_description = "Gain 4 Fishes after you discard 25 times."
+	artifact_fish_later.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BASIC
+	artifact_fish_later.artifact_color_id = "color_red"
+	artifact_fish_later.artifact_texture_path = "external/sprites/status_effects/tied-scroll.png"
+	artifact_fish_later.artifact_script_path = "res://scripts/artifacts/ArtifactCheckScroll.gd"
+	artifact_fish_later.artifact_counter_max = 25
+	artifact_fish_later.artifact_turn_end_actions = []
+	artifact_fish_later.artifact_counter_wraparound = false
+	artifact_fish_later.artifact_script_path = "res://scripts/artifacts/ArtifactDiscardAppease.gd"
+	artifact_fish_later.artifact_max_counter_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_fish","number_of_cards":4,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},]
+	
+	Global.register_rod(artifact_fish_later)
 	### Enables a rest action when obtained, which grants a damage increase at the start of combat
 	#var artifact_improve_explore: ArtifactData = ArtifactData.new("artifact_improve_explore")
 	#artifact_improve_explore.artifact_name = "Barracks"
@@ -1715,6 +1729,8 @@ func add_acts() -> void:
 	
 #region Events and Event Pools
 func add_events() -> void:
+	
+#region encounters
 	## Plains
 	# has an equal chance of spawning 1 of 3 enemies in each slot
 	var event_act_1_easy_plains_1: EventData = EventData.new("event_act_1_easy_plains_1")
@@ -2208,7 +2224,7 @@ func add_events() -> void:
 		]
 	
 	Global.register_rod(event_act_1_hard_swamp_3)
-	
+#endregion
 	## Act 1 Dialogue Events
 	# see add_test_dialogue()
 	
@@ -2220,6 +2236,8 @@ func add_events() -> void:
 	
 	### Event Pools
 	# act 1 easy pool
+
+	
 	var event_pool_act_1_easy_plains: EventPoolData = EventPoolData.new("event_pool_act_1_plains_easy")
 	event_pool_act_1_easy_plains.add_events_to_pool(
 		event_act_1_easy_plains_1,
@@ -2392,9 +2410,12 @@ func add_events() -> void:
 #endregion
 
 #region Dialogue
-
+	var event_pool_player_dialogues: EventPoolData = EventPoolData.new("event_pool_player_dialogues")
+	event_pool_player_dialogues.add_events_to_pool(event_pick_something, [event_pick_something])
+	Global.register_rod(event_pool_player_dialogues)
 ## Adds test DialogueData, and their embedded DialogueStateData and DialogueOptionData payloads
 func add_dialogue() -> void:
+	
 	### Dialogue Event 1
 	# Dialogue 1
 	var dialogue_pick_something: DialogueData = DialogueData.new("dialogue_pick_something")
@@ -2462,6 +2483,82 @@ func add_dialogue() -> void:
 	dialogue_pick_something._assign_state(dialogue_state_pick_something_initial)
 	dialogue_pick_something._assign_initial_state(dialogue_state_pick_something_initial)
 
+	# Dialogue 2
+	var dialogue_fishers_dilemma: DialogueData = DialogueData.new("dialogue_fishers_dilemma")
+	dialogue_fishers_dilemma.dialogue_name_bbcode = "[wave amp=50.0 freq=2.0 connected=1][color=green]Fisher's Dilemma[/color][/wave]"
+	Global.register_rod(dialogue_fishers_dilemma)
+	
+	# Option 1
+	var dialogue_fishers_dilemma_option_1: DialogueOptionData = DialogueOptionData.new("dialogue_fishers_dilemma_option_1")
+	dialogue_fishers_dilemma_option_1.dialogue_option_bbcode = "Fish now."
+	dialogue_fishers_dilemma_option_1.dialogue_option_actions = [
+		{Scripts.ACTION_CREATE_CARDS: {"created_card_object_id":"card_fish","number_of_cards":2,"action_data":[{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]}},
+		]
+	dialogue_fishers_dilemma_option_1.dialogue_option_next_dialogue_state_id = "" # empty ends dialogue
+	
+	dialogue_fishers_dilemma._assign_option(dialogue_fishers_dilemma_option_1)
+	
+	# Option 2
+	var dialogue_fishers_dilemma_option_2: DialogueOptionData = DialogueOptionData.new("dialogue_fishers_dilemma_option_2")
+	dialogue_fishers_dilemma_option_2.dialogue_option_bbcode = "Fish later."
+	dialogue_fishers_dilemma_option_2.dialogue_option_actions = [
+		{
+		Scripts.ACTION_ADD_ARTIFACT:{"artifact_id":"artifact_fish_later"}}
+	]
+	dialogue_fishers_dilemma_option_2.dialogue_option_next_dialogue_state_id = "" # empty ends dialogue
+	
+	dialogue_fishers_dilemma._assign_option(dialogue_fishers_dilemma_option_2)
+	
+	# State 1
+	var dialogue_state_fishers_dilemma_initial: DialogueStateData = DialogueStateData.new("dialogue_state_fishers_dilemma_initial")
+	dialogue_state_pick_something_initial.dialogue_state_prompt_bbcode = "Fish now or later?"
+	dialogue_state_pick_something_initial.dialogue_state_dialogue_texture_path = "external/sprites/events/event_pick_something.png"
+	dialogue_state_pick_something_initial.dialogue_state_dialogue_option_object_ids = [
+		dialogue_fishers_dilemma_option_1.object_id,
+		dialogue_fishers_dilemma_option_2.object_id,
+	]
+	
+	dialogue_fishers_dilemma._assign_state(dialogue_state_fishers_dilemma_initial)
+	dialogue_fishers_dilemma._assign_initial_state(dialogue_state_fishers_dilemma_initial)
+	
+
+	# Dialogue 2
+	var dialogue_smoke_at_the_bay: DialogueData = DialogueData.new("dialogue_smoke_at_the_bay")
+	dialogue_smoke_at_the_bay.dialogue_name_bbcode = "[wave amp=50.0 freq=2.0 connected=1][color=green]Smoke at the Bay[/color][/wave]"
+	Global.register_rod(dialogue_smoke_at_the_bay)
+	
+	# Option 1
+	var dialogue_smoke_at_the_bay_option_1: DialogueOptionData = DialogueOptionData.new("dialogue_smoke_at_the_bay_option_1")
+	dialogue_smoke_at_the_bay_option_1.dialogue_option_bbcode = "Abandon post. (Lose 5 Size)"
+	dialogue_smoke_at_the_bay_option_1.dialogue_option_actions = [
+		{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount":-5}},
+		]
+	dialogue_smoke_at_the_bay_option_1.dialogue_option_next_dialogue_state_id = "" # empty ends dialogue
+	
+	dialogue_smoke_at_the_bay._assign_option(dialogue_smoke_at_the_bay_option_1)
+	
+	# Option 2
+	var dialogue_smoke_at_the_bay_option_2: DialogueOptionData = DialogueOptionData.new("dialogue_smoke_at_the_bay_option_2")
+	dialogue_smoke_at_the_bay_option_2.dialogue_option_bbcode = "Fight pirates!"
+	dialogue_smoke_at_the_bay_option_2.dialogue_option_actions = [
+		{
+		Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_bandit","number_of_cards":5,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}
+	]
+	dialogue_smoke_at_the_bay_option_2.dialogue_option_next_dialogue_state_id = "" # empty ends dialogue
+	
+	dialogue_smoke_at_the_bay._assign_option(dialogue_smoke_at_the_bay_option_2)
+	
+	# State 1
+	var dialogue_state_smoke_at_the_bay_initial: DialogueStateData = DialogueStateData.new("dialogue_state_smoke_at_the_bay_initial")
+	dialogue_state_pick_something_initial.dialogue_state_prompt_bbcode = "Trouble looms at the horizon."
+	dialogue_state_pick_something_initial.dialogue_state_dialogue_texture_path = "external/sprites/events/event_pick_something.png"
+	dialogue_state_pick_something_initial.dialogue_state_dialogue_option_object_ids = [
+		dialogue_smoke_at_the_bay_option_1.object_id,
+		dialogue_smoke_at_the_bay_option_2.object_id,
+	]
+	
+	dialogue_smoke_at_the_bay._assign_state(dialogue_state_smoke_at_the_bay_initial)
+	dialogue_smoke_at_the_bay._assign_initial_state(dialogue_state_smoke_at_the_bay_initial)
 #endregion
 
 #region Action Interceptors
