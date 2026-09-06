@@ -6209,20 +6209,21 @@ func add_cards_black() -> void:
 	card_spicepicker.card_color_id = "color_{0}".format([color])
 	card_spicepicker.card_texture_path = "external/sprites/cards/aniseed/04_spicepicker.png"
 	card_spicepicker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_spicepicker.card_description = "Create [number_of_cards] Spice.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_spicepicker.card_description = "Create 1 Grain. Create [number_of_cards] Spice.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_spicepicker.card_keyword_object_ids = ["keyword_spice","keyword_appease"]
 	card_spicepicker.card_type = CardData.CARD_TYPES.FACTION
 	card_spicepicker.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_spicepicker.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_spicepicker.card_requires_target = false
 	card_spicepicker.card_energy_cost = 2
+	card_spicepicker.card_influence = 4
 	card_spicepicker.card_values = {"created_card_object_id": "card_spice",  "number_of_cards": 1}
 	card_spicepicker.card_first_upgrade_property_changes = {"card_energy_cost": 1}
-	card_spicepicker.card_upgrade_value_improvements = {"number_of_cards": 1}
+	#card_spicepicker.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_spicepicker.card_play_actions = [
 		{Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 		}
-		}]
+		},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_grain","number_of_cards":1, "action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	card_spicepicker.card_play_actions.append(influence_action)
 	card_spicepicker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_spicepicker)
@@ -6232,7 +6233,7 @@ func add_cards_black() -> void:
 	card_gardentender.card_color_id = "color_{0}".format([color])
 	card_gardentender.card_texture_path = "external/sprites/cards/aniseed/16_gardentender.png"
 	card_gardentender.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_gardentender.card_description = "Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_gardentender.card_description = "Create [number_of_cards] Grain. Fertilise [artifact_charge_increase].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_gardentender.card_keyword_object_ids = ["keyword_fertilise"]
 	card_gardentender.card_type = CardData.CARD_TYPES.FACTION
 	card_gardentender.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -6240,10 +6241,10 @@ func add_cards_black() -> void:
 	card_gardentender.card_requires_target = false
 	card_gardentender.card_influence = 4
 	card_gardentender.card_energy_cost = 2
-	card_gardentender.card_values = {"artifact_charge_increase": 5}
-	card_gardentender.card_upgrade_value_improvements = {"artifact_charge_increase":3}
+	card_gardentender.card_values = {"artifact_charge_increase": 4,"number_of_cards":1,"created_card_object_id":"card_grain"}
+	card_gardentender.card_upgrade_value_improvements = {"artifact_charge_increase":2}
 	card_gardentender.card_play_actions = [
-		{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser"}}]
+		{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser"}},{Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	card_gardentender.card_play_actions.append(influence_action)
 	card_gardentender.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_gardentender)
