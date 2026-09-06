@@ -3076,25 +3076,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green","card_cartographersassistant","card_cartographersassistant"
-		#"card_growth", "card_growth", "card_growth", "card_fertilize",
-		#"card_cell_wall", "card_thorns",
-		#"card_datum", "card_conclusion",
-		#"card_clippers", "card_petals",
-		#"card_particle_accelerator", "card_particle_accelerator",
-		#"card_fusion_cannon", "card_fusion_cannon",
-		#"card_verdant", "card_verdant",
-		#"card_containment", "card_containment",
-		#"card_critical",
-		#"card_wildflower", "card_wildflower", "card_wildflower", "card_wildflower", 
-		#"card_energy_next_turn", "card_energy_next_turn",
-		#"card_meltdown", "card_meltdown",
-		#"card_photoelectric_synthesis", "card_photoelectric_synthesis",
-		#"card_feedback_loop",
-		#"card_pollen",
-		#"card_symbiosis",
-		#"card_bud", "card_bud", "card_bud", 
-		#"card_moss", "card_moss",
+		"card_basic_explore_green", "card_basic_explore_green"
 	]
 	
 	Global.register_rod(character_green)
