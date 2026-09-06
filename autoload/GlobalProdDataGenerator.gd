@@ -3076,7 +3076,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green",
+		"card_basic_explore_green", "card_basic_explore_green","card_cartographersassistant","card_cartographersassistant"
 		#"card_growth", "card_growth", "card_growth", "card_fertilize",
 		#"card_cell_wall", "card_thorns",
 		#"card_datum", "card_conclusion",
@@ -6304,25 +6304,32 @@ func add_cards_black() -> void:
 	card_cartographersassistant.card_color_id = "color_{0}".format([color])
 	card_cartographersassistant.card_texture_path = "external/sprites/cards/aniseed/06_cartographersassistant.png"
 	card_cartographersassistant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_cartographersassistant.card_description = "Explore [damage]{0}.\nConsume 3{1} to gain [insight_amount]{2}.".format([Card.EXPLORE_ICON_KEYWORD,Card.ORE_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
+	card_cartographersassistant.card_description = "Create [number_of_cards] Rock(s).\nFRONTIER: Inspect."
+	card_cartographersassistant.card_keyword_object_ids = ["keyword_frontier","keyword_inspect"]
 	card_cartographersassistant.card_type = CardData.CARD_TYPES.FACTION
 	card_cartographersassistant.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_cartographersassistant.card_rarity = CardData.CARD_RARITIES.COMMON
-	card_cartographersassistant.card_requires_target = true
+	card_cartographersassistant.card_requires_target = false
 	card_cartographersassistant.card_energy_cost = 1
-	card_cartographersassistant.card_values = {"damage": 2,"number_of_attacks":1, "insight_amount": 1}
-	card_cartographersassistant.card_upgrade_value_improvements = {"damage": 2}
-	card_cartographersassistant.card_play_actions = [
+	card_cartographersassistant.card_glow_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
+	card_cartographersassistant.card_values = {"created_card_object_id":"card_rock","number_of_cards":1}
+	card_cartographersassistant.card_upgrade_value_improvements = {"number_of_cards": 1}
+	card_cartographersassistant.card_play_actions = [{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],"passed_action_data":[{
+		Scripts.ACTION_PICK_CARDS:
+			{
+				"min_card_amount":1,
+				"max_card_amount":1,
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure"]}}],
+				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT:{
+							"modify_parent_card": false,
+				}}]}
+		}]}},
 		{
-		Scripts.ACTION_ATTACK_GENERATOR: {
-			"time_delay":0.5
-		}
-		},
-		{
-		Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_ORE:{"ore_required":3}}],
-			"passed_action_data":[{Scripts.ACTION_ADD_ORE:{"ore_amount":-3}},
-			{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]}
-		}]
+		Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	card_cartographersassistant.card_play_actions.append(influence_action)
 	card_cartographersassistant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cartographersassistant)
