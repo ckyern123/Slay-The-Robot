@@ -5296,7 +5296,7 @@ func add_cards_trade() -> void:
 	card_preservation_pamphlet.card_name = "Preservation Pamphlet"
 	card_preservation_pamphlet.card_color_id = "color_blue"
 	card_preservation_pamphlet.card_texture_path = "external/sprites/status_effects/book.svg"
-	card_preservation_pamphlet.card_description = "Discard up to 5 cards from hand, then retain your hand for the turn."
+	card_preservation_pamphlet.card_description = "Discard up to 5 cards from hand, then draw that many cards, then retain your hand for the turn."
 	card_preservation_pamphlet.card_keyword_object_ids = ["keyword_retain"]
 	card_preservation_pamphlet.card_type = CardData.CARD_TYPES.CRAFT
 	card_preservation_pamphlet.card_subtype = CardData.CARD_SUBTYPES.WOVEN
@@ -5326,12 +5326,12 @@ func add_cards_trade() -> void:
 				"random_selection": false,
 				"card_pick_type": HandManager.HAND_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"action_data": [		{
-				Scripts.ACTION_DISCARD_CARDS: {
-				}
-		}]
+				"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
+				"multiplied_values": ["draw_count"],
+				"action_data": [{Scripts.ACTION_DRAW_GENERATOR: {
+					}}]
 		}
-		}]
+		},{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	Global.register_rod(card_preservation_pamphlet)
 	
 	var card_smithy_book: CardData = CardData.new("card_smithy_book")
@@ -7668,7 +7668,7 @@ func add_cards_gold() -> void:
 	card_flintlockcrier.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockcrier.card_requires_target = false
 	card_flintlockcrier.card_energy_cost = 3
-	card_flintlockcrier.card_influence = 4
+	card_flintlockcrier.card_influence = 5
 	card_flintlockcrier.card_values = {"min_card_amount":0,"max_card_amount":3,"energy_amount":2}
 	card_flintlockcrier.card_upgrade_value_improvements = {"max_card_amount":1}
 	card_flintlockcrier.card_play_actions = [
@@ -7678,7 +7678,7 @@ func add_cards_gold() -> void:
 		{
 			Scripts.ACTION_PICK_CARDS: {
 				"min_cards_are_required_for_action": false,
-				"random_selection": true,
+				"random_selection": false,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose up to {0} card(s) to return to hand. {1} cards selected",
 				"action_data": [
@@ -7715,7 +7715,7 @@ func add_cards_gold() -> void:
 		},
 		{
 			Scripts.ACTION_PICK_CARDS: {
-				"min_cards_are_required_for_action": true,
+				"min_cards_are_required_for_action": false,
 				"random_selection": false,
 				"card_pick_type": HandManager.HAND_PILE,
 				"card_pick_text": "Choose {0} card(s) to discard. {1} cards selected",
@@ -7940,7 +7940,7 @@ func add_cards_gold() -> void:
 	card_cengkihascetic.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cengkihascetic.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_cengkihascetic.card_requires_target = false
-	card_cengkihascetic.card_energy_cost = 0
+	card_cengkihascetic.card_energy_cost = 1
 	card_cengkihascetic.card_influence = 3
 	card_cengkihascetic.card_values = {"ore_amount":1, "insight_amount":1}
 	card_cengkihascetic.card_upgrade_value_improvements = {"ore_amount":1,"insight_amount":1}
