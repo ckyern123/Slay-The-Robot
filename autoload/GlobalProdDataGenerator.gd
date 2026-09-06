@@ -3437,7 +3437,7 @@ func add_enemies() -> void:
 	])
 	enemy_1.add_intent_state([
 	EnemyIntentData.new("intent_attack_2", DIFFICULTY_STARTING, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
-	EnemyIntentData.new("intrtent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
+	EnemyIntentData.new("intent_attack_2", DIFFICULTY_STANDARD_ENEMIES_HARDER, 0, 2, "", 0, "", {"intent_attack_1": 1, "intent_attack_2": 1}),
 	])
 		
 	var _enemy_1_anim: AnimationData = enemy_1.add_standard_animations(
@@ -5082,7 +5082,7 @@ func add_cards_trade() -> void:
 	card_trade2.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade2.card_requires_target = false
 	card_trade2.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade2.card_values = {"food_amount":-3,"food_required":3,"money_amount":6}
+	card_trade2.card_values = {"food_amount":-3,"food_required":3,"money_amount":4}
 	card_trade2.card_play_validators = [{Scripts.VALIDATOR_FOOD:{}}]
 	card_trade2.card_play_actions = [
 		{
@@ -5134,7 +5134,7 @@ func add_cards_trade() -> void:
 	card_trade4.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade4.card_requires_target = false
 	card_trade4.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade4.card_values = {"ore_amount": 5,"money_amount":-3,"money_required":3}
+	card_trade4.card_values = {"ore_amount": 4,"money_amount":-3,"money_required":3}
 	card_trade4.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade4.card_play_actions = [
 		{
@@ -5160,7 +5160,7 @@ func add_cards_trade() -> void:
 	card_trade5.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade5.card_requires_target = false
 	card_trade5.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade5.card_values = {"food_amount": 6,"money_amount":-3,"money_required":3}
+	card_trade5.card_values = {"food_amount": 5,"money_amount":-3,"money_required":3}
 	card_trade5.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade5.card_play_actions = [
 		{
@@ -5186,7 +5186,7 @@ func add_cards_trade() -> void:
 	card_trade6.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade6.card_requires_target = false
 	card_trade6.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade6.card_values = {"insight_amount": 1,"money_amount":-3,"money_required":3}
+	card_trade6.card_values = {"insight_amount": 1,"money_amount":-4,"money_required":4}
 	card_trade6.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade6.card_play_actions = [
 		{
@@ -5212,7 +5212,7 @@ func add_cards_trade() -> void:
 	card_trade7.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_trade7.card_requires_target = false
 	card_trade7.card_play_destination = HandManager.EXHAUST_PILE
-	card_trade7.card_values = {"room_amount": 1,"money_amount":-3,"money_required":3}
+	card_trade7.card_values = {"room_amount": 1,"money_amount":-4,"money_required":4}
 	card_trade7.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
 	card_trade7.card_play_actions = [
 		{
