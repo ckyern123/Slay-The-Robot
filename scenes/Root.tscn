@@ -361,6 +361,25 @@ theme = ExtResource("2_bi5lp")
 text = "New Run"
 horizontal_alignment = 1
 
+[node name="VictoryLabel" type="Label" parent="TitleScreen/NewRunMenu" unique_id=364226462]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 859.0
+offset_top = 183.0
+offset_right = -433.0
+offset_bottom = 591.8334
+grow_horizontal = 2
+layout_direction = 2
+theme_override_font_sizes/font_size = 40
+text = "Victory Objective:
+Gain 200 Prestige.
+You gain Prestige from:
+1) Total number of cards owned.
+2) Ascending cards.
+3) Building artifacts.
+4) Drafting books."
+
 [node name="CharacterSelect" type="Control" parent="TitleScreen/NewRunMenu" unique_id=1360860974]
 layout_mode = 1
 anchors_preset = 9
@@ -695,6 +714,9 @@ offset_left = 500.0
 offset_top = 200.0
 offset_right = 720.0
 offset_bottom = 520.0
+
+[node name="CardDescription" parent="TitleScreen/NewRunMenu/DummyCard/Pivot/CardVisual" parent_id_path=PackedInt32Array(1234656898, 1061815526) index="4" unique_id=1982061738]
+visible = false
 
 [node name="SettingsMenu" type="Control" parent="TitleScreen" unique_id=1483683366 node_paths=PackedStringArray("navigation_button_to_menu")]
 visible = false
@@ -1885,7 +1907,7 @@ position = Vector2(450, 7)
 [node name="InsightLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=2103451130]
 unique_name_in_owner = true
 offset_left = 550.0
-offset_right = 750.0
+offset_right = 700.0
 offset_bottom = 50.0
 bbcode_enabled = true
 
@@ -1896,7 +1918,7 @@ position = Vector2(560, 4)
 [node name="SizeLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=603507063]
 unique_name_in_owner = true
 offset_left = 840.0
-offset_right = 1040.0
+offset_right = 1015.0
 offset_bottom = 50.0
 bbcode_enabled = true
 text = "Size:"
@@ -1908,7 +1930,7 @@ position = Vector2(860, 4)
 [node name="RoomLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=1691440553]
 unique_name_in_owner = true
 offset_left = 700.0
-offset_right = 900.0
+offset_right = 825.0
 offset_bottom = 50.0
 bbcode_enabled = true
 text = "Room:"
@@ -3303,17 +3325,19 @@ border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
 [node name="TradeTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1389270593]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.19427083
+anchor_left = 0.17708333
 anchor_top = 0.07777778
-anchor_right = 0.4375
+anchor_right = 0.4203125
 anchor_bottom = 0.13055556
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
 [node name="ArtifactTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1636831156]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.440625
@@ -3325,6 +3349,7 @@ border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
 [node name="CardTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1148552679]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.6859375
@@ -3349,10 +3374,10 @@ metadata/_edit_use_anchors_ = true
 [node name="SizeTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1072154485]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.50885415
-anchor_top = 0.0129629625
-anchor_right = 0.5828125
-anchor_bottom = 0.06759259
+anchor_left = 0.49635416
+anchor_top = 0.02037037
+anchor_right = 0.5703125
+anchor_bottom = 0.075
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3382,10 +3407,11 @@ metadata/_edit_use_anchors_ = true
 [node name="RoomTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=92220567]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.43541667
-anchor_top = 0.009259259
-anchor_right = 0.5072917
-anchor_bottom = 0.06851852
+anchor_left = 0.43125
+anchor_top = 0.016666668
+anchor_right = 0.50312495
+anchor_bottom = 0.075925924
+offset_right = -18.0
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3461,4 +3487,5 @@ mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
+[editable path="TitleScreen/NewRunMenu/DummyCard"]
 [editable path="RunScreen/Combat/Player"]
