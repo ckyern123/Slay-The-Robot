@@ -149,6 +149,8 @@ func _ready():
 	HandManager.card_destination_to_ui_elements[HandManager.EXHAUST_PILE] = exhaust_pile_button
 
 func _process(delta:float) -> void:
+	if Input.is_action_just_released("venture_forth"):
+		_on_combat_end_button_up()
 	if Input.is_action_just_released("end_turn"):
 		_on_end_turn_button_up()
 	for i in range(1,10):
@@ -779,6 +781,7 @@ func _on_run_ended():
 
 ## Performs end of combat logic and signals end of combat
 func end_combat() -> void:
+	combat_end_button.visible = false
 	var event_data: EventData = Global.get_player_event_data()
 	if event_data != null:
 		# perform event initial actions
@@ -789,7 +792,7 @@ func end_combat() -> void:
 			await ActionHandler.actions_ended
 	
 	#_reset_turn_end_queue()
-	combat_end_button.visible = false
+
 	Signals.combat_ended.emit()
 
 func end_turn():

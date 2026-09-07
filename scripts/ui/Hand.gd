@@ -87,7 +87,7 @@ const CARD_PICK_POSITIONS: Array = [
 	[-2.75, -2.25, -1.5, -0.75, 0.0, 0.75 ,1.5, 2.25, 2.75],
 	[-3.25, -2.75, -2.25, -1.5, -0.75, 0.75 ,1.5, 2.25, 2.75, 3.25],
 ]
-const CARD_PICK_Y_OFFSET = -600 # Where picked cards in hand appear relative to the Hand container
+const CARD_PICK_Y_OFFSET = -400 # Where picked cards in hand appear relative to the Hand container
 
 
 func _ready():
@@ -97,7 +97,7 @@ func _ready():
 	Signals.combat_ended.connect(_on_combat_ended)
 	Signals.run_ended.connect(_on_run_ended)
 	Signals.card_upgraded.connect(_on_card_upgraded)
-	
+	Signals.card_ascended.connect(_on_card_ascended)
 	Signals.card_pick_requested.connect(_on_card_pick_requested)
 	Signals.card_pick_confirmed.connect(_on_card_pick_confirmed)
 	Signals.card_purchased.connect(_on_card_purchased)
@@ -381,15 +381,15 @@ func _display_cardplay(card_data: CardData, property: String = ""):
 			await get_tree().create_timer(0.5).timeout			
 			display_cardplay_card.queue_free()
 		"ascended":
-			display_cardplay_card.position = Vector2(50,800)
+			display_cardplay_card.position = Vector2(-900,800)
 			#display_cardplay_card.modulate = Color(0,0,0,0)
 			display_cardplay_card.scale = Vector2(0.5,0.5)
 			#var destination_ui_element: Control = HandManager.card_destination_to_ui_elements.get(HandManager.DISCARD_PILE, null)
 			#var destination_position: Vector2 = destination_ui_element.global_position - (destination_ui_element.size / 2) - Vector2(50,100)
-			var destination_position: Vector2 = Vector2(50,100)
+			var destination_position: Vector2 = Vector2(-900,-200)
 			var tween = create_tween()
-			tween.tween_property(display_cardplay_card,"position",destination_position,0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
-			await get_tree().create_timer(0.3).timeout
+			tween.tween_property(display_cardplay_card,"position",destination_position,1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
+			await get_tree().create_timer(1).timeout
 			var tween2 = create_tween()
 			tween2.tween_property(display_cardplay_card,"modulate",Color(0, 0, 0, 0),0.2).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
 			await get_tree().create_timer(0.5).timeout			

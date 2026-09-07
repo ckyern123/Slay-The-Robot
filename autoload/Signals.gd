@@ -39,6 +39,7 @@ signal card_drawn(card: CardData)
 signal card_deck_shuffled(is_reshuffle: bool)
 signal card_discarded(card: CardData, is_manual_discard: bool)
 signal card_exhausted(card: CardData)
+signal card_ascended(card: CardData)
 signal card_banished(card: CardData, in_limbo: bool) # card removed from play. in_limbo used for cards that aren't really banished, merely removed from play to be re-added by another action
 signal card_added_to_draw(card_data: CardData)
 signal card_added_to_hand(card_data: CardData)

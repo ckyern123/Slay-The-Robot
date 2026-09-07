@@ -1,6 +1,9 @@
 # Action to exhaust selected cards
 extends BaseCardsetAction
-
+var sound_action_data: Array[Dictionary] = [{
+	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/ascend.wav"},
+	}]
+	
 func perform_action() -> void:
 	var picked_cards: Array[CardData] = _get_picked_cards()
 	for card_data in picked_cards:
@@ -20,6 +23,9 @@ func perform_action() -> void:
 			var upgrade_factor: int = card_data.card_upgrade_amount
 			var health_amount: int = 1 + rarity_factor + (rarity_factor * upgrade_factor)
 
+			var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+			ActionHandler.add_actions(sound_actions)
 			target.add_health(health_amount, 0)
 			Global.player_data.add_card_to_court(card_data)
+			Signals.card_ascended.emit(card_data)
 	HandManager.exhaust_cards(picked_cards)

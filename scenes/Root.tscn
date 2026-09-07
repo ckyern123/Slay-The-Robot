@@ -378,7 +378,9 @@ You gain Prestige from:
 1) Total number of cards owned.
 2) Ascending cards.
 3) Building artifacts.
-4) Drafting books."
+4) Drafting books.
+
+GAME LOSS: You lose if you have 0 food."
 
 [node name="CharacterSelect" type="Control" parent="TitleScreen/NewRunMenu" unique_id=1360860974]
 layout_mode = 1
@@ -1939,34 +1941,35 @@ text = "Room:"
 unique_name_in_owner = true
 position = Vector2(710, 4)
 
-[node name="ArtifactContainer" type="HBoxContainer" parent="RunScreen/Combat" unique_id=1591838213]
+[node name="ArtifactContainer" type="GridContainer" parent="RunScreen/Combat" unique_id=1880890621]
 layout_mode = 0
-offset_left = 10.0
+offset_left = 30.0
 offset_top = 416.0
-offset_right = 383.0
+offset_right = 403.0
 offset_bottom = 748.0
 mouse_filter = 2
+columns = 8
 script = ExtResource("5_a7j3r")
 
 [node name="Player" parent="RunScreen/Combat" unique_id=524412048 instance=ExtResource("5_7crh0")]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 2.0
+offset_left = 25.0
 offset_top = 88.0
-offset_right = 202.0
+offset_right = 225.0
 offset_bottom = 249.0
 
 [node name="LayeredHealthBar" parent="RunScreen/Combat/Player/Visible/AnimatedSprite2D" parent_id_path=PackedInt32Array(524412048, 1304224126) index="0" unique_id=2073839150]
-offset_left = -32.0
-offset_right = 288.0
+offset_left = -47.0
+offset_right = 273.0
 
 [node name="TimerRect" type="TextureRect" parent="RunScreen/Combat/Player" unique_id=898384319]
 self_modulate = Color(0.30544624, 0.3054462, 0.3054462, 1)
 layout_mode = 0
-offset_left = 162.0
-offset_top = -17.0
-offset_right = 382.0
-offset_bottom = 83.0
+offset_left = 130.0
+offset_top = -2.0
+offset_right = 350.0
+offset_bottom = 98.0
 texture = ExtResource("38_ug4o1")
 
 [node name="ObjectivesRect" type="TextureRect" parent="RunScreen/Combat/Player" unique_id=2101490725]
@@ -1996,46 +1999,46 @@ Books drafted: 5"
 [node name="ColorRect" type="ColorRect" parent="RunScreen/Combat/Player" unique_id=1213429792]
 z_index = -1
 layout_mode = 0
-offset_left = -5.0
+offset_left = -26.0
 offset_top = -22.0
-offset_right = 395.0
+offset_right = 374.0
 offset_bottom = 328.0
 color = Color(0.09312489, 6.843591e-08, 0.007676205, 1)
 
 [node name="ShopRefreshLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=1682282931]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 212.0
-offset_top = 39.0
-offset_right = 412.0
-offset_bottom = 89.0
+offset_left = 180.0
+offset_top = 54.0
+offset_right = 380.0
+offset_bottom = 104.0
 bbcode_enabled = true
 text = "Shop Refresh:"
 
 [node name="RotLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=343928383]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 174.0
-offset_top = -11.0
-offset_right = 374.0
-offset_bottom = 39.0
+offset_left = 142.0
+offset_top = 4.0
+offset_right = 342.0
+offset_bottom = 54.0
 bbcode_enabled = true
 text = "Rot Timer:"
 
 [node name="RefreshFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=1304016618]
 unique_name_in_owner = true
-position = Vector2(337, 54)
+position = Vector2(305, 69)
 
 [node name="RotFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=2046406211]
 unique_name_in_owner = true
-position = Vector2(299, -8)
+position = Vector2(267, 7)
 
 [node name="AscendButton" type="Button" parent="RunScreen/Combat/Player" unique_id=68841014]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 91.0
+offset_left = 70.0
 offset_top = 158.0
-offset_right = 291.0
+offset_right = 270.0
 offset_bottom = 208.0
 text = "ASCEND"
 script = ExtResource("39_8b2qk")
@@ -2469,6 +2472,13 @@ offset_top = 287.0
 offset_right = 1440.0
 offset_bottom = 647.0
 
+[node name="ColorRect" type="ColorRect" parent="RunScreen/Combat/CardPicking" unique_id=183899934]
+layout_mode = 0
+offset_left = 200.0
+offset_top = -61.0
+offset_right = 600.0
+offset_bottom = -11.0
+
 [node name="Background3" type="ColorRect" parent="RunScreen/Combat/CardPicking" unique_id=1749579492]
 layout_mode = 1
 anchors_preset = 8
@@ -2498,6 +2508,14 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Pick X cards"
 horizontal_alignment = 1
+
+[node name="ColorRect2" type="ColorRect" parent="RunScreen/Combat/CardPicking" unique_id=1211793975]
+layout_mode = 0
+offset_left = 494.0
+offset_top = 231.0
+offset_right = 894.0
+offset_bottom = 281.0
+color = Color(0.10747976, 0.10747973, 0.10747973, 1)
 
 [node name="ConfirmPickButton" type="Button" parent="RunScreen/Combat/CardPicking" unique_id=1476605964]
 unique_name_in_owner = true
@@ -2977,7 +2995,7 @@ script = ExtResource("10_bwtvr")
 layout_mode = 0
 offset_right = 1980.0
 offset_bottom = 1087.0
-color = Color(0.32122225, 0.13349116, 0, 0.8)
+color = Color(0.32156864, 0.13333334, 0, 0.9019608)
 
 [node name="BackButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=414985548]
 layout_mode = 0
@@ -3171,7 +3189,7 @@ offset_right = 232.0
 offset_bottom = 234.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.290196, 0.266667, 0.305882, 0.662745)
+color = Color(0.47843137, 0.44313726, 0.49803922, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RunScreen/PauseOverlay/Background2" unique_id=162114721]
 layout_mode = 1
@@ -3385,21 +3403,20 @@ metadata/_edit_use_anchors_ = true
 [node name="RefreshTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=738179992]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.10572917
-anchor_top = 0.117592596
-anchor_right = 0.20364584
-anchor_bottom = 0.17222223
+anchor_left = 0.11145833
+anchor_top = 0.13333334
+anchor_right = 0.209375
+anchor_bottom = 0.18796296
 mouse_filter = 2
 border_width = 5.0
-metadata/_edit_use_anchors_ = true
 
 [node name="RotTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=730954569]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.07239583
-anchor_top = 0.072222225
-anchor_right = 0.178125
-anchor_bottom = 0.11666666
+anchor_left = 0.08802083
+anchor_top = 0.08796296
+anchor_right = 0.19375
+anchor_bottom = 0.13240741
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true

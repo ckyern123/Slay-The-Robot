@@ -1,4 +1,4 @@
-extends HBoxContainer
+extends GridContainer
 
 func _ready():
 	Signals.run_started.connect(_on_run_started)

@@ -3,7 +3,7 @@
 ## Make sure to have child BaseCardSetAction(s) to actually do something such as add to hand
 extends ActionPickCards
 var sound_action_data: Array[Dictionary] = [{
-		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/forge.wav"},
 		}]
 func perform_action():
 	# overrides user card selection with generated cards
