@@ -12,7 +12,7 @@ class_name Tooltip
 @onready var food_label: RichTextLabel = %FoodLabel
 @onready var ore_label: RichTextLabel = %OreLabel
 @onready var insight_label: RichTextLabel = %InsightLabel
-@onready var sprawl_label: RichTextLabel = %SprawlLabel
+@onready var size_label: RichTextLabel = %SizeLabel
 @onready var room_label: RichTextLabel = %RoomLabel
 
 @onready var energy: TextureButton = %Energy
@@ -26,6 +26,7 @@ class_name Tooltip
 @onready var artifact_container = %ShopArtifactLabel
 @onready var shop_refresh = %ShopRefreshLabel
 @onready var rot_warning = %RotLabel
+@onready var ascend_button = %AscendButton
 @onready var objectives_label = %ObjectivesLabel 
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var tooltip_label: RichTextLabel = $PanelContainer/TooltipLabel
@@ -49,13 +50,13 @@ func _ready() -> void:
 	var component_tooltip_data: Array[Array] = [
 		[pause_button, "[color=orange]Pause[/color]\nStops Game", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		[map_button, "[color=orange]Map[/color]\nOpens map for this act", true, false, true, $TooltipPositions/TopLeftTooltipPos],
-		[deck_button, "[color=orange]Deck[/color]\nList of all cards currently owned. Saved between combats", true, false, true, $TooltipPositions/TopLeftTooltipPos],
+		[deck_button, "[color=orange]Royal Court[/color]\nList of all ascended cards. Saved between combats", true, false, true, $TooltipPositions/TopLeftTooltipPos],
 		
-		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose. /Overhead: Each turn, you lose Food equal to total cards/10", true, false, true, $TooltipPositions/FoodTooltipPos],
+		[food_label, "[color=orange]Food[/color]\nWhen this reaches zero, you lose. \nUpkeep: Each turn, you lose Food equal to total cards/10", true, false, true, $TooltipPositions/FoodTooltipPos],
 		[money_label, "[color=orange]Money[/color]\nHow much money you have. Money is used to purchase cards and fulfil trade orders.", true, false, true, $TooltipPositions/MoneyTooltipPos],
 		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have. Ore is used to forge things and build Artifacts.", true, false, true, $TooltipPositions/OreTooltipPos],
 		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have. Insight is used to weave and cook things. Scrolls are woven things that are used to draft Books.", true, false, true, $TooltipPositions/InsightTooltipPos],
-		[sprawl_label, "[color=orange]Size[/color]\nYour kingdom's Size is the amount of cards you can support before it becomes unstable. For every 3 cards that exceed Size, you rattle a card in discard pile at the end of turn.", true, false, true, $TooltipPositions/SprawlTooltipPos],
+		[size_label, "[color=orange]Size[/color]\nYour kingdom's Size is the amount of cards you can support before it becomes unstable. For every 3 cards that exceed Size, you rattle a card in discard pile at the end of turn.", true, false, true, $TooltipPositions/SizeTooltipPos],
 		[room_label, "[color=orange]Room[/color]\nHow much Room you have. Room is needed to build Artifacts.", true, false, true, $TooltipPositions/RoomTooltipPos],
 		[card_container, "[color=orange]Recruit Faction Cards[/color]\nPurchase cards. Cards cost Money. You can only purchase one card for each Shop Refresh.", true, false, true, $TooltipPositions/CardTooltipPos],
 		[artifact_container, "[color=orange]Artifact Blueprints[/color]\nPurchase an artifact blueprint. To acquire the artifact, play the Blueprint card and pay 8 Ore. You can only purchase one blueprint per Shop Refresh", true, false, true, $TooltipPositions/ArtifactTooltipPos],
@@ -63,7 +64,7 @@ func _ready() -> void:
 		[shop_refresh, "[color=orange]Shop Refresh[/color]\nWhen this counter is at zero, the shop is refreshed.", true, false, true, $TooltipPositions/RefreshTooltipPos],
 		[rot_warning, "[color=orange]Rot Warning[/color]\nWhen this counter is at zero, 25-50% of your food will be gone.", true, false, true, $TooltipPositions/RotTooltipPos],
 		[objectives_label, "[color=orange]Objectives[/color]\nTo win the game, complete these objectives\nThe total number of cards you have can be seen at the Size counter\nArtifacts are built by purchasing blueprint cards and playing them\n.Books are drafted every three times Scrolls are played.", true, false, true, $TooltipPositions/ObjectivesTooltipPos],
-				
+		[ascend_button, "[color=orange]Ascend[/color]\nSpend 1 Insight to Ascend a Faction card in hand to the Royal Court.\nThis counts as exhausting the card.\n\nYou gain Prestige, which increases depending on the card's rarity and upgrade status. Only cards with 5 or more influence can be selected.", true, false, true, $TooltipPositions/AscendTooltipPos],				
 		[energy, "[color=orange]Energy[/color]\nUsed to play cards", false, false, false, $TooltipPositions/EnergyTooltipPos],
 		[draw_pile_button, "[color=orange]Draw Pile[/color]\nThese cards will be drawn", false, false, false, $TooltipPositions/DrawTooltipPos],
 		[exhaust_pile_button, "[color=orange]Exhaust Pile[/color]\nThese cards have been removed from play", false, false, false, $TooltipPositions/ExhaustTooltipPos],	

@@ -64,7 +64,6 @@ animation = &"idle"
 
 [node name="LayeredHealthBar" parent="Visible/AnimatedSprite2D" unique_id=2073839150 instance=ExtResource("3_ef7si")]
 unique_name_in_owner = true
-visible = false
 
 [node name="SelectionButton" type="Button" parent="Visible/AnimatedSprite2D" unique_id=1153728447]
 unique_name_in_owner = true

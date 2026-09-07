@@ -600,7 +600,7 @@ func add_artifacts() -> void:
 	artifact_check_scroll.artifact_counter_max = 5
 	artifact_check_scroll.artifact_turn_end_actions = []
 	artifact_check_scroll.artifact_counter_wraparound = true
-	artifact_check_scroll.artifact_max_counter_actions = [{Scripts.ACTION_ADD_BOOKS:{"books_amount":1}},{Scripts.ACTION_PICK_CARDS:
+	artifact_check_scroll.artifact_max_counter_actions = [{Scripts.ACTION_ADD_HEALTH:{"target_override":BaseAction.TARGET_OVERRIDES.PLAYER,"health_amount":5}},{Scripts.ACTION_PICK_CARDS:
 		{
 			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
 			"pick_draft_cards": false,
@@ -3065,8 +3065,8 @@ func add_characters() -> void:
 	character_green.character_name = "WELCOME"
 	character_green.character_description = "To start, just start the run. KEY SHORTCUTS: Number keys can be used to play cards at a position in hand; Press E to End Turn; Right click to preview card upgrade.\n\nIMPORTANT NOTE: Most cards in this game have an additional stats called Influence (represented by Purple Heart). Everytime they are played, it goes up by 1. If it reaches 7, the next time the card is played, it is upgraded (To preview card upgrade, right click it). \n\n Every time it is not played and remains in hand at the end of turn, the card's influence goes down by 1. If it goes to 0, it becomes a Rebel, a useless and detrimental card."
 	character_green.character_color_id = "color_{0}".format([character_color])
-	#character_green.restarting_health = 75
 	character_green.character_starting_insight = 3
+	character_green.character_starting_health = 10
 	character_green.character_starting_ore = 3
 	character_green.character_starting_money = 20
 	character_green.character_starting_food = 20
@@ -3085,9 +3085,9 @@ func add_characters() -> void:
 	var animation_character_green: AnimationData = AnimationData.new("animation_character_{0}".format([character_color]))
 	character_green.character_animation_id = animation_character_green.object_id
 	animation_character_green.add_combatant_animations(
-		["external/sprites/characters/character_{0}/character_{0}.png".format([character_color])],
-		["external/sprites/characters/character_{0}/character_{0}.png".format([character_color])],
-		["external/sprites/characters/character_{0}/character_{0}.png".format([character_color])],
+		["external/sprites/characters/throne.png"],
+		["external/sprites/characters/throne.png"],
+		["external/sprites/characters/throne.png"],
 		)
 	
 	Global.register_rod(animation_character_green)

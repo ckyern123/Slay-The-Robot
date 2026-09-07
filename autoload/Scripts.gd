@@ -121,6 +121,7 @@ const ACTION_CHANGE_CARD_INFLUENCE: String = "res://scripts/actions/card_actions
 
 const ACTION_IMPROVE_CARD_VALUES_UNUSED_ENERGY: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveCardValuesUnusedEnergy.gd"
 const ACTION_CLAMP_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionClampCardValues.gd"
+const ACTION_ASCEND_CARDS: String = "res://scripts/actions/card_actions/cardset_actions/ActionAscendCards.gd"
 const ACTION_DISCARD_CARDS: String = "res://scripts/actions/card_actions/cardset_actions/ActionDiscardCards.gd"
 const ACTION_DECORATE_CARDS: String = "res://scripts/actions/card_actions/cardset_actions/ActionDecorateCards.gd"
 const ACTION_EXHAUST_CARDS: String = "res://scripts/actions/card_actions/cardset_actions/ActionExhaustCards.gd"

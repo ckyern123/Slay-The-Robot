@@ -114,7 +114,7 @@ func set_card_mode(_card_mode: int) -> void:
 
 func view_deck() -> void:
 	set_card_mode(CARD_MODES.VIEW)
-	populate_cards(Global.player_data.player_deck)
+	populate_cards(Global.player_data.player_court)
 
 func view_draw_pile() -> void:
 	set_card_mode(CARD_MODES.VIEW)

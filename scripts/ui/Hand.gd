@@ -280,7 +280,14 @@ func _on_card_upgraded(card_data: CardData):
 	display_cardplay_container.visible = true
 	_display_cardplay(card_data,"upgrade")
 
+func _on_card_ascended(card_data: CardData):
+	if (!cardplay_on_display):
+		cardplay_on_display = true
+	display_cardplay_container.visible = true
+	_display_cardplay(card_data,"ascended")
+	
 func _on_card_created(card_data: CardData):
+	Global.player_data.add_size(1)
 	if (!cardplay_on_display):
 		cardplay_on_display = true
 	display_cardplay_container.visible = true
@@ -288,6 +295,7 @@ func _on_card_created(card_data: CardData):
 	_display_cardplay(card_data,"created")
 
 func _on_card_purchased(card_data: CardData):
+	Global.player_data.add_size(1)
 	if (!cardplay_on_display):
 		cardplay_on_display = true
 	display_cardplay_container.visible = true
@@ -295,6 +303,7 @@ func _on_card_purchased(card_data: CardData):
 	_display_cardplay(card_data,"created")
 		
 func _on_trade_purchased(card_data: CardData):
+	Global.player_data.add_size(1)
 	if (!cardplay_on_display):
 		cardplay_on_display = true
 	display_cardplay_container.visible = true
@@ -371,7 +380,20 @@ func _display_cardplay(card_data: CardData, property: String = ""):
 			tween2.tween_property(display_cardplay_card,"modulate",Color(0, 0, 0, 0),0.2).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
 			await get_tree().create_timer(0.5).timeout			
 			display_cardplay_card.queue_free()
-
+		"ascended":
+			display_cardplay_card.position = Vector2(50,800)
+			#display_cardplay_card.modulate = Color(0,0,0,0)
+			display_cardplay_card.scale = Vector2(0.5,0.5)
+			#var destination_ui_element: Control = HandManager.card_destination_to_ui_elements.get(HandManager.DISCARD_PILE, null)
+			#var destination_position: Vector2 = destination_ui_element.global_position - (destination_ui_element.size / 2) - Vector2(50,100)
+			var destination_position: Vector2 = Vector2(50,100)
+			var tween = create_tween()
+			tween.tween_property(display_cardplay_card,"position",destination_position,0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
+			await get_tree().create_timer(0.3).timeout
+			var tween2 = create_tween()
+			tween2.tween_property(display_cardplay_card,"modulate",Color(0, 0, 0, 0),0.2).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
+			await get_tree().create_timer(0.5).timeout			
+			display_cardplay_card.queue_free()
 ## Spawns an animated effect over the combatant
 ## Used for things like imacts
 func create_effect_animation(animation_id: String) -> void:

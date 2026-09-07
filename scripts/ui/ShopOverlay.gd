@@ -9,6 +9,10 @@ extends Control
 
 @onready var map = $%Map
 @onready var shop_populated: bool = false
+
+var sound_action_data: Array[Dictionary] = [{
+	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/purchase.wav"},
+	}]
 func _ready():
 	#Signals.combat_started.connect(_on_combat_started)
 	
@@ -17,15 +21,12 @@ func _ready():
 	
 	Signals.player_killed.connect(_on_player_killed)
 	Signals.run_ended.connect(_on_run_ended)
-	
 	Signals.card_purchased.connect(_on_card_purchased)
 	Signals.trade_purchased.connect(_on_trade_purchased)
 	Signals.artifact_purchased.connect(_on_artifact_purchased)
 	Signals.consumable_purchased.connect(_on_consumable_purchased)
 	Signals.player_money_changed.connect(_on_player_money_changed)
-	FileLoader.load_texture(Card.ore_texture_path)
-	FileLoader.load_texture(Card.room_texture_path)
-	#shop_artifact_label.text = "ARTIFACT BLUEPRINTS\nTo build artifacts, first purchase a blueprint card below. Then, play the blueprint card, spend 8[img width={0}]{1}[/img] and 1[img width={0}]{2}[/img] to build the artifact.".format([16,Card.ore_texture_path,Card.room_texture_path])
+
 	continue_button.button_up.connect(_on_continue_button_up)
 func populate_price() -> void:
 	if (!shop_populated):
@@ -298,9 +299,9 @@ func _on_shop_opened():
 	populate_shop()
 
 func _on_card_purchased(_card_data: CardData):
-	var sound_action_data: Array[Dictionary] = [{
-	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/purchase.wav"},
-	}]
+	#var sound_action_data: Array[Dictionary] = [{
+	#Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/purchase.wav"},
+	#}]
 	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
 	ActionHandler.add_actions(sound_actions)
 	for child in card_container.get_children():
@@ -309,9 +310,9 @@ func _on_card_purchased(_card_data: CardData):
 	#_repopulate_shop_after_actions_ended()
 
 func _on_trade_purchased(_card_data: CardData):
-	var sound_action_data: Array[Dictionary] = [{
-	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/purchase.wav"},
-	}]
+	#var sound_action_data: Array[Dictionary] = [{
+	#Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/purchase.wav"},
+	#}]
 	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
 	ActionHandler.add_actions(sound_actions)
 	for child in trade_container.get_children():
@@ -320,9 +321,9 @@ func _on_trade_purchased(_card_data: CardData):
 	#_repopulate_shop_after_actions_ended()
 	
 func _on_artifact_purchased(_artifact_data: ArtifactData):
-	var sound_action_data: Array[Dictionary] = [{
-	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/purchase.wav"},
-	}]
+	#var sound_action_data: Array[Dictionary] = [{
+	#Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/purchase.wav"},
+	#}]
 	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
 	ActionHandler.add_actions(sound_actions)
 	for child in artifact_container.get_children():

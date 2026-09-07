@@ -5,8 +5,11 @@ func perform_action():
 	
 	for action_interceptor_processor in action_interceptor_processors:
 		var size_amount: int = action_interceptor_processor.get_shadowed_action_values("size_amount", 0)
-		Global.player_data.add_size(size_amount)
-
+		var size_max_amount: int = action_interceptor_processor.get_shadowed_action_values("size_max_amount", 0)
+		
+		Global.player_data.add_size(size_amount, size_max_amount)
+	
 func _to_string():
 	var size_amount: int = get_action_value("size_amount", 0)
-	return "Add Food Action: " + str(size_amount)
+	var size_max_amount: int = get_action_value("size_max_amount", 0)
+	return  "Add Size Action: %s %s" % [size_amount, size_max_amount]

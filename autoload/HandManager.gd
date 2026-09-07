@@ -52,7 +52,9 @@ const DECK: String = "DECK"
 const COMBAT_DECK: String = "COMBAT_DECK"
 const PLAYED_THIS_TURN: String = "PLAYED_THIS_TURN"
 const PLAYED_LAST_TURN: String = "PLAYED_LAST_TURN"
-
+var sound_action_data: Array[Dictionary] = [{
+	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/shuffle.wav"},
+	}]
 ## This is used for destinations when adding cards to a pile. Realistically this only factors
 ## in when dealing with the draw or discard pile, but a generic implementation allows for other piles
 ## to use similar logic.
@@ -832,9 +834,9 @@ func shuffle_draw(shuffle_discard_into_draw: bool = true, is_reshuffle: bool = t
 	# overwrite draw pile with bucket shuffled cards
 	HandManager.player_draw = shuffled_draw
 	
-	var sound_action_data: Array[Dictionary] = [{
-	Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/shuffle.wav"},
-	}]
+	#var sound_action_data: Array[Dictionary] = [{
+	#Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/shuffle.wav"},
+	#}]
 	var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
 	ActionHandler.add_actions(sound_actions)
 	# deck shuffle on first turn not counted as a deck reshuffle event

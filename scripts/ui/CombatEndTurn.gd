@@ -25,7 +25,6 @@ func wait() -> void:
 			Global.player_data.add_food(food_count/10)
 			
 			Global.player_data.add_food(Global.player_data.blight/99)
-			Global.player_data.blight -= 0		
 			if Global.player_food <= 0:
 				Global.end_run(Global.RUN_ENDS.LOSS)
 			if Global.player_data.player_deck.size() >= 100:
@@ -35,7 +34,7 @@ func wait() -> void:
 			# prevents further card plays but finishes the rest of the current action stack
 			HandManager.refund_card_queue()
 			HandManager.set_disable_hand(true)
-			var sprawl_count: int = Global.player_data.player_size - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
+			var sprawl_count: int = Global.player_data.player_size_max - Global.player_data.player_size
 			if (sprawl_count < 0):
 				var influence_action_data: Array[Dictionary] = [{
 				Scripts.ACTION_PICK_CARDS: {
@@ -87,17 +86,12 @@ func wait() -> void:
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
 			
-			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
+			var food_count: int = 0 - Global.player_data.player_size
 			Global.player_data.add_food(food_count/10)
 			
-			Global.player_data.add_food(Global.player_data.blight/99)
-			Global.player_data.blight -= 0
-			if Global.player_food <= 0:
-				#Global.end_run(Global.RUN_ENDS.LOSS)
+			if Global.player_data.player_food <= 0:
 				Signals.player_killed.emit(Global.get_player())
-			var deck_total = (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
-			if deck_total >= 60 and Global.player_data.get_player_artifacts().size() >= 17 and Global.player_data.player_books >= 5:
-				#Global.end_run(Global.RUN_ENDS.VICTORY)
+			if Global.player_data.player_health >= Global.player_data.player_health_max:
 				Signals.run_victory.emit()
 			end_turn()
 		END_TURN_QUEUE_IMMEDIACY.WAIT_FOR_ALL_CARD_PLAYS, _:
@@ -155,15 +149,12 @@ func wait() -> void:
 			while len(HandManager.card_play_queue) > 0 or ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
 				
-			var food_count: int = 0 - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
+			var food_count: int = 0 - Global.player_data.player_size
 			Global.player_data.add_food(food_count/10)
 			
 			if Global.player_data.player_food <= 0:
 				Signals.player_killed.emit(Global.get_player())
-				#Global.end_run(Global.RUN_ENDS.LOSS)
-			var deck_total = (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
-			if deck_total >= 60 and Global.player_data.get_player_artifacts().size() >= 17 and Global.player_data.player_books >= 5:
-				#Global.end_run(Global.RUN_ENDS.VICTORY)
+			if Global.player_data.player_health >= Global.player_data.player_health_max:
 				Signals.run_victory.emit()
 			end_turn()
 

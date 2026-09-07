@@ -3,10 +3,11 @@
 extends PrototypeData
 class_name PlayerData
 
+const PLAYER_START_ROT: int = 14
 ## CharacterData object_id. Provides additional read only data about the character this player represents. 
 @export var player_character_object_id: String = ""
-@export var player_health: int = 50
-@export var player_health_max: int = 50
+@export var player_health: int = 10
+@export var player_health_max: int = 200
 
 @export var player_money: int = 20
 @export var player_books: int = 0
@@ -15,10 +16,11 @@ class_name PlayerData
 @export var player_food_max: int = 0
 @export var player_ore: int = 5
 @export var player_size: int = 0
+@export var player_size_max: int = 0
 @export var player_room: int = 0
 @export var player_insight: int = 0
 @export var player_refresh: int = 4
-@export var player_rot: int = 10
+@export var player_rot: int = PLAYER_START_ROT
 @export var player_bandit_chance: int = 0
 @export var blight: int = 0
 @export var player_spice_exhaust: int = 0
@@ -210,6 +212,7 @@ var player_reward_consumable_rarity_cache: Dictionary[int, Array] = {}
 ## The player's permanent deck, persisting between combat. Changes to cards here will be
 ## permanent.
 @export var player_deck: Array[CardData] = []
+@export var player_court: Array[CardData] = []
 @export var player_draw: Array[CardData] = []
 @export var player_hand: Array[CardData] = []
 @export var player_discard: Array[CardData] = []
@@ -281,11 +284,17 @@ func add_books(amount: int) -> void:
 	
 		## Adds or subtracts money from the player
 ## If goes into negative amounts, the proper delta will be calculated 
-func add_size(amount: int) -> void:
+func add_size(amount: int, amount_max: int = 0) -> void:
 	var old_player_size_amount: int = player_size
 	player_size = max(player_size + amount, 0)
 	var delta: int = player_size - old_player_size_amount
-	Signals.player_sprawl_changed.emit(delta)
+	if (amount_max != 0):
+		var old_player_size_max_amount: int = player_size
+		player_size_max = max(player_size_max + amount_max,0)
+		var delta_2: int = player_size_max - old_player_size_max_amount
+		Signals.player_size_max_changed.emit(delta_2)
+	add_health(amount)
+	Signals.player_size_changed.emit(delta)
 
 ## If goes into negative amounts, the proper delta will be calculated 
 func add_room(amount: int) -> void:
@@ -466,7 +475,7 @@ func add_health(health_amount: int, health_amount_max: int = 0) -> void:
 func set_health(health_amount: int, health_amount_max: int = player_health_max) -> void:
 	player_health_max = max(1, health_amount_max)
 	player_health = clamp(0, health_amount, player_health_max)
-	Signals.player_health_changed.emit()
+	Signals.player_health_changed.emit(0)
 
 #endregion
 #region Deck
@@ -504,6 +513,25 @@ func transform_card_in_deck(card_data: CardData, new_card_object_id: String) -> 
 	
 	Signals.card_transformed_in_deck.emit(card_data)
 
+func add_card_to_court(card_data: CardData) -> void:
+	player_court.append(card_data)
+	
+	var card_play_request: CardPlayRequest = HandManager.create_card_play_request(card_data, null, false, false)
+	var player: Player = Global.get_player()
+	var card_add_to_court_actions: Array[BaseAction] = ActionGenerator.create_actions(player, card_play_request, [], card_data.card_add_to_court_actions, null)
+	ActionHandler.add_actions(card_add_to_court_actions)
+	
+	Signals.card_added_to_court.emit(card_data)
+
+func remove_card_from_court(card_data: CardData) -> void:
+	player_court.erase(card_data)
+	
+	var card_play_request: CardPlayRequest = HandManager.create_card_play_request(card_data, null, false, false)
+	var player: Player = Global.get_player()
+	var card_remove_from_court_actions: Array[BaseAction] = ActionGenerator.create_actions(player, card_play_request, [], card_data.card_remove_from_court_actions, null)
+	ActionHandler.add_actions(card_remove_from_court_actions)
+	
+	Signals.card_removed_from_court.emit(card_data)
 #endregion
 #region Run Artifacts
 
@@ -612,7 +640,7 @@ func add_artifact(artifact_id: String) -> void:
 			player_artifact_count += 1
 			Signals.player_artifacts_changed.emit()
 			Signals.player_artifact_added.emit(artifact_data)
-			
+			add_health(3, 0)
 			# remove artifact from spawn pool in case it wasn't already
 			remove_artifact_from_pool(artifact_data.object_id)
 

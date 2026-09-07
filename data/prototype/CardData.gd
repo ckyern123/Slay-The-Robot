@@ -121,6 +121,8 @@ const STANDARD_CARD_RARITIES: Array[int] = [CARD_RARITIES.COMMON, CARD_RARITIES.
 
 @export var card_add_to_deck_actions: Array[Dictionary] = []	# actions that trigger when card is added to player's permanent deck 
 @export var card_remove_from_deck_actions: Array[Dictionary] = []	# actions that trigger when card is removed from player's permanent deck
+@export var card_add_to_court_actions: Array[Dictionary] = []	# actions that trigger when card is added to player's permanent deck 
+@export var card_remove_from_court_actions: Array[Dictionary] = []	# actions that trigger when card is removed from player's permanent deck
 @export var card_transform_in_deck_actions: Array[Dictionary] = []	# actions that trigger when card is transformed in player's permanent deck
 
 ## Validators required for the card to be playable. Will make the card glow if all pass.

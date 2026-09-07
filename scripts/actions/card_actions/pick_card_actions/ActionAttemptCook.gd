@@ -16,11 +16,11 @@ func perform_action():
 		if (insight_dif < 0 or food_dif < 0):
 			number_of_cards += min(insight_dif,food_dif)
 			if (number_of_cards > 0):
-				Global.player_data.player_insight -= number_of_cards
-				Global.player_data.player_food -= number_of_cards
+				Global.player_data.add_insight(-number_of_cards)
+				Global.player_data.add_food(-number_of_cards)
 		else:
-			Global.player_data.player_insight -= insight_required
-			Global.player_data.player_food -= food_required
+			Global.player_data.add_insight(-insight_required)
+			Global.player_data.add_food(-food_required)
 		if created_card_object_id != "" and number_of_cards > 0:
 			for i in number_of_cards:
 				var card_data: CardData = Global.get_card_data_from_prototype(created_card_object_id)

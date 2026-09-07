@@ -8,7 +8,7 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var food_label: RichTextLabel = %FoodLabel
 @onready var ore_label: RichTextLabel = %OreLabel
 @onready var insight_label: RichTextLabel = %InsightLabel
-@onready var sprawl_label: RichTextLabel = %SprawlLabel
+@onready var size_label: RichTextLabel = %SizeLabel
 @onready var room_label: RichTextLabel = %RoomLabel
 @onready var objectives_label: RichTextLabel = %ObjectivesLabel
 
@@ -18,7 +18,7 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var money_fade_container: Node2D = %MoneyFadeContainer
 @onready var ore_fade_container: Node2D = %OreFadeContainer
 @onready var insight_fade_container: Node2D = %InsightFadeContainer
-@onready var sprawl_fade_container: Node2D = %SprawlFadeContainer
+@onready var size_fade_container: Node2D = %SizeFadeContainer
 @onready var room_fade_container: Node2D = %RoomFadeContainer
 @onready var refresh_fade_container: Node2D = %RefreshFadeContainer
 @onready var rot_fade_container: Node2D = %RotFadeContainer
@@ -26,7 +26,7 @@ const money_texture_path = "sprites/rupee.svg"
 const food_texture_path = "sprites/oat.svg"
 const ore_texture_path = "sprites/ore.svg"
 const insight_texture_path = "sprites/scroll.svg"
-const sprawl_texture_path = "sprites/village.svg"
+const size_texture_path = "sprites/village.svg"
 const room_texture_path = "sprites/tower.svg"
 const refresh_texture_path = "sprites/refresh.svg"
 const rot_texture_path = "sprites/rot.svg"
@@ -53,8 +53,17 @@ const rot_texture_path = "sprites/rot.svg"
 @onready var chest = $Chest
 @onready var shop = $Shop
 
+var food_sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/food.wav"},
+		}]
+var rot_sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rot.wav"},
+		}]
 
-
+var money_sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/money.mp3"},
+		}]
+		
 @onready var background_button: TextureButton = %BackgroundButton
 
 @onready var end_turn_button: Button = $EndTurnButton
@@ -73,13 +82,14 @@ func _ready():
 	FileLoader.load_texture(food_texture_path)
 	FileLoader.load_texture(ore_texture_path)
 	FileLoader.load_texture(insight_texture_path)
-	FileLoader.load_texture(sprawl_texture_path)
+	FileLoader.load_texture(size_texture_path)
 	FileLoader.load_texture(refresh_texture_path)					
 						
 	Signals.player_money_changed.connect(_on_player_money_changed)
 	Signals.player_food_changed.connect(_on_player_food_changed)
 	Signals.player_ore_changed.connect(_on_player_ore_changed)
-	Signals.player_sprawl_changed.connect(_on_player_sprawl_changed)
+	Signals.player_size_changed.connect(_on_player_size_changed)
+	Signals.player_size_max_changed.connect(_on_player_size_max_changed)
 	Signals.player_room_changed.connect(_on_player_room_changed)
 	Signals.player_insight_changed.connect(_on_player_insight_changed)
 	Signals.player_refresh_changed.connect(_on_player_refresh_changed)
@@ -95,8 +105,8 @@ func _ready():
 	Signals.player_turn_ended.connect(_on_player_turn_ended)
 	Signals.enemy_turn_ended.connect(_on_enemy_turn_ended)
 	Signals.enemy_turn_started.connect(_on_enemy_turn_started)
-	Signals.player_artifacts_changed.connect(_on_player_artifacts_changed)
-	Signals.player_books_changed.connect(_on_player_books_changed)
+	#Signals.player_artifacts_changed.connect(_on_player_artifacts_changed)
+	#Signals.player_books_changed.connect(_on_player_books_changed)
 	Signals.end_turn_requested.connect(_on_end_turn_requested)
 	Signals.tween_discard.connect(_on_tween_discard)
 	
@@ -109,7 +119,7 @@ func _ready():
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / Upkeep: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
 
 	# pile buttons
 	deck_button.button_up.connect(_on_deck_button_up)
@@ -180,7 +190,7 @@ func update_combat_display():
 	_on_player_ore_changed()
 	_on_player_insight_changed()
 	_on_player_money_changed()
-	_on_player_sprawl_changed()
+	_on_player_size_changed()
 	_on_player_room_changed()
 	_on_player_refresh_changed()
 	_on_player_rot_changed()
@@ -230,6 +240,7 @@ func _on_card_discarded(_card_data: CardData, _is_manual_discard: bool):
 	update_combat_display()
 
 func _on_card_exhausted(_card_data: CardData):
+	Global.player_data.add_size(-1)
 	update_combat_display()
 
 func _on_energy_changed():
@@ -241,10 +252,8 @@ func _on_card_queue_refunded():
 func _on_player_money_changed(_delta: int = 0):
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
 	if (_delta > 0):
-		var sound_action_data: Array[Dictionary] = [{
-		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/money.mp3"},
-		}]
-		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], money_sound_action_data, null)
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(money_fade_container, FileLoader.load_texture(money_texture_path))
@@ -272,27 +281,25 @@ func _on_player_insight_changed(_delta: int = 0):
 		create_image_fade(insight_fade_container, FileLoader.load_texture(insight_texture_path))	
 		
 func _on_player_food_changed(_delta: int = 0):
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / Upkeep %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
 	if (_delta > 0):
-		var sound_action_data: Array[Dictionary] = [{
-		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/food.wav"},
-		}]
-		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], food_sound_action_data, null)
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(food_fade_container, FileLoader.load_texture(food_texture_path))
 		
-func _on_player_sprawl_changed(_delta: int = 0):
-	var calc: int = (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())
-	var sprawl: int = Global.player_data.player_size
-	if (calc > sprawl):
-		sprawl_label.text = "[img width={0}]{1}[/img] {2}: [color=#FF9233]%s / %s[/color]".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Size"])  % [calc,Global.player_data.player_size]
+func _on_player_size_changed(_delta: int = 0):
+	var player_size: int = Global.player_data.player_size
+	var player_size_max: int = Global.player_data.player_size_max
+	if (player_size > player_size_max):
+		size_label.text = "[img width={0}]{1}[/img] {2}: [color=#FF9233]%s / %s[/color]".format([EMBEDDED_IMAGE_SIZE, size_texture_path, "Size"])  % [Global.player_data.player_size,Global.player_data.player_size_max]
 	else:
-		sprawl_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, sprawl_texture_path, "Size"])  % [calc,Global.player_data.player_size]
-	if (_delta != 0):
-		create_image_fade(sprawl_fade_container, FileLoader.load_texture(sprawl_texture_path))
-	update_objectives_label()
-	
+		size_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, size_texture_path, "Size"])  % [Global.player_data.player_size,Global.player_data.player_size_max]
+
+func _on_player_size_max_changed(_delta: int = 0):
+	create_image_fade(size_fade_container, FileLoader.load_texture(size_texture_path))
+
 func _on_player_room_changed(_delta: int = 0):
 	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room
 	if (_delta != 0):
@@ -318,12 +325,10 @@ func _on_player_rot_changed(_delta: int = 0):
 	if (Global.player_data.player_rot <= 0):
 		var reduced_value: int = Global.player_data.player_food/randi_range(2,4)
 		Global.player_data.add_food(-reduced_value)
-		var sound_action_data: Array[Dictionary] = [{
-		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rot.wav"},
-		}]
-		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], rot_sound_action_data, null)
 		ActionHandler.add_actions(sound_actions)
-		Global.player_data.player_rot = 10
+		Global.player_data.player_rot = PlayerData.PLAYER_START_ROT - (Global.player_data.player_health/30)
 		rot_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, rot_texture_path, "ROT WARNING"]) % Global.player_data.player_rot
 		create_image_fade(rot_fade_container, FileLoader.load_texture(rot_texture_path))
 		#var current_event = Global.get_player_event_data()
@@ -333,11 +338,11 @@ func _on_player_bandit_changed(_delta: int = 0):
 	var random_int: int = randi_range(0,100)
 	var activate_bandit: bool = (random_int+Global.player_data.player_bandit_chance) > 110
 	if (activate_bandit):
-		var bandit_num: int = ((Global.player_data.player_draw.size() + Global.player_data.player_hand.size() + Global.player_data.player_discard.size()) /10) + (Global.player_data.player_artifact_count/5) + (Global.player_data.player_books/2)
-		var sound_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_bandit","number_of_cards":bandit_num, "action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{
+		var bandit_num: int = 1 + (Global.player_data.player_health/40)
+		var bandit_sound_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_bandit","number_of_cards":bandit_num, "action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{
 		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/bandit.wav"},
 		}]
-		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], bandit_sound_action_data, null)
 		ActionHandler.add_actions(sound_actions)
 		Global.player_data.player_bandit_chance = 0
 ### Deck Buttons
@@ -396,6 +401,7 @@ func _on_combat_started(event_id: String):
 			if (childer.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
 				elite_is_present = true
 	if (game_start):
+		Global.get_player().reset_player()
 		start_turn_animation()
 	
 	if (game_start):
@@ -422,19 +428,6 @@ func _end_combat_check() -> bool:
 		combat_is_ended = true
 	return combat_is_ended
 
-func update_objectives_label() -> void:
-	var calc: int = (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())
-	objectives_label.text = "Victory Objectives:
-\nTotal number of cards: {0}/60
-\nArtifacts built: {1}/15
-\nBooks drafted: {2}/5".format([calc,Global.player_data.player_artifact_count,Global.player_data.player_books])	
-	
-func _on_player_artifacts_changed() -> void:
-	update_objectives_label()
-
-func _on_player_books_changed(delta: int) -> void:
-	update_objectives_label()
-	
 func perform_enemy_turn():
 	# generates enemy actions and performs them in order
 	var enemies: Array[Enemy] = Global.get_alive_enemies()

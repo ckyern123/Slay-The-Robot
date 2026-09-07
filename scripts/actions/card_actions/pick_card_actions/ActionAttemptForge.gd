@@ -2,7 +2,9 @@
 ## Functions like an ActionPickCards that generates the cards rather than have the user pick them
 ## Make sure to have child BaseCardSetAction(s) to actually do something such as add to hand
 extends ActionPickCards
-
+var sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
+		}]
 func perform_action():
 	# overrides user card selection with generated cards
 	var action_interceptor_processors: Array[ActionInterceptorProcessor] = _intercept_action([])
@@ -14,17 +16,17 @@ func perform_action():
 		if (difference < 0):
 			number_of_cards += difference
 			if (number_of_cards) > 0:
-				Global.player_data.player_ore -= number_of_cards
-				var sound_action_data: Array[Dictionary] = [{
-				Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
-				}]
+				Global.player_data.add_ore(-number_of_cards)
+				#var sound_action_data: Array[Dictionary] = [{
+				#Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
+				#}]
 				var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
 				ActionHandler.add_actions(sound_actions)
 		else:
-			Global.player_data.player_ore -= ore_required
-			var sound_action_data: Array[Dictionary] = [{
-			Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
-			}]
+			Global.player_data.add_ore(-ore_required)
+			#var sound_action_data: Array[Dictionary] = [{
+			#Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/draw.wav"},
+			#}]
 			var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
 			ActionHandler.add_actions(sound_actions)
 		if created_card_object_id != "":

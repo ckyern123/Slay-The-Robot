@@ -55,6 +55,7 @@
 [ext_resource type="Texture2D" uid="uid://bo6n833g5bte1" path="res://sprites/menu.svg" id="32_nddw4"]
 [ext_resource type="Texture2D" uid="uid://cnaunjflinprt" path="res://sprites/suits.svg" id="35_jiqw6"]
 [ext_resource type="Texture2D" uid="uid://dqjugqp1n72r7" path="res://sprites/Sprites/UI_Flat_Frame01a.png" id="38_ug4o1"]
+[ext_resource type="Script" uid="uid://ffsrgwkkas86" path="res://scenes/ui/AscendButton.gd" id="39_8b2qk"]
 [ext_resource type="Texture2D" uid="uid://daoiik3k5jxvw" path="res://sprites/card-draw.svg" id="39_bf4by"]
 [ext_resource type="Texture2D" uid="uid://bxodxn727oyk4" path="res://sprites/discard.svg" id="40_r05d4"]
 [ext_resource type="Texture2D" uid="uid://kimnalvtilo3" path="res://sprites/map.svg" id="40_v75fn"]
@@ -1850,55 +1851,78 @@ position = Vector2(130, 15)
 
 [node name="FoodLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=1670164399]
 unique_name_in_owner = true
-offset_left = 72.0
-offset_right = 422.0
+offset_left = 70.0
+offset_right = 420.0
 offset_bottom = 50.0
 bbcode_enabled = true
 
 [node name="FoodFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=227173185]
 unique_name_in_owner = true
-position = Vector2(87, 7)
+position = Vector2(84, 4)
 
 [node name="MoneyLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=416191368]
 unique_name_in_owner = true
-offset_left = 372.0
-offset_right = 572.0
+offset_left = 300.0
+offset_right = 500.0
 offset_bottom = 50.0
 bbcode_enabled = true
 
 [node name="MoneyFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=1864940312]
 unique_name_in_owner = true
-position = Vector2(387, 7)
+position = Vector2(310, 4)
 
 [node name="OreLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=1597183768]
 unique_name_in_owner = true
-offset_left = 547.0
-offset_right = 747.0
+offset_left = 440.0
+offset_right = 640.0
 offset_bottom = 50.0
 bbcode_enabled = true
 
 [node name="OreFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=1561845151]
 unique_name_in_owner = true
-position = Vector2(562, 7)
+position = Vector2(450, 7)
 
 [node name="InsightLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=2103451130]
 unique_name_in_owner = true
-offset_left = 687.0
-offset_top = 1.0
-offset_right = 887.0
-offset_bottom = 51.0
+offset_left = 550.0
+offset_right = 750.0
+offset_bottom = 50.0
 bbcode_enabled = true
 
 [node name="InsightFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=686892605]
 unique_name_in_owner = true
-position = Vector2(702, 7)
+position = Vector2(560, 4)
+
+[node name="SizeLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=603507063]
+unique_name_in_owner = true
+offset_left = 840.0
+offset_right = 1040.0
+offset_bottom = 50.0
+bbcode_enabled = true
+text = "Size:"
+
+[node name="SizeFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=228372623]
+unique_name_in_owner = true
+position = Vector2(860, 4)
+
+[node name="RoomLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=1691440553]
+unique_name_in_owner = true
+offset_left = 700.0
+offset_right = 900.0
+offset_bottom = 50.0
+bbcode_enabled = true
+text = "Room:"
+
+[node name="RoomFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=484523731]
+unique_name_in_owner = true
+position = Vector2(710, 4)
 
 [node name="ArtifactContainer" type="HBoxContainer" parent="RunScreen/Combat" unique_id=1591838213]
 layout_mode = 0
-offset_left = 50.0
-offset_top = 400.0
-offset_right = 423.0
-offset_bottom = 732.0
+offset_left = 10.0
+offset_top = 416.0
+offset_right = 383.0
+offset_bottom = 748.0
 mouse_filter = 2
 script = ExtResource("5_a7j3r")
 
@@ -1910,6 +1934,10 @@ offset_top = 88.0
 offset_right = 202.0
 offset_bottom = 249.0
 
+[node name="LayeredHealthBar" parent="RunScreen/Combat/Player/Visible/AnimatedSprite2D" parent_id_path=PackedInt32Array(524412048, 1304224126) index="0" unique_id=2073839150]
+offset_left = -32.0
+offset_right = 288.0
+
 [node name="TimerRect" type="TextureRect" parent="RunScreen/Combat/Player" unique_id=898384319]
 self_modulate = Color(0.30544624, 0.3054462, 0.3054462, 1)
 layout_mode = 0
@@ -1920,6 +1948,7 @@ offset_bottom = 83.0
 texture = ExtResource("38_ug4o1")
 
 [node name="ObjectivesRect" type="TextureRect" parent="RunScreen/Combat/Player" unique_id=2101490725]
+visible = false
 self_modulate = Color(0.2874002, 0.043596044, 0.2001214, 1)
 layout_mode = 0
 offset_left = 182.0
@@ -1930,6 +1959,7 @@ texture = ExtResource("38_ug4o1")
 
 [node name="ObjectivesLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=1761519292]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_left = 202.0
 offset_top = 108.0
@@ -1950,61 +1980,43 @@ offset_right = 395.0
 offset_bottom = 328.0
 color = Color(0.09312489, 6.843591e-08, 0.007676205, 1)
 
-[node name="SprawlLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=603507063]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 23.0
-offset_top = 104.0
-offset_right = 223.0
-offset_bottom = 154.0
-bbcode_enabled = true
-text = "Size:"
-
-[node name="SprawlFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=228372623]
-unique_name_in_owner = true
-position = Vector2(41, 119)
-
-[node name="RoomLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=1691440553]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 25.0
-offset_top = 148.0
-offset_right = 225.0
-offset_bottom = 198.0
-bbcode_enabled = true
-text = "Room:"
-
-[node name="RoomFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=484523731]
-unique_name_in_owner = true
-position = Vector2(41, 163)
-
 [node name="ShopRefreshLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=1682282931]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 202.0
-offset_top = 38.0
-offset_right = 402.0
-offset_bottom = 88.0
+offset_left = 212.0
+offset_top = 39.0
+offset_right = 412.0
+offset_bottom = 89.0
 bbcode_enabled = true
 text = "Shop Refresh:"
 
 [node name="RotLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=343928383]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 164.0
-offset_top = -12.0
-offset_right = 364.0
-offset_bottom = 38.0
+offset_left = 174.0
+offset_top = -11.0
+offset_right = 374.0
+offset_bottom = 39.0
 bbcode_enabled = true
 text = "Rot Timer:"
 
 [node name="RefreshFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=1304016618]
 unique_name_in_owner = true
-position = Vector2(327, 53)
+position = Vector2(337, 54)
 
 [node name="RotFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=2046406211]
 unique_name_in_owner = true
-position = Vector2(289, -9)
+position = Vector2(299, -8)
+
+[node name="AscendButton" type="Button" parent="RunScreen/Combat/Player" unique_id=68841014]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 91.0
+offset_top = 158.0
+offset_right = 291.0
+offset_bottom = 208.0
+text = "ASCEND"
+script = ExtResource("39_8b2qk")
 
 [node name="EnemyContainer" type="Control" parent="RunScreen/Combat" unique_id=754159237]
 anchors_preset = 0
@@ -2858,6 +2870,14 @@ offset_right = 1980.0
 offset_bottom = 1080.0
 script = ExtResource("25_ll3o0")
 
+[node name="RunStartBackground" type="ColorRect" parent="RunScreen/RunStartOptions" unique_id=595786293]
+visible = false
+layout_mode = 0
+offset_top = 70.0
+offset_right = 1921.0
+offset_bottom = 1170.0
+color = Color(0.135517, 0.124494, 0.146491, 1)
+
 [node name="StartingOptionContainer" type="VBoxContainer" parent="RunScreen/RunStartOptions" unique_id=21744175]
 layout_mode = 0
 offset_left = 730.0
@@ -3236,10 +3256,12 @@ border_width = 5.0
 [node name="MoneyTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1169814212]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.2078125
-anchor_top = 0.0055555557
-anchor_right = 0.321875
-anchor_bottom = 0.06111111
+anchor_left = 0.20104167
+anchor_top = 0.02037037
+anchor_right = 0.31510416
+anchor_bottom = 0.075925924
+offset_right = -69.0
+offset_bottom = -10.0
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3247,10 +3269,11 @@ metadata/_edit_use_anchors_ = true
 [node name="OreTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=479080032]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.3296875
-anchor_top = 0.0037037036
-anchor_right = 0.45572916
-anchor_bottom = 0.062037036
+anchor_left = 0.28072917
+anchor_top = 0.017592592
+anchor_right = 0.40677083
+anchor_bottom = 0.075925924
+offset_right = -92.0
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3258,10 +3281,23 @@ metadata/_edit_use_anchors_ = true
 [node name="InsightTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=315712033]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.46197918
-anchor_top = -0.0018518518
-anchor_right = 0.61614585
-anchor_bottom = 0.06666667
+anchor_left = 0.35833332
+anchor_top = 0.010185185
+anchor_right = 0.5125
+anchor_bottom = 0.0787037
+offset_right = -146.0
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="AscendTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=939367233]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.067708336
+anchor_top = 0.23148148
+anchor_right = 0.221875
+anchor_bottom = 0.3
+offset_right = -146.0
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3302,21 +3338,21 @@ metadata/_edit_use_anchors_ = true
 [node name="FoodTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=2094616792]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.10885417
-anchor_top = 0.012037037
-anchor_right = 0.20729166
-anchor_bottom = 0.06666667
+anchor_left = 0.098958336
+anchor_top = 0.017592592
+anchor_right = 0.19739583
+anchor_bottom = 0.072222225
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
-[node name="SprawlTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1072154485]
+[node name="SizeTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1072154485]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.022395832
-anchor_top = 0.18240741
-anchor_right = 0.096354164
-anchor_bottom = 0.23703703
+anchor_left = 0.50885415
+anchor_top = 0.0129629625
+anchor_right = 0.5828125
+anchor_bottom = 0.06759259
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3346,15 +3382,16 @@ metadata/_edit_use_anchors_ = true
 [node name="RoomTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=92220567]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.022916667
-anchor_top = 0.23703703
-anchor_right = 0.094791666
-anchor_bottom = 0.2962963
+anchor_left = 0.43541667
+anchor_top = 0.009259259
+anchor_right = 0.5072917
+anchor_bottom = 0.06851852
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
 [node name="ObjectivesTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=943137326]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.09739583
@@ -3423,3 +3460,5 @@ offset_bottom = -6.1035156e-05
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
+
+[editable path="RunScreen/Combat/Player"]

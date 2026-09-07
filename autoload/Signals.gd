@@ -58,6 +58,9 @@ signal card_queue_refunded
 signal card_pick_requested(card_pick_action: ActionBasePickCards)	# an action has requested cards from the player. Action's card_pick_type affects the ui used for selection
 signal card_pick_confirmed	# the card pick is finished
 
+signal card_added_to_court(card_data: CardData) # card was added to player's permanent deck
+signal card_removed_from_court(card_data: CardData) # card was removed from player's permanent deck
+
 signal card_added_to_deck(card_data: CardData) # card was added to player's permanent deck
 signal card_removed_from_deck(card_data: CardData) # card was removed from player's permanent deck
 signal card_transformed_in_deck(card_data: CardData) # card was transformed player's permanent deck (card_data will be in updated state)
@@ -82,13 +85,14 @@ signal reward_clear_requested(reward_group: int) # -1 for clear all rewards
 
 # player stats
 signal player_money_changed(money_delta: int)
-signal player_health_changed(money_delta: int)
+signal player_health_changed(health_delta: int)
 signal player_food_changed(food_delta: int)
 signal player_refresh_changed(food_delta: int)
 signal player_rot_changed(food_delta: int)
 signal player_bandit_changed(food_delta: int)
 signal player_ore_changed(ore_delta: int)
-signal player_sprawl_changed(influence_delta: int)
+signal player_size_changed(influence_delta: int)
+signal player_size_max_changed(influence_delta: int)
 signal player_room_changed(influence_delta: int)
 signal player_insight_changed(insight_delta: int)
 signal player_books_changed(insight_delta: int)
