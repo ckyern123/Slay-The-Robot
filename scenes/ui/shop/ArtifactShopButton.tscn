@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://d33u8m744fh03" path="res://icon.svg" id="1_3r3br"]
 [ext_resource type="Script" uid="uid://dastyj0nm12fr" path="res://scripts/ui/shop/ArtifactShopButton.gd" id="2_nmaik"]
+[ext_resource type="Texture2D" uid="uid://kij5hy6ws7ih" path="res://sprites/rupee.svg" id="3_rabpm"]
 
 [node name="ArtifactShopButton" type="Control" unique_id=810164528]
 custom_minimum_size = Vector2(112, 56)
@@ -26,13 +27,31 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_top = 32.0
 offset_right = 256.0
-offset_bottom = 55.0
+offset_bottom = 82.0
 bbcode_enabled = true
+
+[node name="ColorRect" type="ColorRect" parent="ArtifactDescription" unique_id=1449228696]
+z_index = -1
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 50.0
+color = Color(0.039215688, 0.039215688, 0.039215688, 0.89411765)
 
 [node name="PriceLabel" type="Label" parent="." unique_id=1866913841]
 layout_mode = 0
-offset_top = 50.0
+offset_top = 90.0
 offset_right = 256.0
-offset_bottom = 73.0
+offset_bottom = 113.0
 text = "999"
 horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PriceLabel" unique_id=148445593]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 8.0
+offset_right = 28.0
+offset_bottom = 20.0
+texture = ExtResource("3_rabpm")
+expand_mode = 1

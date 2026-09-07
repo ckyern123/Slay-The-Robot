@@ -4,9 +4,26 @@ extends PanelContainer
 
 const FONT_SIZE: int = 14
 const EMBEDDED_IMAGE_SIZE: int = 24
-
+const CARD_TEXT_IMAGE_SIZE: int = 16	# images in card descriptions will be set to this size
 @onready var keyword_rich_text_label: RichLabelAutoSizer = $KeywordRichTextLabel
+const ENERGY_ICON_KEYWORD: String = "[energy_icon]"	# tells description to display an energy icon in place
+const EXPLORE_ICON_KEYWORD: String = "[explore_icon]"
+const FOOD_ICON_KEYWORD: String = "[food_icon]"
+const ORE_ICON_KEYWORD: String = "[ore_icon]"
+const MONEY_ICON_KEYWORD: String = "[money_icon]"
+const INSIGHT_ICON_KEYWORD: String = "[insight_icon]"
+const SIZE_ICON_KEYWORD: String = "[size_icon]"
+const ROOM_ICON_KEYWORD: String = "[room_icon]"
+const SWORD_ICON_KEYWORD: String = "[sword_icon]"
 
+const explore_texture_path = "sprites/conqueror.svg"
+const money_texture_path = "sprites/rupee.svg"
+const food_texture_path = "sprites/oat.svg"
+const ore_texture_path = "sprites/ore.svg"
+const insight_texture_path = "sprites/scroll.svg"
+const size_texture_path = "sprites/village.svg"
+const room_texture_path = "sprites/tower.svg"
+const sword_texture_path = "sprites/sword.svg"
 func init(keyword_object_id: String) -> void:
 	var keyword_data: KeywordData = Global.get_keyword_data(keyword_object_id)
 	if keyword_data == null:
@@ -32,6 +49,38 @@ func init(keyword_object_id: String) -> void:
 		
 		# force the font to a certain size
 		keyword_bbcode = "[font_size={0}]{1}[/font_size]".format([FONT_SIZE, keyword_bbcode])
+		if keyword_bbcode.contains(FOOD_ICON_KEYWORD):
+			FileLoader.load_texture(food_texture_path)
+			var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,food_texture_path])
+			keyword_bbcode = keyword_bbcode.replace(FOOD_ICON_KEYWORD, image_bb_code)
+		if keyword_bbcode.contains(SWORD_ICON_KEYWORD):
+			FileLoader.load_texture(sword_texture_path)
+			var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,sword_texture_path])
+			keyword_bbcode = keyword_bbcode.replace(SWORD_ICON_KEYWORD, image_bb_code)	
+		if keyword_bbcode.contains(ORE_ICON_KEYWORD):
+			FileLoader.load_texture(ore_texture_path)
+			var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,ore_texture_path])
+			keyword_bbcode = keyword_bbcode.replace(ORE_ICON_KEYWORD, image_bb_code)
+		
+		if keyword_bbcode.contains(INSIGHT_ICON_KEYWORD):
+			FileLoader.load_texture(insight_texture_path)
+			var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,insight_texture_path])
+			keyword_bbcode = keyword_bbcode.replace(INSIGHT_ICON_KEYWORD, image_bb_code)
+		
+		if keyword_bbcode.contains(MONEY_ICON_KEYWORD):
+			FileLoader.load_texture(money_texture_path)
+			var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,money_texture_path])
+			keyword_bbcode = keyword_bbcode.replace(MONEY_ICON_KEYWORD, image_bb_code)
+		
+		if keyword_bbcode.contains(EXPLORE_ICON_KEYWORD):
+			FileLoader.load_texture(explore_texture_path)
+			var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,explore_texture_path])
+			keyword_bbcode = keyword_bbcode.replace(EXPLORE_ICON_KEYWORD, image_bb_code)
+		
+		if keyword_bbcode.contains(SIZE_ICON_KEYWORD):
+			FileLoader.load_texture(size_texture_path)
+			var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,size_texture_path])
+			keyword_bbcode = keyword_bbcode.replace(SIZE_ICON_KEYWORD, image_bb_code)
 		keyword_rich_text_label.set_bbcode(keyword_bbcode)
 	
 		# this must be called deferred to force the rich text to not get clipped

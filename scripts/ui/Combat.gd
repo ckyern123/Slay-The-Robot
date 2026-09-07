@@ -13,6 +13,7 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var objectives_label: RichTextLabel = %ObjectivesLabel
 
 @onready var shop_refresh_label: RichTextLabel = %ShopRefreshLabel
+@onready var rot_label: RichTextLabel = %RotLabel
 @onready var food_fade_container: Node2D = %FoodFadeContainer
 @onready var money_fade_container: Node2D = %MoneyFadeContainer
 @onready var ore_fade_container: Node2D = %OreFadeContainer
@@ -20,6 +21,7 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var sprawl_fade_container: Node2D = %SprawlFadeContainer
 @onready var room_fade_container: Node2D = %RoomFadeContainer
 @onready var refresh_fade_container: Node2D = %RefreshFadeContainer
+@onready var rot_fade_container: Node2D = %RotFadeContainer
 const money_texture_path = "sprites/rupee.svg"
 const food_texture_path = "sprites/oat.svg"
 const ore_texture_path = "sprites/ore.svg"
@@ -27,6 +29,7 @@ const insight_texture_path = "sprites/scroll.svg"
 const sprawl_texture_path = "sprites/village.svg"
 const room_texture_path = "sprites/tower.svg"
 const refresh_texture_path = "sprites/refresh.svg"
+const rot_texture_path = "sprites/rot.svg"
 
 @onready var energy_count: Label = $Energy/EnergyCount
 @onready var energy: TextureButton = $Energy
@@ -50,12 +53,17 @@ const refresh_texture_path = "sprites/refresh.svg"
 @onready var chest = $Chest
 @onready var shop = $Shop
 
+
+
 @onready var background_button: TextureButton = %BackgroundButton
 
 @onready var end_turn_button: Button = $EndTurnButton
 @onready var combat_end_button: TextureButton = $CombatEndButton
 
 var end_turn_object: CombatEndTurn = null
+
+# condition so it doesn't count as turn start on load
+@onready var no_need_generate: bool = false
 var game_start: bool = true
 var elite_is_present: bool = false
 
@@ -75,11 +83,13 @@ func _ready():
 	Signals.player_room_changed.connect(_on_player_room_changed)
 	Signals.player_insight_changed.connect(_on_player_insight_changed)
 	Signals.player_refresh_changed.connect(_on_player_refresh_changed)
+	Signals.player_rot_changed.connect(_on_player_rot_changed)
+	Signals.player_bandit_changed.connect(_on_player_bandit_changed)
 	Signals.enemy_killed.connect(_on_enemy_killed)
 	Signals.enemy_death_animation_finished.connect(_on_enemy_death_animation_finished)
 
 	Signals.combat_started.connect(_on_combat_started)
-#	Signals.combat_ended.connect(_on_combat_ended)
+	Signals.combat_ended.connect(_on_combat_ended)
 
 	Signals.player_turn_started.connect(_on_player_turn_started)
 	Signals.player_turn_ended.connect(_on_player_turn_ended)
@@ -173,6 +183,8 @@ func update_combat_display():
 	_on_player_sprawl_changed()
 	_on_player_room_changed()
 	_on_player_refresh_changed()
+	_on_player_rot_changed()
+		
 func _update_background() -> void:
 	# set the background if possible
 	var background_texture_path: String = ""
@@ -236,6 +248,7 @@ func _on_player_money_changed(_delta: int = 0):
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(money_fade_container, FileLoader.load_texture(money_texture_path))
+		
 func _on_player_ore_changed(_delta: int = 0):
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
 	if (_delta > 0):
@@ -246,6 +259,7 @@ func _on_player_ore_changed(_delta: int = 0):
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(ore_fade_container, FileLoader.load_texture(ore_texture_path))		
+		
 func _on_player_insight_changed(_delta: int = 0):
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
 	if (_delta>0):
@@ -256,6 +270,7 @@ func _on_player_insight_changed(_delta: int = 0):
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(insight_fade_container, FileLoader.load_texture(insight_texture_path))	
+		
 func _on_player_food_changed(_delta: int = 0):
 	food_label.text = "[img width={0}]{1}[/img] {2}: %s / overhead %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
 	if (_delta > 0):
@@ -266,6 +281,7 @@ func _on_player_food_changed(_delta: int = 0):
 		ActionHandler.add_actions(sound_actions)
 	if (_delta != 0):
 		create_image_fade(food_fade_container, FileLoader.load_texture(food_texture_path))
+		
 func _on_player_sprawl_changed(_delta: int = 0):
 	var calc: int = (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())
 	var sprawl: int = Global.player_data.player_size
@@ -276,10 +292,12 @@ func _on_player_sprawl_changed(_delta: int = 0):
 	if (_delta != 0):
 		create_image_fade(sprawl_fade_container, FileLoader.load_texture(sprawl_texture_path))
 	update_objectives_label()
+	
 func _on_player_room_changed(_delta: int = 0):
 	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room
 	if (_delta != 0):
 		create_image_fade(room_fade_container, FileLoader.load_texture(room_texture_path))
+		
 func _on_player_refresh_changed(_delta: int = 0):
 	shop_refresh_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, refresh_texture_path, "Shop Refresh"]) % Global.player_data.player_refresh
 	if (Global.player_data.player_refresh <= 0):
@@ -295,6 +313,33 @@ func _on_player_refresh_changed(_delta: int = 0):
 		#var current_event = Global.get_player_event_data()
 		#enemy_container.populate_enemies_from_event(current_event)
 
+func _on_player_rot_changed(_delta: int = 0):
+	rot_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, rot_texture_path, "ROT WARNING"]) % Global.player_data.player_rot
+	if (Global.player_data.player_rot <= 0):
+		var reduced_value: int = Global.player_data.player_food/randi_range(2,4)
+		Global.player_data.add_food(-reduced_value)
+		var sound_action_data: Array[Dictionary] = [{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/rot.wav"},
+		}]
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		ActionHandler.add_actions(sound_actions)
+		Global.player_data.player_rot = 10
+		rot_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, rot_texture_path, "ROT WARNING"]) % Global.player_data.player_rot
+		create_image_fade(rot_fade_container, FileLoader.load_texture(rot_texture_path))
+		#var current_event = Global.get_player_event_data()
+		#enemy_container.populate_enemies_from_event(current_event)
+		
+func _on_player_bandit_changed(_delta: int = 0):
+	var random_int: int = randi_range(0,100)
+	var activate_bandit: bool = (random_int+Global.player_data.player_bandit_chance) > 110
+	if (activate_bandit):
+		var bandit_num: int = ((Global.player_data.player_draw.size() + Global.player_data.player_hand.size() + Global.player_data.player_discard.size()) /10) + (Global.player_data.player_artifact_count/5) + (Global.player_data.player_books/2)
+		var sound_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_bandit","number_of_cards":bandit_num, "action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{
+		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/bandit.wav"},
+		}]
+		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], sound_action_data, null)
+		ActionHandler.add_actions(sound_actions)
+		Global.player_data.player_bandit_chance = 0
 ### Deck Buttons
 
 func _on_deck_button_up():
@@ -337,6 +382,7 @@ func _on_enemy_death_animation_finished(_enemy: Enemy):
 
 func _on_combat_started(event_id: String):
 	var current_event: EventData = null
+	end_turn_button.visible = true
 	if event_id == "":
 		# if no event is provided, it will be derived from the location
 		var current_location: LocationData = Global.get_player_location_data()
@@ -344,8 +390,7 @@ func _on_combat_started(event_id: String):
 		current_location.location_visited = true
 	else:
 		current_event = Global.get_event_data(event_id)
-	
-	enemy_container.populate_enemies_from_event(current_event)
+	enemy_container.populate_enemies_from_event(current_event, no_need_generate)
 	for child in enemy_container.get_children():
 		for childer in child.get_children():
 			if (childer.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
@@ -359,7 +404,8 @@ func _on_combat_started(event_id: String):
 
 	update_combat_display()
 	
-#func _on_combat_ended():
+func _on_combat_ended():
+	end_turn_button.visible = false
 	#set_combat_display_visibility(false)
 	
 ## Helper method to cut down on code bloat. Used in player/enemy turn logic to short circuit
@@ -511,7 +557,14 @@ func perform_enemy_turn():
 	else:
 		Signals.enemy_turn_ended.emit()
 
-
+# loads turn without triggering on_player_start. Called when player reloads the game.
+func load_turn():
+	_reset_turn_end_queue()
+	Global.player_data.player_energy = Global.player_data.player_current_energy
+	#Signals.energy_changed.emit()
+	shop_overlay.load_shop()
+	no_need_generate = false
+	update_combat_display()
 	
 func _on_player_turn_started():
 	# prevent player from playing cards manually
@@ -582,6 +635,8 @@ func _on_player_turn_started():
 		Signals.shop_opened.emit()
 	else:
 		Global.player_data.add_refresh(-1)
+		Global.player_data.add_rot(-1)
+		Global.player_data.add_bandit(3)
 
 	# reset energy
 
@@ -615,6 +670,7 @@ func _on_player_turn_started():
 	# unlock and update hand
 	HandManager.set_disable_hand(false)
 	hand.update_hand_card_display()
+	Global.player_data.current_enemies = enemy_container.get_enemies()
 	FileLoader.autosave()
 	
 func _on_player_turn_ended():
@@ -710,6 +766,7 @@ func _on_run_started():
 	_on_player_refresh_changed()
 	_on_player_insight_changed()
 	_on_player_money_changed()
+	no_need_generate = !Global.player_data.new_game
 	
 	# load energy
 	var character_data: CharacterData = Global.get_player_character_data()
@@ -749,7 +806,10 @@ func start_turn():
 	# called from animation player
 	_reset_turn_end_queue()
 	update_combat_display()
-	Signals.player_turn_started.emit()
+	if (!no_need_generate):
+		Signals.player_turn_started.emit()
+	else:
+		load_turn()
 
 func create_image_fade(fade_container: Node2D, texture: Texture) -> void:
 	var image_fade: ImageFade = Scenes.IMAGE_PROC_FADE.instantiate()

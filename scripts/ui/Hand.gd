@@ -100,7 +100,8 @@ func _ready():
 	
 	Signals.card_pick_requested.connect(_on_card_pick_requested)
 	Signals.card_pick_confirmed.connect(_on_card_pick_confirmed)
-	
+	Signals.card_purchased.connect(_on_card_purchased)
+	Signals.trade_purchased.connect(_on_trade_purchased)
 	Signals.enemy_clicked.connect(_on_enemy_clicked)
 	Signals.enemy_hovered.connect(_on_enemy_hovered)
 	Signals.card_created.connect(_on_card_created)
@@ -283,8 +284,22 @@ func _on_card_created(card_data: CardData):
 	if (!cardplay_on_display):
 		cardplay_on_display = true
 	display_cardplay_container.visible = true
-	if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
-		_display_cardplay(card_data,"created")
+	#if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
+	_display_cardplay(card_data,"created")
+
+func _on_card_purchased(card_data: CardData):
+	if (!cardplay_on_display):
+		cardplay_on_display = true
+	display_cardplay_container.visible = true
+	#if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
+	_display_cardplay(card_data,"created")
+		
+func _on_trade_purchased(card_data: CardData):
+	if (!cardplay_on_display):
+		cardplay_on_display = true
+	display_cardplay_container.visible = true
+	#if (card_data.card_rarity == CardData.CARD_RARITIES.GENERATED):
+	_display_cardplay(card_data,"created")
 		
 func _display_upgrade_card(card: Card):
 	display_upgrade_container.visible = true
@@ -343,14 +358,18 @@ func _display_cardplay(card_data: CardData, property: String = ""):
 			await get_tree().create_timer(0.2).timeout
 			display_cardplay_card.queue_free()
 		"created":
+			display_cardplay_card.position = Vector2(770,200)
 			#display_cardplay_card.modulate = Color(0,0,0,0)
 			display_cardplay_card.scale = Vector2(0.5,0.5)
 			#var destination_ui_element: Control = HandManager.card_destination_to_ui_elements.get(HandManager.DISCARD_PILE, null)
 			#var destination_position: Vector2 = destination_ui_element.global_position - (destination_ui_element.size / 2) - Vector2(50,100)
-			var destination_position: Vector2 = Vector2(1603,811)
+			var destination_position: Vector2 = Vector2(770,500)
 			var tween = create_tween()
-			tween.tween_property(display_cardplay_card,"position",destination_position,0.5)
-			await get_tree().create_timer(0.5).timeout
+			tween.tween_property(display_cardplay_card,"position",destination_position,0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SPRING)
+			await get_tree().create_timer(0.3).timeout
+			var tween2 = create_tween()
+			tween2.tween_property(display_cardplay_card,"modulate",Color(0, 0, 0, 0),0.2).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
+			await get_tree().create_timer(0.5).timeout			
 			display_cardplay_card.queue_free()
 
 ## Spawns an animated effect over the combatant

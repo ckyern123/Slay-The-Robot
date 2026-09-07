@@ -16,15 +16,14 @@ const VICTORY_MESSAGE: String = "U R WINNER"
 ## Text formatting to populate with RunStatsData numbers
 ## Formatted as a grid with newlines and tabs and the end of the string appended with the given stat number
 const SUMMARY_TEMPLATE: Dictionary[String, String] =  {
-	"Standard Fights": "COMBAT_STANDARD_COUNT",
-	"Minibosses": "COMBAT_MINIBOSS_COUNT",
-	"Bosses": "COMBAT_BOSS_COUNT",
-	"Times Rested": "REST_REST_COUNT",
-	"Times Upgraded": "REST_UPGRADE_CARDS_COUNT",
+	"Food Gained": "FOOD_GAINED_AMOUNT",
 	"Money Gained": "MONEY_GAINED_AMOUNT",
-	"Cards Played": "CARDS_PLAYED",
-	"Damage Taken": "PLAYER_DAMAGED_AMOUNT",
-	"Damage Done": "ENEMY_DAMAGED_CAPPED_AMOUNT",
+	"Ore Gained": "ORE_GAINED_AMOUNT",
+	"Insight Gained": "INSIGHT_GAINED_AMOUNT",
+	"Cards Created": "CARDS_CREATED",
+	"Cards Exhausted": "CARDS_EXHAUSTED",
+	"Cards Upgraded": "CARDS_UPGRADED",
+	"Expeditions Completed": "ENEMIES_KILLED",
 }
 const SUMMARY_COLUMN_COUNT: int = 3
 
@@ -33,9 +32,7 @@ const SUMMARY_COLUMN_COUNT: int = 3
 ## CombatStatsData.STATS, and some are from RunStatsData.STATS.
 ## They're all aggregated into RunStatsData.
 const SUMMARY_STAT_NAMES: Array[String] = [
-	"COMBAT_STANDARD_COUNT", "COMBAT_MINIBOSS_COUNT", "COMBAT_BOSS_COUNT",
-	"REST_REST_COUNT", "REST_UPGRADE_CARDS_COUNT", "MONEY_GAINED_AMOUNT",
-	"CARDS_PLAYED", "PLAYER_DAMAGED_AMOUNT", "ENEMY_DAMAGED_CAPPED_AMOUNT",
+"FOOD_GAINED_AMOUNT","MONEY_GAINED_AMOUNT","ORE_GAINED_AMOUNT","INSIGHT_GAINED_AMOUNT","CARDS_CREATED","CARDS_EXHAUSTED","CARDS_UPGRADED","ENEMIES_KILLED"
 ]
 
 func _ready():

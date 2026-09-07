@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c0pu5ciowd6mx" path="res://scripts/ui/shop/CardShopButton.gd" id="1_c2gpa"]
 [ext_resource type="PackedScene" uid="uid://btxmfagad05n5" path="res://scenes/ui/card/Card.tscn" id="2_1jbuy"]
+[ext_resource type="Texture2D" uid="uid://kij5hy6ws7ih" path="res://sprites/rupee.svg" id="3_gs1e1"]
 
 [node name="CardShopButton" type="Control" unique_id=248046505]
 custom_minimum_size = Vector2(144, 208)
@@ -22,3 +23,14 @@ offset_right = 186.0
 offset_bottom = 360.0
 text = "999"
 horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PriceLabel" unique_id=1862737578]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 8.0
+offset_right = 28.0
+offset_bottom = 20.0
+texture = ExtResource("3_gs1e1")
+expand_mode = 1

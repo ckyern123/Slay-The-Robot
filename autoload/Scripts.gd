@@ -118,7 +118,6 @@ const ACTION_IMPROVE_CARD_VALUES: String = "res://scripts/actions/card_actions/c
 const ACTION_IMPROVE_INSPECT: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveInspect.gd"
 const ACTION_CHANGE_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardValues.gd"
 const ACTION_CHANGE_CARD_INFLUENCE: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardInfluence.gd"
-const ACTION_CHANGE_CARD_DURABILITY: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardDurability.gd"
 
 const ACTION_IMPROVE_CARD_VALUES_UNUSED_ENERGY: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveCardValuesUnusedEnergy.gd"
 const ACTION_CLAMP_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionClampCardValues.gd"

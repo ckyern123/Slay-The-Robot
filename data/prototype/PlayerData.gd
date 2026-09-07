@@ -18,12 +18,14 @@ class_name PlayerData
 @export var player_room: int = 0
 @export var player_insight: int = 0
 @export var player_refresh: int = 4
+@export var player_rot: int = 10
+@export var player_bandit_chance: int = 0
 @export var blight: int = 0
 @export var player_spice_exhaust: int = 0
 @export var max_card_layover: int = 0
-
 var player_energy: int = 3 # in combat energy. Not saved.
 ## The energy the player gains each turn. This can be modified.
+@export var player_current_energy: int = 0
 @export var player_energy_max: int = 3
 
 var player_block: int = 0 # in combat block. Not saved.
@@ -54,6 +56,9 @@ var player_block: int = 0 # in combat block. Not saved.
 ## for the first time at a location and autosaves happen when you reach a location.
 ## Consider removing the @export flag unless you want to save the game while at a shop.
 @export var player_shop_data: ShopData = null
+
+# Conditions used to check game states
+@export var new_game: bool = true
 
 #region RNG
 @export var player_run_seed: int = 0
@@ -205,6 +210,12 @@ var player_reward_consumable_rarity_cache: Dictionary[int, Array] = {}
 ## The player's permanent deck, persisting between combat. Changes to cards here will be
 ## permanent.
 @export var player_deck: Array[CardData] = []
+@export var player_draw: Array[CardData] = []
+@export var player_hand: Array[CardData] = []
+@export var player_discard: Array[CardData] = []
+@export var player_exhaust: Array[CardData] = []
+
+@export var current_enemies: Array[EnemyData] = []
 
 
 # Statuses
@@ -283,13 +294,25 @@ func add_room(amount: int) -> void:
 	var delta: int = player_room - old_player_room_amount
 	Signals.player_room_changed.emit(delta)
 
-## Adds or subtracts food from the player
+## Adds or subtracts refresh from the player
 ## If goes into negative amounts, the proper delta will be calculated 
 func add_refresh(amount: int) -> void:
 	var old_player_refresh_amount: int = player_refresh
 	player_refresh = max(player_refresh + amount, 0)
 	var delta: int = player_refresh - old_player_refresh_amount
 	Signals.player_refresh_changed.emit(delta)
+
+func add_rot(amount: int) -> void:
+	var old_player_rot_amount: int = player_rot
+	player_rot = max(player_rot + amount, 0)
+	var delta: int = player_rot - old_player_rot_amount
+	Signals.player_rot_changed.emit(delta)
+	
+func add_bandit(amount: int) -> void:
+	var old_player_bandit_amount: int = player_bandit_chance
+	player_bandit_chance = max(player_bandit_chance + amount, 0)
+	var delta: int = player_bandit_chance - old_player_bandit_amount
+	Signals.player_bandit_changed.emit(delta)
 	
 ## Gets an rng track for the run. If it does not exist create one.
 func get_player_rng(rng_name: String) -> RandomNumberGenerator:
