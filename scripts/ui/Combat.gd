@@ -331,7 +331,7 @@ func _on_player_rot_changed(_delta: int = 0):
 		
 func _on_player_bandit_changed(_delta: int = 0):
 	var random_int: int = randi_range(0,100)
-	var activate_bandit: bool = (random_int+Global.player_data.player_bandit_chance) > 100
+	var activate_bandit: bool = (random_int+Global.player_data.player_bandit_chance) > 110
 	if (activate_bandit):
 		var bandit_num: int = ((Global.player_data.player_draw.size() + Global.player_data.player_hand.size() + Global.player_data.player_discard.size()) /10) + (Global.player_data.player_artifact_count/5) + (Global.player_data.player_books/2)
 		var sound_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_bandit","number_of_cards":bandit_num, "action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{

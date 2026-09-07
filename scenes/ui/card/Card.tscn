@@ -251,12 +251,12 @@ _editor_defaults_set = true
 [node name="CardType" type="Label" parent="Pivot/CardVisual" unique_id=1220224152]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 48.0
+offset_left = 27.0
 offset_top = 197.0
-offset_right = 176.0
+offset_right = 155.0
 offset_bottom = 214.0
 theme_override_constants/line_spacing = -3
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 10
 text = "Card Type"
 horizontal_alignment = 1
 

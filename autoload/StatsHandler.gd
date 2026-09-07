@@ -52,6 +52,9 @@ func _connect_signals():
 	
 	# run stats
 	Signals.player_money_changed.connect(_on_player_money_changed)
+	Signals.player_food_changed.connect(_on_player_food_changed)
+	Signals.player_ore_changed.connect(_on_player_ore_changed)
+	Signals.player_insight_changed.connect(_on_player_insight_changed)
 	Signals.rest_action_ended.connect(_on_rest_action_ended)
 	Signals.shop_visited_first_time.connect(_on_shop_visited_first_time)
 	

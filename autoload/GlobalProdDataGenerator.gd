@@ -330,6 +330,7 @@ var end_action_data: Array[Dictionary] = [
 			[
 				{
 				Scripts.ACTION_TRANSFORM_CARDS: {
+					"transform_parent_card": false,
 					"transform_into_card_object_id": "card_rebel",
 					"pick_played_card": true
 					},
@@ -2866,7 +2867,7 @@ func add_keywords() -> void:
 	
 	var keyword_inspect: KeywordData = KeywordData.new("keyword_inspect")
 	keyword_inspect.keyword_name = "Inspect"
-	keyword_inspect.keyword_text_bb_code = "Improve values of X random Rock and Treasure cards in discard pile by 1. This increases by 1 for every 10 cards in exhaust (MAX 3)."
+	keyword_inspect.keyword_text_bb_code = "Improve values of X random Rock and Treasure cards in discard pile by 1. This increases by 1 for every 15 cards in exhaust (MAX 3)."
 	Global.register_rod(keyword_inspect)
 
 	var keyword_fertilise: KeywordData = KeywordData.new("keyword_fertilise")
@@ -5039,7 +5040,7 @@ func add_cards_trade() -> void:
 	card_trade1.card_requires_target = false
 	card_trade1.card_play_destination = HandManager.EXHAUST_PILE
 	card_trade1.card_values = {"ore_amount": -3,"money_amount":5,"ore_required":3}
-	card_trade1.card_play_validators = [{Scripts.VALIDATOR_ORE:{}}]
+	card_trade1.card_play_validators = [{Scripts.VALIDATOR_ORE:{"ore_required":3}}]
 	card_trade1.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_ORE:
@@ -5065,7 +5066,7 @@ func add_cards_trade() -> void:
 	card_trade2.card_requires_target = false
 	card_trade2.card_play_destination = HandManager.EXHAUST_PILE
 	card_trade2.card_values = {"food_amount":-3,"food_required":3,"money_amount":4}
-	card_trade2.card_play_validators = [{Scripts.VALIDATOR_FOOD:{}}]
+	card_trade2.card_play_validators = [{Scripts.VALIDATOR_FOOD:{"food_required":3}}]
 	card_trade2.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_FOOD:
@@ -5091,7 +5092,7 @@ func add_cards_trade() -> void:
 	card_trade3.card_requires_target = false
 	card_trade3.card_play_destination = HandManager.EXHAUST_PILE
 	card_trade3.card_values = {"insight_amount":-1,"insight_required":1,"money_amount":5}
-	card_trade3.card_play_validators = [{Scripts.VALIDATOR_INSIGHT:{}}]
+	card_trade3.card_play_validators = [{Scripts.VALIDATOR_INSIGHT:{"insight_required":1}}]
 	card_trade3.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_INSIGHT:
@@ -5117,7 +5118,7 @@ func add_cards_trade() -> void:
 	card_trade4.card_requires_target = false
 	card_trade4.card_play_destination = HandManager.EXHAUST_PILE
 	card_trade4.card_values = {"ore_amount": 4,"money_amount":-3,"money_required":3}
-	card_trade4.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
+	card_trade4.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":3}}]
 	card_trade4.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
@@ -5143,7 +5144,7 @@ func add_cards_trade() -> void:
 	card_trade5.card_requires_target = false
 	card_trade5.card_play_destination = HandManager.EXHAUST_PILE
 	card_trade5.card_values = {"food_amount": 5,"money_amount":-3,"money_required":3}
-	card_trade5.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
+	card_trade5.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":3}}]
 	card_trade5.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
@@ -5169,7 +5170,7 @@ func add_cards_trade() -> void:
 	card_trade6.card_requires_target = false
 	card_trade6.card_play_destination = HandManager.EXHAUST_PILE
 	card_trade6.card_values = {"insight_amount": 1,"money_amount":-4,"money_required":4}
-	card_trade6.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
+	card_trade6.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":3}}]
 	card_trade6.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
@@ -6927,9 +6928,6 @@ func add_cards_green() -> void:
 	card_goldenconscript.card_values = {"card_influence":1,"draw_count": 4,"damage":3,"number_of_attacks":1}
 	card_goldenconscript.card_upgrade_value_improvements = {"draw_count":1,"damage":1}
 	card_goldenconscript.card_play_actions = [
-		{
-		Scripts.ACTION_DRAW_GENERATOR:{}
-		},
 		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}}]
 	for action in sift_jade_data:
 		card_goldenconscript.card_play_actions.append(action)
