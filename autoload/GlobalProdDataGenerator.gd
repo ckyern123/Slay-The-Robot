@@ -239,7 +239,7 @@ var inspect_action_old: Dictionary = {
 				"min_cards_are_required_for_action": false,
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"card_pick_text": "Choose {0} card to Inspect. {1} cards selected",
 				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure"]}}],
 				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT:{
 							"modify_parent_card": false,
@@ -440,8 +440,8 @@ func add_artifacts() -> void:
 	var artifact_add_size: ArtifactData = ArtifactData.new("artifact_add_size")
 	artifact_add_size.artifact_name = "Town Hall"
 	artifact_add_size.artifact_texture_path = "external/sprites/artifacts/townhall.svg"
-	artifact_add_size.artifact_description = "Drafts Faction cards twice when obtained."
-	artifact_add_size.artifact_shop_description = "Drafts Common Faction cards twice when obtained."
+	artifact_add_size.artifact_description = "WHEN BUILT: Draft Common Faction cards twice."
+	artifact_add_size.artifact_shop_description = "WHEN BUILT: Draft Common Faction cards twice."
 	artifact_add_size.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_add_size.artifact_add_actions = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -479,9 +479,9 @@ func add_artifacts() -> void:
 	var artifact_add_room: ArtifactData = ArtifactData.new("artifact_add_room")
 	artifact_add_room.artifact_name = "Landscaping Office"
 	artifact_add_room.artifact_texture_path = "external/sprites/artifacts/landscapingoffice.svg"
-	artifact_add_room.artifact_description = "Adds 3 Room when obtained."
+	artifact_add_room.artifact_description = "WHEN BUILT: Add 3 Room."
 	artifact_add_room.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	artifact_add_room.artifact_shop_description = "Adds 3 Room when obtained."
+	artifact_add_room.artifact_shop_description = "WHEN BUILT: Add 3 Room."
 	artifact_add_room.artifact_add_actions = [{Scripts.ACTION_ADD_ROOM: {"room_amount": 3}}]
 	Global.register_rod(artifact_add_room)
 	
@@ -489,17 +489,34 @@ func add_artifacts() -> void:
 	artifact_food_per_turn.artifact_name = "Granary"
 	artifact_food_per_turn.artifact_texture_path = "external/sprites/artifacts/granary.svg"
 	artifact_food_per_turn.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	artifact_food_per_turn.artifact_description = "Adds 1 Food per turn."
-	artifact_food_per_turn.artifact_shop_description = "Adds 1 Food per turn."
-	artifact_food_per_turn.artifact_turn_start_actions = [{Scripts.ACTION_ADD_FOOD: {"food_amount": 1}}
-	]
+	artifact_food_per_turn.artifact_description = "At the start of each turn, gain 1 charge. Fertilises all Grain cards in draw pile at 3 charges."
+	artifact_food_per_turn.artifact_shop_description = "At the start of each turn, gain 1 charge. Fertilises all Grain cards in draw pile at 3 charges."
+	artifact_food_per_turn.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
+	artifact_food_per_turn.artifact_counter_max = 3
+	artifact_food_per_turn.artifact_max_counter_actions = [
+		{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount": 99,
+		"max_card_amount": 99,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.DRAW_PILE,
+		"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+		"validator_data": [
+			{Scripts.VALIDATOR_CARD_ID: {"card_object_ids":["card_grain"]}}
+		],
+		"action_data": [
+		{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "card_value_improvements": {"food_amount": 1}}}
+			]
+		}
+	}]
 	Global.register_rod(artifact_food_per_turn)
 	
 	var artifact_ore_per_turn: ArtifactData = ArtifactData.new("artifact_ore_per_turn")
 	artifact_ore_per_turn.artifact_name = "Quarry"
 	artifact_ore_per_turn.artifact_texture_path = "external/sprites/artifacts/quarry.svg"
-	artifact_ore_per_turn.artifact_description = "Adds 1 Ore per turn."
-	artifact_ore_per_turn.artifact_shop_description = "Adds 1 Ore per turn."
+	artifact_ore_per_turn.artifact_description = "WHEN BUILT: Create 1 Quarry card (Gains 2 Ore when discarded)."
+	artifact_ore_per_turn.artifact_shop_description = "WHEN BUILT: Create 1 Quarry card (Gains 2 Ore when discarded)."
 	artifact_ore_per_turn.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_ore_per_turn.artifact_turn_start_actions = [{Scripts.ACTION_ADD_ORE: {"ore_amount": 1}}
 	]
@@ -520,11 +537,11 @@ func add_artifacts() -> void:
 	var artifact_appease_periodic: ArtifactData = ArtifactData.new("artifact_appease_periodic")
 	artifact_appease_periodic.artifact_name = "Pavilion"
 	artifact_appease_periodic.artifact_texture_path = "external/sprites/artifacts/pavilion.svg"
-	artifact_appease_periodic.artifact_description = "Appease a random card in discard pile every 2 turns."
-	artifact_appease_periodic.artifact_shop_description = "Appease a random card in discard pile every 2 turns."
+	artifact_appease_periodic.artifact_description = "Appease a random Faction card in discard pile every 3 turns."
+	artifact_appease_periodic.artifact_shop_description = "Appease a random Faction card in discard pile every 3 turns."
 	artifact_appease_periodic.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_appease_periodic.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
-	artifact_appease_periodic.artifact_counter_max = 2
+	artifact_appease_periodic.artifact_counter_max = 3
 	artifact_appease_periodic.artifact_max_counter_actions = [{
 		Scripts.ACTION_PICK_CARDS: {
 		"min_card_amount": 1,
@@ -546,10 +563,39 @@ func add_artifacts() -> void:
 
 	Global.register_rod(artifact_appease_periodic)
 	
+	var artifact_repair_periodic: ArtifactData = ArtifactData.new("artifact_repair_periodic")
+	artifact_repair_periodic.artifact_name = "Smithy"
+	artifact_repair_periodic.artifact_texture_path = "external/sprites/artifacts/smithy.svg"
+	artifact_repair_periodic.artifact_description = "Repair a random Craft card in discard pile every 3 turns."
+	artifact_repair_periodic.artifact_shop_description = "Repair a random Craft card in discard pile every 3 turns."
+	artifact_repair_periodic.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_repair_periodic.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
+	artifact_repair_periodic.artifact_counter_max = 3
+	artifact_repair_periodic.artifact_max_counter_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount": 1,
+		"max_card_amount": 1,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to Repair. {1} cards selected",
+		"validator_data": [
+			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.CRAFT]}}
+		],
+		"action_data": [
+			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
+				"card_influence": 1,
+			}}
+			]
+		}
+	}]
+
+	Global.register_rod(artifact_repair_periodic)
+	
 	var artifact_fertiliser: ArtifactData = ArtifactData.new("artifact_fertiliser")
 	artifact_fertiliser.artifact_name = "Fertiliser"
 	artifact_fertiliser.artifact_texture_path = "external/sprites/artifacts/fertiliser.svg"
-	artifact_fertiliser.artifact_description = "Fertilises all Grain cards in draw pile at 2 charges. Increase by 1 charge per turn."
+	artifact_fertiliser.artifact_description = "At the start of each turn, gain 1 charge. Fertilises all Grain cards in draw pile at 2 charges. Charges can also be gained by Fertilise effects."
 	#artifact_fertiliser.artifact_shop_description = "Adds 1 Insight every 4 turns."
 	artifact_fertiliser.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BASIC
 	artifact_fertiliser.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
@@ -612,15 +658,15 @@ func add_artifacts() -> void:
 	#
 	var artifact_energy_every_four_turns: ArtifactData = ArtifactData.new("artifact_energy_every_four_turns")
 	artifact_energy_every_four_turns.artifact_name = "Planner's Office"
-	artifact_energy_every_four_turns.artifact_description = "Gain 1 energy every 5 generated cards played."
+	artifact_energy_every_four_turns.artifact_description = "Gain 1 energy every 4 generated cards played."
 	#artifact_energy_every_four_turns.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
 	artifact_energy_every_four_turns.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_energy_every_four_turns.artifact_color_id = "color_white"
-	artifact_energy_every_four_turns.artifact_shop_description = "Gains 1 energy every 5 generated cards played."
+	artifact_energy_every_four_turns.artifact_shop_description = "Gain 1 energy every 4 generated cards played."
 	artifact_energy_every_four_turns.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
 	artifact_energy_every_four_turns.artifact_counter_wraparound = true
 	#artifact_energy_every_four_turns.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
-	artifact_energy_every_four_turns.artifact_counter_max = 5
+	artifact_energy_every_four_turns.artifact_counter_max = 4
 	artifact_energy_every_four_turns.artifact_script_path = "res://scripts/artifacts/ArtifactDrawOnPlays.gd"
 	artifact_energy_every_four_turns.artifact_max_counter_actions = [{Scripts.ACTION_ADD_ENERGY: {"energy_amount": 1}}]
 	
@@ -629,25 +675,25 @@ func add_artifacts() -> void:
 	var artifact_inspect_on_exhaust: ArtifactData = ArtifactData.new("artifact_inspect_on_exhaust")
 	artifact_inspect_on_exhaust.artifact_name = "Inspectorate"
 	artifact_inspect_on_exhaust.artifact_texture_path = "external/sprites/artifacts/inspectorate.svg"
-	artifact_inspect_on_exhaust.artifact_description = "Every 3 cards exhausted, Inspect"
-	artifact_inspect_on_exhaust.artifact_shop_description = "Every 3 cards exhausted, Inspect."
+	artifact_inspect_on_exhaust.artifact_description = "Every 5 cards exhausted, Inspect up to 1 card in discard pile."
+	artifact_inspect_on_exhaust.artifact_shop_description = "Every 5 cards exhausted, Inspect up to 1 card in discard pile."
 	#artifact_inspect_on_exhaust.artifact_insight_increment = {"base": 1, "insight": 5, "increment": 1}
 	artifact_inspect_on_exhaust.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_inspect_on_exhaust.artifact_color_id = "color_white"
 	artifact_inspect_on_exhaust.artifact_counter_wraparound = true
 	artifact_inspect_on_exhaust.artifact_script_path = "res://scripts/artifacts/ArtifactExhaustInspect.gd"
-	artifact_inspect_on_exhaust.artifact_counter_max = 3
+	artifact_inspect_on_exhaust.artifact_counter_max = 5
 	artifact_inspect_on_exhaust.artifact_max_counter_actions.append({
 		Scripts.ACTION_PICK_CARDS:
 			{
-				"min_card_amount":1,
+				"min_card_amount":0,
 				"max_card_amount":1,
 				"min_cards_are_required_for_action": false,
 				"random_selection": false,
 				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"card_pick_text": "Choose {0} card to Inspect. {1} cards selected",
 				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure","card_root"]}}],
-				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT:{
+				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT_NEW:{
 							"modify_parent_card": false,
 				}}]}
 		})
@@ -657,14 +703,14 @@ func add_artifacts() -> void:
 	var artifact_money_on_exhaust: ArtifactData = ArtifactData.new("artifact_money_on_exhaust")
 	artifact_money_on_exhaust.artifact_name = "Caravan"
 	artifact_money_on_exhaust.artifact_texture_path = "external/sprites/artifacts/caravan.svg"
-	artifact_money_on_exhaust.artifact_description = "Every 3 cards exhausted. Gain 3 Money."
-	artifact_money_on_exhaust.artifact_shop_description = "Every 3 cards exhausted, gain 3 Money."
+	artifact_money_on_exhaust.artifact_description = "Every 5 cards exhausted, gain 3 Money."
+	artifact_money_on_exhaust.artifact_shop_description = "Every 5 cards exhausted, gain 3 Money."
 	#artifact_money_on_exhaust.artifact_insight_increment = {"base": 1, "insight": 5, "increment": 1}
 	artifact_money_on_exhaust.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_money_on_exhaust.artifact_color_id = "color_white"
 	artifact_money_on_exhaust.artifact_counter_wraparound = true
 	artifact_money_on_exhaust.artifact_script_path = "res://scripts/artifacts/ArtifactExhaustInspect.gd"
-	artifact_money_on_exhaust.artifact_counter_max = 3
+	artifact_money_on_exhaust.artifact_counter_max = 5
 	artifact_money_on_exhaust.artifact_max_counter_actions = [{Scripts.ACTION_ADD_MONEY:{"money_amount":3}}]
 #
 	Global.register_rod(artifact_money_on_exhaust)
@@ -5043,6 +5089,28 @@ func add_cards_misc() -> void:
 
 	Global.register_rod(card_rock)
 	
+	var card_quarry: CardData = CardData.new("card_quarry")
+	card_quarry.card_name = "Quarry"
+	card_quarry.card_color_id = "color_{0}".format([color])
+	card_quarry.card_texture_path = "external/sprites/artifacts/quarry.svg"
+	card_quarry.card_description = "Draw a card.\nON DISCARD: Gain [ore_amount]{0}.".format([Card.ORE_ICON_KEYWORD])
+	card_quarry.card_type = CardData.CARD_TYPES.RESOURCE
+	card_quarry.card_energy_cost = 0
+	card_quarry.card_influence = 0
+	card_quarry.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_quarry.card_requires_target = false
+	card_quarry.card_values = {"draw_count": 1, "ore_amount": 2}
+	card_quarry.card_play_actions = [{Scripts.ACTION_DRAW_GENERATOR:{}}]
+	card_quarry.card_discard_actions = [
+		{
+			Scripts.ACTION_ADD_ORE:
+			{
+			}
+		}
+		]
+
+	Global.register_rod(card_quarry)
+	
 	var card_scroll: CardData = CardData.new("card_scroll")
 	card_scroll.card_name = "Scroll"
 	card_scroll.card_color_id = "color_{0}".format([color])
@@ -5062,14 +5130,14 @@ func add_cards_misc() -> void:
 	Global.register_rod(card_scroll)
 	
 	var card_missives: CardData = CardData.new("card_missives")
-	card_missives.card_name = "missives"
+	card_missives.card_name = "Missives"
 	card_missives.card_color_id = "color_{0}".format([color])
 	card_missives.card_texture_path = "external/sprites/cards/basic/missives.png"
 	card_missives.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]."
 	card_missives.card_type = CardData.CARD_TYPES.CRAFT
 	card_missives.card_subtype = CardData.CARD_SUBTYPES.WOVEN
 	card_missives.card_energy_cost = 0
-	card_missives.card_influence = 3
+	card_missives.card_influence = 2
 	card_missives.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_missives.card_requires_target = false
 	card_missives.card_is_retained = true
@@ -5301,35 +5369,7 @@ func add_cards_misc() -> void:
 		]
 	
 	Global.register_rod(card_blueprint)
-	
-	var card_draft: CardData = CardData.new("card_draft")
-	card_draft.card_name = "Draft"
-	card_draft.card_color_id = "color_{0}".format([color])
-	card_draft.card_texture_path = "external/sprites/cards/basic/draft.svg"
-	card_draft.card_description = "Spend 3 Insight to gain [card_object_id]."
-	card_draft.card_type = CardData.CARD_TYPES.CRAFT
-	card_draft.card_energy_cost = 0
-	card_draft.card_influence = 0
-	card_draft.card_rarity = CardData.CARD_RARITIES.GENERATED
-	card_draft.card_play_destination = HandManager.EXHAUST_PILE
-	card_draft.card_requires_target = false
-	card_draft.card_values = {"card_object_id":""}
-	card_draft.card_play_actions = [
-		{
-			Scripts.ACTION_VALIDATOR:
-			{
-				"validator_data":[{Scripts.VALIDATOR_INSIGHT:{"insight_required":3}}],
-				"action_data":[{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":-3}},
-				{
-				Scripts.ACTION_CREATE_CARDS:
-				{
-					"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
-				}
-				}]
-			}
-		}]
-	
-	Global.register_rod(card_draft)
+
 #endregion
 
 func add_cards_trade() -> void:
@@ -5574,7 +5614,7 @@ func add_cards_trade() -> void:
 	card_explorers_guide.card_name = "Explorer's Guide"
 	card_explorers_guide.card_color_id = "color_blue"
 	card_explorers_guide.card_texture_path = "external/sprites/status_effects/book.svg"
-	card_explorers_guide.card_description = "Adds 'FRONTIER: Gain 2{0} to a card in hand.".format([Card.MONEY_ICON_KEYWORD])
+	card_explorers_guide.card_description = "Adds 'FRONTIER: Gain 2{0}' to a card in hand.".format([Card.MONEY_ICON_KEYWORD])
 	card_explorers_guide.card_keyword_object_ids = ["keyword_retain"]
 	card_explorers_guide.card_type = CardData.CARD_TYPES.CRAFT
 	card_explorers_guide.card_subtype = CardData.CARD_SUBTYPES.WOVEN
@@ -6333,15 +6373,15 @@ func add_cards_purple() -> void:
 	card_portoverseer.card_color_id = "color_{0}".format([color])
 	card_portoverseer.card_texture_path = "external/sprites/cards/pearl/20_portoverseer.png"
 	card_portoverseer.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_portoverseer.card_description = "Inspect [min_card_amount]\nFRONTIER: Return up to 3 cards from your discard pile to your hand."
+	card_portoverseer.card_description = "Inspect [max_card_amount]\nFRONTIER: Return up to 3 cards from your discard pile to your hand."
 	card_portoverseer.card_keyword_object_ids = ["keyword_inspect","keyword_frontier"]
 	card_portoverseer.card_type = CardData.CARD_TYPES.FACTION
 	card_portoverseer.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_portoverseer.card_rarity = CardData.CARD_RARITIES.RARE
 	card_portoverseer.card_requires_target = false
 	card_portoverseer.card_energy_cost = 2
-	card_portoverseer.card_values = {"min_card_amount":3,"max_card_amount":3}
-	card_portoverseer.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1}
+	card_portoverseer.card_values = {"min_card_amount":0,"max_card_amount":3}
+	card_portoverseer.card_upgrade_value_improvements = {"min_card_amount":0,"max_card_amount":1}
 	card_portoverseer.card_influence = 4
 	card_portoverseer.card_glow_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
 	card_portoverseer.card_play_actions = [
@@ -6350,16 +6390,18 @@ func add_cards_purple() -> void:
 			{
 				"validator_data": [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],
 				"action_data": [		{Scripts.ACTION_PICK_CARDS:{
+			"min_card_amount":0,
 			"max_card_amount": 3,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"min_cards_are_required_for_action": false,
 			"random_selection": false,
-			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DRAW: {"card_destinatiaon_strategy":HandManager.PILE_INSERTION_STRATEGIES.BOTTOM}
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {}
 			}]
 		}}]
 			}
 		}
 	]
+	card_portoverseer.card_play_actions.append(inspect_action)
 	card_portoverseer.card_play_actions.append(influence_action)
 	card_portoverseer.card_draw_actions = start_action_data
 	card_portoverseer.card_end_of_turn_actions = end_action_data
@@ -6414,15 +6456,15 @@ func add_cards_black() -> void:
 	card_aniseedemissary.card_name = "Aniseed Emissary"
 	card_aniseedemissary.card_color_id = "color_{0}".format([color])
 	card_aniseedemissary.card_texture_path = "external/sprites/cards/aniseed/01_aniseedemissary.png"
-	card_aniseedemissary.card_description = "Explore [damage]{0}. Inspect [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_aniseedemissary.card_description = "Explore [damage]{0}. Inspect [max_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_aniseedemissary.card_keyword_object_ids = ["keyword_inspect"]
 	card_aniseedemissary.card_type = CardData.CARD_TYPES.FACTION
 	card_aniseedemissary.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_aniseedemissary.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_aniseedemissary.card_requires_target = true
 	card_aniseedemissary.card_energy_cost = 1
-	card_aniseedemissary.card_values = {"damage": 2, "min_card_amount": 1, "max_card_amount": 1}
-	card_aniseedemissary.card_upgrade_value_improvements = {"min_card_amount": 1,"max_card_amount": 1}
+	card_aniseedemissary.card_values = {"damage": 2, "min_card_amount": 0, "max_card_amount": 1}
+	card_aniseedemissary.card_upgrade_value_improvements = {"min_card_amount": 0,"max_card_amount": 1}
 	card_aniseedemissary.card_influence = 3
 	card_aniseedemissary.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_aniseedemissary.card_play_actions.append(inspect_action)
@@ -6597,7 +6639,7 @@ func add_cards_black() -> void:
 	card_reveredcraftsworker.card_color_id = "color_{0}".format([color])
 	card_reveredcraftsworker.card_texture_path = "external/sprites/cards/aniseed/05_reveredcraftsworker.png"
 	card_reveredcraftsworker.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_reveredcraftsworker.card_description = "Forge [number_of_cards] Treasure. Inspect [min_card_amount]."
+	card_reveredcraftsworker.card_description = "Forge [number_of_cards] Treasure. Inspect [max_card_amount]."
 	card_reveredcraftsworker.card_keyword_object_ids = ["keyword_forge","keyword_treasure","keyword_inspect"]
 	card_reveredcraftsworker.card_type = CardData.CARD_TYPES.FACTION
 	card_reveredcraftsworker.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -6605,9 +6647,9 @@ func add_cards_black() -> void:
 	card_reveredcraftsworker.card_influence = 4
 	card_reveredcraftsworker.card_requires_target = false
 	card_reveredcraftsworker.card_energy_cost = 2
-	card_reveredcraftsworker.card_values = {"ore_required":1, "created_card_object_id": "card_treasure",  "number_of_cards": 1,	"min_card_amount": 2,
+	card_reveredcraftsworker.card_values = {"ore_required":1, "created_card_object_id": "card_treasure",  "number_of_cards": 1,	"min_card_amount": 0,
 				"max_card_amount": 2}
-	card_reveredcraftsworker.card_upgrade_value_improvements = {"number_of_cards": 1,"min_card_amount":1,"max_card_amount":1}
+	card_reveredcraftsworker.card_upgrade_value_improvements = {"number_of_cards": 1,"min_card_amount":0,"max_card_amount":1}
 	card_reveredcraftsworker.card_play_actions.append(inspect_action)
 	card_reveredcraftsworker.card_play_actions.append(forge_action)
 	card_reveredcraftsworker.card_play_actions.append(influence_action)
@@ -6633,14 +6675,14 @@ func add_cards_black() -> void:
 	card_cartographersassistant.card_play_actions = [{Scripts.ACTION_VALIDATOR:{"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],"passed_action_data":[{
 		Scripts.ACTION_PICK_CARDS:
 			{
-				"min_card_amount":1,
+				"min_card_amount":0,
 				"max_card_amount":1,
 				"min_cards_are_required_for_action": false,
-				"random_selection": true,
+				"random_selection": false,
 				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure"]}}],
-				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT:{
+				"card_pick_text": "Choose {0} card to Inspect. {1} cards selected",
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure","card_root"]}}],
+				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT_NEW:{
 							"modify_parent_card": false,
 				}}]}
 		}]}},
@@ -6869,8 +6911,8 @@ func add_cards_black() -> void:
 	card_aniseedtaxcollector.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_aniseedtaxcollector.card_requires_target = false
 	card_aniseedtaxcollector.card_energy_cost = 2
-	card_aniseedtaxcollector.card_values = {"min_card_amount":3,"max_card_amount":3,"discard_count":3,"draw_count":3}
-	card_aniseedtaxcollector.card_upgrade_value_improvements = {"min_card_amount":1,"max_card_amount":1,"discard_count":1,"draw_count":1}
+	card_aniseedtaxcollector.card_values = {"min_card_amount":0,"max_card_amount":3,"discard_count":3,"draw_count":3}
+	card_aniseedtaxcollector.card_upgrade_value_improvements = {"min_card_amount":0,"max_card_amount":1,"discard_count":1,"draw_count":1}
 	card_aniseedtaxcollector.card_play_actions.append(inspect_action)
 	#card_aniseedtaxcollector.card_play_actions.append(exhaust_action)
 	for action in sweep_action_data:
