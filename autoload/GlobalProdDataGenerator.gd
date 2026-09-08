@@ -563,6 +563,28 @@ func add_artifacts() -> void:
 
 	Global.register_rod(artifact_appease_periodic)
 	
+	var artifact_insight_craft: ArtifactData = ArtifactData.new("artifact_insight_craft")
+	artifact_insight_craft.artifact_name = "Library"
+	artifact_insight_craft.artifact_texture_path = "external/sprites/artifacts/library.svg"
+	artifact_insight_craft.artifact_description = "Every 7 Craft cards created, gain 1 Insight."
+	artifact_insight_craft.artifact_shop_description = "Every 7 Craft cards created, gain 1 Insight."
+	artifact_insight_craft.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_insight_craft.artifact_script_path = "res://scripts/artifacts/ArtifactChargeCraft.gd"
+	artifact_insight_craft.artifact_counter_max = 7
+	artifact_insight_craft.artifact_max_counter_actions = [{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]
+
+	Global.register_rod(artifact_insight_craft)
+	
+	var artifact_insight_discard: ArtifactData = ArtifactData.new("artifact_insight_discard")
+	artifact_insight_discard.artifact_name = "Observatory"
+	artifact_insight_discard.artifact_texture_path = "external/sprites/artifacts/observatory.svg"
+	artifact_insight_discard.artifact_description = "Whenever you spend Insight, discard the rightmost card, then draw 1."
+	artifact_insight_discard.artifact_shop_description = "Whenever you spend Insight, discard the rightmost card, then draw 1."
+	artifact_insight_discard.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_insight_discard.artifact_script_path = "res://scripts/artifacts/ArtifactInsightDiscard.gd"
+
+	Global.register_rod(artifact_insight_discard)
+	
 	var artifact_repair_periodic: ArtifactData = ArtifactData.new("artifact_repair_periodic")
 	artifact_repair_periodic.artifact_name = "Smithy"
 	artifact_repair_periodic.artifact_texture_path = "external/sprites/artifacts/smithy.svg"
@@ -663,7 +685,7 @@ func add_artifacts() -> void:
 	artifact_energy_every_four_turns.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_energy_every_four_turns.artifact_color_id = "color_white"
 	artifact_energy_every_four_turns.artifact_shop_description = "Gain 1 energy every 4 generated cards played."
-	artifact_energy_every_four_turns.artifact_texture_path = "external/sprites/artifacts/artifact_white.png"
+	artifact_energy_every_four_turns.artifact_texture_path = "external/sprites/artifacts/plannersoffice.svg"
 	artifact_energy_every_four_turns.artifact_counter_wraparound = true
 	#artifact_energy_every_four_turns.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
 	artifact_energy_every_four_turns.artifact_counter_max = 4
@@ -671,6 +693,22 @@ func add_artifacts() -> void:
 	artifact_energy_every_four_turns.artifact_max_counter_actions = [{Scripts.ACTION_ADD_ENERGY: {"energy_amount": 1}}]
 	
 	Global.register_rod(artifact_energy_every_four_turns)
+	
+	var artifact_energy_big: ArtifactData = ArtifactData.new("artifact_energy_big")
+	artifact_energy_big.artifact_name = "Regal Retinue"
+	artifact_energy_big.artifact_description = "Whenever you play a card that costs 2 or more energy, gain 1 charge. At 2 charges, gain 1 energy."
+	#artifact_energy_big.artifact_insight_increment = {"base": 1, "insight": 8, "increment": 1}
+	artifact_energy_big.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
+	artifact_energy_big.artifact_color_id = "color_white"
+	artifact_energy_big.artifact_shop_description = "Whenever you play a card that costs 2 or more energy, gain 1 charge. At 2 charges, gain 1 energy."
+	artifact_energy_big.artifact_texture_path = "external/sprites/artifacts/regalretinue.svg"
+	artifact_energy_big.artifact_counter_wraparound = true
+	#artifact_energy_big.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
+	artifact_energy_big.artifact_counter_max = 2
+	artifact_energy_big.artifact_script_path = "res://scripts/artifacts/ArtifactEnergyBig.gd"
+	artifact_energy_big.artifact_max_counter_actions = [{Scripts.ACTION_ADD_ENERGY: {"energy_amount": 1}}]
+	
+	Global.register_rod(artifact_energy_big)
 	
 	var artifact_inspect_on_exhaust: ArtifactData = ArtifactData.new("artifact_inspect_on_exhaust")
 	artifact_inspect_on_exhaust.artifact_name = "Inspectorate"
