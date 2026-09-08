@@ -347,7 +347,7 @@ func get_card_description(selected_target: BaseCombatant = null) -> String:
 		modified_description_bb_code = modified_description_bb_code.replace("Sift", keyword_bb_code)
 		
 	if card_data.card_description.contains("Rattle"):
-		var keyword_bb_code: String = "[color=orange_red]{0}[/color]".format(["Rattle"])
+		var keyword_bb_code: String = "[color=plum]{0}[/color]".format(["Rattle"])
 		modified_description_bb_code = modified_description_bb_code.replace("Rattle", keyword_bb_code)
 		
 	if card_data.card_description.contains("Forge"):
