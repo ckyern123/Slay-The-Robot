@@ -193,7 +193,6 @@ func _complete_run(is_victory: bool) -> void:
 	current_run_stats.run_character_id = character_id
 	current_run_stats.run_difficulty_level = Global.player_data.player_run_difficulty_level
 	current_run_stats.run_player_food = Global.player_data.player_food
-	current_run_stats.run_player_food_max = Global.player_data.player_food_max
 	current_run_stats.run_player_money = Global.player_data.player_money
 	# completion time/date
 	current_run_stats.run_completion_timestamp = int(Time.get_unix_time_from_system())

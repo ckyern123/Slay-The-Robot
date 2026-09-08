@@ -89,7 +89,6 @@ func _ready():
 	Signals.player_food_changed.connect(_on_player_food_changed)
 	Signals.player_ore_changed.connect(_on_player_ore_changed)
 	Signals.player_size_changed.connect(_on_player_size_changed)
-	Signals.player_size_max_changed.connect(_on_player_size_max_changed)
 	Signals.player_room_changed.connect(_on_player_room_changed)
 	Signals.player_insight_changed.connect(_on_player_insight_changed)
 	Signals.player_refresh_changed.connect(_on_player_refresh_changed)
@@ -293,14 +292,7 @@ func _on_player_food_changed(_delta: int = 0):
 		
 func _on_player_size_changed(_delta: int = 0):
 	var player_size: int = Global.player_data.player_size
-	var player_size_max: int = Global.player_data.player_size_max
-	if (player_size > player_size_max):
-		size_label.text = "[img width={0}]{1}[/img] {2}: [color=#FF9233]%s / %s[/color]".format([EMBEDDED_IMAGE_SIZE, size_texture_path, "Size"])  % [Global.player_data.player_size,Global.player_data.player_size_max]
-	else:
-		size_label.text = "[img width={0}]{1}[/img] {2}: %s / %s".format([EMBEDDED_IMAGE_SIZE, size_texture_path, "Size"])  % [Global.player_data.player_size,Global.player_data.player_size_max]
-
-func _on_player_size_max_changed(_delta: int = 0):
-	create_image_fade(size_fade_container, FileLoader.load_texture(size_texture_path))
+	size_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, size_texture_path, "Size"])  % [Global.player_data.player_size]
 
 func _on_player_room_changed(_delta: int = 0):
 	room_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, room_texture_path, "Room"])  % Global.player_data.player_room

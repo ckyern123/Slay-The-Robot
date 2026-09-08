@@ -233,7 +233,7 @@ var exhaust_action: Dictionary = {
 			]
 			}}
 			
-var inspect_action: Dictionary = {
+var inspect_action_old: Dictionary = {
 		Scripts.ACTION_PICK_CARDS:
 			{
 				"min_cards_are_required_for_action": false,
@@ -242,6 +242,19 @@ var inspect_action: Dictionary = {
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure"]}}],
 				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT:{
+							"modify_parent_card": false,
+				}}]}
+		}
+		
+var inspect_action: Dictionary = {
+		Scripts.ACTION_PICK_CARDS:
+			{
+				"min_cards_are_required_for_action": false,
+				"random_selection": true,
+				"card_pick_type": HandManager.DISCARD_PILE,
+				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_rock","card_treasure"]}}],
+				"action_data": [{Scripts.ACTION_IMPROVE_INSPECT_NEW:{
 							"modify_parent_card": false,
 				}}]}
 		}
@@ -309,7 +322,44 @@ var start_action_data: Array[Dictionary] = [
 				},
 			]
 			}
-		},
+		},{		Scripts.ACTION_VALIDATOR: {
+			"validator_data":
+				[
+				{
+				Scripts.VALIDATOR_CARD_PROPERTIES:
+					{
+					"card_property_name": "card_influence",
+					"operator": ">=",
+					"comparison_value": 7,
+					"invert_validation": false,	
+					}
+				},
+				{
+					Scripts.VALIDATOR_CARD_UPGRADEABLE:
+						{}
+				}
+				],
+			"passed_action_data":
+				[
+					{
+						Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/upgrade.wav"},
+					},
+					{
+						Scripts.ACTION_UPGRADE_CARDS:
+						{
+							"pick_played_card": true
+						}
+					},
+					{
+						Scripts.ACTION_CHANGE_CARD_INFLUENCE:
+							{
+								"pick_played_card": true,
+								"modify_parent_card": false,
+								"card_influence": -4,
+							}
+					}
+				]
+		},}
 		]
 var end_action_data: Array[Dictionary] = [
 		{
@@ -390,10 +440,40 @@ func add_artifacts() -> void:
 	var artifact_add_size: ArtifactData = ArtifactData.new("artifact_add_size")
 	artifact_add_size.artifact_name = "Town Hall"
 	artifact_add_size.artifact_texture_path = "external/sprites/artifacts/townhall.svg"
-	artifact_add_size.artifact_description = "Adds 7 Size when obtained."
-	artifact_add_size.artifact_shop_description = "Adds 7 Size when obtained."
+	artifact_add_size.artifact_description = "Drafts Faction cards twice when obtained."
+	artifact_add_size.artifact_shop_description = "Drafts Faction cards twice when obtained."
 	artifact_add_size.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	artifact_add_size.artifact_add_actions = [{Scripts.ACTION_ADD_KINGDOM_SIZE: {"size_amount": 7}}]
+	artifact_add_size.artifact_add_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK: {}},{Scripts.ACTION_DISCARD_CARDS:{}}],
+			"validator_data": [
+				{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.COMMON]}},
+				{Scripts.VALIDATOR_CARD_DRAFTABLE: {}},
+			],
+			"rng_name": "rng_card_drafting",
+			"draft_use_player_draft": false, # this should always be false if using a validator based draft
+			"draft_is_weighted": false,
+			"draft_use_pity_system": false,
+			}
+		},{
+		Scripts.ACTION_PICK_CARDS: {
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK: {}},{Scripts.ACTION_DISCARD_CARDS:{}}],
+			"validator_data": [
+				{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.COMMON]}},
+				{Scripts.VALIDATOR_CARD_DRAFTABLE: {}},
+			],
+			"rng_name": "rng_card_drafting",
+			"draft_use_player_draft": false, # this should always be false if using a validator based draft
+			"draft_is_weighted": false,
+			"draft_use_pity_system": false,
+			}
+		}]
 	Global.register_rod(artifact_add_size)
 	
 	var artifact_add_room: ArtifactData = ArtifactData.new("artifact_add_room")
@@ -1069,7 +1149,7 @@ func add_status_effects() -> void:
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_delicacy_reward: StatusEffectData = StatusEffectData.new("status_effect_delicacy_reward")
 	status_effect_delicacy_reward.status_effect_name = "Delicacy"
-	status_effect_delicacy_reward.status_effect_texture_path = "external/sprites/status_effects/delicacy.svg"
+	status_effect_delicacy_reward.status_effect_texture_path = "external/sprites/status_effects/delicacy_status.svg"
 	status_effect_delicacy_reward.status_effect_is_visible = true
 	status_effect_delicacy_reward.status_effect_decay_rate = 0
 	status_effect_delicacy_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -1093,7 +1173,7 @@ func add_status_effects() -> void:
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_refresh_reward: StatusEffectData = StatusEffectData.new("status_effect_refresh_reward")
 	status_effect_refresh_reward.status_effect_name = "Shop Refresh"
-	status_effect_refresh_reward.status_effect_texture_path = "external/sprites/status_effects/refresh.svg"
+	status_effect_refresh_reward.status_effect_texture_path = "external/sprites/status_effects/refresh_status.svg"
 	status_effect_refresh_reward.status_effect_is_visible = true
 	status_effect_refresh_reward.status_effect_decay_rate = 0
 	status_effect_refresh_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -1105,7 +1185,7 @@ func add_status_effects() -> void:
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_rattle: StatusEffectData = StatusEffectData.new("status_effect_rattle")
 	status_effect_rattle.status_effect_name = "Rattles Discard Per Turn"
-	status_effect_rattle.status_effect_texture_path = "external/sprites/status_effects/influence_down.svg"
+	status_effect_rattle.status_effect_texture_path = "external/sprites/status_effects/rattle.svg"
 	status_effect_rattle.status_effect_is_visible = true
 	status_effect_rattle.status_effect_decay_rate = 0
 	status_effect_rattle.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -1129,7 +1209,7 @@ func add_status_effects() -> void:
 		# Reward (simply to explain what objects of interest do)
 	var status_effect_debt_once: StatusEffectData = StatusEffectData.new("status_effect_debt_once")
 	status_effect_debt_once.status_effect_name = "Creates Debt Once"
-	status_effect_debt_once.status_effect_texture_path = "external/sprites/cards/basic/cash.png"
+	status_effect_debt_once.status_effect_texture_path = "external/sprites/status_effects/debt.svg"
 	status_effect_debt_once.status_effect_is_visible = true
 	status_effect_debt_once.status_effect_decay_rate = 0
 	status_effect_debt_once.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -1141,7 +1221,7 @@ func add_status_effects() -> void:
 		# Reward (simply to explain what objects of interest do)
 	var status_effect_insight_reward: StatusEffectData = StatusEffectData.new("status_effect_insight_reward")
 	status_effect_insight_reward.status_effect_name = "Insight"
-	status_effect_insight_reward.status_effect_texture_path = "external/sprites/status_effects/insight.svg"
+	status_effect_insight_reward.status_effect_texture_path = "external/sprites/status_effects/insight_status.svg"
 	status_effect_insight_reward.status_effect_is_visible = true
 	status_effect_insight_reward.status_effect_decay_rate = 0
 	status_effect_insight_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -1153,7 +1233,7 @@ func add_status_effects() -> void:
 			# Reward (simply to explain what objects of interest do)
 	var status_effect_scroll_reward: StatusEffectData = StatusEffectData.new("status_effect_scroll_reward")
 	status_effect_scroll_reward.status_effect_name = "Insight"
-	status_effect_scroll_reward.status_effect_texture_path = "external/sprites/status_effects/tied-scroll.png"
+	status_effect_scroll_reward.status_effect_texture_path = "external/sprites/status_effects/scroll.svg"
 	status_effect_scroll_reward.status_effect_is_visible = true
 	status_effect_scroll_reward.status_effect_decay_rate = 0
 	status_effect_scroll_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -1173,10 +1253,43 @@ func add_status_effects() -> void:
 	
 	Global.register_rod(status_effect_grain_reward)
 	
+	var status_effect_draft_reward: StatusEffectData = StatusEffectData.new("status_effect_draft_reward")
+	status_effect_draft_reward.status_effect_name = "Common Faction Draft"
+	status_effect_draft_reward.status_effect_texture_path = "external/sprites/status_effects/draft.svg"
+	status_effect_draft_reward.status_effect_is_visible = true
+	status_effect_draft_reward.status_effect_decay_rate = 0
+	status_effect_draft_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_draft_reward.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_draft_reward.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_draft_reward)
+	
+	var status_effect_draft_trade_reward: StatusEffectData = StatusEffectData.new("status_effect_draft_trade_reward")
+	status_effect_draft_trade_reward.status_effect_name = "Trade Order Draft"
+	status_effect_draft_trade_reward.status_effect_texture_path = "external/sprites/status_effects/draft_trade.svg"
+	status_effect_draft_trade_reward.status_effect_is_visible = true
+	status_effect_draft_trade_reward.status_effect_decay_rate = 0
+	status_effect_draft_trade_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_draft_trade_reward.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_draft_trade_reward.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_draft_trade_reward)
+	
+	var status_effect_draft_improved_reward: StatusEffectData = StatusEffectData.new("status_effect_draft_improved_reward")
+	status_effect_draft_improved_reward.status_effect_name = "Uncommon/Rare Faction Draft"
+	status_effect_draft_improved_reward.status_effect_texture_path = "external/sprites/status_effects/draft_improved.svg"
+	status_effect_draft_improved_reward.status_effect_is_visible = true
+	status_effect_draft_improved_reward.status_effect_decay_rate = 0
+	status_effect_draft_improved_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_draft_improved_reward.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_draft_improved_reward.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_draft_improved_reward)
+	
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_fertiliser_reward: StatusEffectData = StatusEffectData.new("status_effect_fertiliser_reward")
 	status_effect_fertiliser_reward.status_effect_name = "Fertilise"
-	status_effect_fertiliser_reward.status_effect_texture_path = "external/sprites/artifacts/fertiliser.svg"
+	status_effect_fertiliser_reward.status_effect_texture_path = "external/sprites/status_effects/fertiliser_status.svg"
 	status_effect_fertiliser_reward.status_effect_is_visible = true
 	status_effect_fertiliser_reward.status_effect_decay_rate = 0
 	status_effect_fertiliser_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -1188,7 +1301,7 @@ func add_status_effects() -> void:
 		# Reward (simply to explain what objects of interest do)
 	var status_effect_money_reward: StatusEffectData = StatusEffectData.new("status_effect_money_reward")
 	status_effect_money_reward.status_effect_name = "Money"
-	status_effect_money_reward.status_effect_texture_path = "external/sprites/status_effects/money.svg"
+	status_effect_money_reward.status_effect_texture_path = "external/sprites/status_effects/money_status.svg"
 	status_effect_money_reward.status_effect_is_visible = true
 	status_effect_money_reward.status_effect_decay_rate = 0
 	status_effect_money_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
@@ -2532,7 +2645,7 @@ func add_dialogue() -> void:
 	var dialogue_smoke_at_the_bay_option_1: DialogueOptionData = DialogueOptionData.new("dialogue_smoke_at_the_bay_option_1")
 	dialogue_smoke_at_the_bay_option_1.dialogue_option_bbcode = "Abandon post. (Lose 5 Size)"
 	dialogue_smoke_at_the_bay_option_1.dialogue_option_actions = [
-		{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount":-5}},
+		
 		]
 	dialogue_smoke_at_the_bay_option_1.dialogue_option_next_dialogue_state_id = "" # empty ends dialogue
 	
@@ -2814,7 +2927,7 @@ func add_colors() -> void:
 	var color_grey: ColorData = ColorData.new("color_grey")
 	color_grey.color = Color.WEB_GRAY
 	color_grey.color_name = "Grey"
-	color_grey.color_energy_icon_texture_path = "external/sprites/colors/white_energy_icon.png"
+	color_grey.color_energy_icon_texture_path = "external/sprites/colors/whiteenergy.svg"
 	Global.register_rod(color_grey)
 #endregion
 
@@ -3077,7 +3190,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green"
+		"card_basic_explore_green", "card_basic_explore_green","card_reveredcraftsworker"
 	]
 	
 	Global.register_rod(character_green)
@@ -3461,7 +3574,7 @@ func add_enemies() -> void:
 	mound.enemy_name = "Mound"
 	mound.add_health_bounds(12, 15)
 	mound.add_health_bounds(16, 18, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	mound.enemy_initial_status_effects = {"status_effect_grain_reward": 1,"status_effect_fertiliser_reward":2, "status_effect_size_reward": 2}
+	mound.enemy_initial_status_effects = {"status_effect_grain_reward": 2,"status_effect_fertiliser_reward":2}
 	mound.enemy_texture_path = "external/sprites/enemies/hills.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	mound.add_intent_state([
@@ -3471,7 +3584,7 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_grain",
 		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}},{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 2}},{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser","artifact_charge_increase":2}}]
+		}},{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser","artifact_charge_increase":2}}]
 	# an attack that hits harder on higher difficulties
 	mound.add_intent_state(basic_states)
 		
@@ -3574,8 +3687,23 @@ func add_enemies() -> void:
 	chargedvista.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	chargedvista.enemy_initial_status_effects = {"status_effect_size_reward": 5,"status_effect_room_reward": 2,"status_effect_rattle":1,"status_effect_elite":1}
-	chargedvista.enemy_actions_on_death = [{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 5}},{Scripts.ACTION_ADD_ROOM:{"room_amount": 2}}]
+	chargedvista.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_insight_reward": 2,"status_effect_room_reward": 2,"status_effect_rattle":1,"status_effect_elite":1}
+	chargedvista.enemy_actions_on_death = [	{
+		Scripts.ACTION_PICK_CARDS: {
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK: {}},{Scripts.ACTION_DISCARD_CARDS:{}}],
+			"validator_data": [
+				{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.RARE,CardData.CARD_RARITIES.UNCOMMON]}},
+				{Scripts.VALIDATOR_CARD_DRAFTABLE: {}},
+			],
+			"rng_name": "rng_card_drafting",
+			"draft_use_player_draft": false, # this should always be false if using a validator based draft
+			"draft_is_weighted": false,
+			"draft_use_pity_system": false,
+			}
+		},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":2}},{Scripts.ACTION_ADD_ROOM:{"room_amount": 2}}]
 	# an attack that hits harder on higher difficulties
 	var chargedvista_status_actions: Array[Dictionary] = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -3617,7 +3745,7 @@ func add_enemies() -> void:
 	boulder.add_health_bounds(11, 13, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	boulder.enemy_texture_path = "external/sprites/enemies/rock.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
-	boulder.enemy_initial_status_effects = {"status_effect_rock_reward": 2,"status_effect_size_reward": 2}
+	boulder.enemy_initial_status_effects = {"status_effect_rock_reward": 2}
 	boulder.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
@@ -3625,7 +3753,7 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_rock",
 		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}},{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 2}}]
+		}}]
 	# an attack that hits harder on higher difficulties
 	boulder.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3801,7 +3929,7 @@ func add_enemies() -> void:
 	cave.add_health_bounds(25, 32)
 	cave.add_health_bounds(35, 40, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	cave.enemy_texture_path = "external/sprites/enemies/cave-entrance.png"
-	cave.enemy_initial_status_effects = {"status_effect_treasure_reward": 3, "status_effect_size_reward": 5}
+	cave.enemy_initial_status_effects = {"status_effect_treasure_reward": 2, "status_effect_draft_reward": 1}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	cave.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -3810,7 +3938,22 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_treasure",
 		"number_of_cards":3,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}},{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 5}}]
+		}},{
+		Scripts.ACTION_PICK_CARDS: {
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK: {}},{Scripts.ACTION_DISCARD_CARDS:{}}],
+			"validator_data": [
+				{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.COMMON]}},
+				{Scripts.VALIDATOR_CARD_DRAFTABLE: {}},
+			],
+			"rng_name": "rng_card_drafting",
+			"draft_use_player_draft": false, # this should always be false if using a validator based draft
+			"draft_is_weighted": false,
+			"draft_use_pity_system": false,
+			}
+		}]
 	# an attack that hits harder on higher difficulties
 	cave.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3912,12 +4055,12 @@ func add_enemies() -> void:
 	forestfloor.add_health_bounds(12, 15)
 	forestfloor.add_health_bounds(17, 19, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	forestfloor.enemy_texture_path = "external/sprites/enemies/forest.png"
-	forestfloor.enemy_initial_status_effects = {"status_effect_size_reward": 2, "status_effect_room_reward": 1,"status_effect_insight_reward":1}
+	forestfloor.enemy_initial_status_effects = {"status_effect_treasure_reward": 1, "status_effect_room_reward": 1,"status_effect_insight_reward":1}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	forestfloor.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	forestfloor.enemy_actions_on_death = [{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 2}},{Scripts.ACTION_ADD_ROOM:{"room_amount": 1}},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]
+	forestfloor.enemy_actions_on_death = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_treasure","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{Scripts.ACTION_ADD_ROOM:{"room_amount": 1}},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":1}}]
 	# an attack that hits harder on higher difficulties
 	forestfloor.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3937,12 +4080,22 @@ func add_enemies() -> void:
 	abandonedoutpost.add_health_bounds(12, 15)
 	abandonedoutpost.add_health_bounds(17, 19, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	abandonedoutpost.enemy_texture_path = "external/sprites/enemies/abandonedoutpost.png"
-	abandonedoutpost.enemy_initial_status_effects = {"status_effect_size_reward": 3, "status_effect_missives_reward": 1}
+	abandonedoutpost.enemy_initial_status_effects = {"status_effect_draft_trade_reward":1, "status_effect_missives_reward": 1}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	abandonedoutpost.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	abandonedoutpost.enemy_actions_on_death = [{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 3}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_missives","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	abandonedoutpost.enemy_actions_on_death = [		{Scripts.ACTION_PICK_CARDS:
+		{
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"validator_data": [],
+			# use same rng as player drafting so it counts as draft
+			"rng_name": "rng_card_drafting",
+			"draft_card_pack_id": "card_pack_grey"
+		}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_missives","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	# an attack that hits harder on higher difficulties
 	abandonedoutpost.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3962,12 +4115,22 @@ func add_enemies() -> void:
 	banditroost.add_health_bounds(12, 15)
 	banditroost.add_health_bounds(17, 19, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	banditroost.enemy_texture_path = "external/sprites/enemies/banditroost.png"
-	banditroost.enemy_initial_status_effects = {"status_effect_size_reward": 3, "status_effect_money_reward": 5, "status_effect_debt_once":1}
+	banditroost.enemy_initial_status_effects = {"status_effect_draft_trade_reward":1, "status_effect_money_reward": 5, "status_effect_debt_once":1}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	banditroost.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_debt":1}),
 		])
-	banditroost.enemy_actions_on_death = [{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 3}},{Scripts.ACTION_ADD_MONEY:{"money_amount":5}}]
+	banditroost.enemy_actions_on_death = [{Scripts.ACTION_PICK_CARDS:
+		{
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"validator_data": [],
+			# use same rng as player drafting so it counts as draft
+			"rng_name": "rng_card_drafting",
+			"draft_card_pack_id": "card_pack_grey"
+		}},{Scripts.ACTION_ADD_MONEY:{"money_amount":5}}]
 	# an attack that hits harder on higher difficulties
 	var banditroost_status_actions: Array[Dictionary] = [{
 		Scripts.ACTION_CREATE_CARDS:{"created_card_object_id": "card_debt","number_of_cards":2,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
@@ -3992,8 +4155,8 @@ func add_enemies() -> void:
 	den.enemy_name = "Den"
 	den.add_health_bounds(25, 27)
 	den.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	den.enemy_texture_path = "external/sprites/enemies/hobbit-dwelling.png"
-	den.enemy_initial_status_effects = {"status_effect_treasure_reward": 3, "status_effect_size_reward": 5,"status_effect_rattle":1,"status_effect_elite":1}
+	den.enemy_texture_path = "external/sprites/enemies/hobbit-dswelling.png"
+	den.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_treasure_reward": 3, "status_effect_rattle":1,"status_effect_elite":1}
 	den.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var den_status_actions: Array[Dictionary] = [{
@@ -4018,11 +4181,26 @@ func add_enemies() -> void:
 	den.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	den.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
+	den.enemy_actions_on_death = [{
+		Scripts.ACTION_PICK_CARDS: {
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK: {}},{Scripts.ACTION_DISCARD_CARDS:{}}],
+			"validator_data": [
+				{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.RARE,CardData.CARD_RARITIES.UNCOMMON]}},
+				{Scripts.VALIDATOR_CARD_DRAFTABLE: {}},
+			],
+			"rng_name": "rng_card_drafting",
+			"draft_use_player_draft": false, # this should always be false if using a validator based draft
+			"draft_is_weighted": false,
+			"draft_use_pity_system": false,
+			}
+		},{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_treasure",
 		"number_of_cards":3,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}},{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 5}}]
+		}}]
 	# an attack that hits harder on higher difficulties
 	den.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1},den_status_actions),
@@ -4042,7 +4220,7 @@ func add_enemies() -> void:
 	hideout.add_health_bounds(25, 27)
 	hideout.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	hideout.enemy_texture_path = "external/sprites/enemies/castle.png"
-	hideout.enemy_initial_status_effects = {"status_effect_spice_reward": 2,"status_effect_size_reward": 4,"status_effect_rattle":1,"status_effect_elite":1}
+	hideout.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_spice_reward": 2,"status_effect_rattle":1,"status_effect_elite":1}
 	hideout.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var hideout_status_actions: Array[Dictionary] = [{
@@ -4069,9 +4247,24 @@ func add_enemies() -> void:
 		])
 	hideout.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_spice",
-		"number_of_cards":3,
+		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}},{Scripts.ACTION_ADD_KINGDOM_SIZE: {"size_amount": 4}}]
+		}},{
+		Scripts.ACTION_PICK_CARDS: {
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK: {}},{Scripts.ACTION_DISCARD_CARDS:{}}],
+			"validator_data": [
+				{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.RARE,CardData.CARD_RARITIES.UNCOMMON]}},
+				{Scripts.VALIDATOR_CARD_DRAFTABLE: {}},
+			],
+			"rng_name": "rng_card_drafting",
+			"draft_use_player_draft": false, # this should always be false if using a validator based draft
+			"draft_is_weighted": false,
+			"draft_use_pity_system": false,
+			}
+		}]
 	# an attack that hits harder on higher difficulties
 	hideout.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, "",{"intent_block":1},hideout_status_actions),
@@ -4097,12 +4290,16 @@ func add_enemies() -> void:
 	dryfield.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	dryfield.enemy_initial_status_effects = {"status_effect_grain_reward": 1, "status_effect_size_reward": 2}
+	dryfield.enemy_initial_status_effects = {"status_effect_grain_reward": 1, "status_effect_rock_reward": 1}
 	dryfield.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_grain",
 		"number_of_cards":1,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}},{Scripts.ACTION_ADD_KINGDOM_SIZE: {"size_amount": 3}}]
+		}},{	Scripts.ACTION_CREATE_CARDS: {
+		"created_card_object_id": "card_rock",
+		"number_of_cards":1,
+		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
+		}}]
 	# an attack that hits harder on higher difficulties
 	dryfield.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -4126,12 +4323,12 @@ func add_enemies() -> void:
 	mangroveroots.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	mangroveroots.enemy_initial_status_effects = {"status_effect_delicacy_reward": 1, "status_effect_size_reward": 1}
+	mangroveroots.enemy_initial_status_effects = {"status_effect_delicacy_reward": 1}
 	mangroveroots.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_delicacy",
 		"number_of_cards":1,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}},{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 1}}]
+		}}]
 	# an attack that hits harder on higher difficulties
 	mangroveroots.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -4155,8 +4352,23 @@ func add_enemies() -> void:
 	brackishbeds.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	brackishbeds.enemy_initial_status_effects = {"status_effect_size_reward": 6}
-	brackishbeds.enemy_actions_on_death = [{Scripts.ACTION_ADD_KINGDOM_SIZE:{"size_amount": 6}}]
+	brackishbeds.enemy_initial_status_effects = {"status_effect_draft_reward":1}
+	brackishbeds.enemy_actions_on_death = [{
+		Scripts.ACTION_PICK_CARDS: {
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK: {}},{Scripts.ACTION_DISCARD_CARDS:{}}],
+			"validator_data": [
+				{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.COMMON]}},
+				{Scripts.VALIDATOR_CARD_DRAFTABLE: {}},
+			],
+			"rng_name": "rng_card_drafting",
+			"draft_use_player_draft": false, # this should always be false if using a validator based draft
+			"draft_is_weighted": false,
+			"draft_use_pity_system": false,
+			}
+		}]
 	# an attack that hits harder on higher difficulties
 	brackishbeds.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -4608,7 +4820,7 @@ func add_card_basics() -> void:
 	
 	for i: int in len(colors):
 		var card_basic_ore: CardData = CardData.new("card_basic_ore_{0}".format([colors[i]]))
-		card_basic_ore.card_name = "Basic Ore"
+		card_basic_ore.card_name = "Ore Collector"
 		card_basic_ore.card_color_id = "color_{0}".format([colors[i]])
 		card_basic_ore.card_description = "Gain [ore_amount]{0}".format([Card.ORE_ICON_KEYWORD])
 		card_basic_ore.card_texture_path = "external/sprites/cards/basic/03_trawl.png"
@@ -4623,13 +4835,14 @@ func add_card_basics() -> void:
 		card_basic_ore.card_play_actions = [{
 		Scripts.ACTION_ADD_ORE: {}
 		}]
+		card_basic_ore.card_draw_actions = start_action_data
 		card_basic_ore.card_play_actions.append(influence_action)
 		card_basic_ore.card_end_of_turn_actions = end_action_data
 		Global.register_rod(card_basic_ore)
 
 		# Basic block card
 		var card_basic_money: CardData = CardData.new("card_basic_money_{0}".format([colors[i]]))
-		card_basic_money.card_name = "Basic Money"
+		card_basic_money.card_name = "Tax Collector"
 		card_basic_money.card_color_id = "color_{0}".format([colors[i]])
 		card_basic_money.card_description = "Gain [money_amount]{0}".format([Card.MONEY_ICON_KEYWORD])
 		card_basic_money.card_texture_path = "external/sprites/cards/basic/06_tradingnovice.png"
@@ -4643,13 +4856,14 @@ func add_card_basics() -> void:
 		Scripts.ACTION_ADD_MONEY: {}
 		}]
 		card_basic_money.card_play_actions.append(influence_action)
+		card_basic_money.card_draw_actions = start_action_data
 		card_basic_money.card_end_of_turn_actions = end_action_data
 		Global.register_rod(card_basic_money)
 
 
 		# Basic block card
 		var card_basic_weave: CardData = CardData.new("card_basic_weave_{0}".format([colors[i]]))
-		card_basic_weave.card_name = "Basic Weave"
+		card_basic_weave.card_name = "Novice Weaver"
 		card_basic_weave.card_color_id = "color_{0}".format([colors[i]])
 		card_basic_weave.card_description = "Weave [insight_required] Scroll."
 		card_basic_weave.card_texture_path = "external/sprites/cards/basic/04_cabinmate.png"
@@ -4663,12 +4877,13 @@ func add_card_basics() -> void:
 		card_basic_weave.card_upgrade_value_improvements = {"insight_required":1,"number_of_cards":1 }
 		card_basic_weave.card_play_actions.append(weave_action)
 		card_basic_weave.card_play_actions.append(influence_action)
+		card_basic_weave.card_draw_actions = start_action_data
 		card_basic_weave.card_end_of_turn_actions = end_action_data
 		Global.register_rod(card_basic_weave)
 		
 				# Basic attack card
 		var card_basic_explore: CardData = CardData.new("card_basic_explore_{0}".format([colors[i]]))
-		card_basic_explore.card_name = "Basic Explore"
+		card_basic_explore.card_name = "Ship Recruit"
 		card_basic_explore.card_color_id = "color_{0}".format([colors[i]])
 		card_basic_explore.card_description = "Explore [damage]{0}".format([Card.EXPLORE_ICON_KEYWORD])
 		card_basic_explore.card_texture_path = "external/sprites/cards/basic/07_sailingnovice.png"
@@ -4682,6 +4897,7 @@ func add_card_basics() -> void:
 		card_basic_explore.card_play_actions = [{
 		Scripts.ACTION_ATTACK_GENERATOR: {}}]
 		card_basic_explore.card_play_actions.append(influence_action)
+		card_basic_explore.card_draw_actions = start_action_data
 		card_basic_explore.card_end_of_turn_actions = end_action_data
 		Global.register_rod(card_basic_explore)
 
@@ -4771,7 +4987,7 @@ func add_cards_misc() -> void:
 	var card_scroll: CardData = CardData.new("card_scroll")
 	card_scroll.card_name = "Scroll"
 	card_scroll.card_color_id = "color_{0}".format([color])
-	card_scroll.card_texture_path = "external/sprites/status_effects/tied-scroll.png"
+	card_scroll.card_texture_path = "external/sprites/status_effects/scroll.svg"
 	card_scroll.card_description = "For every 5th time a Scroll is played, draft a Book."
 	card_scroll.card_type = CardData.CARD_TYPES.CRAFT
 	card_scroll.card_subtype = CardData.CARD_SUBTYPES.WOVEN
@@ -4972,6 +5188,20 @@ func add_cards_misc() -> void:
 		}}]
 	
 	Global.register_rod(card_rebel)
+	
+	var card_hubris: CardData = CardData.new("card_hubris")
+	card_hubris.card_name = "Hubris"
+	card_hubris.card_color_id = "color_{0}".format([color])
+	card_hubris.card_texture_path = "external/sprites/cards/basic/hubris.png"
+	card_hubris.card_description = "Cannot be played.\n\nFor how long will you prosper?"
+	card_hubris.card_type = CardData.CARD_TYPES.CURSE
+	card_hubris.card_energy_cost = 0
+	card_hubris.card_influence = 0
+	card_hubris.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_hubris.card_requires_target = false
+	card_hubris.card_is_playable = false
+	
+	Global.register_rod(card_hubris)
 	
 	var card_blueprint: CardData = CardData.new("card_blueprint")
 	card_blueprint.card_name = "Blueprint"
@@ -5426,6 +5656,7 @@ func add_cards_purple() -> void:
 				}
 		}]
 	card_cunningtrader.card_discard_actions = [{Scripts.ACTION_ADD_MONEY:{}}]
+	card_cunningtrader.card_draw_actions = start_action_data
 	card_cunningtrader.card_play_actions.append(influence_action)
 	card_cunningtrader.card_end_of_turn_actions = end_action_data
 	
@@ -5448,6 +5679,7 @@ func add_cards_purple() -> void:
 	card_pearlemissary.card_influence = 3
 	card_pearlemissary.card_play_actions = sweep_action_data
 	card_pearlemissary.card_play_actions.append(influence_action)
+	card_pearlemissary.card_draw_actions = start_action_data
 	card_pearlemissary.card_end_of_turn_actions = end_action_data
 
 	card_pearlemissary.card_discard_actions = [{
@@ -5503,6 +5735,7 @@ func add_cards_purple() -> void:
 		}
 	]
 	card_joyfulsailor.card_play_actions.append(influence_action)
+	card_joyfulsailor.card_draw_actions = start_action_data
 	card_joyfulsailor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_joyfulsailor)
 	
@@ -5538,6 +5771,7 @@ func add_cards_purple() -> void:
 		}
 	}]
 	card_saltexpert.card_play_actions.append(influence_action)
+	card_saltexpert.card_draw_actions = start_action_data
 	card_saltexpert.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_saltexpert)
 	
@@ -5560,7 +5794,7 @@ func add_cards_purple() -> void:
 			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
 			"pick_draft_cards": false,
 			"draft_from_card_pool": true,
-			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
 			"validator_data": [],
 			# use same rng as player drafting so it counts as draft
 			"rng_name": "rng_card_drafting",
@@ -5568,6 +5802,7 @@ func add_cards_purple() -> void:
 		}},
 		{Scripts.ACTION_ADD_REFRESH:{}}]
 	card_minnowtrader.card_play_actions.append(influence_action)
+	card_minnowtrader.card_draw_actions = start_action_data
 	card_minnowtrader.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_minnowtrader)
 	
@@ -5597,6 +5832,7 @@ func add_cards_purple() -> void:
 		]
 	card_storiedspinner.card_play_actions.append(weave_action)
 	card_storiedspinner.card_play_actions.append(influence_action)
+	card_storiedspinner.card_draw_actions = start_action_data
 	card_storiedspinner.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_storiedspinner)
 	
@@ -5625,6 +5861,7 @@ func add_cards_purple() -> void:
 	]
 	card_recklessenvoy.card_play_actions.append(forge_action)
 	card_recklessenvoy.card_play_actions.append(influence_action)
+	card_recklessenvoy.card_draw_actions = start_action_data
 	card_recklessenvoy.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_recklessenvoy)
 	
@@ -5682,6 +5919,7 @@ func add_cards_purple() -> void:
 		card_pearldiplomat.card_play_actions.append(action)
 	
 	card_pearldiplomat.card_play_actions.append(influence_action)
+	card_pearldiplomat.card_draw_actions = start_action_data
 	card_pearldiplomat.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearldiplomat)
 	
@@ -5718,6 +5956,7 @@ func add_cards_purple() -> void:
 	]
 	card_pearlregaler.card_play_actions.append(weave_action)
 	card_pearlregaler.card_play_actions.append(influence_action)
+	card_pearlregaler.card_draw_actions = start_action_data
 	card_pearlregaler.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlregaler)
 	
@@ -5750,6 +5989,7 @@ func add_cards_purple() -> void:
 		}
 	]
 	card_dregpilferer.card_play_actions.append(influence_action)
+	card_dregpilferer.card_draw_actions = start_action_data
 	card_dregpilferer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_dregpilferer)
 	
@@ -5783,6 +6023,7 @@ func add_cards_purple() -> void:
 		}
 	}]
 	card_fishsaucemaker.card_play_actions.append(influence_action)
+	card_fishsaucemaker.card_draw_actions = start_action_data
 	card_fishsaucemaker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_fishsaucemaker)
 	
@@ -5823,6 +6064,7 @@ func add_cards_purple() -> void:
 		}
 	]
 	card_flintlockaccountant.card_play_actions.append(influence_action)
+	card_flintlockaccountant.card_draw_actions = start_action_data
 	card_flintlockaccountant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockaccountant)
 	
@@ -5855,6 +6097,7 @@ func add_cards_purple() -> void:
 			}
 		})
 	card_pearlscribe.card_play_actions.append(influence_action)
+	card_pearlscribe.card_draw_actions = start_action_data
 	card_pearlscribe.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlscribe)
 	
@@ -5878,6 +6121,7 @@ func add_cards_purple() -> void:
 	for action in sift_faction_data:
 		card_pearlsmuggler.card_play_actions.append(action)
 	card_pearlsmuggler.card_play_actions.append(influence_action)
+	card_pearlsmuggler.card_draw_actions = start_action_data
 	card_pearlsmuggler.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlsmuggler)
 	
@@ -5916,6 +6160,7 @@ func add_cards_purple() -> void:
 	for action in sift_craft_data:
 		card_pearlseer.card_play_actions.append(action)
 	card_pearlseer.card_play_actions.append(influence_action)
+	card_pearlseer.card_draw_actions = start_action_data
 	card_pearlseer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_pearlseer)
 	
@@ -5939,6 +6184,7 @@ func add_cards_purple() -> void:
 	card_mastertactician.card_play_actions.append(wield_action)
 	card_mastertactician.card_play_actions.append(forge_action)
 	card_mastertactician.card_play_actions.append(influence_action)
+	card_mastertactician.card_draw_actions = start_action_data
 	card_mastertactician.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_mastertactician)
 	
@@ -5971,6 +6217,7 @@ func add_cards_purple() -> void:
 		}
 	]
 	card_schemingplanner.card_play_actions.append(influence_action)
+	card_schemingplanner.card_draw_actions = start_action_data
 	card_schemingplanner.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_schemingplanner)
 	
@@ -5998,6 +6245,7 @@ func add_cards_purple() -> void:
 		}
 	]
 	card_courthand.card_play_actions.append(influence_action)
+	card_courthand.card_draw_actions = start_action_data
 	card_courthand.card_end_of_turn_actions = end_action_data
 	
 	Global.register_rod(card_courthand)
@@ -6036,6 +6284,7 @@ func add_cards_purple() -> void:
 		}
 	]
 	card_portoverseer.card_play_actions.append(influence_action)
+	card_portoverseer.card_draw_actions = start_action_data
 	card_portoverseer.card_end_of_turn_actions = end_action_data
 	
 	Global.register_rod(card_portoverseer)
@@ -6074,6 +6323,7 @@ func add_cards_purple() -> void:
 		}}
 	]
 	card_wizenedcommander.card_play_actions.append(influence_action)
+	card_wizenedcommander.card_draw_actions = start_action_data
 	card_wizenedcommander.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_wizenedcommander)
 	
@@ -6131,14 +6381,14 @@ func add_cards_black() -> void:
 			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
 			"pick_draft_cards": false,
 			"draft_from_card_pool": true,
-			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
 			"validator_data": [],
 			# use same rng as player drafting so it counts as draft
 			"rng_name": "rng_card_drafting",
 			"draft_card_pack_id": "card_pack_grey"
 		}}]
 	card_humblemerchant.card_play_actions.append(influence_action)
-	#card_humblemerchant.card_draw_actions = end_action_data
+	card_humblemerchant.card_draw_actions = start_action_data
 	card_humblemerchant.card_end_of_turn_actions = end_action_data
 
 	Global.register_rod(card_humblemerchant)
@@ -6161,6 +6411,7 @@ func add_cards_black() -> void:
 		Scripts.ACTION_ATTACK_GENERATOR: {"time_delay": 0.5,"actions_on_lethal":[{Scripts.ACTION_ADD_MONEY: {}}]},
 		}]
 	card_eagersailor.card_play_actions.append(influence_action)
+	card_eagersailor.card_draw_actions = start_action_data
 	card_eagersailor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_eagersailor)
 
@@ -6184,6 +6435,7 @@ func add_cards_black() -> void:
 			Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
 		})
 	card_fishwrangler.card_play_actions.append(influence_action)
+	card_fishwrangler.card_draw_actions = start_action_data
 	card_fishwrangler.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_fishwrangler)
 	
@@ -6208,6 +6460,7 @@ func add_cards_black() -> void:
 		}
 		},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_grain","number_of_cards":1, "action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	card_spicepicker.card_play_actions.append(influence_action)
+	card_spicepicker.card_draw_actions = start_action_data
 	card_spicepicker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_spicepicker)
 	
@@ -6229,6 +6482,7 @@ func add_cards_black() -> void:
 	card_gardentender.card_play_actions = [
 		{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser"}},{Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	card_gardentender.card_play_actions.append(influence_action)
+	card_gardentender.card_draw_actions = start_action_data
 	card_gardentender.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_gardentender)
 	
@@ -6257,6 +6511,7 @@ func add_cards_black() -> void:
 			"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 	}}]
 	card_incensestoker.card_play_actions.append(influence_action)
+	card_incensestoker.card_draw_actions = start_action_data
 	card_incensestoker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_incensestoker)
 	
@@ -6279,6 +6534,7 @@ func add_cards_black() -> void:
 	card_reveredcraftsworker.card_play_actions.append(inspect_action)
 	card_reveredcraftsworker.card_play_actions.append(forge_action)
 	card_reveredcraftsworker.card_play_actions.append(influence_action)
+	card_reveredcraftsworker.card_draw_actions = start_action_data
 	card_reveredcraftsworker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_reveredcraftsworker)
 	
@@ -6314,6 +6570,7 @@ func add_cards_black() -> void:
 		{
 		Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	card_cartographersassistant.card_play_actions.append(influence_action)
+	card_cartographersassistant.card_draw_actions = start_action_data
 	card_cartographersassistant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cartographersassistant)
 	
@@ -6334,6 +6591,7 @@ func add_cards_black() -> void:
 	card_flintlockmage.card_play_actions = sift_food_data
 	card_flintlockmage.card_play_actions.append(forge_action)
 	card_flintlockmage.card_play_actions.append(influence_action)
+	card_flintlockmage.card_draw_actions = start_action_data
 	card_flintlockmage.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockmage)
 	
@@ -6342,18 +6600,19 @@ func add_cards_black() -> void:
 	card_flintlockswiftshot.card_color_id = "color_{0}".format([color])
 	card_flintlockswiftshot.card_texture_path = "external/sprites/cards/aniseed/20_flintlockswiftshot.png"
 	card_flintlockswiftshot.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_flintlockswiftshot.card_description = "Explore [damage]{0}\nON DISCARD: Improve Explore{0} by 1.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_flintlockswiftshot.card_keyword_object_ids = ["keyword_forge","keyword_sword", "keyword_sift"]
+	card_flintlockswiftshot.card_description = "Explore [damage]{0}\nON DISCARD: Improve Explore{0} by 1.\nIf you've completed an expedition, gain [energy_amount]{1}".format([Card.EXPLORE_ICON_KEYWORD,Card.ENERGY_ICON_KEYWORD])
+	#card_flintlockswiftshot.card_keyword_object_ids = []
 	card_flintlockswiftshot.card_type = CardData.CARD_TYPES.FACTION
 	card_flintlockswiftshot.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_flintlockswiftshot.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockswiftshot.card_requires_target = true
 	card_flintlockswiftshot.card_energy_cost = 2
-	card_flintlockswiftshot.card_values = {"damage":2,"number_of_attacks":1}
+	card_flintlockswiftshot.card_values = {"damage":2,"number_of_attacks":1,"energy_amount":2}
 	card_flintlockswiftshot.card_first_upgrade_property_changes = {"energy_cost":-1}
 	card_flintlockswiftshot.card_discard_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"card_value_improvements":{"damage":1}}}]
-	card_flintlockswiftshot.card_play_actions = [{Scripts.ACTION_ATTACK_GENERATOR:{}}]
+	card_flintlockswiftshot.card_play_actions = [{Scripts.ACTION_ATTACK_GENERATOR:{"actions_on_lethal":[{Scripts.ACTION_ADD_ENERGY:{}}]}}]
 	card_flintlockswiftshot.card_play_actions.append(influence_action)
+	card_flintlockswiftshot.card_draw_actions = start_action_data
 	card_flintlockswiftshot.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockswiftshot)
 	
@@ -6362,7 +6621,7 @@ func add_cards_black() -> void:
 	card_aniseedscribe.card_color_id = "color_{0}".format([color])
 	card_aniseedscribe.card_texture_path = "external/sprites/cards/aniseed/08_aniseedscribe.png"
 	card_aniseedscribe.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_aniseedscribe.card_description = "Draw [draw_count]. If discard pile is empty, gain [insight_amount]{0}.".format([Card.INSIGHT_ICON_KEYWORD])
+	card_aniseedscribe.card_description = "Draw [draw_count]. If draw pile has 20 or more cards, gain [insight_amount]{0}.".format([Card.INSIGHT_ICON_KEYWORD])
 	card_aniseedscribe.card_type = CardData.CARD_TYPES.FACTION
 	card_aniseedscribe.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_aniseedscribe.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -6373,8 +6632,8 @@ func add_cards_black() -> void:
 	card_aniseedscribe.card_play_actions = [
 		{
 		Scripts.ACTION_VALIDATOR:{
-			"validator_data":[{Scripts.VALIDATOR_PILE_SIZE:{"card_pick_type": HandManager.DISCARD_PILE,
-				"operator":"==","comparison_value":0}}],
+			"validator_data":[{Scripts.VALIDATOR_PILE_SIZE:{"card_pick_type": HandManager.DRAW_PILE,
+				"operator":">=","comparison_value":20}}],
 			"passed_action_data": [{Scripts.ACTION_ADD_INSIGHT: {"insight_amount":1}}]
 			}
 		},
@@ -6382,6 +6641,7 @@ func add_cards_black() -> void:
 		Scripts.ACTION_DRAW_GENERATOR: {}
 		}]
 	card_aniseedscribe.card_play_actions.append(influence_action)
+	card_aniseedscribe.card_draw_actions = start_action_data
 	card_aniseedscribe.card_end_of_turn_actions = end_action_data	
 	Global.register_rod(card_aniseedscribe)
 	
@@ -6406,6 +6666,7 @@ func add_cards_black() -> void:
 		Scripts.ACTION_ADD_MONEY: {}
 		}]
 	card_peddlerveteran.card_play_actions.append(influence_action)
+	card_peddlerveteran.card_draw_actions = start_action_data
 	card_peddlerveteran.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_peddlerveteran)
 	
@@ -6433,6 +6694,7 @@ func add_cards_black() -> void:
 		}
 		})
 	card_intrepidsailor.card_play_actions.append(influence_action)
+	card_intrepidsailor.card_draw_actions = start_action_data
 	card_intrepidsailor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_intrepidsailor)
 
@@ -6513,6 +6775,7 @@ func add_cards_black() -> void:
 		},]
 	card_keeneyedbuccaneer.card_play_actions.append(influence_action)
 	card_keeneyedbuccaneer.card_discard_actions = [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
+	card_keeneyedbuccaneer.card_draw_actions = start_action_data
 	card_keeneyedbuccaneer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_keeneyedbuccaneer)
 	
@@ -6536,6 +6799,7 @@ func add_cards_black() -> void:
 	for action in sweep_action_data:
 		card_aniseedtaxcollector.card_play_actions.append(action)
 	card_aniseedtaxcollector.card_play_actions.append(influence_action)
+	card_aniseedtaxcollector.card_draw_actions = start_action_data
 	card_aniseedtaxcollector.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_aniseedtaxcollector)
 
@@ -6574,6 +6838,7 @@ func add_cards_black() -> void:
 		card_royalpurveyor.card_play_actions.append(action)
 	card_royalpurveyor.card_play_actions.append(influence_action)
 	card_royalpurveyor.card_discard_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_charge_increase":3,"artifact_id":"artifact_fertiliser"}}]
+	card_royalpurveyor.card_draw_actions = start_action_data
 	card_royalpurveyor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_royalpurveyor)
 	
@@ -6607,6 +6872,7 @@ func add_cards_black() -> void:
 		{
 			Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
 		}]
+	card_peddlerinformant.card_draw_actions = start_action_data
 	card_peddlerinformant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_peddlerinformant)
 	
@@ -6678,6 +6944,7 @@ func add_cards_black() -> void:
 		},]
 	for action in sift_faction_data:
 		card_grandunifier.card_play_actions.append(action)
+	card_grandunifier.card_draw_actions = start_action_data
 	card_grandunifier.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_grandunifier)
 	
@@ -6686,20 +6953,20 @@ func add_cards_black() -> void:
 	card_taxfarmer.card_color_id = "color_{0}".format([color])
 	card_taxfarmer.card_texture_path = "external/sprites/cards/aniseed/14_taxfarmer.png"
 	card_taxfarmer.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_taxfarmer.card_description = "Gain 1{0} for every 2 cards in draw pile.".format([Card.MONEY_ICON_KEYWORD])
+	card_taxfarmer.card_description = "Gain [money_amount]{0} for every [card_dividend] cards in draw pile.".format([Card.MONEY_ICON_KEYWORD])
 	card_taxfarmer.card_type = CardData.CARD_TYPES.FACTION
 	card_taxfarmer.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_taxfarmer.card_rarity = CardData.CARD_RARITIES.RARE
 	card_taxfarmer.card_requires_target = false
 	card_taxfarmer.card_energy_cost = 3
 	card_taxfarmer.card_influence = 5
-	card_taxfarmer.card_first_upgrade_property_changes = {"card_energy_cost":-1}
-	#card_taxfarmer.card_upgrade_value_improvements = {"damage":1}
+	card_taxfarmer.card_values = {"money_amount":1, "card_dividend":3}
+	#card_taxfarmer.card_first_upgrade_property_changes = {"card_energy_cost":-1}
+	card_taxfarmer.card_upgrade_value_improvements = {"card_dividend":-1}
 	card_taxfarmer.card_play_actions = [
-		{
-			Scripts.ACTION_ADD_MONEY:{"money_amount": HandManager.player_draw.size()/2}
-		}]
+		{Scripts.ACTION_ADD_MONEY_DRAW:{}}]
 	card_taxfarmer.card_play_actions.append(influence_action)
+	card_taxfarmer.card_draw_actions = start_action_data
 	card_taxfarmer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_taxfarmer)
 	
@@ -6740,6 +7007,7 @@ func add_cards_black() -> void:
 			Scripts.ACTION_ATTACK_GENERATOR:{}
 		}]
 	card_swashbucklingchamp.card_play_actions.append(influence_action)
+	card_swashbucklingchamp.card_draw_actions = start_action_data
 	card_swashbucklingchamp.card_end_of_turn_actions = end_action_data
 
 	Global.register_rod(card_swashbucklingchamp)
@@ -6777,7 +7045,7 @@ func add_cards_green() -> void:
 		Scripts.ACTION_ADD_FOOD: {}
 		}]
 		
-	#card_cofferskeeper.card_draw_actions = start_action_data
+	card_cofferskeeper.card_draw_actions = start_action_data
 	card_cofferskeeper.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cofferskeeper)
 	
@@ -6799,7 +7067,7 @@ func add_cards_green() -> void:
 	for action in sift_resource_data:
 		card_youngmentor.card_play_actions.append(action)
 	card_youngmentor.card_play_actions.append(influence_action)
-	#card_youngmentor.card_draw_actions = start_action_data
+	card_youngmentor.card_draw_actions = start_action_data
 	card_youngmentor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_youngmentor)
 	
@@ -6836,6 +7104,7 @@ func add_cards_green() -> void:
 		Scripts.ACTION_ATTACK_GENERATOR:{}
 	})
 	card_luckfinder.card_play_actions.append(influence_action)
+	card_luckfinder.card_draw_actions = start_action_data
 	card_luckfinder.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_luckfinder)
 	
@@ -6859,6 +7128,7 @@ func add_cards_green() -> void:
 		{Scripts.ACTION_ADD_REFRESH:{}}
 	]
 	card_commercialcropper.card_play_actions.append(influence_action)
+	card_commercialcropper.card_draw_actions = start_action_data
 	card_commercialcropper.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_commercialcropper)
 	
@@ -6888,6 +7158,7 @@ func add_cards_green() -> void:
 			}]
 		}}]
 	card_avidsower.card_play_actions.append(influence_action)
+	card_avidsower.card_draw_actions = start_action_data
 	card_avidsower.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_avidsower)
 	
@@ -6907,9 +7178,12 @@ func add_cards_green() -> void:
 	card_greeninformant.card_values = {"number_of_cards":1,"draw_count": 2, "discard_count":2, "insight_required":1,"created_card_object_id":"card_missives","food_amount":1}
 	card_greeninformant.card_upgrade_value_improvements = {"draw_count": 1}
 	card_greeninformant.card_play_actions.append(weave_action)
-	card_greeninformant.card_play_actions.append({Scripts.ACTION_DRAW_GENERATOR:{}})
+	#card_greeninformant.card_play_actions.append({Scripts.ACTION_DRAW_GENERATOR:{}})
+	for action in sweep_action_data:
+		card_greeninformant.card_play_actions.append(action)
 	card_greeninformant.card_play_actions.append(influence_action)
 	card_greeninformant.card_discard_actions = [{Scripts.ACTION_ADD_FOOD:{}}]
+	card_greeninformant.card_draw_actions = start_action_data
 	card_greeninformant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_greeninformant)
 	
@@ -6932,6 +7206,7 @@ func add_cards_green() -> void:
 	for action in sift_jade_data:
 		card_goldenconscript.card_play_actions.append(action)
 	card_goldenconscript.card_play_actions.append(influence_action)
+	card_goldenconscript.card_draw_actions = start_action_data
 	card_goldenconscript.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_goldenconscript)
 	
@@ -6948,21 +7223,10 @@ func add_cards_green() -> void:
 	card_militantoutsourcer.card_energy_cost = 1
 	card_militantoutsourcer.card_values = {"damage":2,"number_of_attacks":1,"draw_count":2,"discard_count":1}
 	card_militantoutsourcer.card_upgrade_value_improvements = {"damage":2}
-	card_militantoutsourcer.card_play_actions = [{Scripts.ACTION_DRAW_GENERATOR:{}},
-					{
-		Scripts.ACTION_PICK_CARDS: {
-		"min_card_amount": 1,
-		"max_card_amount": 1,
-		"min_cards_are_required_for_action": false,
-		"random_selection": false,
-		"card_pick_type": HandManager.HAND_PILE,
-		"card_pick_text": "Choose up to {0} card(s) to return. {1} cards selected",
-		"action_data": [
-			{Scripts.ACTION_DISCARD_CARDS:{}}]
-		}
-		},{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}},
-]
+	card_militantoutsourcer.card_play_actions = sweep_action_data
+	card_militantoutsourcer.card_play_actions.append({Scripts.ACTION_ATTACK_GENERATOR:{}})
 	card_militantoutsourcer.card_play_actions.append(influence_action)
+	card_militantoutsourcer.card_draw_actions = start_action_data
 	card_militantoutsourcer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_militantoutsourcer)
 	
@@ -6995,6 +7259,7 @@ func add_cards_green() -> void:
 		Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DRAW:{}}]
 		}}]
 	card_mysticsower.card_play_actions.append(influence_action)
+	card_mysticsower.card_draw_actions = start_action_data
 	card_mysticsower.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_mysticsower)
 	
@@ -7017,6 +7282,7 @@ func add_cards_green() -> void:
 	card_shockrider.card_play_actions.append(forge_action)
 	card_shockrider.card_play_actions.append(
 		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}})
+	card_shockrider.card_draw_actions = start_action_data
 	card_shockrider.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_shockrider)
 	
@@ -7055,6 +7321,7 @@ func add_cards_green() -> void:
 	for action in sweep_action_data:
 		card_everymanleader.card_play_actions.append(action)
 	card_everymanleader.card_play_actions.append(influence_action)
+	card_everymanleader.card_draw_actions = start_action_data
 	card_everymanleader.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_everymanleader)
 	
@@ -7095,6 +7362,7 @@ func add_cards_green() -> void:
 		}
 		}]
 	card_inspiredgossipmonger.card_play_actions.append(influence_action)
+	card_inspiredgossipmonger.card_draw_actions = start_action_data
 	card_inspiredgossipmonger.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_inspiredgossipmonger)
 	
@@ -7129,6 +7397,7 @@ func add_cards_green() -> void:
 		}
 	]
 	card_wizenedforager.card_play_actions.append(influence_action)
+	card_wizenedforager.card_draw_actions = start_action_data
 	card_wizenedforager.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_wizenedforager)
 	
@@ -7157,6 +7426,7 @@ func add_cards_green() -> void:
 		}
 	]
 	card_gardenmystic.card_play_actions.append(influence_action)
+	card_gardenmystic.card_draw_actions = start_action_data
 	card_gardenmystic.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_gardenmystic)
 	
@@ -7191,6 +7461,7 @@ func add_cards_green() -> void:
 		}
 	]
 	card_staticrecaster.card_play_actions.append(influence_action)
+	card_staticrecaster.card_draw_actions = start_action_data
 	card_staticrecaster.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_staticrecaster)
 	
@@ -7225,6 +7496,7 @@ func add_cards_green() -> void:
 		}]
 	card_hoardingstowaway.card_play_actions.append(weave_action)
 	card_hoardingstowaway.card_play_actions.append(influence_action)
+	card_hoardingstowaway.card_draw_actions = start_action_data
 	card_hoardingstowaway.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_hoardingstowaway)
 	
@@ -7246,6 +7518,7 @@ func add_cards_green() -> void:
 	card_supremerecaster.card_play_actions.append(cook_action)
 	card_supremerecaster.card_play_actions.append(weave_action)
 	card_supremerecaster.card_play_actions.append(influence_action)
+	card_supremerecaster.card_draw_actions = start_action_data
 	card_supremerecaster.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_supremerecaster)
 	
@@ -7273,6 +7546,7 @@ func add_cards_green() -> void:
 			{Scripts.ACTION_ATTACK_GENERATOR:{}
 		}]
 	card_unrulysourcer.card_play_actions.append(influence_action)
+	card_unrulysourcer.card_draw_actions = start_action_data
 	card_unrulysourcer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_unrulysourcer)
 	
@@ -7310,6 +7584,7 @@ func add_cards_green() -> void:
 		}
 		}]
 	card_villagehero.card_play_actions.append(influence_action)
+	card_villagehero.card_draw_actions = start_action_data
 	card_villagehero.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_villagehero)
 	
@@ -7341,6 +7616,7 @@ func add_cards_green() -> void:
 		}
 		}]
 	card_solverofriddles.card_play_actions.append(influence_action)
+	card_solverofriddles.card_draw_actions = start_action_data
 	card_solverofriddles.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_solverofriddles)
 	
@@ -7364,6 +7640,7 @@ func add_cards_gold() -> void:
 	card_spiceguard.card_upgrade_value_improvements = {"number_of_cards": 1}
 	card_spiceguard.card_play_actions.append(forge_action)
 	card_spiceguard.card_play_actions.append(influence_action)
+	card_spiceguard.card_draw_actions = start_action_data
 	card_spiceguard.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_spiceguard)
 
@@ -7389,6 +7666,7 @@ func add_cards_gold() -> void:
 			"failed_action_data":[{Scripts.ACTION_ATTACK_GENERATOR:{"custom_key_names":{"damage":"damage"},"number_of_attacks":1}}],
 			"passed_action_data":[{Scripts.ACTION_ATTACK_GENERATOR:{"custom_key_names":{"damage":"custom_damage"},"number_of_attacks":1}}]}}]
 	card_courtmarshall.card_play_actions.append(influence_action)
+	card_courtmarshall.card_draw_actions = start_action_data
 	card_courtmarshall.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_courtmarshall)
 	
@@ -7425,6 +7703,7 @@ func add_cards_gold() -> void:
 		}
 	]
 	card_cengkihemissary.card_play_actions.append(influence_action)
+	card_cengkihemissary.card_draw_actions = start_action_data
 	card_cengkihemissary.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cengkihemissary)
 	
@@ -7446,6 +7725,7 @@ func add_cards_gold() -> void:
 	card_happysailor.card_play_actions = sift_resource_data
 	card_happysailor.card_play_actions.append({Scripts.ACTION_ATTACK_GENERATOR:{}})
 	card_happysailor.card_play_actions.append(influence_action)
+	card_happysailor.card_draw_actions = start_action_data
 	card_happysailor.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_happysailor)
 	
@@ -7474,6 +7754,7 @@ func add_cards_gold() -> void:
 			"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
 		}})
 	card_shucker.card_play_actions.append(influence_action)
+	card_shucker.card_draw_actions = start_action_data
 	card_shucker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_shucker)
 	
@@ -7498,6 +7779,7 @@ func add_cards_gold() -> void:
 		{Scripts.ACTION_ATTACK_GENERATOR:{}}
 		]
 	card_foresttracker.card_play_actions.append(influence_action)
+	card_foresttracker.card_draw_actions = start_action_data
 	card_foresttracker.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_foresttracker)
 	
@@ -7550,6 +7832,7 @@ func add_cards_gold() -> void:
 	for action in sift_cengkih_data:
 		card_flintlockschooner.card_play_actions.append(action)
 	card_flintlockschooner.card_play_actions.append(influence_action)
+	card_flintlockschooner.card_draw_actions = start_action_data
 	card_flintlockschooner.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockschooner)
 	
@@ -7570,6 +7853,7 @@ func add_cards_gold() -> void:
 	card_reveredsmithy.card_upgrade_value_improvements = {"ore_required": 1, "number_of_cards":1}
 	card_reveredsmithy.card_play_actions.append(forge_action)
 	card_reveredsmithy.card_play_actions.append(influence_action)
+	card_reveredsmithy.card_draw_actions = start_action_data
 	card_reveredsmithy.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_reveredsmithy)
 	
@@ -7578,7 +7862,7 @@ func add_cards_gold() -> void:
 	card_esteemedmerchant.card_color_id = "color_{0}".format([color])
 	card_esteemedmerchant.card_texture_path = "external/sprites/cards/cengkih/21_esteemedmerchant.png"
 	card_esteemedmerchant.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_esteemedmerchant.card_description = "Draft Trade Orders twice."
+	card_esteemedmerchant.card_description = "Draft Trade Orders twice. Add the first Trade order to your hand."
 	#card_esteemedmerchant.card_keyword_object_ids = ["keyword_forge","keyword_treasure"]
 	card_esteemedmerchant.card_type = CardData.CARD_TYPES.FACTION
 	card_esteemedmerchant.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
@@ -7595,7 +7879,7 @@ func add_cards_gold() -> void:
 			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
 			"pick_draft_cards": false,
 			"draft_from_card_pool": true,
-			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
 			"validator_data": [],
 			# use same rng as player drafting so it counts as draft
 			"rng_name": "rng_card_drafting",
@@ -7614,6 +7898,7 @@ func add_cards_gold() -> void:
 		}}
 	]
 	card_esteemedmerchant.card_play_actions.append(influence_action)
+	card_esteemedmerchant.card_draw_actions = start_action_data
 	card_esteemedmerchant.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_esteemedmerchant)
 	
@@ -7651,6 +7936,7 @@ func add_cards_gold() -> void:
 		}
 	]
 	card_ravineexplorer.card_play_actions.append(influence_action)
+	card_ravineexplorer.card_draw_actions = start_action_data
 	card_ravineexplorer.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_ravineexplorer)
 	
@@ -7690,6 +7976,7 @@ func add_cards_gold() -> void:
 		}
 	]
 	card_flintlockcrier.card_play_actions.append(influence_action)
+	card_flintlockcrier.card_draw_actions = start_action_data
 	card_flintlockcrier.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_flintlockcrier)
 	
@@ -7726,6 +8013,7 @@ func add_cards_gold() -> void:
 		}
 	]
 	card_cunningeyedguard.card_play_actions.append(influence_action)
+	card_cunningeyedguard.card_draw_actions = start_action_data
 	card_cunningeyedguard.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cunningeyedguard)
 
@@ -7763,6 +8051,7 @@ func add_cards_gold() -> void:
 		}
 	]
 	card_cengkihrecruiter.card_play_actions.append(influence_action)
+	card_cengkihrecruiter.card_draw_actions = start_action_data
 	card_cengkihrecruiter.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cengkihrecruiter)
 	
@@ -7803,6 +8092,7 @@ func add_cards_gold() -> void:
 		}
 	]
 	card_cengkihscribe.card_play_actions.append(influence_action)
+	card_cengkihscribe.card_draw_actions = start_action_data
 	card_cengkihscribe.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cengkihscribe)
 	
@@ -7831,6 +8121,7 @@ func add_cards_gold() -> void:
 		}
 	]
 	card_intrepidcollector.card_play_actions.append(influence_action)
+	card_intrepidcollector.card_draw_actions = start_action_data
 	card_intrepidcollector.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_intrepidcollector)
 	
@@ -7856,6 +8147,7 @@ func add_cards_gold() -> void:
 	}}
 	card_royalcook.card_play_actions.append(validator_action)
 	card_royalcook.card_play_actions.append(influence_action)
+	card_royalcook.card_draw_actions = start_action_data
 	card_royalcook.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_royalcook)
 	
@@ -7895,6 +8187,7 @@ func add_cards_gold() -> void:
 	for action in sweep_action_data:
 		card_noblesorter.card_play_actions.append(action)
 	card_noblesorter.card_play_actions.append(influence_action)
+	card_noblesorter.card_draw_actions = start_action_data
 	card_noblesorter.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_noblesorter)
 	
@@ -7924,6 +8217,7 @@ func add_cards_gold() -> void:
 		}
 	]
 	card_cengkihnoble.card_play_actions.append(influence_action)
+	card_cengkihnoble.card_draw_actions = start_action_data
 	card_cengkihnoble.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cengkihnoble)
 	
@@ -7932,13 +8226,13 @@ func add_cards_gold() -> void:
 	card_cengkihascetic.card_color_id = "color_{0}".format([color])
 	card_cengkihascetic.card_texture_path = "external/sprites/cards/cengkih/19_cengkihascetic.png"
 	card_cengkihascetic.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_cengkihascetic.card_description = "FRONTIER: Gain [ore_amount]{0} and [insight_amount]{1}.".format([Card.ORE_ICON_KEYWORD, Card.INSIGHT_ICON_KEYWORD])
+	card_cengkihascetic.card_description = "FRONTIER: Gain [ore_amount]{0} and [insight_amount]{1}, then increase {2} cost by 1.\nWhen discarded, decrease {2} cost by 1.".format([Card.ORE_ICON_KEYWORD, Card.INSIGHT_ICON_KEYWORD, Card.ENERGY_ICON_KEYWORD])
 	card_cengkihascetic.card_keyword_object_ids = ["keyword_frontier"]
 	card_cengkihascetic.card_type = CardData.CARD_TYPES.FACTION
 	card_cengkihascetic.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cengkihascetic.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_cengkihascetic.card_requires_target = false
-	card_cengkihascetic.card_energy_cost = 1
+	card_cengkihascetic.card_energy_cost = 0
 	card_cengkihascetic.card_influence = 3
 	card_cengkihascetic.card_values = {"ore_amount":1, "insight_amount":1}
 	card_cengkihascetic.card_upgrade_value_improvements = {"ore_amount":1,"insight_amount":1}
@@ -7948,10 +8242,12 @@ func add_cards_gold() -> void:
 				Scripts.ACTION_VALIDATOR:
 					{
 						"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],
-						"passed_action_data":[{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_ADD_INSIGHT:{}}]
+						"passed_action_data":[{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_ADD_INSIGHT:{}},{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"card_energy_cost":1}}]
 					}
 			}]
 	card_cengkihascetic.card_play_actions.append(influence_action)
+	card_cengkihascetic.card_discard_actions = [{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"card_energy_cost":-1}}]
+	card_cengkihascetic.card_draw_actions = start_action_data
 	card_cengkihascetic.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cengkihascetic)
 	
@@ -7960,15 +8256,15 @@ func add_cards_gold() -> void:
 	card_tradingenvoy.card_color_id = "color_{0}".format([color])
 	card_tradingenvoy.card_texture_path = "external/sprites/cards/cengkih/14_tradingenvoy.png"
 	card_tradingenvoy.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_tradingenvoy.card_description = "Exhaust up to 2 cards in hand to gain [money_amount]{0} each.".format([Card.MONEY_ICON_KEYWORD])
+	card_tradingenvoy.card_description = "Discard up to 2 cards in hand to gain [money_amount]{0} each.".format([Card.MONEY_ICON_KEYWORD])
 	card_tradingenvoy.card_type = CardData.CARD_TYPES.FACTION
 	card_tradingenvoy.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_tradingenvoy.card_rarity = CardData.CARD_RARITIES.RARE
 	card_tradingenvoy.card_requires_target = false
 	card_tradingenvoy.card_energy_cost = 1
 	card_tradingenvoy.card_influence = 3
-	card_tradingenvoy.card_values = {"max_card_amount": 2, "money_amount": 4}
-	card_tradingenvoy.card_upgrade_value_improvements = {"money_amount": 2}
+	card_tradingenvoy.card_values = {"max_card_amount": 2, "money_amount": 3}
+	card_tradingenvoy.card_upgrade_value_improvements = {"money_amount": 1}
 	card_tradingenvoy.card_play_actions = [
 		{
 			Scripts.ACTION_PICK_CARDS: {
@@ -7976,15 +8272,20 @@ func add_cards_gold() -> void:
 				"random_selection": false,
 				"card_pick_type": HandManager.HAND_PILE,
 				"card_pick_text": "Choose {0} card(s) to exhaust. {1} cards selected",
-				"action_data": [
+				"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
+				"multiplied_values": ["money_amount"],
+				"action_data": [{Scripts.ACTION_ADD_MONEY: {
+					}}]
+		}
+		},
 				{
-					Scripts.ACTION_ADD_MONEY:{},
-					Scripts.ACTION_EXHAUST_CARDS:{}
+					Scripts.ACTION_DISCARD_CARDS:{}
 				}]
 			}
 		}
 	]
 	card_tradingenvoy.card_play_actions.append(influence_action)
+	card_tradingenvoy.card_draw_actions = start_action_data
 	card_tradingenvoy.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_tradingenvoy)
 		
@@ -8032,6 +8333,7 @@ func add_cards_gold() -> void:
 			},
 	]
 	card_provisionalcaptain.card_play_actions.append(influence_action)
+	card_provisionalcaptain.card_draw_actions = start_action_data
 	card_provisionalcaptain.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_provisionalcaptain)
 #region Card Packs

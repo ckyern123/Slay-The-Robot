@@ -11,7 +11,6 @@ func perform_action() -> void:
 		# set player location to new location
 		Global.player_data.player_location_id = location_id
 		# null out shop data
-		Global.player_data.add_size(0,2)
 		Global.player_data.add_bandit(3)
 		# autosave
 		var autosave_before_visit: bool = action_interceptor_processor.get_shadowed_action_values("autosave_before_visit", true)

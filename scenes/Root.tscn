@@ -365,22 +365,24 @@ horizontal_alignment = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-offset_left = 859.0
+offset_left = 1100.0
 offset_top = 183.0
-offset_right = -433.0
-offset_bottom = 591.8334
+offset_right = -46.0
+offset_bottom = 709.5
 grow_horizontal = 2
 layout_direction = 2
 theme_override_font_sizes/font_size = 40
-text = "Victory Objective:
+text = "VICTORY CONDITION: 
 Gain 200 Prestige.
+
 You gain Prestige from:
 1) Total number of cards owned.
 2) Ascending cards.
 3) Building artifacts.
 4) Drafting books.
 
-GAME LOSS: You lose if you have 0 food."
+GAME LOSS: 
+You lose when you have 0 food."
 
 [node name="CharacterSelect" type="Control" parent="TitleScreen/NewRunMenu" unique_id=1360860974]
 layout_mode = 1
@@ -669,6 +671,7 @@ shortcut_in_tooltip = false
 text = "Back"
 
 [node name="CustomModifiers" type="Control" parent="TitleScreen/NewRunMenu" unique_id=1333666331]
+visible = false
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -712,9 +715,9 @@ layout_mode = 2
 
 [node name="DummyCard" parent="TitleScreen/NewRunMenu" unique_id=1234656898 instance=ExtResource("14_dohly")]
 layout_mode = 0
-offset_left = 500.0
+offset_left = 400.0
 offset_top = 200.0
-offset_right = 720.0
+offset_right = 620.0
 offset_bottom = 520.0
 
 [node name="CardDescription" parent="TitleScreen/NewRunMenu/DummyCard/Pivot/CardVisual" parent_id_path=PackedInt32Array(1234656898, 1061815526) index="4" unique_id=1982061738]

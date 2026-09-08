@@ -56,7 +56,7 @@ func _ready() -> void:
 		[money_label, "[color=orange]Money[/color]\nHow much money you have. Money is used to purchase cards and fulfil trade orders.", true, false, true, $TooltipPositions/MoneyTooltipPos],
 		[ore_label, "[color=orange]Ore[/color]\nHow much Ore you have. Ore is used to forge things and build Artifacts.", true, false, true, $TooltipPositions/OreTooltipPos],
 		[insight_label, "[color=orange]Insight[/color]\nHow much Insight you have. Insight is used to weave and cook things. Scrolls are woven things that are used to draft Books.", true, false, true, $TooltipPositions/InsightTooltipPos],
-		[size_label, "[color=orange]Size[/color]\nYour kingdom's Size is the amount of cards you can support before it becomes unstable. For every 3 cards that exceed Size, you rattle a card in discard pile at the end of turn.", true, false, true, $TooltipPositions/SizeTooltipPos],
+		[size_label, "[color=orange]Size[/color]\nHow many cards you currently own.", true, false, true, $TooltipPositions/SizeTooltipPos],
 		[room_label, "[color=orange]Room[/color]\nHow much Room you have. Room is needed to build Artifacts.", true, false, true, $TooltipPositions/RoomTooltipPos],
 		[card_container, "[color=orange]Recruit Faction Cards[/color]\nPurchase cards. Cards cost Money. You can only purchase one card for each Shop Refresh.", true, false, true, $TooltipPositions/CardTooltipPos],
 		[artifact_container, "[color=orange]Artifact Blueprints[/color]\nPurchase an artifact blueprint. To acquire the artifact, play the Blueprint card, pay 8 Ore and 1 Room. You can only purchase one blueprint per Shop Refresh", true, false, true, $TooltipPositions/ArtifactTooltipPos],

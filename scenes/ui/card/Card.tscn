@@ -248,6 +248,14 @@ _max_size = 20
 _current_font_size = 20
 _editor_defaults_set = true
 
+[node name="TypeRect" type="ColorRect" parent="Pivot/CardVisual" unique_id=1872904793]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 194.0
+offset_right = 186.0
+offset_bottom = 216.0
+color = Color(0.096204735, 0.09620475, 0.096204735, 1)
+
 [node name="CardType" type="Label" parent="Pivot/CardVisual" unique_id=1220224152]
 unique_name_in_owner = true
 layout_mode = 0

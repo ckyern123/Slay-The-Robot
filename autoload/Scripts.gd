@@ -61,6 +61,7 @@ const ACTION_SWAP_BOSS_ARTIFACT: String = "res://scripts/actions/combatant_actio
 const ACTION_ADD_ENERGY: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddEnergy.gd"
 const ACTION_ADD_ARTIFACT_ENERGY: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddArtifactEnergy.gd"
 const ACTION_ADD_MONEY: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddMoney.gd"
+const ACTION_ADD_MONEY_DRAW: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddMoneyDraw.gd"
 const ACTION_ADD_FOOD: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddFood.gd"
 const ACTION_ADD_REFRESH: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddRefresh.gd"
 const ACTION_ADD_ROOM: String = "res://scripts/actions/combatant_actions/player_actions/ActionAddRoom.gd"
@@ -116,6 +117,7 @@ const ACTION_ATTEMPT_COOK: String = "res://scripts/actions/card_actions/pick_car
 # 	cardset actions; these affect a list of picked cards
 const ACTION_IMPROVE_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveCardValues.gd"
 const ACTION_IMPROVE_INSPECT: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveInspect.gd"
+const ACTION_IMPROVE_INSPECT_NEW: String = "res://scripts/actions/card_actions/cardset_actions/ActionImproveInspectNew.gd"
 const ACTION_CHANGE_CARD_VALUES: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardValues.gd"
 const ACTION_CHANGE_CARD_INFLUENCE: String = "res://scripts/actions/card_actions/cardset_actions/ActionChangeCardInfluence.gd"
 

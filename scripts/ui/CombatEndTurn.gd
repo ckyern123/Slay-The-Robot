@@ -3,6 +3,8 @@
 extends RefCounted
 class_name CombatEndTurn
 
+
+
 var _combat = null	# the parent combat ui node, just used for a callback
 enum END_TURN_QUEUE_IMMEDIACY {	# Do not rearrange
 	WAIT_FOR_ALL_CARD_PLAYS,
@@ -34,55 +36,15 @@ func wait() -> void:
 			# prevents further card plays but finishes the rest of the current action stack
 			HandManager.refund_card_queue()
 			HandManager.set_disable_hand(true)
-			var sprawl_count: int = Global.player_data.player_size_max - Global.player_data.player_size
-			if (sprawl_count < 0):
-				var influence_action_data: Array[Dictionary] = [{
-				Scripts.ACTION_PICK_CARDS: {
-				"min_card_amount": 99,
-				"max_card_amount": 99,
-				"min_cards_are_required_for_action": false,
-				"random_selection": true,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				},{Scripts.VALIDATOR_CARD_RARITY:{"card_rarities_exclude":[CardData.CARD_RARITIES.GENERATED]}}
-			],
-				"action_data": [
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel"
-					},
-				}
-				]
-			}},{
-				Scripts.ACTION_PICK_CARDS: {
-				"min_card_amount": abs(sprawl_count)/3,
-				"max_card_amount": abs(sprawl_count)/3,
-				"min_cards_are_required_for_action": false,
-				"random_selection": true,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [
-					{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
-				],
-				"action_data": [
-				{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-					"card_influence": -1
-				}}]
-			}}]
-				var influence_actions: Array = ActionGenerator.create_actions(null, null, [], influence_action_data, null)
-				ActionHandler.add_actions(influence_actions)
 				
-				#tween animation discard pile
-				Signals.tween_discard.emit()
+			if ActionHandler.actions_being_performed:
+				await ActionHandler.actions_ended
+				
+			if Global.player_data.player_health >= Global.player_data.threshold_mark:
+				Global.player_data.threshold_mark += 30
+				var threshold_action_data = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_hubris","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}],"number_of_cards":1}}]
+				var threshold_actions: Array = ActionGenerator.create_actions(null, null, [], threshold_action_data, null)
+				ActionHandler.add_actions(threshold_actions)
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
 			
@@ -98,57 +60,16 @@ func wait() -> void:
 			# default
 			# continuously wait for all card plays to finish before ending the player's turn
 			HandManager.set_disable_hand(true)
-			var sprawl_count: int = Global.player_data.player_size - (HandManager.player_draw.size() + HandManager.player_discard.size() + HandManager.player_hand.size())
-			if (sprawl_count < 0):
-				var influence_action_data: Array[Dictionary] = [{
-				Scripts.ACTION_PICK_CARDS: {
-				"min_card_amount": 99,
-				"max_card_amount": 99,
-				"min_cards_are_required_for_action": false,
-				"random_selection": true,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [
-				{
-				Scripts.VALIDATOR_CARD_PROPERTIES:
-					{
-					"card_property_name": "card_influence",
-					"operator": "<=",
-					"comparison_value": 0,
-					"invert_validation": false,
-					}
-				},{Scripts.VALIDATOR_CARD_RARITY:{"card_rarities_exclude":[CardData.CARD_RARITIES.GENERATED]}}
-			],
-				"action_data": [
-				{
-				Scripts.ACTION_TRANSFORM_CARDS: {
-					"transform_into_card_object_id": "card_rebel"
-					},
-				}
-				]
-			}},{
-				Scripts.ACTION_PICK_CARDS: {
-				"min_card_amount": abs(sprawl_count)/3,
-				"max_card_amount": abs(sprawl_count)/3,
-				"min_cards_are_required_for_action": false,
-				"random_selection": true,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
-				"validator_data": [
-					{Scripts.VALIDATOR_CARD_RARITY: {"card_rarities_exclude": [CardData.CARD_RARITIES.GENERATED]}}
-				],
-				"action_data": [
-				{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
-					"card_influence": -1
-				}},
-				]
-			}}]
-				var influence_actions: Array = ActionGenerator.create_actions(null, null, [], influence_action_data, null)
-				ActionHandler.add_actions(influence_actions)
-				Signals.tween_discard.emit()
 			while len(HandManager.card_play_queue) > 0 or ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
-				
+			
+			if Global.player_data.player_health >= Global.player_data.threshold_mark:
+				Global.player_data.threshold_mark += 30
+				var threshold_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_hubris","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}],"number_of_cards":1}}]
+				var threshold_actions: Array = ActionGenerator.create_actions(null, null, [], threshold_action_data, null)
+				ActionHandler.add_actions(threshold_actions)
+			if ActionHandler.actions_being_performed:
+				await ActionHandler.actions_ended
 			var food_count: int = 0 - Global.player_data.player_size
 			Global.player_data.add_food(food_count/10)
 			

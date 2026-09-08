@@ -13,18 +13,16 @@ const PLAYER_START_ROT: int = 14
 @export var player_books: int = 0
 @export var player_artifact_count: int = 0
 @export var player_food: int = 20
-@export var player_food_max: int = 0
 @export var player_ore: int = 5
 @export var player_size: int = 0
-@export var player_size_max: int = 0
 @export var player_room: int = 0
 @export var player_insight: int = 0
 @export var player_refresh: int = 4
 @export var player_rot: int = PLAYER_START_ROT
 @export var player_bandit_chance: int = 0
-@export var blight: int = 0
-@export var player_spice_exhaust: int = 0
 @export var max_card_layover: int = 0
+
+var threshold_mark: int = 30
 var player_energy: int = 3 # in combat energy. Not saved.
 ## The energy the player gains each turn. This can be modified.
 @export var player_current_energy: int = 0
@@ -284,15 +282,10 @@ func add_books(amount: int) -> void:
 	
 		## Adds or subtracts money from the player
 ## If goes into negative amounts, the proper delta will be calculated 
-func add_size(amount: int, amount_max: int = 0) -> void:
+func add_size(amount: int) -> void:
 	var old_player_size_amount: int = player_size
 	player_size = max(player_size + amount, 0)
 	var delta: int = player_size - old_player_size_amount
-	if (amount_max != 0):
-		var old_player_size_max_amount: int = player_size
-		player_size_max = max(player_size_max + amount_max,0)
-		var delta_2: int = player_size_max - old_player_size_max_amount
-		Signals.player_size_max_changed.emit(delta_2)
 	add_health(amount)
 	Signals.player_size_changed.emit(delta)
 

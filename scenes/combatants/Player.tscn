@@ -15,7 +15,7 @@ region = Rect2(0, 0, 64, 64)
 [sub_resource type="SpriteFrames" id="SpriteFrames_e5l7p"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_7in10")
 }],
 "loop": 1,
@@ -23,7 +23,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_7in10")
 }],
 "loop": 1,
@@ -31,7 +31,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_7in10")
 }],
 "loop": 1,
@@ -60,7 +60,7 @@ offset_bottom = 40.0
 unique_name_in_owner = true
 position = Vector2(64, 48)
 sprite_frames = SubResource("SpriteFrames_e5l7p")
-animation = &"idle"
+animation = &"attack"
 
 [node name="LayeredHealthBar" parent="Visible/AnimatedSprite2D" unique_id=2073839150 instance=ExtResource("3_ef7si")]
 unique_name_in_owner = true
