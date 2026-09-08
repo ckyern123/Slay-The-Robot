@@ -28,7 +28,6 @@ var ascend_action_data: Array[Dictionary] = [
 
 func _ready():
 	Signals.player_insight_changed.connect(_on_player_insight_changed)
-	disabled = true
 	pressed.connect(_button_pressed)
 	pass # Replace with function body.
 

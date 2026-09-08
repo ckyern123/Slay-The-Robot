@@ -38,11 +38,11 @@ func _ready():
 	Signals.shop_opened.connect(_on_shop_opened)
 	
 	Signals.map_location_selected.connect(_on_map_location_selected)
-	map_label.text = "Plains:Food Ore Size.\nFeatures: Grain, Fertiliser
-	\nDesert:Ore Money Insight.\nFeatures: Rock, Shop Refresh
-	\nCoast:Food Money Insight.\nFeatures: Fish, Treasure, Shop Refresh
-	\nForest:Money Room Size.\nFeatures: Fertiliser, Spice
-	\nSwamp:Size Food Insight\nFeatures: Fertiliser, Delicacy"
+	map_label.text = "Plains:Food>Ore>Room\nFeatures: Fertilise, Grain, Rock
+	\nDesert:Ore>Money>Insight\nFeatures: Rock, Shop Refresh, Treasure
+	\nCoast:Food>Money>Insight\nFeatures: Fish, Shop Refresh, Treasure
+	\nForest:Money>Food>Room\nFeatures: Draft, Fertilise, Root, Spice
+	\nSwamp:Food>Insight\nFeatures: Delicacy, Draft, Fertilise, Root"
 	var modified_description_bb_code: String = map_label.text
 	if map_label.text.contains("Food"):
 		FileLoader.load_texture(food_texture_path)

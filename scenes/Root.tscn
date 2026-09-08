@@ -1797,7 +1797,6 @@ columns = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -3012,10 +3011,10 @@ GO BACK
 
 [node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=575565750]
 layout_mode = 0
-offset_left = 905.0
-offset_top = 210.0
-offset_right = 1133.0
-offset_bottom = 274.0
+offset_left = 1090.0
+offset_top = 159.0
+offset_right = 1318.0
+offset_bottom = 223.0
 text = "CONFIRM"
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/CardSelectionOverlay" unique_id=1269392340]
@@ -3462,10 +3461,10 @@ metadata/_edit_use_anchors_ = true
 [node name="DrawTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1107452338]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0046875
-anchor_top = 0.837037
-anchor_right = 0.1
-anchor_bottom = 0.9416666
+anchor_left = 0.025
+anchor_top = 0.85555553
+anchor_right = 0.1203125
+anchor_bottom = 0.96018517
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true

@@ -3076,7 +3076,7 @@ func add_keywords() -> void:
 	
 	var keyword_inspect: KeywordData = KeywordData.new("keyword_inspect")
 	keyword_inspect.keyword_name = "Inspect X"
-	keyword_inspect.keyword_text_bb_code = "Remove 3 random cards in Exhaust pile to improve values of X Rock, Root, or Treasure cards in discard pile by 3. If you don't have enough exhausted cards, improve by 1 instead."
+	keyword_inspect.keyword_text_bb_code = "Remove 3 cards in Exhaust pile from the game: Improve values of X Rock, Root, or Treasure cards in discard pile by 3. If you don't have cards in Exhaust pile, improve by 1 instead."
 	Global.register_rod(keyword_inspect)
 
 	var keyword_fertilise: KeywordData = KeywordData.new("keyword_fertilise")
@@ -6562,7 +6562,7 @@ func add_cards_black() -> void:
 	card_eagersailor.card_color_id = "color_{0}".format([color])
 	card_eagersailor.card_texture_path = "external/sprites/cards/aniseed/02_eagersailor.png"
 	card_eagersailor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_eagersailor.card_description = "Explore [damage]{0}. If you've completed the expedition, gain [money_amount]{1}.".format([Card.EXPLORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
+	card_eagersailor.card_description = "Explore [damage]{0}. If you've completely explored this way, gain [money_amount]{1}.".format([Card.EXPLORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
 	card_eagersailor.card_type = CardData.CARD_TYPES.FACTION
 	card_eagersailor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_eagersailor.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6764,7 +6764,7 @@ func add_cards_black() -> void:
 	card_flintlockswiftshot.card_color_id = "color_{0}".format([color])
 	card_flintlockswiftshot.card_texture_path = "external/sprites/cards/aniseed/20_flintlockswiftshot.png"
 	card_flintlockswiftshot.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_flintlockswiftshot.card_description = "Explore [damage]{0}\nON DISCARD: Improve Explore{0} by 1.\nIf you've completed an expedition, gain [energy_amount]{1}".format([Card.EXPLORE_ICON_KEYWORD,Card.ENERGY_ICON_KEYWORD])
+	card_flintlockswiftshot.card_description = "Explore [damage]{0}\nON DISCARD: Improve Explore{0} by 1.\nIf you've completely explored this way, gain [energy_amount]{1}".format([Card.EXPLORE_ICON_KEYWORD,Card.ENERGY_ICON_KEYWORD])
 	#card_flintlockswiftshot.card_keyword_object_ids = []
 	card_flintlockswiftshot.card_type = CardData.CARD_TYPES.FACTION
 	card_flintlockswiftshot.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -8125,7 +8125,7 @@ func add_cards_gold() -> void:
 	card_ravineexplorer.card_color_id = "color_{0}".format([color])
 	card_ravineexplorer.card_texture_path = "external/sprites/cards/cengkih/08_ravineexplorer.png"
 	card_ravineexplorer.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_ravineexplorer.card_description = "Explore [damage]{0}. If you've completed an expedition, create 1 Fish and 1 Root.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_ravineexplorer.card_description = "Explore [damage]{0}. If you've completely explored this way, create 1 Fish and 1 Root.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_ravineexplorer.card_keyword_object_ids = ["keyword_fish","keyword_root"]
 	card_ravineexplorer.card_type = CardData.CARD_TYPES.FACTION
 	card_ravineexplorer.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
@@ -8320,7 +8320,7 @@ func add_cards_gold() -> void:
 	card_intrepidcollector.card_color_id = "color_{0}".format([color])
 	card_intrepidcollector.card_texture_path = "external/sprites/cards/cengkih/12_intrepidcollector.png"
 	card_intrepidcollector.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_intrepidcollector.card_description = "Explore [damage]{0}. If you completed an expedition, gain [money_amount]{1}. Tick down Shop Refresh by 2.".format([Card.EXPLORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
+	card_intrepidcollector.card_description = "Explore [damage]{0}. If you've completely explored this way, gain [money_amount]{1}. Tick down Shop Refresh by 2.".format([Card.EXPLORE_ICON_KEYWORD,Card.MONEY_ICON_KEYWORD])
 	card_intrepidcollector.card_type = CardData.CARD_TYPES.FACTION
 	card_intrepidcollector.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_intrepidcollector.card_rarity = CardData.CARD_RARITIES.UNCOMMON
