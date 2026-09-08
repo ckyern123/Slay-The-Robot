@@ -5030,7 +5030,7 @@ func add_cards_misc() -> void:
 	card_fish.card_color_id = "color_{0}".format([color])
 	card_fish.card_texture_path = "external/sprites/status_effects/fish.svg"
 	card_fish.card_description = "Gain [food_amount]{0}. When discarded, improve {0} by 2.".format([Card.FOOD_ICON_KEYWORD])
-	card_fish.card_type = CardData.CARD_TYPES.SKILL
+	card_fish.card_type = CardData.CARD_TYPES.RESOURCE
 	card_fish.card_subtype = CardData.CARD_SUBTYPES.FOOD
 	card_fish.card_energy_cost = 0
 	card_fish.card_influence = 0
@@ -5725,7 +5725,7 @@ func add_cards_trade() -> void:
 	card_smithy_book.card_color_id = "color_blue"
 	card_smithy_book.card_texture_path = "external/sprites/status_effects/book.svg"
 	card_smithy_book.card_description = "Forge [ore_required] Swords."
-	card_smithy_book.card_type = CardData.CARD_TYPES.SKILL
+	card_smithy_book.card_type = CardData.CARD_TYPES.CRAFT
 	card_smithy_book.card_subtype = CardData.CARD_SUBTYPES.WOVEN
 	card_smithy_book.card_is_retained = true
 	card_smithy_book.card_influence = 0
@@ -5742,7 +5742,7 @@ func add_cards_trade() -> void:
 	card_exploration_tome.card_color_id = "color_blue"
 	card_exploration_tome.card_texture_path = "external/sprites/status_effects/book.svg"
 	card_exploration_tome.card_description = "Increases all {0} values by [status_charge_amount] for the turn.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_exploration_tome.card_type = CardData.CARD_TYPES.SKILL
+	card_exploration_tome.card_type = CardData.CARD_TYPES.CRAFT
 	card_exploration_tome.card_subtype = CardData.CARD_SUBTYPES.WOVEN
 	card_exploration_tome.card_is_retained = true
 	card_exploration_tome.card_influence = 0
@@ -5765,7 +5765,7 @@ func add_cards_trade() -> void:
 	card_trail_illuminator.card_color_id = "color_blue"
 	card_trail_illuminator.card_texture_path = "external/sprites/status_effects/book.svg"
 	card_trail_illuminator.card_description = "Explore [damage]{0}.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_trail_illuminator.card_type = CardData.CARD_TYPES.SKILL
+	card_trail_illuminator.card_type =CardData.CARD_TYPES.CRAFT
 	card_trail_illuminator.card_subtype = CardData.CARD_SUBTYPES.WOVEN
 	card_trail_illuminator.card_is_retained = true
 	card_trail_illuminator.card_influence = 0
@@ -5981,7 +5981,7 @@ func add_cards_purple() -> void:
 	card_storiedspinner.card_color_id = "color_{0}".format([color])
 	card_storiedspinner.card_texture_path = "external/sprites/cards/pearl/04_storiedspinner.png"
 	card_storiedspinner.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_storiedspinner.card_description = "Explore [damage]{0}, then weave [number_of_cards] Missive.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_storiedspinner.card_description = "Explore [damage]{0}, then Weave [number_of_cards] Missive.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_storiedspinner.card_keyword_object_ids = ["keyword_weave","keyword_missives"]
 	card_storiedspinner.card_type = CardData.CARD_TYPES.FACTION
 	card_storiedspinner.card_subtype = CardData.CARD_SUBTYPES.PEARL

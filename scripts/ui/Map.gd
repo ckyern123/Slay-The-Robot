@@ -20,6 +20,10 @@ const room_texture_path = "sprites/tower.svg"
 ## Adds a margin to the bottom of the map display
 const MAP_Y_MARGIN: float = 150
 
+func _process(delta:float) -> void:
+	if Input.is_action_just_released("escape"):
+		_on_back_button_up()
+
 func _ready():
 	map_button.button_up.connect(_on_map_button_up)
 	back_button.button_up.connect(_on_back_button_up)
