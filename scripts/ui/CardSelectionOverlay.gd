@@ -48,7 +48,7 @@ func populate_cards(cards: Array[CardData]) -> void:
 		var card: Card = Scenes.CARD.instantiate()
 		card_container.add_child(card)
 		card.init(card_data, 0, false, true)
-		
+		card.set_card_glow(false)
 		# bind signals
 		card.card_hovered.connect(_on_card_hovered)
 		card.card_unhovered.connect(_on_card_unhovered)

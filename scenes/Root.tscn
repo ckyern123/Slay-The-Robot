@@ -1797,6 +1797,7 @@ columns = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -2238,10 +2239,10 @@ horizontal_alignment = 1
 [node name="DrawPile" type="TextureButton" parent="RunScreen/Combat" unique_id=320277565]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 50.0
-offset_top = 911.0
-offset_right = 150.0
-offset_bottom = 1011.0
+offset_left = 150.0
+offset_top = 854.0
+offset_right = 250.0
+offset_bottom = 954.0
 texture_normal = ExtResource("39_bf4by")
 ignore_texture_size = true
 stretch_mode = 0
@@ -2997,7 +2998,15 @@ script = ExtResource("10_bwtvr")
 layout_mode = 0
 offset_right = 1980.0
 offset_bottom = 1087.0
-color = Color(0.32156864, 0.13333334, 0, 0.9019608)
+color = Color(0, 0, 0, 0.9019608)
+
+[node name="ColorRect2" type="ColorRect" parent="RunScreen/CardSelectionOverlay" unique_id=1895035211]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 411.0
+offset_right = 334.0
+offset_bottom = 525.0
+color = Color(0.2592937, 0.2592937, 0.2592937, 1)
 
 [node name="BackButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=414985548]
 layout_mode = 0
@@ -3009,20 +3018,29 @@ text = "<----
 GO BACK
 <-----"
 
+[node name="ColorRect" type="ColorRect" parent="RunScreen/CardSelectionOverlay" unique_id=1096797573]
+layout_mode = 0
+offset_left = 912.0
+offset_top = 955.0
+offset_right = 1140.0
+offset_bottom = 1019.0
+color = Color(0.2592937, 0.2592937, 0.2592937, 1)
+
 [node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=575565750]
 layout_mode = 0
-offset_left = 1090.0
-offset_top = 159.0
-offset_right = 1318.0
-offset_bottom = 223.0
+offset_left = 911.0
+offset_top = 956.0
+offset_right = 1139.0
+offset_bottom = 1020.0
 text = "CONFIRM"
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/CardSelectionOverlay" unique_id=1269392340]
 layout_mode = 0
 offset_left = 577.0
-offset_top = 178.0
+offset_top = 166.0
 offset_right = 1417.0
-offset_bottom = 202.0
+offset_bottom = 200.89583
+theme_override_font_sizes/font_size = 25
 text = "Pick X Cards"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -3450,10 +3468,10 @@ metadata/_edit_use_anchors_ = true
 [node name="EnergyTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1639367285]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.055208333
-anchor_top = 0.66851854
-anchor_right = 0.15052083
-anchor_bottom = 0.7731481
+anchor_left = 0.054166667
+anchor_top = 0.6342593
+anchor_right = 0.14947917
+anchor_bottom = 0.73888886
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3461,10 +3479,10 @@ metadata/_edit_use_anchors_ = true
 [node name="DrawTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1107452338]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.025
-anchor_top = 0.85555553
-anchor_right = 0.1203125
-anchor_bottom = 0.96018517
+anchor_left = 0.12083333
+anchor_top = 0.7574074
+anchor_right = 0.21614583
+anchor_bottom = 0.86203706
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3494,10 +3512,10 @@ metadata/_edit_use_anchors_ = true
 [node name="EndCombatTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1534100272]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.83489585
-anchor_top = 0.6703704
-anchor_right = 0.9948959
-anchor_bottom = 0.8417994
+anchor_left = 0.8723958
+anchor_top = 0.612963
+anchor_right = 1.0323958
+anchor_bottom = 0.78439194
 offset_left = -103.0
 offset_top = -6.1035156e-05
 offset_right = -103.0

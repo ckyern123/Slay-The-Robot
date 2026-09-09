@@ -3066,17 +3066,17 @@ func add_keywords() -> void:
 	
 	var keyword_wield: KeywordData = KeywordData.new("keyword_wield")
 	keyword_wield.keyword_name = "Wield X"
-	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile."
+	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile. Explores site with highest health."
 	Global.register_rod(keyword_wield)
 	
 	var keyword_cook: KeywordData = KeywordData.new("keyword_cook")
 	keyword_cook.keyword_name = "Cook"
-	keyword_cook.keyword_text_bb_code = "Spend 1{0} and 1{1} to create a Delicacy.".format([Card.FOOD_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
+	keyword_cook.keyword_text_bb_code = "Spend 3{0} to create a Delicacy.".format([Card.FOOD_ICON_KEYWORD,Card.INSIGHT_ICON_KEYWORD])
 	Global.register_rod(keyword_cook)
 	
 	var keyword_inspect: KeywordData = KeywordData.new("keyword_inspect")
 	keyword_inspect.keyword_name = "Inspect X"
-	keyword_inspect.keyword_text_bb_code = "Remove 3 cards in Exhaust pile from the game: Improve values of X Rock, Root, or Treasure cards in discard pile by 3. If you don't have cards in Exhaust pile, improve by 1 instead."
+	keyword_inspect.keyword_text_bb_code = "Choose up to X Rock, Root, and/or Treasure cards in discard pile. For each card, remove 3 cards from the Exhaust pile to improve the card's value by 3. If you don't have cards in Exhaust pile, improve by 1 instead."
 	Global.register_rod(keyword_inspect)
 
 	var keyword_fertilise: KeywordData = KeywordData.new("keyword_fertilise")
@@ -3112,7 +3112,7 @@ func add_keywords() -> void:
 	var keyword_delicacy: KeywordData = KeywordData.new("keyword_delicacy")
 	keyword_delicacy.keyword_name = "Delicacy"
 	keyword_delicacy.keyword_status_effect_id = "status_effect_delicacy_reward"
-	keyword_delicacy.keyword_text_bb_code = "Craft that gains 2 energy. Has 2 uses.".format([Card.ENERGY_ICON_KEYWORD])
+	keyword_delicacy.keyword_text_bb_code = "Food Craft that gains 2 energy. Has 2 uses.".format([Card.ENERGY_ICON_KEYWORD])
 	Global.register_rod(keyword_delicacy)
 	
 	var keyword_scroll: KeywordData = KeywordData.new("keyword_scroll")
@@ -3305,7 +3305,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green",
+		"card_basic_explore_green", "card_basic_explore_green"
 	]
 	
 	Global.register_rod(character_green)
@@ -5900,7 +5900,7 @@ func add_cards_purple() -> void:
 	card_saltexpert.card_color_id = "color_{0}".format([color])
 	card_saltexpert.card_texture_path = "external/sprites/cards/pearl/16_saltexpert.png"
 	card_saltexpert.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_saltexpert.card_description = "Improve the {0} value of [max_card_amount] Food cards in hand by 1.".format([Card.FOOD_ICON_KEYWORD])
+	card_saltexpert.card_description = "Improve the {0} value of [max_card_amount] Food cards in hand by 1. Retain them in your hand this turn.".format([Card.FOOD_ICON_KEYWORD])
 	#card_saltexpert.card_keyword_object_ids = ["keyword_appease"]
 	card_saltexpert.card_type = CardData.CARD_TYPES.FACTION
 	card_saltexpert.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -5917,7 +5917,7 @@ func add_cards_purple() -> void:
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
 		"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes":[CardData.CARD_SUBTYPES.FOOD]}}],
-		"action_data":[{Scripts.ACTION_IMPROVE_CARD_VALUES:{}}]
+		"action_data":[{Scripts.ACTION_RETAIN_CARDS:{}},{Scripts.ACTION_IMPROVE_CARD_VALUES:{}}]
 		}
 	}]
 	card_saltexpert.card_play_actions.append(influence_action)
@@ -6161,7 +6161,7 @@ func add_cards_purple() -> void:
 	card_fishsaucemaker.card_color_id = "color_{0}".format([color])
 	card_fishsaucemaker.card_texture_path = "external/sprites/cards/pearl/18_fishsaucemaker.png"
 	card_fishsaucemaker.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_fishsaucemaker.card_description = "Exhaust a Fish or Grain card in discard pile to Fertilise [artifact_charge_increase] and create a Delicacy."
+	card_fishsaucemaker.card_description = "Exhaust a Food card in discard pile to Fertilise [artifact_charge_increase] and create a Delicacy."
 	card_fishsaucemaker.card_keyword_object_ids = ["keyword_fertilise","keyword_delicacy"]
 	card_fishsaucemaker.card_type = CardData.CARD_TYPES.FACTION
 	card_fishsaucemaker.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -6177,7 +6177,7 @@ func add_cards_purple() -> void:
 		"random_selection": false,
 		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to retain. {1} cards selected",
-		"validator_data":[{Scripts.VALIDATOR_CARD_ID:{"card_object_ids":["card_fish","card_grain"]}}],
+		"validator_data":[{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes":[CardData.CARD_SUBTYPES.FOOD]}}],
 		"action_data": [
 			{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser"}},
 			{Scripts.ACTION_EXHAUST_CARDS:{}},
@@ -6268,7 +6268,7 @@ func add_cards_purple() -> void:
 	card_pearlsmuggler.card_color_id = "color_{0}".format([color])
 	card_pearlsmuggler.card_texture_path = "external/sprites/cards/pearl/10_pearlsmuggler.png"
 	card_pearlsmuggler.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearlsmuggler.card_description = "Does not lose influence at the end of turns.\nSift [draw_count] for Faction cards. Wield [max_card_amount]."
+	card_pearlsmuggler.card_description = "Does not lose influence at the end of turns.\nDiscard your hand, then return up to 3 Craft or Resource cards to your hand. They gain retain until end of turn."
 	card_pearlsmuggler.card_keyword_object_ids = ["keyword_sift", "keyword_wield"]
 	card_pearlsmuggler.card_type = CardData.CARD_TYPES.FACTION
 	card_pearlsmuggler.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -6276,12 +6276,39 @@ func add_cards_purple() -> void:
 	card_pearlsmuggler.card_requires_target = false
 	card_pearlsmuggler.card_is_retained = true
 	card_pearlsmuggler.card_energy_cost = 2
-	card_pearlsmuggler.card_values = {"draw_count": 5, "min_card_amount":4,"max_card_amount":4}
+	card_pearlsmuggler.card_values = {"min_card_amount":0,"max_card_amount":3}
 	card_pearlsmuggler.card_upgrade_value_improvements = {"draw_count": 2}
 	card_pearlsmuggler.card_influence = 4
-	card_pearlsmuggler.card_play_actions.append(wield_action)
-	for action in sift_faction_data:
-		card_pearlsmuggler.card_play_actions.append(action)
+	card_pearlsmuggler.card_play_actions = [		{
+		Scripts.ACTION_PICK_CARDS:
+			{
+			"min_card_amount": 0,
+			"max_card_amount": 3,
+			"min_cards_are_required_for_action": false,
+			"random_selection": false,
+			"card_pick_type": HandManager.DISCARD_PILE,
+			"card_pick_text": "Choose {0} card to return to hand. {1} cards selected",
+			"validator_data": [
+			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.CRAFT, CardData.CARD_TYPES.RESOURCE]}}
+			],
+			"action_data": [
+			{Scripts.ACTION_RETAIN_CARDS:{}},
+			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}
+			]
+			}
+		},{
+		Scripts.ACTION_PICK_CARDS:
+			{
+			"min_card_amount": 99,
+			"max_card_amount": 99,
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.HAND_PILE,
+			"card_pick_text": "Choose {0} card to return to hand. {1} cards selected",
+			"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}
+			]
+			}
+		}]
 	card_pearlsmuggler.card_play_actions.append(influence_action)
 	card_pearlsmuggler.card_draw_actions = start_action_data
 	#card_pearlsmuggler.card_end_of_turn_actions = end_action_data
