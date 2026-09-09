@@ -33,8 +33,9 @@ func _draw():
 	
 	for id in location_data.location_next_location_ids:
 		var child = Global.get_location_data(id)
-		var line = (child.location_position) - (location_data.location_position)
-		var normal = line.normalized()
-		line -= margin * normal
-		var color = Color.GRAY
-		draw_line(normal * margin, line, color, 2, true)
+		if (child != null):
+			var line = (child.location_position) - (location_data.location_position)
+			var normal = line.normalized()
+			line -= margin * normal
+			var color = Color.GRAY
+			draw_line(normal * margin, line, color, 2, true)

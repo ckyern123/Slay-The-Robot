@@ -94,6 +94,7 @@ func perform_action() -> void:
 		for k in Global.player_data.nodes.keys():
 					### Generate/get starting node
 			if generate_start_node and start:
+				Global.clear_locations()
 				# creates a new starting node, mainly useful for the first act
 				start = false
 				# clear existing locations; This isn't strictly necessary but clears up garbage
@@ -254,7 +255,7 @@ func generate(plane_len, node_count, path_count):
 	points.append(Vector2(plane_len/2, plane_len))
 	points.append(Vector2(plane_len/2, 0))
 		
-	var center = Vector2(plane_len / 2, plane_len / 2)
+	var center = Vector2(plane_len / 2, plane_len/2)
 	for i in range(node_count):
 		while true:
 			var point = Vector2(randi() % plane_len, randi() % plane_len)

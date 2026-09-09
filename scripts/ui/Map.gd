@@ -117,12 +117,12 @@ func populate_locations(locations: Array[LocationData] = Global.get_all_act_loca
 	# wait a frame to ensure container is properly resized
 	await Global.get_tree().process_frame
 	# set the scroll
-	if current_map_location != null:
+	if current_map_location.location_data.location_id != "location_0":
 		current_map_location.grab_focus()
-	#else:
+	else:
 		## presumably the invisible starting location, set to bottom
-		#scroll_container.scroll_vertical = max_y
-		#scroll_container.scroll_horizontal = max_x
+		scroll_container.scroll_vertical = max_y
+		scroll_container.scroll_horizontal = max_x
 
 func clear_locations() -> void:
 	for child in location_container.get_children():
