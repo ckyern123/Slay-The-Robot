@@ -5912,7 +5912,7 @@ func add_cards_purple() -> void:
 	card_saltexpert.card_influence = 3
 	card_saltexpert.card_play_actions = [{
 		Scripts.ACTION_PICK_CARDS: {
-		"min_cards_are_required_for_action": true,
+		"min_cards_are_required_for_action": false,
 		"random_selection": false,
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
