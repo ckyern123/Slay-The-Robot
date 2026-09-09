@@ -365,21 +365,23 @@ horizontal_alignment = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-offset_left = 1100.0
+offset_left = 979.5
 offset_top = 183.0
-offset_right = -46.0
-offset_bottom = 709.5
+offset_right = 74.5
+offset_bottom = 718.5
 grow_horizontal = 2
 layout_direction = 2
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 30
 text = "VICTORY CONDITION: 
 Gain 200 Prestige.
 
 You gain Prestige from:
-1) Total number of cards owned.
-2) Ascending cards.
-3) Building artifacts.
-4) Drafting books.
+1) Total number of cards owned (1 point per card).
+2) Ascending cards (higher rarity + upgrade status
+ yields more points).
+3) Exploring sites (1 point per enemy / 3 points per elite)
+4) Building artifacts (3 points per artifact).
+5) Drafting books (5 points per book).
 
 GAME LOSS: 
 You lose when you have 0 food."
@@ -1876,6 +1878,13 @@ stretch_mode = 0
 [node name="Node2D" type="Node2D" parent="RunScreen/Combat" unique_id=1838302283]
 position = Vector2(130, 15)
 
+[node name="TextureRect" type="ColorRect" parent="RunScreen/Combat/Node2D" unique_id=1149516291]
+offset_left = 60.0
+offset_top = -6.0
+offset_right = 290.0
+offset_bottom = 44.0
+color = Color(0, 0, 0, 1)
+
 [node name="FoodLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=1670164399]
 unique_name_in_owner = true
 offset_left = 70.0
@@ -1887,62 +1896,86 @@ bbcode_enabled = true
 unique_name_in_owner = true
 position = Vector2(84, 4)
 
+[node name="TextureRect2" type="ColorRect" parent="RunScreen/Combat/Node2D" unique_id=156627166]
+offset_left = 302.0
+offset_top = -6.0
+offset_right = 462.0
+offset_bottom = 44.0
+color = Color(0, 0, 0, 1)
+
 [node name="MoneyLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=416191368]
 unique_name_in_owner = true
-offset_left = 300.0
-offset_right = 500.0
+offset_left = 309.0
+offset_right = 509.0
 offset_bottom = 50.0
 bbcode_enabled = true
 
 [node name="MoneyFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=1864940312]
 unique_name_in_owner = true
-position = Vector2(310, 4)
+position = Vector2(325, 4)
+
+[node name="TextureRect3" type="ColorRect" parent="RunScreen/Combat/Node2D" unique_id=1899907274]
+offset_left = 473.0
+offset_top = -16.0
+offset_right = 643.0
+offset_bottom = 54.0
+color = Color(0, 0, 0, 1)
 
 [node name="OreLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=1597183768]
 unique_name_in_owner = true
-offset_left = 440.0
-offset_right = 640.0
-offset_bottom = 50.0
+offset_left = 482.0
+offset_top = -11.0
+offset_right = 682.0
+offset_bottom = 39.0
 bbcode_enabled = true
 
 [node name="OreFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=1561845151]
 unique_name_in_owner = true
-position = Vector2(450, 7)
-
-[node name="InsightLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=2103451130]
-unique_name_in_owner = true
-offset_left = 550.0
-offset_right = 700.0
-offset_bottom = 50.0
-bbcode_enabled = true
-
-[node name="InsightFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=686892605]
-unique_name_in_owner = true
-position = Vector2(560, 4)
-
-[node name="SizeLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=603507063]
-unique_name_in_owner = true
-offset_left = 840.0
-offset_right = 1015.0
-offset_bottom = 50.0
-bbcode_enabled = true
-text = "Size:"
-
-[node name="SizeFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=228372623]
-unique_name_in_owner = true
-position = Vector2(860, 4)
+position = Vector2(497, -4)
 
 [node name="RoomLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=1691440553]
 unique_name_in_owner = true
-offset_left = 700.0
-offset_right = 825.0
-offset_bottom = 50.0
+offset_left = 504.0
+offset_top = 15.0
+offset_right = 629.0
+offset_bottom = 65.0
 bbcode_enabled = true
 text = "Room:"
 
 [node name="RoomFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=484523731]
 unique_name_in_owner = true
-position = Vector2(710, 4)
+position = Vector2(531, 26)
+
+[node name="TextureRect4" type="ColorRect" parent="RunScreen/Combat/Node2D" unique_id=1184836886]
+offset_left = 656.0
+offset_top = -6.0
+offset_right = 816.0
+offset_bottom = 44.0
+color = Color(0.0054626893, 0.0005415318, 0.0012875128, 1)
+
+[node name="InsightLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=2103451130]
+unique_name_in_owner = true
+offset_left = 664.0
+offset_right = 814.0
+offset_bottom = 50.0
+bbcode_enabled = true
+
+[node name="InsightFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=686892605]
+unique_name_in_owner = true
+position = Vector2(674, 4)
+
+[node name="SizeLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=603507063]
+unique_name_in_owner = true
+offset_left = -100.0
+offset_top = 294.0
+offset_right = 75.0
+offset_bottom = 344.0
+bbcode_enabled = true
+text = "Size:"
+
+[node name="SizeFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=228372623]
+unique_name_in_owner = true
+position = Vector2(-80, 298)
 
 [node name="ArtifactContainer" type="GridContainer" parent="RunScreen/Combat" unique_id=1880890621]
 layout_mode = 0
@@ -3316,9 +3349,9 @@ border_width = 5.0
 [node name="MoneyTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1169814212]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.20104167
+anchor_left = 0.23541667
 anchor_top = 0.02037037
-anchor_right = 0.31510416
+anchor_right = 0.34947917
 anchor_bottom = 0.075925924
 offset_right = -69.0
 offset_bottom = -10.0
@@ -3329,9 +3362,9 @@ metadata/_edit_use_anchors_ = true
 [node name="OreTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=479080032]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.28072917
+anchor_left = 0.32760417
 anchor_top = 0.017592592
-anchor_right = 0.40677083
+anchor_right = 0.45364583
 anchor_bottom = 0.075925924
 offset_right = -92.0
 mouse_filter = 2
@@ -3341,9 +3374,9 @@ metadata/_edit_use_anchors_ = true
 [node name="InsightTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=315712033]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.35833332
+anchor_left = 0.41927084
 anchor_top = 0.010185185
-anchor_right = 0.5125
+anchor_right = 0.5734375
 anchor_bottom = 0.0787037
 offset_right = -146.0
 mouse_filter = 2
@@ -3401,9 +3434,9 @@ metadata/_edit_use_anchors_ = true
 [node name="FoodTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=2094616792]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.098958336
+anchor_left = 0.114583336
 anchor_top = 0.017592592
-anchor_right = 0.19739583
+anchor_right = 0.21302083
 anchor_bottom = 0.072222225
 mouse_filter = 2
 border_width = 5.0
@@ -3412,10 +3445,10 @@ metadata/_edit_use_anchors_ = true
 [node name="SizeTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1072154485]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.49635416
-anchor_top = 0.02037037
-anchor_right = 0.5703125
-anchor_bottom = 0.075
+anchor_left = 0.019270834
+anchor_top = 0.29722223
+anchor_right = 0.09322917
+anchor_bottom = 0.35185185
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3442,6 +3475,7 @@ border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
 [node name="RoomTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=92220567]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.43125

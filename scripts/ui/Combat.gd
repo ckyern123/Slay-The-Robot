@@ -118,7 +118,7 @@ func _ready():
 	money_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, money_texture_path, "Money"]) % Global.player_data.player_money
 	ore_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, ore_texture_path, "Ore"]) % Global.player_data.player_ore
 	insight_label.text = "[img width={0}]{1}[/img] {2}: %s".format([EMBEDDED_IMAGE_SIZE, insight_texture_path, "Insight"]) % Global.player_data.player_insight
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / Upkeep: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / Upkeep: %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, 1 + (Global.player_data.player_health/30)]
 
 	# pile buttons
 	deck_button.button_up.connect(_on_deck_button_up)
@@ -282,7 +282,7 @@ func _on_player_insight_changed(_delta: int = 0):
 		create_image_fade(insight_fade_container, FileLoader.load_texture(insight_texture_path))	
 		
 func _on_player_food_changed(_delta: int = 0):
-	food_label.text = "[img width={0}]{1}[/img] {2}: %s / Upkeep %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, (HandManager.player_draw.size()+HandManager.player_hand.size()+HandManager.player_discard.size())/10]
+	food_label.text = "[img width={0}]{1}[/img] {2}: %s / Upkeep %s".format([EMBEDDED_IMAGE_SIZE, food_texture_path, "Food"])  % [Global.player_data.player_food, 1 + (Global.player_data.player_health/30)]
 	if (_delta > 0):
 
 		var sound_actions: Array = ActionGenerator.create_actions(null, null, [], food_sound_action_data, null)
@@ -359,9 +359,12 @@ func _on_enemy_killed(enemy: Enemy):
 		await ActionHandler.actions_ended
 	if (enemy.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
 		elite_is_present = false
-		
+		Global.player_data.add_health(3, 0)
+	else:
+		Global.player_data.add_health(1, 0)
 	if (combat_end_button.visible == false and !elite_is_present):
 		combat_end_button.visible = true
+
 	
 func _on_enemy_death_animation_finished(_enemy: Enemy):
 	# determine if all non minion enemies killed and end combat

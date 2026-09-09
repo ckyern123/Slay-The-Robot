@@ -15,7 +15,7 @@ var ascend_action_data: Array[Dictionary] = [
 					{
 					"card_property_name": "card_influence",
 					"operator": ">=",
-					"comparison_value": 2,
+					"comparison_value": 5,
 					"invert_validation": false,
 					}
 				}

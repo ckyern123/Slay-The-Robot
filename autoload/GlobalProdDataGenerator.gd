@@ -273,7 +273,7 @@ var wield_action: Dictionary = {
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
-				"action_data": [{Scripts.ACTION_PLAY_CARDS:{"focused":true}}]
+				"action_data": [{Scripts.ACTION_PLAY_CARDS:{}}]
 		}
 		}
 
@@ -518,8 +518,7 @@ func add_artifacts() -> void:
 	artifact_ore_per_turn.artifact_description = "WHEN BUILT: Create 1 Quarry card (Gains 2 Ore when discarded)."
 	artifact_ore_per_turn.artifact_shop_description = "WHEN BUILT: Create 1 Quarry card (Gains 2 Ore when discarded)."
 	artifact_ore_per_turn.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
-	artifact_ore_per_turn.artifact_turn_start_actions = [{Scripts.ACTION_ADD_ORE: {"ore_amount": 1}}
-	]
+	artifact_ore_per_turn.artifact_add_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_quarry","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	Global.register_rod(artifact_ore_per_turn)
 	
 	var artifact_draw_periodic: ArtifactData = ArtifactData.new("artifact_draw_periodic")
@@ -2971,7 +2970,7 @@ func add_action_interceptors() -> void:
 	interceptor_food_increase.action_interceptor_script_path = Scripts.INTERCEPTOR_FOOD_INCREASE
 	interceptor_food_increase.action_intercepted_action_paths = [Scripts.ACTION_ADD_FOOD]
 	
-	Global.register_rod(interceptor_temp_damage_increase)
+	Global.register_rod(interceptor_food_increase)
 
 #endregion
 
@@ -3066,7 +3065,7 @@ func add_keywords() -> void:
 	
 	var keyword_wield: KeywordData = KeywordData.new("keyword_wield")
 	keyword_wield.keyword_name = "Wield X"
-	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile. Explores site with highest health."
+	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile. Targets randomly."
 	Global.register_rod(keyword_wield)
 	
 	var keyword_cook: KeywordData = KeywordData.new("keyword_cook")
@@ -5691,7 +5690,7 @@ func add_cards_trade() -> void:
 	card_preservation_pamphlet.card_influence = 0
 	card_preservation_pamphlet.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_preservation_pamphlet.card_requires_target = false
-	card_preservation_pamphlet.card_values = {"status_charge_amount": 1}
+	card_preservation_pamphlet.card_values = {"status_charge_amount": 1,"draw_count":1}
 	card_preservation_pamphlet.card_play_actions = [{Scripts.ACTION_PICK_CARDS:
 		{
 				"min_card_amount": 99,
@@ -6564,7 +6563,7 @@ func add_cards_black() -> void:
 	card_humblemerchant.card_energy_cost = 1
 	#card_humblemerchant.card_values = {"damage": 2, "min_card_amount": 1, "max_card_amount": 1}
 	#card_humblemerchant.card_upgrade_value_improvements = {"min_card_amount": 1,"max_card_amount": 1}
-	card_humblemerchant.card_first_upgrade_property_changes = {"card_energy_cost":-1}
+	card_humblemerchant.card_first_upgrade_property_changes = {"card_energy_cost":0}
 	card_humblemerchant.card_influence = 3
 	card_humblemerchant.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_humblemerchant.card_play_actions = [		{Scripts.ACTION_PICK_CARDS:
@@ -6799,7 +6798,7 @@ func add_cards_black() -> void:
 	card_flintlockswiftshot.card_requires_target = true
 	card_flintlockswiftshot.card_energy_cost = 2
 	card_flintlockswiftshot.card_values = {"damage":2,"number_of_attacks":1,"energy_amount":2}
-	card_flintlockswiftshot.card_first_upgrade_property_changes = {"energy_cost":-1}
+	card_flintlockswiftshot.card_first_upgrade_property_changes = {"energy_cost":1}
 	card_flintlockswiftshot.card_discard_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"card_value_improvements":{"damage":1}}}]
 	card_flintlockswiftshot.card_play_actions = [{Scripts.ACTION_ATTACK_GENERATOR:{"actions_on_lethal":[{Scripts.ACTION_ADD_ENERGY:{}}]}}]
 	card_flintlockswiftshot.card_play_actions.append(influence_action)
@@ -7486,7 +7485,7 @@ func add_cards_green() -> void:
 	card_shockrider.card_values = {"damage":3,"number_of_attacks":1, "ore_required": 1,"number_of_cards":1,"created_card_object_id":"card_sword", "min_card_amount":1,"max_card_amount":1}
 	card_shockrider.card_keyword_object_ids = ["keyword_forge","keyword_sword","keyword_wield"]
 	card_shockrider.card_upgrade_value_improvements = {"damage":1, "ore_required": 1,"min_card_amount":1,"max_card_amount":1}
-	card_shockrider.card_first_upgrade_property_changes = {"card_energy_cost": 1}
+	#card_shockrider.card_first_upgrade_property_changes = {"card_energy_cost": 1}
 	card_shockrider.card_play_actions.append(wield_action)
 	card_shockrider.card_play_actions.append(forge_action)
 	card_shockrider.card_play_actions.append(
@@ -7689,7 +7688,7 @@ func add_cards_green() -> void:
 	card_hoardingstowaway.card_requires_target = false
 	card_hoardingstowaway.card_influence = 4
 	card_hoardingstowaway.card_energy_cost = 2
-	card_hoardingstowaway.card_first_upgrade_property_changes = {"card_energy_cost":-1}
+	card_hoardingstowaway.card_first_upgrade_property_changes = {"card_energy_cost":1}
 	card_hoardingstowaway.card_values = {"number_of_cards":1,"insight_required":1,"created_card_object_id": "card_scroll" }
 	card_hoardingstowaway.card_play_actions = [
 		{
@@ -8115,7 +8114,7 @@ func add_cards_gold() -> void:
 	card_esteemedmerchant.card_requires_target = false
 	card_esteemedmerchant.card_energy_cost = 2
 	card_esteemedmerchant.card_influence = 4
-	card_esteemedmerchant.card_first_upgrade_property_changes = {"card_energy_cost":-1}
+	card_esteemedmerchant.card_first_upgrade_property_changes = {"card_energy_cost":1}
 	#card_esteemedmerchant.card_values = {}
 	#card_esteemedmerchant.card_upgrade_value_improvements = {"ore_required": 1, "number_of_cards":1}
 	card_esteemedmerchant.card_play_actions = [

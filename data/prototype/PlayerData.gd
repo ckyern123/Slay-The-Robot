@@ -267,7 +267,7 @@ func add_ore(amount: int) -> void:
 ## Adds or subtracts insight from the player
 ## If goes into negative amounts, the proper delta will be calculated 
 func add_insight(amount: int) -> void:
-	var old_player_insight_amount: int = player_money
+	var old_player_insight_amount: int = player_insight
 	player_insight = max(player_insight + amount, 0)
 	var delta: int = player_insight - old_player_insight_amount
 	Signals.player_insight_changed.emit(delta)

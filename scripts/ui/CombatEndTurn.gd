@@ -48,8 +48,8 @@ func wait() -> void:
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
 			
-			var food_count: int = 0 - Global.player_data.player_size
-			Global.player_data.add_food(food_count/10)
+			var food_count: int = -1 - (Global.player_data.player_health/30)
+			Global.player_data.add_food(food_count)
 			
 			if Global.player_data.player_food <= 0:
 				Signals.player_killed.emit(Global.get_player())
@@ -70,8 +70,8 @@ func wait() -> void:
 				ActionHandler.add_actions(threshold_actions)
 			if ActionHandler.actions_being_performed:
 				await ActionHandler.actions_ended
-			var food_count: int = 0 - Global.player_data.player_size
-			Global.player_data.add_food(food_count/10)
+			var food_count: int = -1 - (Global.player_data.player_health/30)
+			Global.player_data.add_food(food_count)
 			
 			if Global.player_data.player_food <= 0:
 				Signals.player_killed.emit(Global.get_player())
