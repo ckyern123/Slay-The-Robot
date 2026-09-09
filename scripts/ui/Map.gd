@@ -18,8 +18,8 @@ const size_texture_path = "sprites/village.svg"
 const room_texture_path = "sprites/tower.svg"
 
 ## Adds a margin to the bottom of the map display
-const MAP_Y_MARGIN: float = 150
-
+const MAP_Y_MARGIN: float = 1500
+const MAP_X_MARGIN: float = 1500
 func _process(delta:float) -> void:
 	if Input.is_action_just_released("escape"):
 		_on_back_button_up()
@@ -83,44 +83,46 @@ func populate_locations(locations: Array[LocationData] = Global.get_all_act_loca
 	clear_locations()
 	
 	var next_locations: Array[LocationData] = Global.get_next_locations()
-	var max_y: float = 0.0 # the highest location position, used to determine container size
+	var max_y: float = 3000 # the highest location position, used to determine container size
+	var max_x: float = 2000 # the highest location position, used to determine container size
 	
 	var current_map_location: MapLocation = null
 	
 	for location_data in locations:
-		if location_data.location_type == LocationData.LOCATION_TYPES.STARTING:
-			continue	# starting area not displayed
-		
 		var map_location: MapLocation = Scenes.MAP_LOCATION.instantiate()
 		location_container.add_child(map_location)
 		map_location.init(location_data)
+		if location_data.location_type == LocationData.LOCATION_TYPES.STARTING:
+			map_location.disabled = true		
 		
 		map_location.map_location_button_up.connect(_on_map_location_button_up)
 		
 		max_y = max(max_y, location_data.location_position.y)
-		
+		max_x = max(max_x, location_data.location_position.x)
 		# flash the locations the player can travel to
 		if can_travel:
 			if next_locations.has(location_data):
-				map_location.flash_location()
 				current_map_location = map_location
+			if location_data == Global.get_player_location_data():
+				map_location.flash_location()
 		
 		if location_data == Global.get_player_location_data():
 			current_map_location = map_location
 	
 	# set the size of the container to make scrolling posible
 	location_container.custom_minimum_size.y = max_y + MAP_Y_MARGIN
+	location_container.custom_minimum_size.x = max_x + MAP_X_MARGIN
 	location_container.size.y = max_y + MAP_Y_MARGIN
-	
+	location_container.size.x = max_x + MAP_X_MARGIN
 	# wait a frame to ensure container is properly resized
 	await Global.get_tree().process_frame
 	# set the scroll
 	if current_map_location != null:
 		current_map_location.grab_focus()
-	else:
-		# presumably the invisible starting location, set to bottom
-		scroll_container.scroll_vertical = max_y
-	
+	#else:
+		## presumably the invisible starting location, set to bottom
+		#scroll_container.scroll_vertical = max_y
+		#scroll_container.scroll_horizontal = max_x
 
 func clear_locations() -> void:
 	for child in location_container.get_children():

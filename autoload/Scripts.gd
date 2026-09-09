@@ -5,6 +5,7 @@ extends Node
 
 # map generation actions
 const ACTION_GENERATE_ACT: String = "res://scripts/actions/world_generation_actions/ActionGenerateAct.gd"
+const ACTION_MAP_GENERATE: String = "res://scripts/ui/MapGenerator.gd"
 
 # map interaction actions
 const ACTION_VISIT_LOCATION: String = "res://scripts/actions/world_interaction_actions/ActionVisitLocation.gd"

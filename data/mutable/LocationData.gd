@@ -48,7 +48,10 @@ func get_location_event_object_id() -> String:
 	
 	return location_event_object_id
 
-
+func add_child_event(child):
+	if !location_next_location_ids.has(child):
+		location_next_location_ids.append(child)
+		
 func _get_native_properties() -> Dictionary:
 	return {
 		"location_position": Vector2(),

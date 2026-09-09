@@ -49,7 +49,8 @@ var player_block: int = 0 # in combat block. Not saved.
 @export var player_location_id: String = "location_0"
 ## Stores locations for the current act in the run
 @export var location_id_to_location_data: Dictionary[String, LocationData] = {}
-
+@export var paths = []
+@export var nodes = {}
 ## Stores the shop at the player's current location, if one exists. Does not determine if there is
 ## a shop accessible, that is determined by the location type at player_location_id
 ## NOTE: This isn't usually saved because shop data is populated when you press the shop button
@@ -737,6 +738,14 @@ func regenerate_artifact_available_id_cache() -> void:
 	
 	# cache results
 	player_artifact_available_artifact_id_cache = artifact_unique_object_ids
+
+func set_paths(given_paths, points) -> void:
+	paths = given_paths
+	
+	for path in paths:
+		for id in path:
+			nodes[id] = points[id]
+
 
 ## Gets all consumables the player can potentially obtain via packs, whitelists, and blacklists
 ## merges the results and caches them.
