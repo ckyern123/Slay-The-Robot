@@ -5,11 +5,11 @@
 ## generation algorithms.
 extends BaseAction
 
-const plane_len = 40
+const plane_len = 30
 const node_count = plane_len * plane_len / 12
 const path_count = 12
 
-const map_scale = 50.0
+const map_scale = 30.0
 
 func perform_action() -> void:
 	# generates all world locations from a seed and stores them in PlayerData
@@ -50,46 +50,7 @@ func perform_action() -> void:
 		var total_locations: Dictionary[int,LocationData]= {}
 		var location_id_counter: int = 0 # used to generate unique ids
 		var floor_counter: int = 0
-		
 
-		#### Generate/get starting node
-		#if generate_start_node:
-			## creates a new starting node, mainly useful for the first act
-			#
-			## clear existing locations; This isn't strictly necessary but clears up garbage
-			#Global.clear_locations()
-			#
-			#var starting_floor: Array[LocationData] = []
-			#var starting_location: LocationData = LocationData.new()
-			## get a unique id and assign it
-			#starting_location.location_id = "location_0"
-			#Global.player_data.location_id_to_location_data["location_0"] = starting_location	# store as mapping in Global
-			#Global.player_data.player_location_id = starting_location.location_id
-			## positioning and act
-			#starting_location.location_act = 1
-			#starting_location.location_index = Vector2(MIDDLE_INDEX, -1)
-			#starting_location.location_position = BOTTOM_LEFT + (starting_location.location_index * GRID_SPACING)
-			#starting_location.location_floor = floor_counter
-			## assign a type
-			#starting_location.location_type = LocationData.LOCATION_TYPES.STARTING
-			## assign a random event
-			#starting_location.location_event_object_id = "event_act_1_easy_plains_1"
-			## add node to layer
-			#starting_floor.append(starting_location)
-			#floors.append(starting_floor)
-		#else:
-			## if no starting node generated, use the location the player is currently on (presumably from last act)
-			## and treat it as a "starting" node to connect to the next act
-			#var current_location_data: LocationData = Global.get_player_location_data()
-			#
-			## clear existing locations; This isn't strictly necessary but clears up garbage
-			#Global.clear_locations()
-			#
-			## remap the previous boss floor as it still needs to exist
-			#Global.player_data.location_id_to_location_data[current_location_data.location_id] = current_location_data
-			#
-			#var current_floor: Array[LocationData] = [current_location_data]
-			#floors.append(current_floor) # will be connected to by first floor of this act
 		var start: bool = true
 		for k in Global.player_data.nodes.keys():
 					### Generate/get starting node
@@ -109,7 +70,8 @@ func perform_action() -> void:
 				# positioning and act
 				starting_location.location_act = 1
 				starting_location.location_index = Vector2(MIDDLE_INDEX, -1)
-				starting_location.location_position = point * map_scale + Vector2(0, 0)
+				starting_location.location_position = point * map_scale
+				starting_location.location_position.x = 400
 				starting_location.location_floor = floor_counter
 				# assign a type
 				starting_location.location_type = LocationData.LOCATION_TYPES.STARTING
@@ -133,7 +95,9 @@ func perform_action() -> void:
 				location.location_act = act_number
 				location.icon_texture_path = "external/sprites/locations/plains.svg"
 				location.location_index = Vector2(k, 0)
-				location.location_position = point * map_scale + Vector2(0, 0)
+				print(point)
+				location.location_position = point * 26 + Vector2(0,0)
+				location.location_position.x = 200 + 24 * point[0]
 				total_locations[k] = location
 
 		for path in Global.player_data.paths:
@@ -155,6 +119,8 @@ func perform_action() -> void:
 
 func floor_recursive(location_data: LocationData, act_data: ActData, floor_dict: Dictionary[int,Array], k: int, prob: int) -> void:
 	var prob_later: int = prob
+	#print(k)
+	#location_data.location_position -= Vector2(0,20*(min(10,k)/2))
 	if location_data.location_next_location_ids.is_empty():
 		# make a node
 		var boss_location: LocationData = LocationData.new()
