@@ -3,9 +3,10 @@ extends Control
 
 @onready var card_container: GridContainer = $ScrollContainer/MarginContainer/CardContainer
 @onready var card_picking_label: Label = $CardPickLabel
-@onready var confirm_button: Button = $ConfirmButton
-@onready var back_button: Button = $BackButton
-
+@onready var confirm_rect: ColorRect = $ConfirmRect
+@onready var confirm_button: Button = $ConfirmRect/ConfirmButton
+@onready var back_button: Button = $BackRect/BackButton
+@onready var back_rect: ColorRect = $BackRect
 var current_card_pick_action: ActionBasePickCards = null	# an action currently requesting cards from the player to select. If null clicking cards plays them
 
 enum CARD_MODES {VIEW, SELECT}
@@ -33,9 +34,9 @@ func _on_card_pick_requested(card_pick_action: ActionBasePickCards):
 			populate_cards(card_pick_action.get_pickable_cards())
 			
 			card_picking_label.text = current_card_pick_action.get_card_pick_text()
-			confirm_button.visible = current_card_pick_action.are_enough_cards_picked()
+			confirm_rect.visible = current_card_pick_action.are_enough_cards_picked()
 			
-			back_button.visible = current_card_pick_action.get_card_pick_can_back_out()
+			back_rect.visible = current_card_pick_action.get_card_pick_can_back_out()
 
 func _on_card_pick_confirmed():
 	visible = false
@@ -105,13 +106,13 @@ func set_card_mode(_card_mode: int) -> void:
 	
 	visible = true
 	card_picking_label.visible = false
-	back_button.visible = false
-	confirm_button.visible = false
+	back_rect.visible = false
+	confirm_rect.visible = false
 	
 	if card_mode == CARD_MODES.VIEW:
-		back_button.visible = true
+		back_rect.visible = true
 	if card_mode == CARD_MODES.SELECT:
-		confirm_button.visible = true
+		confirm_rect.visible = true
 		card_picking_label.visible = true
 	
 

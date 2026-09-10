@@ -1809,6 +1809,7 @@ script = ExtResource("12_elxq6")
 [node name="Combat" type="Control" parent="RunScreen" unique_id=797179111]
 unique_name_in_owner = true
 process_mode = 1
+visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -3034,7 +3035,7 @@ offset_right = 1980.0
 offset_bottom = 1087.0
 color = Color(0, 0, 0, 0.9019608)
 
-[node name="ColorRect2" type="ColorRect" parent="RunScreen/CardSelectionOverlay" unique_id=1895035211]
+[node name="BackRect" type="ColorRect" parent="RunScreen/CardSelectionOverlay" unique_id=1895035211]
 layout_mode = 0
 offset_left = 136.0
 offset_top = 411.0
@@ -3042,17 +3043,15 @@ offset_right = 334.0
 offset_bottom = 525.0
 color = Color(0.04782092, 0.15720946, 0.9380496, 1)
 
-[node name="BackButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=414985548]
+[node name="BackButton" type="Button" parent="RunScreen/CardSelectionOverlay/BackRect" unique_id=414985548]
 layout_mode = 0
-offset_left = 136.0
-offset_top = 411.0
-offset_right = 334.0
-offset_bottom = 525.0
+offset_right = 198.0
+offset_bottom = 114.0
 text = "<----
 GO BACK
 <-----"
 
-[node name="ColorRect" type="ColorRect" parent="RunScreen/CardSelectionOverlay" unique_id=1096797573]
+[node name="ConfirmRect" type="ColorRect" parent="RunScreen/CardSelectionOverlay" unique_id=1096797573]
 layout_mode = 0
 offset_left = 1131.0
 offset_top = 149.0
@@ -3060,12 +3059,12 @@ offset_right = 1359.0
 offset_bottom = 213.0
 color = Color(0, 0.3667979, 0.92779636, 1)
 
-[node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay" unique_id=575565750]
+[node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay/ConfirmRect" unique_id=575565750]
 layout_mode = 0
-offset_left = 1130.0
-offset_top = 150.0
-offset_right = 1358.0
-offset_bottom = 214.0
+offset_left = -1.0
+offset_top = 1.0
+offset_right = 227.0
+offset_bottom = 65.0
 text = "CONFIRM"
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/CardSelectionOverlay" unique_id=1269392340]

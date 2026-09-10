@@ -3304,7 +3304,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green", "card_fishwrangler","card_shucker"
+		"card_basic_explore_green", "card_basic_explore_green"
 	]
 	
 	Global.register_rod(character_green)
@@ -6619,7 +6619,8 @@ func add_cards_black() -> void:
 	card_fishwrangler.card_energy_cost = 1
 	card_fishwrangler.card_values = {"created_card_object_id": "card_fish","number_of_cards":1, "draw_count": 4}
 	card_fishwrangler.card_upgrade_value_improvements = {"number_of_cards":1}
-	card_fishwrangler.card_play_actions = sift_craft_data
+	for action in sift_craft_data:
+		card_fishwrangler.card_play_actions.append(action)
 	card_fishwrangler.card_play_actions.append(
 		{
 			Scripts.ACTION_CREATE_CARDS: {"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}
