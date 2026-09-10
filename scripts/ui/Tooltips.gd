@@ -33,6 +33,17 @@ class_name Tooltip
 @onready var keyword_container: KeywordContainer = $KeywordContainer
 @onready var end_combat_button = %CombatEndButton
 
+const CARD_TEXT_IMAGE_SIZE: int = 24	# images in card descriptions will be set to this size
+const FONT_SIZE: int = 24
+const explore_texture_path = "sprites/conqueror.svg"
+const money_texture_path = "sprites/rupee.svg"
+const food_texture_path = "sprites/oat.svg"
+const ore_texture_path = "sprites/ore.svg"
+const insight_texture_path = "sprites/scroll.svg"
+const size_texture_path = "sprites/village.svg"
+const room_texture_path = "sprites/tower.svg"
+
+
 var follow_mouse: bool = false # if the tooltip should constantly update its position over the mouse when proc'ed
 var lock_x: bool = false # when following mouse, lock x coord to a given offset
 var lock_y: bool = false # when following mouse, lock y coord to a given offset
@@ -141,6 +152,68 @@ func display_card_keywords(card: Card) -> void:
 	
 	keyword_container.populate_card_keywords(card.card_data)
 
+
+## Displays a list of keywords to the left or right of a Card, based on remaining screen size
+func display_map_location_tooltip(map_location: MapLocation) -> void:
+	if map_location.location_data == null:
+		return
+	hide_tooltip()
+	
+	visible = true
+	var tooltip_bbcode: String = map_location.tooltip_bbcode
+	var modified_description_bb_code: String = tooltip_bbcode
+	if tooltip_bbcode.contains("Food"):
+		FileLoader.load_texture(food_texture_path)
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,food_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace("Food", image_bb_code)
+	
+	if tooltip_bbcode.contains("Ore"):
+		FileLoader.load_texture(ore_texture_path)
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,ore_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace("Ore", image_bb_code)
+		
+	if tooltip_bbcode.contains("Insight"):
+		FileLoader.load_texture(insight_texture_path)
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,insight_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace("Insight", image_bb_code)
+		
+	if tooltip_bbcode.contains("Money"):
+		FileLoader.load_texture(money_texture_path)
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,money_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace("Money", image_bb_code)
+		
+	if tooltip_bbcode.contains("Explore"):
+		FileLoader.load_texture(explore_texture_path)
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,explore_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace("Explore", image_bb_code)
+		
+	if tooltip_bbcode.contains("Size"):
+		FileLoader.load_texture(size_texture_path)
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,size_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace("Size", image_bb_code)
+		
+	if tooltip_bbcode.contains("Room"):
+		FileLoader.load_texture(room_texture_path)
+		var image_bb_code: String = "[img width={0}]{1}[/img]".format([CARD_TEXT_IMAGE_SIZE,room_texture_path])
+		modified_description_bb_code = modified_description_bb_code.replace("Room", image_bb_code)
+	tooltip_label.parse_bbcode(modified_description_bb_code)
+	tooltip_label.visible = true
+	panel_container.visible = true
+	
+	# use remaining screen size to determine which side of the card should display
+	var screen_size: Vector2 = DisplayServer.window_get_size()
+	var map_location_global_pos: Vector2 = map_location.global_position
+	var map_right_side_pos: Vector2 = map_location_global_pos + Vector2(map_location.size.x + CARD_KEYWORD_PANEL_MARGIN_X, 0)
+	var map_left_side_pos: Vector2 = map_location_global_pos - Vector2(keyword_container.size.x + CARD_KEYWORD_PANEL_MARGIN_X, 0)
+
+	if map_right_side_pos.x + CARD_KEYWORD_RIGHT_SCREEN_SIZE_MARGIN < screen_size.x:
+		# right side of card
+		global_position = map_right_side_pos
+	else:
+		# left side of card
+		global_position = map_left_side_pos
+	
+	
 func display_artifact_tooltip(artifact_description: String) -> void:
 	display_tooltip(artifact_description, true, false, false, 0.0, 0.0, null)
 

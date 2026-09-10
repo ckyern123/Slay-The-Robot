@@ -3211,7 +3211,7 @@ script = ExtResource("25_t3i5t")
 wheel_scroll_damper = SubResource("Resource_kqcdx")
 dragging_scroll_damper = SubResource("Resource_frd6h")
 just_snap_under = 5.0
-follow_focus_margin = 0
+follow_focus_margin = 200
 allow_horizontal_scroll = false
 
 [node name="LocationContainer" type="Control" parent="RunScreen/Map/ScrollContainer" unique_id=629671273]

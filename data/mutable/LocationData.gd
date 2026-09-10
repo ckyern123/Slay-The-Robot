@@ -26,7 +26,8 @@ class_name LocationData
 @export var location_floor: int = 1
 @export var location_act: int = 1
 @export var icon_texture_path: String = ""
-
+@export var tooltip_bbcode: String = ""
+@export var difficulty: int = 0
 ## A path to an external texture file to use when at this location. Overrides the act background
 @export var location_background_texture_path: String = ""
 

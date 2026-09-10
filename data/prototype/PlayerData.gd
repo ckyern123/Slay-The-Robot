@@ -49,6 +49,7 @@ var player_block: int = 0 # in combat block. Not saved.
 @export var player_location_id: String = "location_0"
 ## Stores locations for the current act in the run
 @export var location_id_to_location_data: Dictionary[String, LocationData] = {}
+var first_time: bool = true
 @export var paths = []
 @export var nodes = {}
 ## Stores the shop at the player's current location, if one exists. Does not determine if there is
