@@ -70,8 +70,8 @@ func perform_action() -> void:
 				# positioning and act
 				starting_location.location_act = 1
 				starting_location.location_index = Vector2(MIDDLE_INDEX, -1)
-				starting_location.location_position = point * map_scale
-				starting_location.location_position.x = 400
+				starting_location.location_position = point * map_scale - Vector2(0,200)
+				starting_location.location_position.x = 600
 				starting_location.location_floor = floor_counter
 				# assign a type
 				starting_location.location_type = LocationData.LOCATION_TYPES.STARTING
@@ -95,9 +95,10 @@ func perform_action() -> void:
 				location.location_act = act_number
 				location.icon_texture_path = "external/sprites/locations/plains.svg"
 				location.location_index = Vector2(k, 0)
-				print(point)
-				location.location_position = point * 26 + Vector2(0,0)
-				location.location_position.x = 200 + 24 * point[0]
+
+				location.location_position = point * map_scale - Vector2(0,200)
+				location.location_position.x = 250 + 30 * point[0]
+				print(location.location_position)
 				total_locations[k] = location
 
 		for path in Global.player_data.paths:

@@ -3212,11 +3212,10 @@ wheel_scroll_damper = SubResource("Resource_kqcdx")
 dragging_scroll_damper = SubResource("Resource_frd6h")
 just_snap_under = 5.0
 follow_focus_margin = 0
+allow_horizontal_scroll = false
 
 [node name="LocationContainer" type="Control" parent="RunScreen/Map/ScrollContainer" unique_id=629671273]
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 1
 
 [node name="PauseOverlay" type="Control" parent="RunScreen" unique_id=2135841897]
 unique_name_in_owner = true
