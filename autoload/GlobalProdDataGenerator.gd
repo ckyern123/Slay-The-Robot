@@ -317,6 +317,7 @@ var start_action_data: Array[Dictionary] = [
 				{
 				Scripts.ACTION_TRANSFORM_CARDS: {
 					"transform_into_card_object_id": "card_rebel",
+					"transform_parent_card": false,
 					"pick_played_card": true
 					},
 				},
@@ -5863,26 +5864,22 @@ func add_cards_purple() -> void:
 	card_joyfulsailor.card_color_id = "color_{0}".format([color])
 	card_joyfulsailor.card_texture_path = "external/sprites/cards/pearl/03_joyfulsailor.png"
 	card_joyfulsailor.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_joyfulsailor.card_description = "Explore [damage]{0}, Discard rightmost card, then draw [draw_count]. Create a Fish.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_joyfulsailor.card_description = "Explore [damage]{0}. Create a Fish.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_joyfulsailor.card_keyword_object_ids = ["keyword_fish"]
 	card_joyfulsailor.card_type = CardData.CARD_TYPES.FACTION
 	card_joyfulsailor.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_joyfulsailor.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_joyfulsailor.card_requires_target = true
 	card_joyfulsailor.card_energy_cost = 1
-	card_joyfulsailor.card_values = {"card_influence": 1,"damage": 2,"number_of_attacks": 1, "draw_count": 1,"discard_count":1, "created_card_object_id": "card_fish", "number_of_cards": 1}
+	card_joyfulsailor.card_values = {"card_influence": 1,"damage": 3,"number_of_attacks": 1, "created_card_object_id": "card_fish", "number_of_cards": 1}
 	card_joyfulsailor.card_upgrade_value_improvements = {"damage": 1}
 	card_joyfulsailor.card_influence = 3
-	card_joyfulsailor.card_play_actions = [
-		{
+	card_joyfulsailor.card_play_actions.append({
 		Scripts.ACTION_CREATE_CARDS:
 			{
 				"action_data": [{Scripts.ACTION_DISCARD_CARDS:{}}]
 			}
-		}
-	]
-	for action in sweep_action_data:
-		card_joyfulsailor.card_play_actions.append(action)
+		})
 	card_joyfulsailor.card_play_actions.append(		{
 		Scripts.ACTION_ATTACK_GENERATOR:
 			{
@@ -6267,7 +6264,7 @@ func add_cards_purple() -> void:
 	card_pearlsmuggler.card_color_id = "color_{0}".format([color])
 	card_pearlsmuggler.card_texture_path = "external/sprites/cards/pearl/10_pearlsmuggler.png"
 	card_pearlsmuggler.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_pearlsmuggler.card_description = "Does not lose influence at the end of turns.\nDiscard your hand, then return up to 3 Craft or Resource cards to your hand. They gain retain until end of turn."
+	card_pearlsmuggler.card_description = "Discard your hand, then return up to 3 Craft or Resource cards to your hand. They gain retain until end of turn."
 	card_pearlsmuggler.card_keyword_object_ids = ["keyword_sift", "keyword_wield"]
 	card_pearlsmuggler.card_type = CardData.CARD_TYPES.FACTION
 	card_pearlsmuggler.card_subtype = CardData.CARD_SUBTYPES.PEARL
@@ -6340,10 +6337,10 @@ func add_cards_purple() -> void:
 			"validator_data": [{
 				Scripts.VALIDATOR_CARD_RARITY: {"card_rarities": [CardData.CARD_RARITIES.GENERATED]}
 			}],
-			"action_data": [
-			{Scripts.ACTION_ADD_MONEY: {}
-			}
-			]
+			"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
+			"multiplied_values": ["money_amount"],
+			"action_data": [{Scripts.ACTION_ADD_MONEY:{}}]
+		}}]
 		}}]
 	for action in sift_craft_data:
 		card_pearlseer.card_play_actions.append(action)
@@ -6460,7 +6457,7 @@ func add_cards_purple() -> void:
 		Scripts.ACTION_VALIDATOR:
 			{
 				"validator_data": [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],
-				"action_data": [		{Scripts.ACTION_PICK_CARDS:{
+				"passed_action_data": [		{Scripts.ACTION_PICK_CARDS:{
 			"min_card_amount":0,
 			"max_card_amount": 3,
 			"card_pick_type": HandManager.DISCARD_PILE,
@@ -7477,20 +7474,20 @@ func add_cards_green() -> void:
 	card_shockrider.card_color_id = "color_{0}".format([color])
 	card_shockrider.card_texture_path = "external/sprites/cards/jade/08_shockrider.png"
 	card_shockrider.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_shockrider.card_description = "Explore [damage]{0}. Forge [ore_required] Sword(s), Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_shockrider.card_description = "Explore 3{0}. Forge [ore_required] Sword(s), Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD])
 	card_shockrider.card_type = CardData.CARD_TYPES.FACTION
 	card_shockrider.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_shockrider.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_shockrider.card_requires_target = true
 	card_shockrider.card_energy_cost = 1
-	card_shockrider.card_values = {"damage":3,"number_of_attacks":1, "ore_required": 1,"number_of_cards":1,"created_card_object_id":"card_sword", "min_card_amount":1,"max_card_amount":1}
+	card_shockrider.card_values = {"number_of_attacks":1, "ore_required": 1,"number_of_cards":1,"created_card_object_id":"card_sword", "min_card_amount":1,"max_card_amount":1}
 	card_shockrider.card_keyword_object_ids = ["keyword_forge","keyword_sword","keyword_wield"]
-	card_shockrider.card_upgrade_value_improvements = {"damage":1, "ore_required": 1,"min_card_amount":1,"max_card_amount":1}
+	card_shockrider.card_upgrade_value_improvements = {"ore_required": 1,"min_card_amount":1,"max_card_amount":1}
 	#card_shockrider.card_first_upgrade_property_changes = {"card_energy_cost": 1}
 	card_shockrider.card_play_actions.append(wield_action)
 	card_shockrider.card_play_actions.append(forge_action)
 	card_shockrider.card_play_actions.append(
-		{Scripts.ACTION_ATTACK_GENERATOR:{"time_delay": 0.5}})
+		{Scripts.ACTION_ATTACK_GENERATOR:{"damage":3, "time_delay": 0.5}})
 	card_shockrider.card_draw_actions = start_action_data
 	card_shockrider.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_shockrider)
@@ -7722,8 +7719,9 @@ func add_cards_green() -> void:
 	card_supremerecaster.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_supremerecaster.card_rarity = CardData.CARD_RARITIES.RARE
 	card_supremerecaster.card_requires_target = false
+	card_supremerecaster.card_influence = 4
 	card_supremerecaster.card_energy_cost = 2
-	card_supremerecaster.card_values = {"draw_count":4,"insight_required":1,"created_card_object_id": "card_scroll", "number_of_cards":1}
+	card_supremerecaster.card_values = {"draw_count":5,"insight_required":1,"created_card_object_id": "card_scroll", "number_of_cards":1}
 	card_supremerecaster.card_upgrade_value_improvements = {"draw_count":2}
 	card_supremerecaster.card_play_actions = sift_craft_data
 	card_supremerecaster.card_play_actions.append(cook_action)
@@ -7783,7 +7781,7 @@ func add_cards_green() -> void:
 			"max_card_amount":99,
 			"min_cards_are_required_for_action": false,
 			"random_selection": true,
-			"card_pick_type": HandManager.HAND_PILE,
+			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to add. {1} cards selected",
 			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.FACTION]}}],
 			"action_data": [{Scripts.ACTION_VARIABLE_CARDSET_MODIFIER: {
@@ -8472,13 +8470,13 @@ func add_cards_gold() -> void:
 	card_cengkihascetic.card_color_id = "color_{0}".format([color])
 	card_cengkihascetic.card_texture_path = "external/sprites/cards/cengkih/19_cengkihascetic.png"
 	card_cengkihascetic.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_cengkihascetic.card_description = "FRONTIER: Gain [ore_amount]{0} and [insight_amount]{1}, then increase {2} cost by 1.\nON DISCARD: Decrease {2} cost by 1.".format([Card.ORE_ICON_KEYWORD, Card.INSIGHT_ICON_KEYWORD, Card.ENERGY_ICON_KEYWORD])
+	card_cengkihascetic.card_description = "FRONTIER: Gain [ore_amount]{0} and [insight_amount]{1}. This card now costs 2{2}\nON DISCARD: This card now costs 1{2}.".format([Card.ORE_ICON_KEYWORD, Card.INSIGHT_ICON_KEYWORD, Card.ENERGY_ICON_KEYWORD])
 	card_cengkihascetic.card_keyword_object_ids = ["keyword_frontier"]
 	card_cengkihascetic.card_type = CardData.CARD_TYPES.FACTION
 	card_cengkihascetic.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_cengkihascetic.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_cengkihascetic.card_requires_target = false
-	card_cengkihascetic.card_energy_cost = 0
+	card_cengkihascetic.card_energy_cost = 1
 	card_cengkihascetic.card_influence = 3
 	card_cengkihascetic.card_values = {"ore_amount":1, "insight_amount":1}
 	card_cengkihascetic.card_upgrade_value_improvements = {"ore_amount":1,"insight_amount":1}
@@ -8488,11 +8486,11 @@ func add_cards_gold() -> void:
 				Scripts.ACTION_VALIDATOR:
 					{
 						"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],
-						"passed_action_data":[{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_ADD_INSIGHT:{}},{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"card_energy_cost":1}}]
+						"passed_action_data":[{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_ADD_INSIGHT:{}},{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"card_properties": {"card_energy_cost":2}}}]
 					}
 			}]
 	card_cengkihascetic.card_play_actions.append(influence_action)
-	card_cengkihascetic.card_discard_actions = [{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"card_energy_cost":-1}}]
+	card_cengkihascetic.card_discard_actions = [{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"card_properties": {"card_energy_cost":1}}}]
 	card_cengkihascetic.card_draw_actions = start_action_data
 	card_cengkihascetic.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_cengkihascetic)

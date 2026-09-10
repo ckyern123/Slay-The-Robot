@@ -374,7 +374,7 @@ grow_horizontal = 2
 layout_direction = 2
 theme_override_font_sizes/font_size = 30
 text = "VICTORY CONDITION: 
-Gain 200 Prestige.
+Gain 125 Prestige.
 
 You gain Prestige from:
 1) Total number of cards owned (1 point per card).

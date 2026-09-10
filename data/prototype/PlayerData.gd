@@ -7,7 +7,7 @@ const PLAYER_START_ROT: int = 14
 ## CharacterData object_id. Provides additional read only data about the character this player represents. 
 @export var player_character_object_id: String = ""
 @export var player_health: int = 10
-@export var player_health_max: int = 200
+@export var player_health_max: int = 125
 
 @export var player_money: int = 20
 @export var player_books: int = 0

@@ -74,7 +74,7 @@ func populate_locations(locations: Array[LocationData] = Global.get_all_act_loca
 	await Global.get_tree().process_frame
 	
 	# set the scroll
-	if current_map_location.location_data.location_id != "location_0":
+	if current_map_location!= null and current_map_location.location_data.location_id != "location_0":
 		print("GRABBED FOCUS")
 		current_map_location.grab_focus()
 		scroll_container.scroll_vertical = max_y
