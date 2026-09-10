@@ -25,8 +25,8 @@ func _draw():
 			var line = (child.location_position) - (location_data.location_position)
 			var normal = line.normalized()
 			line -= margin * normal
-			var color = Color.GRAY
-			draw_line(normal * margin, line, color, 2, true)
+			var color = Color.WHITE
+			draw_dashed_line(normal * margin, line, color, 4, 12, true)
 
 func play_animation():
 	animation_player.play("flash_map_location")

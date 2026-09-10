@@ -5,11 +5,11 @@
 ## generation algorithms.
 extends BaseAction
 
-const plane_len = 40
-const node_count = plane_len * plane_len / 24
-const path_count = 24
+const plane_len = 60
+const node_count = plane_len * plane_len / 15
+const path_count = 15
 
-const map_scale = 30.0
+const map_scale = 20.0
 
 func perform_action() -> void:
 	# generates all world locations from a seed and stores them in PlayerData
@@ -97,7 +97,7 @@ func perform_action() -> void:
 				location.location_index = Vector2(k, 0)
 
 				location.location_position = point * map_scale #- Vector2(0,200)
-				location.location_position.x = 33 * point[0]
+				location.location_position.x = 25 * point[0]
 				total_locations[k] = location
 
 		for path in Global.player_data.paths:
@@ -152,8 +152,10 @@ func floor_recursive(location_data: LocationData, act_data: ActData, floor_dict:
 		chance_array.pop_back()
 		var prob_num: int = randi_range(0,100) + prob
 		location_data.location_type = chance_array.pick_random()					
-		if k <= 3 or prob_num <40:
-			prob_later += 5
+		if k <= 4 or prob_num <55:
+			if k > 4:
+				prob_later += (5 + k)
+			location_data.difficulty = 0
 			if location_data.location_type == LocationData.LOCATION_TYPES.PLAINS:
 				location_data.icon_texture_path = "external/sprites/locations/plains.svg"
 				location_data.tooltip_bbcode = "Plains:\nFood>Ore>Room\nFeatures: Fertilise, Grain, Rock"

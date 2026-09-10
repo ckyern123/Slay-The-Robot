@@ -12,6 +12,7 @@ func perform_action():
 		if created_card_object_id != "":
 			for i in number_of_cards:
 				var card_data: CardData = Global.get_card_data_from_prototype(created_card_object_id)
+				print(card_data.object_id)
 				picked_cards.append(card_data)
 	
 	# overwrite picked_cards action value with the generated cards, for child cardset actions
