@@ -61,8 +61,8 @@ func populate_locations(locations: Array[LocationData] = Global.get_all_act_loca
 			if next_locations.has(location_data):
 				map_location.flash_location(false)
 				current_map_location = map_location
-			if location_data == Global.get_player_location_data():
-				map_location.flash_location(true)
+			#if location_data == Global.get_player_location_data():
+			#	map_location.flash_location(true)
 		
 		if location_data == Global.get_player_location_data():
 			current_map_location = map_location

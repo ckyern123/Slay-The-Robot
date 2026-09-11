@@ -3053,18 +3053,19 @@ GO BACK
 
 [node name="ConfirmRect" type="ColorRect" parent="RunScreen/CardSelectionOverlay" unique_id=1096797573]
 layout_mode = 0
-offset_left = 1131.0
-offset_top = 149.0
-offset_right = 1359.0
-offset_bottom = 213.0
+offset_left = 817.0
+offset_top = 883.0
+offset_right = 1217.0
+offset_bottom = 983.0
 color = Color(0, 0.3667979, 0.92779636, 1)
 
 [node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay/ConfirmRect" unique_id=575565750]
 layout_mode = 0
-offset_left = -1.0
+offset_left = -12.0
 offset_top = 1.0
-offset_right = 227.0
-offset_bottom = 65.0
+offset_right = 388.0
+offset_bottom = 101.0
+theme_override_font_sizes/font_size = 40
 text = "CONFIRM"
 
 [node name="CardPickLabel" type="Label" parent="RunScreen/CardSelectionOverlay" unique_id=1269392340]
@@ -3080,10 +3081,10 @@ vertical_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="RunScreen/CardSelectionOverlay" unique_id=209764368]
 layout_mode = 0
-offset_left = 322.0
-offset_top = 250.0
-offset_right = 1826.0
-offset_bottom = 969.0
+offset_left = 346.0
+offset_top = 233.0
+offset_right = 1850.0
+offset_bottom = 952.0
 follow_focus = true
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3

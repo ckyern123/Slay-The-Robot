@@ -5670,9 +5670,9 @@ func add_cards_trade() -> void:
 				"min_cards_are_required_for_action": true,
 				"random_selection": false,
 				"card_pick_type": HandManager.HAND_PILE,
-				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
+				"card_pick_text": "Choose {0} card to add. {1} cards selected",
 				"action_data": [		{
-				Scripts.ACTION_DECORATE_CARDS:{"card_decorator_object_id":"card_decorator_frontier_money"}
+				Scripts.ACTION_DECORATE_CARDS:{"decorate_parent_card": false,"card_decorator_object_id":"card_decorator_frontier_money"}
 		}]
 		}
 		}]
@@ -8448,7 +8448,7 @@ func add_cards_gold() -> void:
 	card_cengkihnoble.card_requires_target = false
 	card_cengkihnoble.card_energy_cost = 1
 	card_cengkihnoble.card_influence = 3
-	card_cengkihnoble.card_values = {"draw_count":2,"energy_amount":2,"number_of_cards":1,"card_object_id":"card_debt"}
+	card_cengkihnoble.card_values = {"draw_count":2,"energy_amount":2,"number_of_cards":1,"created_card_object_id":"card_debt"}
 	card_cengkihnoble.card_upgrade_value_improvements = {"draw_count":1,"energy_amount":1}
 	card_cengkihnoble.card_play_actions = [
 		{

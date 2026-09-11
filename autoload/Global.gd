@@ -243,7 +243,7 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	player_data.player_insight = 1
 	player_data.player_size = 10
 	player_data.player_room = 2
-	player_data.player_health_max = 200
+	player_data.player_health_max = 125
 	player_data.player_health = character_data.character_starting_health
 	
 	# location, act, and difficult
