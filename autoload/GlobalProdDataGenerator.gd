@@ -4842,6 +4842,18 @@ func add_card_decorators() -> void:
 	}
 	Global.register_rod(card_decorator_remove_exhaust)
 
+	var card_decorator_architect_retain: CardDecoratorData = CardDecoratorData.new("card_decorator_architect_retain")
+	card_decorator_architect_retain.card_decorator_texture_path = "external/sprites/card_decorators/yellow_decorator.png"
+	card_decorator_architect_retain.card_decorator_property_changes = {
+		"is_retained": true
+	}
+	card_decorator_architect_retain.card_decorator_post_description = "[center][color=yellow]When played, gain 4{0}[/color][/center]".format([Card.ORE_ICON_KEYWORD])
+	card_decorator_architect_retain.card_decorator_post_play_actions = [
+		{Scripts.ACTION_ADD_ORE:{"ore_amount":4}}
+	]
+	Global.register_rod(card_decorator_architect_retain)
+
+
 	# decorator that draws extra cards when the card is drawn the first time
 	# applies a custom decorator value to the card and displays the number on the decorator
 	var card_decorator_frontier_money: CardDecoratorData = CardDecoratorData.new("card_decorator_frontier_money")
@@ -5674,8 +5686,8 @@ func add_cards_trade() -> void:
 				"random_selection": false,
 				"card_pick_type": HandManager.HAND_PILE,
 				"card_pick_text": "Choose {0} card to add. {1} cards selected",
-				"action_data": [		{
-				Scripts.ACTION_DECORATE_CARDS:{"decorate_parent_card": false,"card_decorator_object_id":"card_decorator_frontier_money"}
+				"action_data": [{
+				Scripts.ACTION_DECORATE_CARDS:{"decorate_parent_card": false,"card_decorator_object_id":"card_decorator_architect_retain"}
 		}]
 		}
 		}]
@@ -5905,7 +5917,43 @@ func add_cards_purple() -> void:
 	}]
 	
 	Global.register_rod(card_pearlemissary)
-	
+
+	var card_portfabricator: CardData = CardData.new("card_portfabricator")
+	card_portfabricator.card_name = "Port Fabricator"
+	card_portfabricator.card_color_id = "color_{0}".format([color])
+	card_portfabricator.card_texture_path = "external/sprites/cards/pearl/01_pearlemissary.png"
+	card_portfabricator.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
+	card_portfabricator.card_description = "Sift [draw_count] for Resource cards. Duplicate [max_card_amount] Resource card(s) in hand."
+	card_portfabricator.card_keyword_object_ids = ["keyword_appease"]
+	card_portfabricator.card_type = CardData.CARD_TYPES.FACTION
+	card_portfabricator.card_subtype = CardData.CARD_SUBTYPES.PEARL
+	card_portfabricator.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_portfabricator.card_requires_target = false
+	card_portfabricator.card_energy_cost = 2
+	card_portfabricator.card_values = {"draw_count": 5,
+		"max_card_amount": 1}
+	card_portfabricator.card_upgrade_value_improvements = {"draw_count": 2,"max_card_amount":1}
+	card_portfabricator.card_influence = 4
+	card_portfabricator.card_play_actions.append({Scripts.ACTION_PICK_DUPLICATE_CARDS:{
+		"min_card_amount": 0,
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to duplicate. {1} cards selected",
+		"validator_data": [
+			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.RESOURCE]}}
+		],
+		"action_data": [
+			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}
+			]}})
+	for action in sift_resource_data:
+		card_portfabricator.card_play_actions.append(action)
+	card_portfabricator.card_play_actions.append(influence_action)
+	card_portfabricator.card_draw_actions = start_action_data
+	card_portfabricator.card_end_of_turn_actions = end_action_data
+
+
+	Global.register_rod(card_portfabricator)
 	
 	var card_joyfulsailor: CardData = CardData.new("card_joyfulsailor")
 	card_joyfulsailor.card_name = "Joyful Sailor"
@@ -5944,14 +5992,14 @@ func add_cards_purple() -> void:
 	card_underdocktrade.card_color_id = "color_{0}".format([color])
 	card_underdocktrade.card_texture_path = "external/sprites/cards/pearl/17_underdocktrade.png"
 	card_underdocktrade.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_underdocktrade.card_description = "Discard a card, then draft a Trade Order. Put it into your hand."
+	card_underdocktrade.card_description = "Discard rightmost card, then draft a Trade Order. Put it into your hand."
 	card_underdocktrade.card_type = CardData.CARD_TYPES.FACTION
 	card_underdocktrade.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_underdocktrade.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_underdocktrade.card_requires_target = false
 	card_underdocktrade.card_energy_cost = 1
 	card_underdocktrade.card_values = {}
-	#card_underdocktrade.card_upgrade_value_improvements = {"refresh_amount": 1}
+	card_underdocktrade.card_first_upgrade_property_changes = {"card_energy_cost":0}
 	card_underdocktrade.card_influence = 3
 	card_underdocktrade.card_play_actions = [{Scripts.ACTION_PICK_CARDS:
 		{
@@ -5964,7 +6012,21 @@ func add_cards_purple() -> void:
 			"rng_name": "rng_card_drafting",
 			"draft_card_pack_id": "card_pack_grey"
 		}},
-		{Scripts.ACTION_ADD_REFRESH:{}}]
+		{
+	Scripts.ACTION_PICK_CARDS:
+	{
+		"min_card_amount":1,
+		"max_card_amount":1,
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"right_most": true,
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
+		"action_data": [
+		{Scripts.ACTION_DISCARD_CARDS:{}}
+		]
+	}
+	}]
 	card_underdocktrade.card_play_actions.append(influence_action)
 	card_underdocktrade.card_draw_actions = start_action_data
 	card_underdocktrade.card_end_of_turn_actions = end_action_data
@@ -6514,6 +6576,39 @@ func add_cards_purple() -> void:
 	
 	Global.register_rod(card_courthand)
 	
+	var card_cunningfabricator: CardData = CardData.new("card_cunningfabricator")
+	card_cunningfabricator.card_name = "Cunning Fabricator"
+	card_cunningfabricator.card_color_id = "color_{0}".format([color])
+	card_cunningfabricator.card_texture_path = "external/sprites/cards/pearl/14_courthand.png"
+	card_cunningfabricator.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
+	card_cunningfabricator.card_description = "Choose up to [max_card_amount] Craft cards in discard pile. Duplicate them and put them in hand."
+	card_cunningfabricator.card_keyword_object_ids = ["keyword_spice","keyword_appease"]
+	card_cunningfabricator.card_type = CardData.CARD_TYPES.FACTION
+	card_cunningfabricator.card_subtype = CardData.CARD_SUBTYPES.PEARL
+	card_cunningfabricator.card_rarity = CardData.CARD_RARITIES.RARE
+	card_cunningfabricator.card_requires_target = false
+	card_cunningfabricator.card_energy_cost = 1
+	card_cunningfabricator.card_values = {"max_card_amount":2}
+	card_cunningfabricator.card_upgrade_value_improvements = {"max_card_amount":1}
+	card_cunningfabricator.card_influence = 3
+	card_cunningfabricator.card_play_actions = [{Scripts.ACTION_PICK_DUPLICATE_CARDS:{
+		"min_card_amount": 0,
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to duplicate. {1} cards selected",
+		"validator_data": [
+			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.CRAFT]}}
+		],
+		"action_data": [
+			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}
+			]}}
+	]
+	card_cunningfabricator.card_play_actions.append(influence_action)
+	card_cunningfabricator.card_draw_actions = start_action_data
+	card_cunningfabricator.card_end_of_turn_actions = end_action_data
+	
+	Global.register_rod(card_cunningfabricator)
 		
 	var card_portoverseer: CardData = CardData.new("card_portoverseer")
 	card_portoverseer.card_name = "Port Overseer"
@@ -6556,7 +6651,7 @@ func add_cards_purple() -> void:
 	Global.register_rod(card_portoverseer)
 	
 	var card_wizenedcommander: CardData = CardData.new("card_wizenedcommander")
-	card_wizenedcommander.card_name = "Court Hand"
+	card_wizenedcommander.card_name = "Wizened Commander"
 	card_wizenedcommander.card_color_id = "color_{0}".format([color])
 	card_wizenedcommander.card_texture_path = "external/sprites/cards/pearl/15_wizenedcommander.png"
 	card_wizenedcommander.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
@@ -6565,10 +6660,10 @@ func add_cards_purple() -> void:
 	card_wizenedcommander.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_wizenedcommander.card_rarity = CardData.CARD_RARITIES.RARE
 	card_wizenedcommander.card_requires_target = true
-	card_wizenedcommander.card_energy_cost = 1
+	card_wizenedcommander.card_energy_cost = 2
 	card_wizenedcommander.card_values = {"card_influence": 1, "damage": 1}
-	card_wizenedcommander.card_upgrade_value_improvements = {"number_of_cards":1}
-	card_wizenedcommander.card_influence = 3
+	card_wizenedcommander.card_first_upgrade_property_changes = {"card_energy_cost":1}
+	card_wizenedcommander.card_influence = 4
 	card_wizenedcommander.card_play_actions = [
 		{
 		Scripts.ACTION_PICK_CARDS:
@@ -8750,9 +8845,9 @@ func add_cards_gold() -> void:
 	card_noblesorter.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
 	card_noblesorter.card_rarity = CardData.CARD_RARITIES.RARE
 	card_noblesorter.card_requires_target = false
-	card_noblesorter.card_energy_cost = 1
-	card_noblesorter.card_influence = 3
-	card_noblesorter.card_values = {"discard_count":4,"draw_count":3,}
+	card_noblesorter.card_energy_cost = 2
+	card_noblesorter.card_influence = 4
+	card_noblesorter.card_values = {"discard_count":4,"draw_count":4}
 	card_noblesorter.card_upgrade_value_improvements = {"draw_count":1}
 	card_noblesorter.card_play_actions = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -8877,38 +8972,40 @@ func add_cards_gold() -> void:
 	card_tradingenvoy.card_end_of_turn_actions = end_action_data
 	Global.register_rod(card_tradingenvoy)
 	
-		#
-	#var card_royalarchitect: CardData = CardData.new("card_royalarchitect")
-	#card_royalarchitect.card_name = "Trading Envoy"
-	#card_royalarchitect.card_color_id = "color_{0}".format([color])
-	#card_royalarchitect.card_texture_path = "external/sprites/cards/cengkih/14_royalarchitect.png"
-	#card_royalarchitect.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	#card_royalarchitect.card_description = "Draft a Blueprnt card. It gains Retain."
-	#card_royalarchitect.card_type = CardData.CARD_TYPES.FACTION
-	#card_royalarchitect.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
-	#card_royalarchitect.card_rarity = CardData.CARD_RARITIES.RARE
-	#card_royalarchitect.card_requires_target = false
-	#card_royalarchitect.card_energy_cost = 2
-	#card_royalarchitect.card_influence = 4
-	#card_royalarchitect.card_values = {}
-	#card_royalarchitect.card_upgrade_value_improvements = {"money_amount": 1}
-	#card_royalarchitect.card_play_actions = [
-		#{Scripts.ACTION_PICK_CARDS:
-		#{
-			#"card_pick_type": ActionBasePickCards.PICK_DRAFT,
-			#"pick_draft_cards": false,
-			#"draft_from_card_pool": true,
-			#"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
-			#"validator_data": [],
-			## use same rng as player drafting so it counts as draft
-			#"rng_name": "rng_card_drafting",
-			#"draft_card_pack_id": "card_pack_grey"
-		#}}
-	#]
-	#card_royalarchitect.card_play_actions.append(influence_action)
-	#card_royalarchitect.card_draw_actions = start_action_data
-	#card_royalarchitect.card_end_of_turn_actions = end_action_data
-	#Global.register_rod(card_royalarchitect)
+		
+	var card_royalarchitect: CardData = CardData.new("card_royalarchitect")
+	card_royalarchitect.card_name = "Royal Architect"
+	card_royalarchitect.card_color_id = "color_{0}".format([color])
+	card_royalarchitect.card_texture_path = "external/sprites/cards/cengkih/14_royalarchitect.png"
+	card_royalarchitect.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
+	card_royalarchitect.card_description = "Return a Blueprint card to your hand. It gains 'Retain' and 'When played, gain 4{0}.".format([Card.ORE_ICON_KEYWORD])
+	card_royalarchitect.card_first_upgrade_property_changes = {"card_description": "Return a Blueprint card to your hand. It gains 'Retain' and 'When played, gain 4{0}. Inspect.".format([Card.ORE_ICON_KEYWORD])}
+	card_royalarchitect.card_type = CardData.CARD_TYPES.FACTION
+	card_royalarchitect.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
+	card_royalarchitect.card_rarity = CardData.CARD_RARITIES.RARE
+	card_royalarchitect.card_requires_target = false
+	card_royalarchitect.card_energy_cost = 1
+	card_royalarchitect.card_influence = 3
+	card_royalarchitect.card_values = {"min_card_amount":0,"max_card_amount":0}
+	card_royalarchitect.card_upgrade_value_improvements = {"max_card_amount":1}
+	card_royalarchitect.card_play_actions.append(inspect_action)
+	card_royalarchitect.card_play_actions.append(
+		{Scripts.ACTION_PICK_CARDS:
+		{
+			"min_card_amount":1,
+			"max_card_amount":1,
+			"min_cards_are_required_for_action": false,
+			"random_selection": false,
+			"card_pick_text": "Choose {0} card(s) to decorate. {1} cards selected",
+			"card_pick_type": HandManager.DISCARD_PILE,
+			"validator_data":[{Scripts.VALIDATOR_CARD_ID:{"card_object_id":"card_blueprint"}}],
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND:{}},{
+				Scripts.ACTION_DECORATE_CARDS:{"decorate_parent_card": false,"card_decorator_object_id":"card_decorator_architect_retain"}
+		}]}})
+	card_royalarchitect.card_play_actions.append(influence_action)
+	card_royalarchitect.card_draw_actions = start_action_data
+	card_royalarchitect.card_end_of_turn_actions = end_action_data
+	Global.register_rod(card_royalarchitect)
 	
 	var card_provisionalcaptain: CardData = CardData.new("card_provisionalcaptain")
 	card_provisionalcaptain.card_name = "Provisional Captain"
