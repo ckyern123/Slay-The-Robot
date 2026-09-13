@@ -92,7 +92,7 @@ func _ready():
 	Signals.player_room_changed.connect(_on_player_room_changed)
 	Signals.player_insight_changed.connect(_on_player_insight_changed)
 	Signals.player_refresh_changed.connect(_on_player_refresh_changed)
-	Signals.player_rot_changed.connect(_on_player_rot_changed)
+	#Signals.player_rot_changed.connect(_on_player_rot_changed)
 	Signals.player_bandit_changed.connect(_on_player_bandit_changed)
 	Signals.enemy_killed.connect(_on_enemy_killed)
 	Signals.enemy_death_animation_finished.connect(_on_enemy_death_animation_finished)
@@ -194,7 +194,7 @@ func update_combat_display():
 	_on_player_size_changed()
 	_on_player_room_changed()
 	_on_player_refresh_changed()
-	_on_player_rot_changed()
+	#_on_player_rot_changed()
 		
 func _update_background() -> void:
 	# set the background if possible
@@ -625,7 +625,7 @@ func _on_player_turn_started():
 		Signals.shop_opened.emit()
 	else:
 		Global.player_data.add_refresh(-1)
-		Global.player_data.add_rot(-1)
+		#Global.player_data.add_rot(-1)
 		Global.player_data.add_bandit(3)
 
 	# reset energy

@@ -3012,7 +3012,7 @@ func add_colors() -> void:
 	var color_red: ColorData = ColorData.new("color_red")
 	color_red.color = Color.FIREBRICK
 	color_red.color_name = "Red"
-	color_red.color_energy_icon_texture_path = "external/sprites/colors/red_energy_icon.png"
+	color_red.color_energy_icon_texture_path = "external/sprites/colors/redenergy.svg"
 	Global.register_rod(color_red)
 	
 	var color_blue: ColorData = ColorData.new("color_blue")
@@ -6079,7 +6079,7 @@ func add_cards_red() -> void:
 	card_witchofdecay.card_name = "Witch of Decay"
 	card_witchofdecay.card_color_id = "color_{0}".format([color])
 	card_witchofdecay.card_texture_path = "external/sprites/cards/boss/witchofdecay.png"
-	card_witchofdecay.card_description = "END TURN IN DISCARD PILE: Reduce the use of a random Craft card in discard pile by 1.\n\nON DISCARD: Repair all Craft cards by 1".format([Card.FOOD_ICON_KEYWORD])
+	card_witchofdecay.card_description = "END TURN DISCARD: Reduce the use of a random Craft card in discard pile by 1.\n\nON DISCARD: Repair all Craft cards by 1".format([Card.FOOD_ICON_KEYWORD])
 	card_witchofdecay.card_type = CardData.CARD_TYPES.CURSE
 	card_witchofdecay.card_keyword_object_ids = ["keyword_repair"]
 	card_witchofdecay.card_energy_cost = 1
@@ -6197,10 +6197,10 @@ func add_cards_purple() -> void:
 	var card_portfabricator: CardData = CardData.new("card_portfabricator")
 	card_portfabricator.card_name = "Port Fabricator"
 	card_portfabricator.card_color_id = "color_{0}".format([color])
-	card_portfabricator.card_texture_path = "external/sprites/cards/pearl/01_pearlemissary.png"
+	card_portfabricator.card_texture_path = "external/sprites/cards/pearl/23_portfabricator.png"
 	card_portfabricator.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_portfabricator.card_description = "Sift [draw_count] for Resource cards. Duplicate [max_card_amount] Resource card(s) in hand."
-	card_portfabricator.card_keyword_object_ids = ["keyword_appease"]
+	card_portfabricator.card_keyword_object_ids = ["keyword_sift"]
 	card_portfabricator.card_type = CardData.CARD_TYPES.FACTION
 	card_portfabricator.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_portfabricator.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6266,7 +6266,7 @@ func add_cards_purple() -> void:
 	var card_underdocktrade: CardData = CardData.new("card_underdocktrade")
 	card_underdocktrade.card_name = "Underdock Trade"
 	card_underdocktrade.card_color_id = "color_{0}".format([color])
-	card_underdocktrade.card_texture_path = "external/sprites/cards/pearl/17_underdocktrade.png"
+	card_underdocktrade.card_texture_path = "external/sprites/cards/pearl/22_underdocktrade.png"
 	card_underdocktrade.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_underdocktrade.card_description = "Discard a card, then draft a Trade Order. Put it into your hand. Tick Down Shop Refresh by [refresh_amount]."
 	card_underdocktrade.card_type = CardData.CARD_TYPES.FACTION
@@ -6855,7 +6855,7 @@ func add_cards_purple() -> void:
 	var card_cunningfabricator: CardData = CardData.new("card_cunningfabricator")
 	card_cunningfabricator.card_name = "Cunning Fabricator"
 	card_cunningfabricator.card_color_id = "color_{0}".format([color])
-	card_cunningfabricator.card_texture_path = "external/sprites/cards/pearl/14_courthand.png"
+	card_cunningfabricator.card_texture_path = "external/sprites/cards/pearl/24_cunningfabricator.png"
 	card_cunningfabricator.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
 	card_cunningfabricator.card_description = "Choose up to [max_card_amount] Craft cards in discard pile. Duplicate them and put them in hand."
 	card_cunningfabricator.card_keyword_object_ids = ["keyword_spice","keyword_appease"]
@@ -7177,9 +7177,9 @@ func add_cards_black() -> void:
 	Global.register_rod(card_reveredcraftsworker)
 	
 	var card_aniseedenvoy: CardData = CardData.new("card_aniseedenvoy")
-	card_aniseedenvoy.card_name = "Revered Craftsworker"
+	card_aniseedenvoy.card_name = "Aniseed Envoy"
 	card_aniseedenvoy.card_color_id = "color_{0}".format([color])
-	card_aniseedenvoy.card_texture_path = "external/sprites/cards/aniseed/05_aniseedenvoy.png"
+	card_aniseedenvoy.card_texture_path = "external/sprites/cards/aniseed/22_aniseedenvoy.png"
 	card_aniseedenvoy.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_aniseedenvoy.card_description = "Sift [draw_count] for Aniseed cards. Inspect [max_card_amount]."
 	card_aniseedenvoy.card_keyword_object_ids = ["keyword_sift","keyword_inspect"]
@@ -7334,7 +7334,7 @@ func add_cards_black() -> void:
 	var card_spicyepicure: CardData = CardData.new("card_spicyepicure")
 	card_spicyepicure.card_name = "Spicy Epicutre"
 	card_spicyepicure.card_color_id = "color_{0}".format([color])
-	card_spicyepicure.card_texture_path = "external/sprites/cards/aniseed/09_spicyepicure.png"
+	card_spicyepicure.card_texture_path = "external/sprites/cards/aniseed/22_spicyepicure.png"
 	card_spicyepicure.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_spicyepicure.card_description = "ON DRAW: Search your draw pile for [min_card_amount] Spice card(s) and put it into your hand.\n\nGain {0} and draw a card for each Spice card in your hand.".format([Card.ENERGY_ICON_KEYWORD])
 	card_spicyepicure.card_keyword_object_ids = ["keyword_spice"]
@@ -7687,7 +7687,7 @@ func add_cards_black() -> void:
 	var card_eruditeforger: CardData = CardData.new("card_eruditeforger")
 	card_eruditeforger.card_name = "Erudite Forger"
 	card_eruditeforger.card_color_id = "color_{0}".format([color])
-	card_eruditeforger.card_texture_path = "external/sprites/cards/aniseed/14_eruditeforger.png"
+	card_eruditeforger.card_texture_path = "external/sprites/cards/aniseed/23_eruditeforger.png"
 	card_eruditeforger.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
 	card_eruditeforger.card_description = "Forge 1 Steel Flame (using 3{0}).".format([Card.ORE_ICON_KEYWORD])
 	card_eruditeforger.card_type = CardData.CARD_TYPES.FACTION
@@ -7941,12 +7941,12 @@ func add_cards_green() -> void:
 	var card_jadesmith: CardData = CardData.new("card_jadesmith")
 	card_jadesmith.card_name = "Jade Smith"
 	card_jadesmith.card_color_id = "color_{0}".format([color])
-	card_jadesmith.card_texture_path = "external/sprites/cards/cengkih/01_jadesmith.png"
+	card_jadesmith.card_texture_path = "external/sprites/cards/jade/22_jadesmith.png"
 	card_jadesmith.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_jadesmith.card_description = "ON DRAW: Wield [max_card_amount].\n\nForge [number_of_cards] Swords.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_jadesmith.card_keyword_object_ids = ["keyword_wield", "keyword_forge","keyword_sword"]
 	card_jadesmith.card_type = CardData.CARD_TYPES.FACTION
-	card_jadesmith.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
+	card_jadesmith.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_jadesmith.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_jadesmith.card_requires_target = false
 	card_jadesmith.card_energy_cost = 3
@@ -8181,7 +8181,7 @@ func add_cards_green() -> void:
 	var card_pantryraider: CardData = CardData.new("card_pantryraider")
 	card_pantryraider.card_name = "Pantry Raider"
 	card_pantryraider.card_color_id = "color_{0}".format([color])
-	card_pantryraider.card_texture_path = "external/sprites/cards/jade/11_pantryraider.png"
+	card_pantryraider.card_texture_path = "external/sprites/cards/jade/23_pantryraider.png"
 	card_pantryraider.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_pantryraider.card_description = "ON DRAW: Search for [min_card_amount] non-Grain food cards and put them into your hand.\n\nExplore X{0}, where X is the number of generated cards in your hand."
 	#card_pantryraider.card_keyword_object_ids = ["keyword_grain","keyword_fish"]
@@ -8387,7 +8387,7 @@ func add_cards_green() -> void:
 	var card_culinarydruid: CardData = CardData.new("card_culinarydruid")
 	card_culinarydruid.card_name = "Culinary Druid"
 	card_culinarydruid.card_color_id = "color_{0}".format([color])
-	card_culinarydruid.card_texture_path = "external/sprites/cards/jade/14_culinarydruid.png"
+	card_culinarydruid.card_texture_path = "external/sprites/cards/jade/24_culinarydruid.png"
 	card_culinarydruid.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_culinarydruid.card_description = "Cook 1 Delicacy. Grant 'Draw 2 cards' to all Delicacy cards in hand.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_culinarydruid.card_keyword_object_ids = ["keyword_cook","keyword_delicacy"]
@@ -8518,7 +8518,7 @@ func add_cards_gold() -> void:
 	var card_courtinspector: CardData = CardData.new("card_courtinspector")
 	card_courtinspector.card_name = "Court Inspector"
 	card_courtinspector.card_color_id = "color_{0}".format([color])
-	card_courtinspector.card_texture_path = "external/sprites/cards/cengkih/01_courtinspector.png"
+	card_courtinspector.card_texture_path = "external/sprites/cards/cengkih/22_courtinspector.png"
 	card_courtinspector.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_courtinspector.card_description = "Inspect [max_card_amount] randomly."
 	card_courtinspector.card_keyword_object_ids = ["keyword_inspect"]
@@ -8871,7 +8871,7 @@ func add_cards_gold() -> void:
 	var card_logisticssupervisor: CardData = CardData.new("card_logisticssupervisor")
 	card_logisticssupervisor.card_name = "Logistics Supervisor"
 	card_logisticssupervisor.card_color_id = "color_{0}".format([color])
-	card_logisticssupervisor.card_texture_path = "external/sprites/cards/cengkih/07_logisticssupervisor.png"
+	card_logisticssupervisor.card_texture_path = "external/sprites/cards/cengkih/23_logisticssupervisor.png"
 	card_logisticssupervisor.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_logisticssupervisor.card_description = "Forge [ore_required] Swords. Return all Crafts to your hand."
 	card_logisticssupervisor.card_keyword_object_ids = ["keyword_forge","keyword_sword"]
@@ -9252,7 +9252,7 @@ func add_cards_gold() -> void:
 	var card_royalarchitect: CardData = CardData.new("card_royalarchitect")
 	card_royalarchitect.card_name = "Royal Architect"
 	card_royalarchitect.card_color_id = "color_{0}".format([color])
-	card_royalarchitect.card_texture_path = "external/sprites/cards/cengkih/14_royalarchitect.png"
+	card_royalarchitect.card_texture_path = "external/sprites/cards/cengkih/24_royalarchitect.png"
 	card_royalarchitect.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
 	card_royalarchitect.card_description = "Return a Blueprint card to your hand. It gains 'Retain' and 'When played, gain 4{0}.".format([Card.ORE_ICON_KEYWORD])
 	card_royalarchitect.card_first_upgrade_property_changes = {"card_description": "Return a Blueprint card to your hand. It gains 'Retain' and 'When played, gain 4{0}. Inspect.".format([Card.ORE_ICON_KEYWORD])}

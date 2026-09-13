@@ -92,7 +92,7 @@ func init(_card_data: CardData, angular_offset: float, connect_combat_signals: b
 		card_button.mouse_entered.connect(_on_mouse_entered)
 		card_button.mouse_exited.connect(_on_mouse_exited)
 		keyword_timer.timeout.connect(_on_keyword_timeout)
-	if card_data.card_rarity == CardData.CARD_RARITIES.GENERATED:
+	if card_data.card_rarity == CardData.CARD_RARITIES.GENERATED and card_data.card_type == CardData.CARD_TYPES.CURSE:
 		card_energy_sprite.visible = false
 		card_energy_cost_label.visible = false
 		if (card_data.card_influence == 0):
@@ -132,7 +132,7 @@ func update_card_display(selected_enemy: Enemy = null) -> void:
 	#var card_play_intercepted_action_results: Dictionary[String, Variant] = card_data.get_card_play_intercepted_action_results(selected_enemy)
 	#var card_influence: int = card_play_intercepted_action_results.get("card_influence", card_data.get_card_influence())
 	var card_influence = card_data.card_influence
-	if (card_data.card_rarity != CardData.CARD_RARITIES.GENERATED):
+	if (card_data.card_rarity != CardData.CARD_RARITIES.GENERATED and card_data.card_type != CardData.CARD_TYPES.CURSE):
 		if (card_influence > 5):
 			card_influence_label.text = "[outline_color=black][color=27F550][outline_size=3]"+str(card_influence) + "[/outline_size][/color][/outline_color]"
 		elif (card_influence < 2):

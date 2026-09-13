@@ -1800,7 +1800,6 @@ columns = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1809,7 +1808,6 @@ script = ExtResource("12_elxq6")
 [node name="Combat" type="Control" parent="RunScreen" unique_id=797179111]
 unique_name_in_owner = true
 process_mode = 1
-visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -1966,19 +1964,6 @@ bbcode_enabled = true
 unique_name_in_owner = true
 position = Vector2(674, 4)
 
-[node name="SizeLabel" type="RichTextLabel" parent="RunScreen/Combat/Node2D" unique_id=603507063]
-unique_name_in_owner = true
-offset_left = -100.0
-offset_top = 294.0
-offset_right = 75.0
-offset_bottom = 344.0
-bbcode_enabled = true
-text = "Size:"
-
-[node name="SizeFadeContainer" type="Node2D" parent="RunScreen/Combat/Node2D" unique_id=228372623]
-unique_name_in_owner = true
-position = Vector2(-80, 298)
-
 [node name="ArtifactContainer" type="GridContainer" parent="RunScreen/Combat" unique_id=1880890621]
 layout_mode = 0
 offset_left = 30.0
@@ -2000,6 +1985,12 @@ offset_bottom = 249.0
 [node name="LayeredHealthBar" parent="RunScreen/Combat/Player/Visible/AnimatedSprite2D" parent_id_path=PackedInt32Array(524412048, 1304224126) index="0" unique_id=2073839150]
 offset_left = -47.0
 offset_right = 273.0
+
+[node name="StatusContainer" parent="RunScreen/Combat/Player/Visible" parent_id_path=PackedInt32Array(524412048, 837606984) index="4" unique_id=2077107685]
+offset_left = 15.0
+offset_top = 237.0
+offset_right = 55.0
+offset_bottom = 277.0
 
 [node name="TimerRect" type="TextureRect" parent="RunScreen/Combat/Player" unique_id=898384319]
 self_modulate = Color(0.30544624, 0.3054462, 0.3054462, 1)
@@ -2046,12 +2037,26 @@ color = Color(0.09312489, 6.843591e-08, 0.007676205, 1)
 [node name="ShopRefreshLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=1682282931]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 180.0
-offset_top = 54.0
-offset_right = 380.0
-offset_bottom = 104.0
+offset_left = 150.0
+offset_top = 9.0
+offset_right = 350.0
+offset_bottom = 59.0
 bbcode_enabled = true
 text = "Shop Refresh:"
+
+[node name="SizeLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=603507063]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 149.0
+offset_top = 54.0
+offset_right = 324.0
+offset_bottom = 104.0
+bbcode_enabled = true
+text = "Size:"
+
+[node name="SizeFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=228372623]
+unique_name_in_owner = true
+position = Vector2(169, 58)
 
 [node name="RotLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=343928383]
 unique_name_in_owner = true
@@ -2066,7 +2071,7 @@ text = "Rot Timer:"
 
 [node name="RefreshFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=1304016618]
 unique_name_in_owner = true
-position = Vector2(305, 69)
+position = Vector2(275, 24)
 
 [node name="RotFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=2046406211]
 unique_name_in_owner = true
@@ -3454,10 +3459,10 @@ metadata/_edit_use_anchors_ = true
 [node name="SizeTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=1072154485]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.019270834
-anchor_top = 0.29722223
-anchor_right = 0.09322917
-anchor_bottom = 0.35185185
+anchor_left = 0.096875
+anchor_top = 0.12685186
+anchor_right = 0.17083333
+anchor_bottom = 0.18148148
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true
@@ -3469,10 +3474,15 @@ anchor_left = 0.11145833
 anchor_top = 0.13333334
 anchor_right = 0.209375
 anchor_bottom = 0.18796296
+offset_left = -31.0
+offset_top = -49.0
+offset_right = -31.0
+offset_bottom = -49.0
 mouse_filter = 2
 border_width = 5.0
 
 [node name="RotTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=730954569]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.08802083
