@@ -6268,30 +6268,14 @@ func add_cards_purple() -> void:
 	card_underdocktrade.card_color_id = "color_{0}".format([color])
 	card_underdocktrade.card_texture_path = "external/sprites/cards/pearl/17_underdocktrade.png"
 	card_underdocktrade.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-<<<<<<< Updated upstream
-	card_underdocktrade.card_description = "Discard rightmost card, then draft a Trade Order. Put it into your hand."
-=======
-<<<<<<< HEAD
-	card_underdocktrade.card_description = "Discard a card, then draft a Trade Order. Put it into your hand. Tick Down Shop Refresh by [refresh_amount]"
-=======
-	card_underdocktrade.card_description = "Discard rightmost card, then draft a Trade Order. Put it into your hand."
->>>>>>> aa86d04755c30738e9599d632b292ffb52f0f82c
->>>>>>> Stashed changes
+	card_underdocktrade.card_description = "Discard a card, then draft a Trade Order. Put it into your hand. Tick Down Shop Refresh by [refresh_amount]."
 	card_underdocktrade.card_type = CardData.CARD_TYPES.FACTION
 	card_underdocktrade.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_underdocktrade.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_underdocktrade.card_requires_target = false
 	card_underdocktrade.card_energy_cost = 1
-<<<<<<< HEAD
 	card_underdocktrade.card_values = {"refresh_amount":1}
 	card_underdocktrade.card_upgrade_value_improvements = {"refresh_amount": 1}
-=======
-	card_underdocktrade.card_values = {}
-	card_underdocktrade.card_first_upgrade_property_changes = {"card_energy_cost":0}
-<<<<<<< Updated upstream
-=======
->>>>>>> aa86d04755c30738e9599d632b292ffb52f0f82c
->>>>>>> Stashed changes
 	card_underdocktrade.card_influence = 3
 	card_underdocktrade.card_play_actions = [{Scripts.ACTION_PICK_CARDS:
 		{
