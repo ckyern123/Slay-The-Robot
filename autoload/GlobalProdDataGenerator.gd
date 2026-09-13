@@ -2860,10 +2860,9 @@ func add_action_interceptors() -> void:
 	var interceptor_create_cards: ActionInterceptorData = ActionInterceptorData.new("interceptor_create_cards")
 	interceptor_create_cards.action_interceptor_priority = 10000
 	interceptor_create_cards.action_interceptor_modifies_parent = false
-	interceptor_create_cards.action_interceptor_script_path = Scripts.INTERCEPTOR_CREATE_CARDS
 	interceptor_create_cards.action_intercepted_action_paths = [Scripts.ACTION_CREATE_CARDS]
 	
-	Global.register_rod(interceptor_preserve_overshield)
+	Global.register_rod(interceptor_create_cards)
 	
 	# damages attackers
 	var interceptor_pointy: ActionInterceptorData = ActionInterceptorData.new("interceptor_pointy")
@@ -4940,6 +4939,7 @@ func add_cards() -> void:
 	add_cards_green()
 	add_cards_purple()
 	add_cards_gold()
+	add_cards_red()
 
 func add_card_basics() -> void:
 	var colors: Array[String] = []
@@ -5867,7 +5867,7 @@ func add_cards_red() -> void:
 	card_taxmisappropriator.card_name = "Tax Misappropriator"
 	card_taxmisappropriator.card_color_id = "color_{0}".format([color])
 	card_taxmisappropriator.card_texture_path = "external/sprites/cards/boss/taxmisappropriator.png"
-	card_taxmisappropriator.card_description = "ON DRAW: Gain 1{0}, Create 1 Debt.\n\nCannot be played. At the end of turn, Gain 1{0}, Create 1 Debt.".format([Card.MONEY_ICON_KEYWORD])
+	card_taxmisappropriator.card_description = "ON DRAW: Gain 1{0}, Create 1 Debt.\n\nAt the end of turn, Gain 1{0}, Create 1 Debt.".format([Card.MONEY_ICON_KEYWORD])
 	card_taxmisappropriator.card_type = CardData.CARD_TYPES.CURSE
 	card_taxmisappropriator.card_keyword_object_ids = ["keyword_debt"]
 	card_taxmisappropriator.card_energy_cost = 0
@@ -5917,7 +5917,7 @@ func add_cards_red() -> void:
 	card_endlessminer.card_name = "Endless Miner"
 	card_endlessminer.card_color_id = "color_{0}".format([color])
 	card_endlessminer.card_texture_path = "external/sprites/cards/boss/endlessminer.png"
-	card_endlessminer.card_description = "ON DRAW: Lose [ore_amount]{0} and create [number_of_cards] Rock(s). Increase both by 1.\n\nPlay to reset both".format([Card.ORE_ICON_KEYWORD])
+	card_endlessminer.card_description = "ON DRAW: Lose [ore_amount]{0} and create [number_of_cards] Rock(s). Increase both by 1.\n\nPlay to reset this card.".format([Card.ORE_ICON_KEYWORD])
 	card_endlessminer.card_type = CardData.CARD_TYPES.CURSE
 	#card_endlessminer.card_keyword_object_ids = ["keyword_rattle"]
 	card_endlessminer.card_energy_cost = 1
@@ -5926,7 +5926,7 @@ func add_cards_red() -> void:
 	card_endlessminer.card_requires_target = false
 	card_endlessminer.card_is_playable = true
 	card_endlessminer.card_values = {"ore_amount":-1,"number_of_cards":1}
-	card_endlessminer.card_draw_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"number_of_cards":1, "ore_amount":-1}}},{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rock","action_data":[{Scripts.ACITON_DISCARD_CARDS:{}}]}}]
+	card_endlessminer.card_draw_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"number_of_cards":1, "ore_amount":-1}}},{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rock","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	card_endlessminer.card_end_of_turn_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"changed_card_values":{"ore_amount":-1,"number_of_cards":1}}}]
 	Global.register_rod(card_endlessminer)
 	
@@ -9347,6 +9347,7 @@ func add_card_packs() -> void:
 	card_pack_grey.card_pack_color_id = "color_grey"
 	card_pack_grey.exclude_non_standard_rarities = false
 	card_pack_grey.exclude_non_standard_types = false
+	card_pack_grey.card_pack_displays_in_codex = false
 	Global.register_rod(card_pack_grey)
 
 	var card_pack_blue: CardPackData = CardPackData.new("card_pack_blue")
@@ -9383,7 +9384,9 @@ func add_card_packs() -> void:
 	
 	var card_pack_red: CardPackData = CardPackData.new("card_pack_red")
 	card_pack_red.card_pack_color_id = "color_red"
-	card_pack_red.card_pack_displays_in_codex = false
+	card_pack_red.exclude_non_standard_rarities = false
+	card_pack_red.exclude_non_standard_types = false
+	card_pack_red.card_pack_displays_in_codex = true
 	Global.register_rod(card_pack_red)
 	
 
