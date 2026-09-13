@@ -1158,6 +1158,18 @@ func add_status_effects() -> void:
 	
 	Global.register_rod(status_effect_overshield)
 	
+	var status_effect_naiveconstruction: StatusEffectData = StatusEffectData.new("status_effect_naiveconstruction")
+	status_effect_naiveconstruction.status_effect_name = "Naive Construction"
+	status_effect_naiveconstruction.status_effect_texture_path = "external/sprites/status_effects/status_effect_green.png"
+	status_effect_naiveconstruction.status_effect_decay_rate = -1
+	status_effect_naiveconstruction.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_naiveconstruction.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_naiveconstruction.status_effect_script_path = "res://scripts/status_effects/StatusEffectNaiveConstruction.gd"
+	status_effect_naiveconstruction.status_effect_healthbar_reserve_type = StatusEffectData.STATUS_EFFECT_HEALTHBAR_RESERVE_TYPES.ZERO
+	status_effect_naiveconstruction.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_naiveconstruction)
+	
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_fish_reward: StatusEffectData = StatusEffectData.new("status_effect_fish_reward")
 	status_effect_fish_reward.status_effect_name = "Fish"
@@ -2842,6 +2854,14 @@ func add_action_interceptors() -> void:
 	interceptor_preserve_overshield.action_interceptor_modifies_parent = false
 	interceptor_preserve_overshield.action_interceptor_script_path = Scripts.INTERCEPTOR_PRESERVE_OVERSHIELD
 	interceptor_preserve_overshield.action_intercepted_action_paths = [Scripts.ACTION_DECAY_STATUS]
+	
+	Global.register_rod(interceptor_preserve_overshield)
+	
+	var interceptor_create_cards: ActionInterceptorData = ActionInterceptorData.new("interceptor_create_cards")
+	interceptor_create_cards.action_interceptor_priority = 10000
+	interceptor_create_cards.action_interceptor_modifies_parent = false
+	interceptor_create_cards.action_interceptor_script_path = Scripts.INTERCEPTOR_CREATE_CARDS
+	interceptor_create_cards.action_intercepted_action_paths = [Scripts.ACTION_CREATE_CARDS]
 	
 	Global.register_rod(interceptor_preserve_overshield)
 	
@@ -5401,6 +5421,7 @@ func add_cards_misc() -> void:
 		},{Scripts.ACTION_TWEEN_DISCARD:{}}]
 	Global.register_rod(card_hubris)
 	
+	
 	var card_blueprint: CardData = CardData.new("card_blueprint")
 	card_blueprint.card_name = "Blueprint"
 	card_blueprint.card_color_id = "color_{0}".format([color])
@@ -5839,6 +5860,261 @@ func add_cards_trade() -> void:
 		}]
 	Global.register_rod(card_trail_illuminator)
 #endregion
+func add_cards_red() -> void:
+	var color: String = "red"
+	
+	var card_taxmisappropriator: CardData = CardData.new("card_taxmisappropriator")
+	card_taxmisappropriator.card_name = "Tax Misappropriator"
+	card_taxmisappropriator.card_color_id = "color_{0}".format([color])
+	card_taxmisappropriator.card_texture_path = "external/sprites/cards/boss/taxmisappropriator.png"
+	card_taxmisappropriator.card_description = "ON DRAW: Gain 1{0}, Create 1 Debt.\n\nCannot be played. At the end of turn, Gain 1{0}, Create 1 Debt.".format([Card.MONEY_ICON_KEYWORD])
+	card_taxmisappropriator.card_type = CardData.CARD_TYPES.CURSE
+	card_taxmisappropriator.card_keyword_object_ids = ["keyword_debt"]
+	card_taxmisappropriator.card_energy_cost = 0
+	card_taxmisappropriator.card_influence = 0
+	card_taxmisappropriator.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_taxmisappropriator.card_requires_target = false
+	card_taxmisappropriator.card_is_playable = false
+	card_taxmisappropriator.card_draw_actions = [{Scripts.ACTION_ADD_MONEY:{"money_amount":1}}, {Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	card_taxmisappropriator.card_end_of_turn_actions = [{Scripts.ACTION_ADD_MONEY:{"money_amount":1}}, {Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_taxmisappropriator)
+	
+	var card_legacythief: CardData = CardData.new("card_legacythief")
+	card_legacythief.card_name = "Legacy Thief"
+	card_legacythief.card_color_id = "color_{0}".format([color])
+	card_legacythief.card_texture_path = "external/sprites/cards/boss/legacythief.png"
+	card_legacythief.card_description = "ON DRAW: Lose 3{0}.\n\nGain 2{0}".format([Card.FOOD_ICON_KEYWORD])
+	card_legacythief.card_type = CardData.CARD_TYPES.CURSE
+	#card_legacythief.card_keyword_object_ids = ["keyword_rattle"]
+	card_legacythief.card_energy_cost = 1
+	card_legacythief.card_influence = 0
+	card_legacythief.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_legacythief.card_requires_target = false
+	card_legacythief.card_is_playable = true
+	card_legacythief.card_draw_actions = [{Scripts.ACTION_ADD_FOOD:{"food_amount":-3}}]
+	card_legacythief.card_play_actions = [{Scripts.ACTION_ADD_FOOD:{"food_amount":2}}]
+	#card_legacythief.card_end_of_turn_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_legacythief)
+	
+	var card_obsessivecook: CardData = CardData.new("card_obsessivecook")
+	card_obsessivecook.card_name = "Legacy Thief"
+	card_obsessivecook.card_color_id = "color_{0}".format([color])
+	card_obsessivecook.card_texture_path = "external/sprites/cards/boss/obsessivecook.png"
+	card_obsessivecook.card_description = "ON DRAW: Lose [food_amount]{0}. Increase by 1.\n\nCreate 1 Delicacy. Reset food loss amount".format([Card.FOOD_ICON_KEYWORD])
+	card_obsessivecook.card_type = CardData.CARD_TYPES.CURSE
+	#card_obsessivecook.card_keyword_object_ids = ["keyword_rattle"]
+	card_obsessivecook.card_energy_cost = 2
+	card_obsessivecook.card_influence = 0
+	card_obsessivecook.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_obsessivecook.card_requires_target = false
+	card_obsessivecook.card_is_playable = true
+	card_obsessivecook.card_values = {"food_amount":-1}
+	card_obsessivecook.card_draw_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"food_amount":-1}}},{Scripts.ACTION_ADD_FOOD:{}}]
+	card_obsessivecook.card_end_of_turn_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"changed_card_values":{"food_amount":-1}}}, {Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_delicacy","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_obsessivecook)
+	
+	var card_endlessminer: CardData = CardData.new("card_endlessminer")
+	card_endlessminer.card_name = "Endless Miner"
+	card_endlessminer.card_color_id = "color_{0}".format([color])
+	card_endlessminer.card_texture_path = "external/sprites/cards/boss/endlessminer.png"
+	card_endlessminer.card_description = "ON DRAW: Lose [ore_amount]{0} and create [number_of_cards] Rock(s). Increase both by 1.\n\nPlay to reset both".format([Card.ORE_ICON_KEYWORD])
+	card_endlessminer.card_type = CardData.CARD_TYPES.CURSE
+	#card_endlessminer.card_keyword_object_ids = ["keyword_rattle"]
+	card_endlessminer.card_energy_cost = 1
+	card_endlessminer.card_influence = 0
+	card_endlessminer.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_endlessminer.card_requires_target = false
+	card_endlessminer.card_is_playable = true
+	card_endlessminer.card_values = {"ore_amount":-1,"number_of_cards":1}
+	card_endlessminer.card_draw_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"number_of_cards":1, "ore_amount":-1}}},{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rock","action_data":[{Scripts.ACITON_DISCARD_CARDS:{}}]}}]
+	card_endlessminer.card_end_of_turn_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"changed_card_values":{"ore_amount":-1,"number_of_cards":1}}}]
+	Global.register_rod(card_endlessminer)
+	
+	var card_naiveconstructor: CardData = CardData.new("card_naiveconstructor")
+	card_naiveconstructor.card_name = "Naive Constructor"
+	card_naiveconstructor.card_color_id = "color_{0}".format([color])
+	card_naiveconstructor.card_texture_path = "external/sprites/cards/boss/naiveconstructor.png"
+	card_naiveconstructor.card_description = "ON DRAW: Gain 'Until the end of your next 2 turns. Whenever you create a Craft, lose 1{0}'.".format([Card.ORE_ICON_KEYWORD])
+	card_naiveconstructor.card_type = CardData.CARD_TYPES.CURSE
+	#card_naiveconstructor.card_keyword_object_ids = ["keyword_rattle"]
+	card_naiveconstructor.card_energy_cost = 1
+	card_naiveconstructor.card_influence = 0
+	card_naiveconstructor.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_naiveconstructor.card_requires_target = false
+	card_naiveconstructor.card_is_playable = false
+	card_naiveconstructor.card_draw_actions = [{Scripts.ACTION_APPLY_STATUS:{"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,"status_effect_object_id":"status_effect_naiveconstruction","status_charge_amount":2}}]
+	#card_naiveconstructor.card_end_of_turn_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_naiveconstructor)
+	
+	var card_retiredgeneral: CardData = CardData.new("card_retiredgeneral")
+	card_retiredgeneral.card_name = "Retired General"
+	card_retiredgeneral.card_color_id = "color_{0}".format([color])
+	card_retiredgeneral.card_texture_path = "external/sprites/cards/boss/retiredgeneral.png"
+	card_retiredgeneral.card_description = "ON DRAW: Gain 'Weaken' for 2 turns (You explore 50% less)".format([Card.ORE_ICON_KEYWORD])
+	card_retiredgeneral.card_type = CardData.CARD_TYPES.CURSE
+	#card_retiredgeneral.card_keyword_object_ids = ["keyword_rattle"]
+	card_retiredgeneral.card_energy_cost = 1
+	card_retiredgeneral.card_influence = 0
+	card_retiredgeneral.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_retiredgeneral.card_requires_target = false
+	card_retiredgeneral.card_is_playable = false
+	card_retiredgeneral.card_draw_actions = [{Scripts.ACTION_APPLY_STATUS:{"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,"status_effect_object_id":"status_effect_weaken","status_charge_amount":2}}]
+	#card_retiredgeneral.card_end_of_turn_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_retiredgeneral)
+	
+	
+	var card_duplicitousmerchant: CardData = CardData.new("card_duplicitousmerchant")
+	card_duplicitousmerchant.card_name = "Duplicitous Merchant"
+	card_duplicitousmerchant.card_color_id = "color_{0}".format([color])
+	card_duplicitousmerchant.card_texture_path = "external/sprites/cards/boss/duplicitousmerchant.png"
+	card_duplicitousmerchant.card_description = "ON DRAW: Discard 2 random cards in hand.\n\nON DISCARD: Draft a Trade Order and put into your hand".format([Card.ORE_ICON_KEYWORD])
+	card_duplicitousmerchant.card_type = CardData.CARD_TYPES.CURSE
+	#card_duplicitousmerchant.card_keyword_object_ids = ["keyword_rattle"]
+	card_duplicitousmerchant.card_energy_cost = 0
+	card_duplicitousmerchant.card_influence = 0
+	card_duplicitousmerchant.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_duplicitousmerchant.card_requires_target = false
+	card_duplicitousmerchant.card_is_playable = false
+	card_duplicitousmerchant.card_draw_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount":2,
+		"max_card_amount":2,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
+		"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]
+		}
+	}]
+	card_duplicitousmerchant.card_discard_actions = [{Scripts.ACTION_PICK_CARDS:
+		{
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"validator_data": [],
+			# use same rng as player drafting so it counts as draft
+			"rng_name": "rng_card_drafting",
+			"draft_card_pack_id": "card_pack_grey"
+		}}]
+	#card_duplicitousmerchant.card_end_of_turn_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_duplicitousmerchant)
+	
+	var card_partisanattendant: CardData = CardData.new("card_partisanattendant")
+	card_partisanattendant.card_name = "Partisan Attendant"
+	card_partisanattendant.card_color_id = "color_{0}".format([color])
+	card_partisanattendant.card_texture_path = "external/sprites/cards/boss/partisanattendant.png"
+	card_partisanattendant.card_description = "ON DRAW: Rattle and retain a random card in hand by 3.\n\nAppease a random card in discard pile by 4".format([Card.FOOD_ICON_KEYWORD])
+	card_partisanattendant.card_type = CardData.CARD_TYPES.CURSE
+	card_partisanattendant.card_keyword_object_ids = ["keyword_rattle","keyword_appease"]
+	card_partisanattendant.card_energy_cost = 1
+	card_partisanattendant.card_influence = 0
+	card_partisanattendant.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_partisanattendant.card_requires_target = false
+	card_partisanattendant.card_is_playable = true
+	card_partisanattendant.card_values = {"min_card_amount":1,"max_card_amount":1}
+	card_partisanattendant.card_draw_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}],
+		"action_data":[{Scripts.ACTION_RETAIN_CARDS:{}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-3}}]
+		}
+	}]
+	card_partisanattendant.card_play_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}],
+		"action_data":[{Scripts.ACTION_RETAIN_CARDS:{}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":4}}]
+		}
+	}]
+	#card_partisanattendant.card_end_of_turn_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_partisanattendant)
+	
+	var card_omenbringer: CardData = CardData.new("card_omenbringer")
+	card_omenbringer.card_name = "Omen Bringer"
+	card_omenbringer.card_color_id = "color_{0}".format([color])
+	card_omenbringer.card_texture_path = "external/sprites/cards/boss/omenbringer.png"
+	card_omenbringer.card_description = "END TURN IN DRAW PILE: Rattle a random card in Discard pile by 1.\n\nAppease all cards in discard pile by 1".format([Card.FOOD_ICON_KEYWORD])
+	card_omenbringer.card_type = CardData.CARD_TYPES.CURSE
+	card_omenbringer.card_keyword_object_ids = ["keyword_rattle","keyword_appease"]
+	card_omenbringer.card_energy_cost = 1
+	card_omenbringer.card_influence = 0
+	card_omenbringer.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_omenbringer.card_requires_target = false
+	card_omenbringer.card_is_playable = true
+	card_omenbringer.card_end_of_turn_draw_pile_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount":1,
+		"max_card_amount":1,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}],
+		"action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-1}}]
+		}
+	}]
+	card_omenbringer.card_play_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount":99,
+		"max_card_amount":99,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}],
+		"action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":1}}]
+		}
+	}]
+	#card_omenbringer.card_end_of_turn_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_omenbringer)
+	
+	var card_witchofdecay: CardData = CardData.new("card_witchofdecay")
+	card_witchofdecay.card_name = "Witch of Decay"
+	card_witchofdecay.card_color_id = "color_{0}".format([color])
+	card_witchofdecay.card_texture_path = "external/sprites/cards/boss/witchofdecay.png"
+	card_witchofdecay.card_description = "END TURN IN DISCARD PILE: Reduce the use of a random Craft card in discard pile by 1.\n\nON DISCARD: Repair all Craft cards by 1".format([Card.FOOD_ICON_KEYWORD])
+	card_witchofdecay.card_type = CardData.CARD_TYPES.CURSE
+	card_witchofdecay.card_keyword_object_ids = ["keyword_repair"]
+	card_witchofdecay.card_energy_cost = 1
+	card_witchofdecay.card_influence = 0
+	card_witchofdecay.card_rarity = CardData.CARD_RARITIES.COMMON
+	card_witchofdecay.card_requires_target = false
+	card_witchofdecay.card_is_playable = false
+	card_witchofdecay.card_end_of_turn_discard_pile_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount":1,
+		"max_card_amount":1,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.CRAFT]}}],
+		"action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-1}}]
+		}
+	}]	
+	
+	card_witchofdecay.card_discard_actions = [{
+		Scripts.ACTION_PICK_CARDS: {
+		"min_card_amount":99,
+		"max_card_amount":99,
+		"min_cards_are_required_for_action": false,
+		"random_selection": true,
+		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
+		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.CRAFT]}}],
+		"action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":1}}]
+		}
+	}]
+	#card_witchofdecay.card_end_of_turn_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	Global.register_rod(card_witchofdecay)
+	
 func add_cards_purple() -> void:
 	var color: String = "purple"
 
@@ -9102,8 +9378,13 @@ func add_card_packs() -> void:
 	
 	var card_pack_white: CardPackData = CardPackData.new("card_pack_white")
 	card_pack_white.card_pack_color_id = "color_white"
-	card_pack_white.card_pack_displays_in_codex = true
+	card_pack_white.card_pack_displays_in_codex = false
 	Global.register_rod(card_pack_white)
+	
+	var card_pack_red: CardPackData = CardPackData.new("card_pack_red")
+	card_pack_red.card_pack_color_id = "color_red"
+	card_pack_red.card_pack_displays_in_codex = false
+	Global.register_rod(card_pack_red)
 	
 
 

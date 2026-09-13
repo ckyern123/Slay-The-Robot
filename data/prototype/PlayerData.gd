@@ -167,6 +167,8 @@ var player_reward_card_rarity_cache: Dictionary[int, Array] = {}
 ## NOTE: Shops will search this in reverse order.
 @export var player_artifact_pool: Array[String] = []
 
+@export var player_boss_cards: Array[CardData] = []
+
 ## A list of ArtifactPackData object ids that represent what artifacts a player is allowed to see in a run.
 ## Typically will be their color, and white(non specific) artifacts. This is used to 
 ## generate player_artifact_available_artifact_id_cache. Whenever this value is modified you
@@ -538,6 +540,15 @@ func initialize_artifact_pool() -> void:
 	Random.shuffle_array(artifact_rng, artifact_ids)
 	player_artifact_pool.assign(artifact_ids)
 
+## Generates a list of all artifacts the player can theoretically encounter in a run. Should only be called
+## on run start from Global.start_run().
+func initialize_boss_pool() -> void:
+	var card_pack: CardPackData = Global.get_card_pack_data("card_pack_red")
+	var card_ids: Array[String] = card_pack.card_ids
+	var artifact_rng: RandomNumberGenerator = get_player_rng("rng_artifact_rewards")
+	Random.shuffle_array(artifact_rng, card_ids)
+	player_boss_cards.assign(card_ids)
+	
 ## Wrapper method for get_next_artifacts_from_pool() that gets the next standard artifacts for a shop.
 ## Pulls from the back of the artifact list.
 func get_next_shop_standard_artifacts_from_pool(artifact_count: int, mutate_artifact_pool: bool = false) -> Array[String]:

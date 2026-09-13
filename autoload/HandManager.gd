@@ -526,7 +526,8 @@ func perform_end_of_turn_hand_actions() -> void:
 	# this prevents things like drawing a card end of turn then exhausting it because it's ethereal or whatever
 	var duplicated_player_hand: Array[CardData] = HandManager.player_hand.duplicate(false)
 	var duplicated_player_draw: Array[CardData] = HandManager.player_draw.duplicate(false)
-	
+	var duplicated_player_discard: Array[CardData] = HandManager.player_discard.duplicate(false)
+		
 	# reset cards with modified turn energy
 	for card in HandManager.cards_with_modified_turn_energy:
 		if card.card_energy_cost_until_turn > -1:
@@ -556,6 +557,19 @@ func perform_end_of_turn_hand_actions() -> void:
 		for card_data: CardData in end_of_turn_cards_draw:
 			_perform_card_actions(card_data, [null], card_data.card_end_of_turn_draw_pile_actions, false, false)
 		await Global.get_tree().create_timer(0.01).timeout
+	
+	# get cards with draw end of turn actions
+	var end_of_turn_cards_discard: Array[CardData] = []
+	for card_data: CardData in duplicated_player_discard:
+		if len(card_data.card_end_of_turn_discard_pile_actions) > 0:
+			end_of_turn_cards_draw.append(card_data)
+	
+	# perform the end of turn actions
+	if len(end_of_turn_cards_discard) > 0:
+		for card_data: CardData in end_of_turn_cards_discard:
+			_perform_card_actions(card_data, [null], card_data.card_end_of_turn_discard_pile_actions, false, false)
+		await Global.get_tree().create_timer(0.01).timeout
+	
 	
 	# wait for actions
 	if ActionHandler.actions_being_performed:

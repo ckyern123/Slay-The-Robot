@@ -2055,6 +2055,7 @@ text = "Shop Refresh:"
 
 [node name="RotLabel" type="RichTextLabel" parent="RunScreen/Combat/Player" unique_id=343928383]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_left = 142.0
 offset_top = 4.0
@@ -2069,6 +2070,7 @@ position = Vector2(305, 69)
 
 [node name="RotFadeContainer" type="Node2D" parent="RunScreen/Combat/Player" unique_id=2046406211]
 unique_name_in_owner = true
+visible = false
 position = Vector2(267, 7)
 
 [node name="AscendButton" type="Button" parent="RunScreen/Combat/Player" unique_id=68841014]

@@ -42,7 +42,8 @@ func wait() -> void:
 				
 			if Global.player_data.player_health >= Global.player_data.threshold_mark:
 				Global.player_data.threshold_mark += 30
-				var threshold_action_data = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_hubris","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}],"number_of_cards":1}}]
+				var boss_id: String = Global.player_data.player_boss_cards.pop_back()
+				var threshold_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":boss_id,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}],"number_of_cards":1}}]
 				var threshold_actions: Array = ActionGenerator.create_actions(null, null, [], threshold_action_data, null)
 				ActionHandler.add_actions(threshold_actions)
 			if ActionHandler.actions_being_performed:
@@ -65,7 +66,8 @@ func wait() -> void:
 			
 			if Global.player_data.player_health >= Global.player_data.threshold_mark:
 				Global.player_data.threshold_mark += 30
-				var threshold_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_hubris","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}],"number_of_cards":1}}]
+				var boss_id: String = Global.player_data.player_boss_cards.pop_back()
+				var threshold_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":boss_id,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}],"number_of_cards":1}}]
 				var threshold_actions: Array = ActionGenerator.create_actions(null, null, [], threshold_action_data, null)
 				ActionHandler.add_actions(threshold_actions)
 			if ActionHandler.actions_being_performed:
