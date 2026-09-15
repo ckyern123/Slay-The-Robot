@@ -1166,8 +1166,10 @@ func add_status_effects() -> void:
 	status_effect_naiveconstruction.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
 	status_effect_naiveconstruction.status_effect_script_path = "res://scripts/status_effects/StatusEffectNaiveConstruction.gd"
 	status_effect_naiveconstruction.status_effect_healthbar_reserve_type = StatusEffectData.STATUS_EFFECT_HEALTHBAR_RESERVE_TYPES.ZERO
-	status_effect_naiveconstruction.status_effect_action_process_times = []
-	
+	status_effect_naiveconstruction.status_effect_action_process_times = [
+		StatusEffectData.STATUS_EFFECT_PROCESS_TIMES.POST_DISCARD_PLAYER_END_TURN,
+		StatusEffectData.STATUS_EFFECT_PROCESS_TIMES.POST_ENEMY_INTENT,
+	]
 	Global.register_rod(status_effect_naiveconstruction)
 	
 	# Reward (simply to explain what objects of interest do)
@@ -7506,12 +7508,28 @@ func add_cards_black() -> void:
 	card_aniseedtaxcollector.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_aniseedtaxcollector.card_requires_target = false
 	card_aniseedtaxcollector.card_energy_cost = 2
+	card_aniseedtaxcollector.card_influence = 4
 	card_aniseedtaxcollector.card_values = {"min_card_amount":0,"max_card_amount":2,"discard_count":3,"draw_count":3}
 	card_aniseedtaxcollector.card_upgrade_value_improvements = {"min_card_amount":0,"max_card_amount":1,"discard_count":1,"draw_count":1}
 	card_aniseedtaxcollector.card_play_actions.append(inspect_action)
+	card_aniseedtaxcollector.card_play_actions.append({Scripts.ACTION_DRAW_GENERATOR:{"first_pos":true,"draw_count":3}})
+	card_aniseedtaxcollector.card_play_actions.append(	{
+	Scripts.ACTION_PICK_CARDS:
+	{
+		"custom_key_names":{"min_card_amount":"discard_count","max_card_amount":"discard_count"},
+		"min_cards_are_required_for_action": false,
+		"random_selection": false,
+		"right_most": true,
+		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_text": "Choose up to {0} card(s) to discard. {1} cards selected",
+		"action_data": [
+		{Scripts.ACTION_DISCARD_CARDS:{}}
+		]
+	}
+	})
 	#card_aniseedtaxcollector.card_play_actions.append(exhaust_action)
-	for action in sweep_action_data:
-		card_aniseedtaxcollector.card_play_actions.append(action)
+	#for action in sweep_action_data:
+	#	card_aniseedtaxcollector.card_play_actions.append(action)
 	card_aniseedtaxcollector.card_play_actions.append(influence_action)
 	card_aniseedtaxcollector.card_draw_actions = start_action_data
 	card_aniseedtaxcollector.card_end_of_turn_actions = end_action_data
