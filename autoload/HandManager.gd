@@ -634,7 +634,8 @@ func clear_card_queue() -> void:
 ## Clears out the card queue, refunding all the energy in it.
 func refund_card_queue():
 	for card_play_request in card_play_queue:
-		Global.player_data.player_energy += card_play_request.refundable_energy
+		if (card_play_request.refundable_energy != -1):
+			Global.player_data.player_energy += card_play_request.refundable_energy
 	clear_card_queue()
 	Signals.card_queue_refunded.emit()
 

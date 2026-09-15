@@ -275,7 +275,7 @@ var wield_action: Dictionary = {
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose {0} card to discard. {1} cards selected",
 				"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
-				"action_data": [{Scripts.ACTION_PLAY_CARDS:{}}]
+				"action_data": [{Scripts.ACTION_PLAY_CARDS:{"focused":true}}]
 		}
 		}
 
@@ -3089,7 +3089,7 @@ func add_keywords() -> void:
 	
 	var keyword_wield: KeywordData = KeywordData.new("keyword_wield")
 	keyword_wield.keyword_name = "Wield X"
-	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile. Targets randomly."
+	keyword_wield.keyword_text_bb_code = "Plays X random Swords in the discard pile. Targets the highest health."
 	Global.register_rod(keyword_wield)
 	
 	var keyword_cook: KeywordData = KeywordData.new("keyword_cook")
@@ -3328,7 +3328,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green"
+		"card_basic_explore_green", "card_basic_explore_green","card_jadesmith","card_jadesmith","card_jadesmith","card_sword","card_sword","card_sword"
 	]
 	
 	Global.register_rod(character_green)
@@ -7980,7 +7980,8 @@ func add_cards_green() -> void:
 	card_jadesmith.card_play_actions.append(forge_action.duplicate())
 	card_jadesmith.card_draw_actions.append(wield_action.duplicate())
 	card_jadesmith.card_play_actions.append(influence_action.duplicate())
-	card_jadesmith.card_draw_actions = start_action_data.duplicate()
+	for action in start_action_data.duplicate():
+		card_jadesmith.card_draw_actions.append(action)
 	card_jadesmith.card_end_of_turn_actions = end_action_data.duplicate()
 	Global.register_rod(card_jadesmith)
 	
