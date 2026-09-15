@@ -5714,7 +5714,7 @@ func add_cards_trade() -> void:
 		}]
 	Global.register_rod(card_explorers_guide)
 	
-	var waste_not_manual: CardData = CardData.new("waste_not_manual")
+	var waste_not_manual: CardData = CardData.new("card_waste_not_manual")
 	waste_not_manual.card_name = "Waste Not Manual"
 	waste_not_manual.card_color_id = "color_blue"
 	waste_not_manual.card_texture_path = "external/sprites/status_effects/book.svg"
@@ -5958,7 +5958,7 @@ func add_cards_red() -> void:
 	card_retiredgeneral.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_retiredgeneral.card_requires_target = false
 	card_retiredgeneral.card_is_playable = false
-	card_retiredgeneral.card_draw_actions = [{Scripts.ACTION_APPLY_STATUS:{"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,"status_effect_object_id":"status_effect_weaken","status_charge_amount":2}}]
+	card_retiredgeneral.card_draw_actions = [{Scripts.ACTION_APPLY_STATUS:{"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,"status_effect_object_id":"status_effect_weaken","status_charge_amount":3}}]
 	#card_retiredgeneral.card_end_of_turn_actions = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_debt","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	Global.register_rod(card_retiredgeneral)
 	

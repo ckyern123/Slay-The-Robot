@@ -544,7 +544,9 @@ func initialize_artifact_pool() -> void:
 ## on run start from Global.start_run().
 func initialize_boss_pool() -> void:
 	var card_pack: CardPackData = Global.get_card_pack_data("card_pack_red")
-	var card_ids: Array[String] = card_pack.card_ids
+	var card_filter: CardFilter = card_pack.create_card_pack_card_filter()
+	
+	var card_ids: Array[CardData] = card_filter.filtered_cards
 	var artifact_rng: RandomNumberGenerator = get_player_rng("rng_artifact_rewards")
 	Random.shuffle_array(artifact_rng, card_ids)
 	player_boss_cards.assign(card_ids)

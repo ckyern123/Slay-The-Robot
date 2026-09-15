@@ -1800,6 +1800,7 @@ columns = 2
 layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="." unique_id=2146255345]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -3068,9 +3069,8 @@ color = Color(0, 0.3667979, 0.92779636, 1)
 
 [node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay/ConfirmRect" unique_id=575565750]
 layout_mode = 0
-offset_left = -12.0
 offset_top = 1.0
-offset_right = 388.0
+offset_right = 400.0
 offset_bottom = 101.0
 theme_override_font_sizes/font_size = 40
 text = "CONFIRM"
@@ -3090,8 +3090,8 @@ vertical_alignment = 1
 layout_mode = 0
 offset_left = 346.0
 offset_top = 233.0
-offset_right = 1850.0
-offset_bottom = 952.0
+offset_right = 1799.0
+offset_bottom = 858.0
 follow_focus = true
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3

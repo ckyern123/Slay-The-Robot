@@ -221,7 +221,7 @@ func start_run(character_object_id: String, run_seed: int, difficulty_level: int
 	# generate artifact pool for the run
 	# NOTE: This holds all artifacts, regardless of packs
 	player_data.initialize_artifact_pool()
-	
+	player_data.initialize_boss_pool()
 	# add starting artifacts to player
 	for artifact_id in character_data.character_starting_artifact_ids:
 		player_data.add_artifact(artifact_id)

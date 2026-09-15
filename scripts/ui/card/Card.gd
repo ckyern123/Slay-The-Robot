@@ -92,9 +92,10 @@ func init(_card_data: CardData, angular_offset: float, connect_combat_signals: b
 		card_button.mouse_entered.connect(_on_mouse_entered)
 		card_button.mouse_exited.connect(_on_mouse_exited)
 		keyword_timer.timeout.connect(_on_keyword_timeout)
-	if card_data.card_rarity == CardData.CARD_RARITIES.GENERATED and card_data.card_type == CardData.CARD_TYPES.CURSE:
-		card_energy_sprite.visible = false
-		card_energy_cost_label.visible = false
+	if card_data.card_rarity == CardData.CARD_RARITIES.GENERATED or card_data.card_type == CardData.CARD_TYPES.CURSE:
+		if (card_data.card_energy_cost == 0):
+			card_energy_sprite.visible = false
+			card_energy_cost_label.visible = false
 		if (card_data.card_influence == 0):
 			card_influence_sprite.visible = false
 		else:
