@@ -6250,7 +6250,7 @@ func add_cards_purple() -> void:
 		"min_card_amount": 0,
 		"min_cards_are_required_for_action": false,
 		"random_selection": false,
-		"card_pick_type": HandManager.DISCARD_PILE,
+		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to duplicate. {1} cards selected",
 		"validator_data": [
 			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.RESOURCE]}}
