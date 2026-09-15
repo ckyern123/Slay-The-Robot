@@ -24,6 +24,8 @@ func update(_action_on_click: BaseAction) -> void:
 	
 	if price > Global.player_data.player_money:
 		price_label.modulate = Color.RED
+	else:
+		price_label.modulate = Color.WHITE
 
 func _on_button_up():
 	if action_on_click != null:

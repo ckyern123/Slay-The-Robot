@@ -195,6 +195,7 @@ func update_combat_display():
 	_on_player_room_changed()
 	_on_player_refresh_changed()
 	#_on_player_rot_changed()
+	hand.update_hand_card_display()
 		
 func _update_background() -> void:
 	# set the background if possible
