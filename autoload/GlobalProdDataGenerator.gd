@@ -212,6 +212,7 @@ var uses_action_data: Array[Dictionary] = [
 						"card_destination": HandManager.EXHAUST_PILE
 						},
 					},
+					
 				]
 			}
 		},
@@ -5352,8 +5353,37 @@ func add_cards_misc() -> void:
 	card_debt.card_influence = 2
 	card_debt.card_requires_target = false
 	card_debt.card_is_playable = false
-	for action in uses_action_data.duplicate():
-		card_debt.card_end_of_turn_actions.append(action)
+	card_debt.card_end_of_turn_actions = [
+			# check flag when drawn	
+		{Scripts.ACTION_VALIDATOR: {
+				"validator_data":
+				[
+					{
+					Scripts.VALIDATOR_CARD_PROPERTIES:
+						{
+						"card_property_name": "card_influence",
+						"operator": "<=",
+						"comparison_value": 0,
+						"invert_validation": false,
+						}
+					}
+				],
+				# exhaust
+				"passed_action_data":
+				[
+					{
+					Scripts.ACTION_EXHAUST_CARDS:{"pick_played_card":true}
+					},
+					
+				]
+			}
+		},
+		{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{
+			"pick_played_card": true,
+			"modify_parent_card": false,
+			"card_influence":-1,
+		}},
+	]
 	card_debt.card_end_of_turn_actions.append({Scripts.ACTION_ADD_MONEY:{"money_amount":-1}})
 	Global.register_rod(card_debt)
 
@@ -7286,9 +7316,9 @@ func add_cards_black() -> void:
 	card_flintlockswiftshot.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_flintlockswiftshot.card_requires_target = true
 	card_flintlockswiftshot.card_energy_cost = 2
-	card_flintlockswiftshot.card_values = {"damage":2,"number_of_attacks":1,"energy_amount":2}
+	card_flintlockswiftshot.card_values = {"damage":3,"number_of_attacks":1,"energy_amount":2}
 	card_flintlockswiftshot.card_first_upgrade_property_changes = {"energy_cost":1}
-	card_flintlockswiftshot.card_discard_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"card_value_improvements":{"damage":1}}}]
+	card_flintlockswiftshot.card_discard_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"pick_played_card":true,"modify_parent_card":false, "card_value_improvements":{"damage":1}}}]
 	card_flintlockswiftshot.card_play_actions = [{Scripts.ACTION_ATTACK_GENERATOR:{"actions_on_lethal":[{Scripts.ACTION_ADD_ENERGY:{}}]}}]
 	card_flintlockswiftshot.card_play_actions.append(influence_action.duplicate())
 	card_flintlockswiftshot.card_draw_actions = start_action_data.duplicate()
@@ -7968,7 +7998,7 @@ func add_cards_green() -> void:
 	card_jadesmith.card_texture_path = "external/sprites/cards/jade/22_jadesmith.png"
 	card_jadesmith.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
 	card_jadesmith.card_description = "ON DRAW: Return [max_card_amount] Swords from the discard pile to your hand.\n\nForge [number_of_cards] Swords.".format([Card.EXPLORE_ICON_KEYWORD])
-	card_jadesmith.card_keyword_object_ids = ["keyword_wield", "keyword_forge","keyword_sword"]
+	card_jadesmith.card_keyword_object_ids = ["keyword_forge","keyword_sword"]
 	card_jadesmith.card_type = CardData.CARD_TYPES.FACTION
 	card_jadesmith.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_jadesmith.card_rarity = CardData.CARD_RARITIES.COMMON
