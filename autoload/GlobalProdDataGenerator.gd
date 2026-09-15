@@ -7967,7 +7967,7 @@ func add_cards_green() -> void:
 	card_jadesmith.card_color_id = "color_{0}".format([color])
 	card_jadesmith.card_texture_path = "external/sprites/cards/jade/22_jadesmith.png"
 	card_jadesmith.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_jadesmith.card_description = "ON DRAW: Wield [max_card_amount].\n\nForge [number_of_cards] Swords.".format([Card.EXPLORE_ICON_KEYWORD])
+	card_jadesmith.card_description = "ON DRAW: Return [max_card_amount] Swords from the discard pile to your hand.\n\nForge [number_of_cards] Swords.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_jadesmith.card_keyword_object_ids = ["keyword_wield", "keyword_forge","keyword_sword"]
 	card_jadesmith.card_type = CardData.CARD_TYPES.FACTION
 	card_jadesmith.card_subtype = CardData.CARD_SUBTYPES.JADE
@@ -7978,7 +7978,17 @@ func add_cards_green() -> void:
 	card_jadesmith.card_values = {"created_card_object_id": "card_sword","number_of_cards": 2, "ore_required": 2,"min_card_amount":1,"max_card_amount":1}
 	card_jadesmith.card_upgrade_value_improvements = {"number_of_cards": 1, "ore_required":1,"min_card_amount":1,"max_card_amount":1}
 	card_jadesmith.card_play_actions.append(forge_action.duplicate())
-	card_jadesmith.card_draw_actions.append(wield_action.duplicate())
+	card_jadesmith.card_draw_actions.append(		{
+		Scripts.ACTION_PICK_CARDS:
+		{
+			"min_cards_are_required_for_action": false,
+			"random_selection": true,
+			"card_pick_type": HandManager.DISCARD_PILE,
+			"card_pick_text": "Choose {0} card to return to you hand. {1} cards selected",
+			"validator_data": [{Scripts.VALIDATOR_CARD_ID: {"card_object_ids": ["card_sword"]}}],
+			"action_data": [{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}]
+		}
+		})
 	card_jadesmith.card_play_actions.append(influence_action.duplicate())
 	for action in start_action_data.duplicate():
 		card_jadesmith.card_draw_actions.append(action)
