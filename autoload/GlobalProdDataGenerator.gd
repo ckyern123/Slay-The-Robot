@@ -620,12 +620,12 @@ func add_artifacts() -> void:
 	var artifact_fertiliser: ArtifactData = ArtifactData.new("artifact_fertiliser")
 	artifact_fertiliser.artifact_name = "Fertiliser"
 	artifact_fertiliser.artifact_texture_path = "external/sprites/artifacts/fertiliser.svg"
-	artifact_fertiliser.artifact_description = "At the start of each turn, gain 1 charge. Fertilises all Grain cards in draw pile at 2 charges. Charges can also be gained by Fertilise effects."
+	artifact_fertiliser.artifact_description = "At the start of each turn, gain 1 charge. Fertilises all Grain cards in draw pile at 3 charges. Charges can also be gained by Fertilise effects."
 	#artifact_fertiliser.artifact_shop_description = "Adds 1 Insight every 4 turns."
 	artifact_fertiliser.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.BASIC
 	artifact_fertiliser.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
 	#artifact_fertiliser.artifact_script_path = "res://scripts/artifacts/ArtifactFertiliseChargeIncrease.gd"
-	artifact_fertiliser.artifact_counter_max = 2
+	artifact_fertiliser.artifact_counter_max = 3
 	artifact_fertiliser.artifact_max_counter_actions = [
 		{
 		Scripts.ACTION_PICK_CARDS: {
@@ -3106,7 +3106,7 @@ func add_keywords() -> void:
 	var keyword_fertilise: KeywordData = KeywordData.new("keyword_fertilise")
 	keyword_fertilise.keyword_name = "Fertilise"
 	keyword_fertilise.keyword_status_effect_id = "status_effect_fertiliser_reward"
-	keyword_fertilise.keyword_text_bb_code = "Increases Fertiliser charges by X amount. (Grain cards in draw pile gain 1{0} every time you Fertilise. You Fertilise once every 2 charges.)".format([Card.FOOD_ICON_KEYWORD])
+	keyword_fertilise.keyword_text_bb_code = "Increases Fertiliser charges by X amount. (Grain cards in draw pile gain 1{0} every time you Fertilise. You Fertilise once every 3 charges.)".format([Card.FOOD_ICON_KEYWORD])
 	Global.register_rod(keyword_fertilise)
 
 	var keyword_sword: KeywordData = KeywordData.new("keyword_sword")
@@ -5743,7 +5743,7 @@ func add_cards_trade() -> void:
 				"card_pick_type": HandManager.HAND_PILE,
 				"card_pick_text": "Choose {0} card to add. {1} cards selected",
 				"action_data": [{
-				Scripts.ACTION_DECORATE_CARDS:{"decorate_parent_card": false,"card_decorator_object_id":"card_decorator_architect_retain"}
+				Scripts.ACTION_DECORATE_CARDS:{"decorate_parent_card": false,"card_decorator_object_id":"card_decorator_frontier_money"}
 		}]
 		}
 		}]
@@ -5961,8 +5961,8 @@ func add_cards_red() -> void:
 	card_endlessminer.card_requires_target = false
 	card_endlessminer.card_is_playable = true
 	card_endlessminer.card_values = {"ore_amount":-1,"number_of_cards":1}
-	card_endlessminer.card_draw_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"number_of_cards":1, "ore_amount":-1}}},{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rock","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
-	card_endlessminer.card_end_of_turn_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"new_card_values":{"ore_amount":-1,"number_of_cards":1}}}]
+	card_endlessminer.card_draw_actions = [{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rock","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"number_of_cards":1, "ore_amount":-1}}}]
+	card_endlessminer.card_play_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"new_card_values":{"ore_amount":-1,"number_of_cards":1}}}]
 	Global.register_rod(card_endlessminer)
 	
 	var card_naiveconstructor: CardData = CardData.new("card_naiveconstructor")
@@ -7437,7 +7437,7 @@ func add_cards_black() -> void:
 	card_intrepidsailor.card_color_id = "color_{0}".format([color])
 	card_intrepidsailor.card_texture_path = "external/sprites/cards/aniseed/10_intrepidsailor.png"
 	card_intrepidsailor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_intrepidsailor.card_description = "Explore [damage]{0}. Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
+	card_intrepidsailor.card_description = "Explore 6{0}. Wield [min_card_amount].".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
 	card_intrepidsailor.card_keyword_object_ids = ["keyword_wield"]
 	card_intrepidsailor.card_type = CardData.CARD_TYPES.FACTION
 	card_intrepidsailor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -7445,13 +7445,13 @@ func add_cards_black() -> void:
 	card_intrepidsailor.card_requires_target = true
 	card_intrepidsailor.card_energy_cost = 2
 	card_intrepidsailor.card_influence = 4
-	card_intrepidsailor.card_values = {"damage": 6,"number_of_attacks":1, "min_card_amount": 4,
+	card_intrepidsailor.card_values = {"min_card_amount": 4,
 		"max_card_amount": 4}
-	card_intrepidsailor.card_upgrade_value_improvements = {"damage":1,"min_card_amount": 2,"max_card_amount": 2}
+	card_intrepidsailor.card_upgrade_value_improvements = {"min_card_amount": 2,"max_card_amount": 2}
 	card_intrepidsailor.card_play_actions.append(wield_action.duplicate())
 	card_intrepidsailor.card_play_actions.append(
 		{
-		Scripts.ACTION_ATTACK_GENERATOR: {
+		Scripts.ACTION_ATTACK_GENERATOR: {"damage": 6,"number_of_attacks":1, 
 			"time_delay":0.5
 		}
 		})
@@ -8250,7 +8250,7 @@ func add_cards_green() -> void:
 	card_pantryraider.card_color_id = "color_{0}".format([color])
 	card_pantryraider.card_texture_path = "external/sprites/cards/jade/23_pantryraider.png"
 	card_pantryraider.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_pantryraider.card_description = "ON DRAW: Search for [min_card_amount] non-Grain food cards and put them into your hand.\n\nExplore X{0}, where X is the number of generated cards in your hand."
+	card_pantryraider.card_description = "ON DRAW: Search for [min_card_amount] non-Grain food cards and put them into your hand.\n\nExplore X{0}, where X is the number of generated cards in your hand.".format([Card.EXPLORE_ICON_KEYWORD])
 	#card_pantryraider.card_keyword_object_ids = ["keyword_grain","keyword_fish"]
 	card_pantryraider.card_type = CardData.CARD_TYPES.FACTION
 	card_pantryraider.card_subtype = CardData.CARD_SUBTYPES.JADE
