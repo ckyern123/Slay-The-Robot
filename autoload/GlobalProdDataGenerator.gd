@@ -9275,11 +9275,11 @@ func add_cards_gold() -> void:
 				Scripts.ACTION_VALIDATOR:
 					{
 						"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],
-						"passed_action_data":[{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_ADD_INSIGHT:{}},{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"card_properties": {"card_energy_cost":2}}}]
+						"passed_action_data":[{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_ADD_INSIGHT:{}},{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"pick_played_card":true,"modify_parent_card":false, "card_properties": {"card_energy_cost":2}}}]
 					}
 			}]
 	card_cengkihascetic.card_play_actions.append(influence_action.duplicate())
-	card_cengkihascetic.card_discard_actions = [{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"card_properties": {"card_energy_cost":1}}}]
+	card_cengkihascetic.card_discard_actions = [{Scripts.ACTION_CHANGE_CARD_PROPERTIES:{"pick_played_card":true,"modify_parent_card":false,"card_properties": {"card_energy_cost":1}}}]
 	card_cengkihascetic.card_draw_actions = start_action_data.duplicate()
 	card_cengkihascetic.card_end_of_turn_actions = end_action_data.duplicate()
 	Global.register_rod(card_cengkihascetic)

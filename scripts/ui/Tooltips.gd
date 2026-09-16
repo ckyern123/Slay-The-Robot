@@ -139,6 +139,8 @@ func display_card_keywords(card: Card) -> void:
 	
 	# use remaining screen size to determine which side of the card should display
 	var screen_size: Vector2 = DisplayServer.window_get_size()
+	if screen_size.x > 1920:
+		screen_size = Vector2(1920,1080)
 	var card_visual_global_pos: Vector2 = card.card_visual.global_position
 	var card_right_side_pos: Vector2 = card_visual_global_pos + Vector2(card.size.x + CARD_KEYWORD_PANEL_MARGIN_X, 0)
 	var card_left_side_pos: Vector2 = card_visual_global_pos - Vector2(keyword_container.size.x + CARD_KEYWORD_PANEL_MARGIN_X, 0)
