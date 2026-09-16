@@ -2004,7 +2004,7 @@ func add_events() -> void:
 		{"field_patch": 1},
 		{"rock": 1,"field_patch": 1},
 		{"rock": 1, "pond": 1},
-		{"animalherd": 0.5, "charged_vista":1}
+		{"animalherd": 0.5, "chargedvista":1}
 		]
 	
 	Global.register_rod(event_act_1_medium_plains_2)
@@ -2032,8 +2032,8 @@ func add_events() -> void:
 	event_act_1_hard_plains_2.event_death_message_bbcode = "Died to easy event"
 	event_act_1_hard_plains_2.event_weighted_enemy_object_ids = [
 		{"field_patch": 1},
-		{"rock": 1,"charged_vista": 0.5},
-		{"rock": 1, "charged_vista": 0.5},
+		{"rock": 1,"chargedvista": 0.5},
+		{"rock": 1, "chargedvista": 0.5},
 		{"animalherd": 1}
 		]
 	
@@ -5944,8 +5944,8 @@ func add_cards_red() -> void:
 	card_obsessivecook.card_requires_target = false
 	card_obsessivecook.card_is_playable = true
 	card_obsessivecook.card_values = {"food_amount":-1}
-	card_obsessivecook.card_draw_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"food_amount":-1}}},{Scripts.ACTION_ADD_FOOD:{}}]
-	card_obsessivecook.card_end_of_turn_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"changed_card_values":{"food_amount":-1}}}, {Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_delicacy","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	card_obsessivecook.card_draw_actions = [{Scripts.ACTION_ADD_FOOD:{}},{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"food_amount":-1}}}]
+	card_obsessivecook.card_play_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"new_card_values":{"food_amount":-1}}}, {Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_delicacy","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
 	Global.register_rod(card_obsessivecook)
 	
 	var card_endlessminer: CardData = CardData.new("card_endlessminer")
@@ -5962,7 +5962,7 @@ func add_cards_red() -> void:
 	card_endlessminer.card_is_playable = true
 	card_endlessminer.card_values = {"ore_amount":-1,"number_of_cards":1}
 	card_endlessminer.card_draw_actions = [{Scripts.ACTION_IMPROVE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true, "card_value_improvements":{"number_of_cards":1, "ore_amount":-1}}},{Scripts.ACTION_ADD_ORE:{}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rock","action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
-	card_endlessminer.card_end_of_turn_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"changed_card_values":{"ore_amount":-1,"number_of_cards":1}}}]
+	card_endlessminer.card_end_of_turn_actions = [{Scripts.ACTION_CHANGE_CARD_VALUES:{"modify_parent_card":false, "pick_played_card":true,"new_card_values":{"ore_amount":-1,"number_of_cards":1}}}]
 	Global.register_rod(card_endlessminer)
 	
 	var card_naiveconstructor: CardData = CardData.new("card_naiveconstructor")
@@ -6408,7 +6408,7 @@ func add_cards_purple() -> void:
 	Global.register_rod(card_minnowtrader)
 	
 	var card_pearldancer: CardData = CardData.new("card_pearldancer")
-	card_pearldancer.card_name = "Minnow Trader"
+	card_pearldancer.card_name = "Pearl Dancer"
 	card_pearldancer.card_color_id = "color_{0}".format([color])
 	card_pearldancer.card_texture_path = "external/sprites/cards/pearl/20_pearldancer.png"
 	card_pearldancer.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"

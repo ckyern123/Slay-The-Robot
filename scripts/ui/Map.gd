@@ -12,9 +12,6 @@ var can_travel: bool = false	# if clicking on a location brings you to the next 
 ## Adds a margin to the bottom of the map display
 const MAP_Y_MARGIN: float = 300
 #const MAP_X_MARGIN: float = 0
-func _process(delta:float) -> void:
-	if Input.is_action_just_released("escape"):
-		_on_back_button_up()
 
 func _ready():
 	map_button.button_up.connect(_on_map_button_up)

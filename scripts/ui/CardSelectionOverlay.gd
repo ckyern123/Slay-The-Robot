@@ -23,9 +23,7 @@ func _ready():
 	Signals.run_started.connect(_on_run_started)
 	Signals.run_ended.connect(_on_run_ended)
 
-func _process(delta:float) -> void:
-	if Input.is_action_just_released("escape"):
-		_on_back_button_up()
+
 func _on_card_pick_requested(card_pick_action: ActionBasePickCards):
 	if card_pick_action != null:
 		if HandManager.DECK_PICK_TYPES.has(card_pick_action.get_card_pick_type()):
@@ -134,6 +132,9 @@ func view_discard() -> void:
 func view_exhaust() -> void:
 	set_card_mode(CARD_MODES.VIEW)
 	populate_cards(HandManager.player_exhaust)
+
+func can_back_out() -> bool:
+	return back_rect.visible
 	
 func _on_run_started():
 	visible = false

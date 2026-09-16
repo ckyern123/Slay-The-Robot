@@ -322,12 +322,12 @@ func improve_card_values(card_value_improvements: Dictionary[String, int]) -> vo
 			# add to existing value
 			if improve_by_value is int:
 				# add numbers to numbers
-				card_values[key_name] = max(0, card_values[key_name] + improve_by_value	)
+				card_values[key_name] = card_values[key_name] + improve_by_value
 			if improve_by_value is Dictionary:
 				# add all parallel dictionary keys
 				if card_values[key_name] is Dictionary:
 					for sub_key_name in improve_by_value:
-						card_values[key_name][sub_key_name] = max(0, card_values[key_name][sub_key_name] + improve_by_value[sub_key_name])
+						card_values[key_name][sub_key_name] = card_values[key_name][sub_key_name] + improve_by_value[sub_key_name]
 		else:
 			# overwrite non existing keys
 			card_values[key_name] = improve_by_value

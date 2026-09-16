@@ -11,7 +11,7 @@ const EMBEDDED_IMAGE_SIZE: int = 36
 @onready var size_label: RichTextLabel = %SizeLabel
 @onready var room_label: RichTextLabel = %RoomLabel
 @onready var objectives_label: RichTextLabel = %ObjectivesLabel
-
+@onready var pause_button: TextureButton = %PauseButton
 @onready var shop_refresh_label: RichTextLabel = %ShopRefreshLabel
 @onready var rot_label: RichTextLabel = %RotLabel
 @onready var food_fade_container: Node2D = %FoodFadeContainer
