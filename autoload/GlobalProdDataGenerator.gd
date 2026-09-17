@@ -1271,6 +1271,18 @@ func add_status_effects() -> void:
 	
 	Global.register_rod(status_effect_rock_reward)
 	
+		# Reward (simply to explain what objects of interest do)
+	var status_effect_ore_reward: StatusEffectData = StatusEffectData.new("status_effect_ore_reward")
+	status_effect_ore_reward.status_effect_name = "Ore"
+	status_effect_ore_reward.status_effect_texture_path = "external/sprites/status_effects/ore.svg"
+	status_effect_ore_reward.status_effect_is_visible = true
+	status_effect_ore_reward.status_effect_decay_rate = 0
+	status_effect_ore_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_ore_reward.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_ore_reward.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_ore_reward)
+	
 	# Reward (simply to explain what objects of interest do)
 	var status_effect_refresh_reward: StatusEffectData = StatusEffectData.new("status_effect_refresh_reward")
 	status_effect_refresh_reward.status_effect_name = "Shop Refresh"
@@ -1410,6 +1422,19 @@ func add_status_effects() -> void:
 	status_effect_fertiliser_reward.status_effect_action_process_times = []
 	
 	Global.register_rod(status_effect_fertiliser_reward)
+	
+	
+		# Reward (simply to explain what objects of interest do)
+	var status_effect_food_reward: StatusEffectData = StatusEffectData.new("status_effect_food_reward")
+	status_effect_food_reward.status_effect_name = "Food"
+	status_effect_food_reward.status_effect_texture_path = "external/sprites/status_effects/food.svg"
+	status_effect_food_reward.status_effect_is_visible = true
+	status_effect_food_reward.status_effect_decay_rate = 0
+	status_effect_food_reward.status_effect_decay_type = StatusEffectData.STATUS_EFFECT_DECAY_TYPES.LINEAR
+	status_effect_food_reward.status_effect_type = StatusEffectData.STATUS_EFFECT_TYPES.BUFF
+	status_effect_food_reward.status_effect_action_process_times = []
+	
+	Global.register_rod(status_effect_food_reward)
 	
 		# Reward (simply to explain what objects of interest do)
 	var status_effect_money_reward: StatusEffectData = StatusEffectData.new("status_effect_money_reward")
@@ -3329,7 +3354,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green"
+		"card_basic_explore_green", "card_basic_explore_green","card_culinarydruid"
 	]
 	
 	Global.register_rod(character_green)
@@ -3688,12 +3713,12 @@ func add_enemies() -> void:
 	field_patch.add_health_bounds(5, 7)
 	field_patch.add_health_bounds(8, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	field_patch.enemy_texture_path = "external/sprites/enemies/grass.png"
-	field_patch.enemy_initial_status_effects = {"status_effect_grain_reward": 2,"status_effect_fertiliser_reward":2}
+	field_patch.enemy_initial_status_effects = {"status_effect_grain_reward": 2,"status_effect_food_reward":2}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	field_patch.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	field_patch.enemy_actions_on_death = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser","artifact_charge_increase":2}},{	Scripts.ACTION_CREATE_CARDS: {
+	field_patch.enemy_actions_on_death = [{Scripts.ACTION_ADD_FOOD:{"food_amount":2}},{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_grain",
 		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
@@ -3713,7 +3738,7 @@ func add_enemies() -> void:
 	mound.enemy_name = "Mound"
 	mound.add_health_bounds(12, 15)
 	mound.add_health_bounds(16, 18, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
-	mound.enemy_initial_status_effects = {"status_effect_root_reward": 2,"status_effect_fertiliser_reward":2}
+	mound.enemy_initial_status_effects = {"status_effect_root_reward": 2,"status_effect_food_reward":4}
 	mound.enemy_texture_path = "external/sprites/enemies/hills.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	mound.add_intent_state([
@@ -3723,7 +3748,7 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_root",
 		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}},{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser","artifact_charge_increase":2}}]
+		}},{Scripts.ACTION_ADD_FOOD:{"food_amount":4}}]
 	# an attack that hits harder on higher difficulties
 	mound.add_intent_state(basic_states)
 		
@@ -3741,7 +3766,7 @@ func add_enemies() -> void:
 	rock.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	rock.enemy_texture_path = "external/sprites/enemies/stone-pile.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
-	rock.enemy_initial_status_effects = {"status_effect_rock_reward": 2}
+	rock.enemy_initial_status_effects = {"status_effect_rock_reward": 2,"status_effect_ore_reward":1}
 	rock.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
@@ -3749,7 +3774,7 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_rock",
 		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}}]
+		}},{Scripts.ACTION_ADD_ORE:{"ore_amount":1}}]
 	# an attack that hits harder on higher difficulties
 	rock.add_intent_state(basic_states)
 		
@@ -3766,7 +3791,7 @@ func add_enemies() -> void:
 	pond.add_health_bounds(5, 7)
 	pond.add_health_bounds(9, 11, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	pond.enemy_texture_path = "external/sprites/enemies/lily-pads.png"
-	pond.enemy_initial_status_effects = {"status_effect_fish_reward": 2}
+	pond.enemy_initial_status_effects = {"status_effect_fish_reward": 2,"status_effect_food_reward":1}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	pond.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -3775,7 +3800,7 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_fish",
 		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}}]
+		}},{Scripts.ACTION_ADD_FOOD:{"food_amount":2}}]
 	# an attack that hits harder on higher difficulties
 	pond.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3795,12 +3820,12 @@ func add_enemies() -> void:
 	animalherd.add_health_bounds(15, 17)
 	animalherd.add_health_bounds(19, 21, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	animalherd.enemy_texture_path = "external/sprites/enemies/herd.png"
-	animalherd.enemy_initial_status_effects = {"status_effect_room_reward": 2,"status_effect_fertiliser_reward":5}
+	animalherd.enemy_initial_status_effects = {"status_effect_room_reward": 2,"status_effect_fertiliser_reward":6,"status_effect_food_reward":6}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	animalherd.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	animalherd.enemy_actions_on_death = [{Scripts.ACTION_ADD_ROOM:{"room_amount": 2}},{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser","artifact_charge_increase":5}}]
+	animalherd.enemy_actions_on_death = [{Scripts.ACTION_ADD_ROOM:{"room_amount": 2}},{Scripts.ACTION_ADD_FOOD:{"food_amount":6}}, {Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_id":"artifact_fertiliser","artifact_charge_increase":6}}]
 	# an attack that hits harder on higher difficulties
 	animalherd.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3826,7 +3851,7 @@ func add_enemies() -> void:
 	chargedvista.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	chargedvista.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_insight_reward": 2,"status_effect_room_reward": 2,"status_effect_rattle":1,"status_effect_elite":1}
+	chargedvista.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_insight_reward": 3,"status_effect_room_reward": 2,"status_effect_rattle":1,"status_effect_elite":1}
 	chargedvista.enemy_actions_on_death = [	{
 		Scripts.ACTION_PICK_CARDS: {
 			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
@@ -3842,7 +3867,7 @@ func add_enemies() -> void:
 			"draft_is_weighted": false,
 			"draft_use_pity_system": false,
 			}
-		},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":2}},{Scripts.ACTION_ADD_ROOM:{"room_amount": 2}}]
+		},{Scripts.ACTION_ADD_INSIGHT:{"insight_amount":3}},{Scripts.ACTION_ADD_ROOM:{"room_amount": 2}}]
 	# an attack that hits harder on higher difficulties
 	var chargedvista_status_actions: Array[Dictionary] = [{
 		Scripts.ACTION_PICK_CARDS: {
@@ -3884,7 +3909,7 @@ func add_enemies() -> void:
 	boulder.add_health_bounds(11, 13, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	boulder.enemy_texture_path = "external/sprites/enemies/rock.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
-	boulder.enemy_initial_status_effects = {"status_effect_rock_reward": 2}
+	boulder.enemy_initial_status_effects = {"status_effect_rock_reward": 2,"status_effect_ore_reward":2}
 	boulder.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
@@ -3892,7 +3917,7 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_rock",
 		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}}]
+		}},{Scripts.ACTION_ADD_ORE:{"ore_amount":2}}]
 	# an attack that hits harder on higher difficulties
 	boulder.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3912,11 +3937,11 @@ func add_enemies() -> void:
 	wateringhole.add_health_bounds(11, 13, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	wateringhole.enemy_texture_path = "external/sprites/enemies/wateringhole.png"
 	# initial dummy state used to map initial attack pattern weights on starting combat
-	wateringhole.enemy_initial_status_effects = {"status_effect_money_reward": 2,"status_effect_fertiliser_reward": 2,"status_effect_refresh_reward": 3}
+	wateringhole.enemy_initial_status_effects = {"status_effect_money_reward": 2,"status_effect_food_reward": 2,"status_effect_refresh_reward": 3}
 	wateringhole.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	wateringhole.enemy_actions_on_death = [{Scripts.ACTION_ADD_MONEY:{"money_amount":2}},{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{"artifact_charge_increase":2}},{Scripts.ACTION_ADD_REFRESH:{"refresh_amount":3}}]
+	wateringhole.enemy_actions_on_death = [{Scripts.ACTION_ADD_MONEY:{"money_amount":2}},{Scripts.ACTION_ADD_FOOD:{"food_amount":2}},{Scripts.ACTION_ADD_REFRESH:{"refresh_amount":3}}]
 	# an attack that hits harder on higher difficulties
 	wateringhole.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3943,8 +3968,8 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_rock",
 		"number_of_cards":4,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}}]
-	bigboulder.enemy_initial_status_effects = {"status_effect_rock_reward": 4}
+		}},{Scripts.ACTION_ADD_ORE:{"ore_amount":5}}]
+	bigboulder.enemy_initial_status_effects = {"status_effect_rock_reward": 4,"status_effect_ore_reward":5}
 	# an attack that hits harder on higher difficulties
 	bigboulder.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -3996,8 +4021,8 @@ func add_enemies() -> void:
 	islandanomaly.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	islandanomaly.enemy_initial_status_effects = {"status_effect_insight_reward": 5}
-	islandanomaly.enemy_actions_on_death = [{Scripts.ACTION_ADD_INSIGHT:{"insight_amount": 5}}]
+	islandanomaly.enemy_initial_status_effects = {"status_effect_insight_reward": 6}
+	islandanomaly.enemy_actions_on_death = [{Scripts.ACTION_ADD_INSIGHT:{"insight_amount": 6}}]
 	# an attack that hits harder on higher difficulties
 	islandanomaly.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -4018,7 +4043,7 @@ func add_enemies() -> void:
 	shore.add_health_bounds(5, 7)
 	shore.add_health_bounds(12, 14, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	shore.enemy_texture_path = "external/sprites/enemies/fish-escape.png"
-	shore.enemy_initial_status_effects = {"status_effect_fish_reward": 2}
+	shore.enemy_initial_status_effects = {"status_effect_fish_reward": 2,"status_effect_money_reward":2}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	shore.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -4027,7 +4052,7 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_fish",
 		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}}]
+		}},{Scripts.ACTION_ADD_MONEY:{"money_amount":2}}]
 	# an attack that hits harder on higher difficulties
 	shore.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -4072,7 +4097,7 @@ func add_enemies() -> void:
 	cave.add_health_bounds(25, 32)
 	cave.add_health_bounds(35, 40, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	cave.enemy_texture_path = "external/sprites/enemies/cave-entrance.png"
-	cave.enemy_initial_status_effects = {"status_effect_treasure_reward": 2, "status_effect_draft_reward": 1}
+	cave.enemy_initial_status_effects = {"status_effect_treasure_reward": 3, "status_effect_ore_reward":3, "status_effect_draft_reward": 1}
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	cave.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
@@ -4096,7 +4121,7 @@ func add_enemies() -> void:
 			"draft_is_weighted": false,
 			"draft_use_pity_system": false,
 			}
-		}]
+		},{Scripts.ACTION_ADD_ORE:{"ore_amount":3}}]
 	# an attack that hits harder on higher difficulties
 	cave.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -4120,7 +4145,7 @@ func add_enemies() -> void:
 	sandbed.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	sandbed.enemy_initial_status_effects = {"status_effect_treasure_reward": 2}
+	sandbed.enemy_initial_status_effects = {"status_effect_money_reward":2, "status_effect_treasure_reward": 2,"status_effect_refresh_reward":2}
 	sandbed.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_treasure",
 		"number_of_cards":2,
@@ -4299,7 +4324,7 @@ func add_enemies() -> void:
 	den.add_health_bounds(25, 27)
 	den.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	den.enemy_texture_path = "external/sprites/enemies/hobbit-dswelling.png"
-	den.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_treasure_reward": 3, "status_effect_rattle":1,"status_effect_elite":1}
+	den.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_treasure_reward": 3,"status_effect_food_reward":5, "status_effect_rattle":1,"status_effect_elite":1}
 	den.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var den_status_actions: Array[Dictionary] = [{
@@ -4343,7 +4368,7 @@ func add_enemies() -> void:
 		"created_card_object_id": "card_treasure",
 		"number_of_cards":3,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}}]
+		}},{Scripts.ACTION_ADD_FOOD:{"food_amount":5}}]
 	# an attack that hits harder on higher difficulties
 	den.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1},den_status_actions),
@@ -4363,7 +4388,7 @@ func add_enemies() -> void:
 	hideout.add_health_bounds(25, 27)
 	hideout.add_health_bounds(29, 31, DIFFICULTY_STANDARD_ENEMIES_HARDER) # gets more health on later difficulty
 	hideout.enemy_texture_path = "external/sprites/enemies/castle.png"
-	hideout.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_spice_reward": 2,"status_effect_rattle":1,"status_effect_elite":1}
+	hideout.enemy_initial_status_effects = {"status_effect_draft_improved_reward":1, "status_effect_spice_reward": 2, "status_effect_ore_reward":4, "status_effect_rattle":1,"status_effect_elite":1}
 	hideout.enemy_type = EnemyData.ENEMY_TYPES.MINIBOSS
 	# initial dummy state used to map initial attack pattern weights on starting combat
 	var hideout_status_actions: Array[Dictionary] = [{
@@ -4407,7 +4432,7 @@ func add_enemies() -> void:
 			"draft_is_weighted": false,
 			"draft_use_pity_system": false,
 			}
-		}]
+		},{Scripts.ACTION_ADD_ORE:{"ore_amount":4}}]
 	# an attack that hits harder on higher difficulties
 	hideout.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, "",{"intent_block":1},hideout_status_actions),
@@ -4495,7 +4520,7 @@ func add_enemies() -> void:
 	brackishbeds.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	brackishbeds.enemy_initial_status_effects = {"status_effect_draft_reward":1}
+	brackishbeds.enemy_initial_status_effects = {"status_effect_draft_reward":1,"status_effect_draft_trade_reward":1}
 	brackishbeds.enemy_actions_on_death = [{
 		Scripts.ACTION_PICK_CARDS: {
 			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
@@ -4511,7 +4536,17 @@ func add_enemies() -> void:
 			"draft_is_weighted": false,
 			"draft_use_pity_system": false,
 			}
-		}]
+		},{Scripts.ACTION_PICK_CARDS:
+		{
+			"card_pick_type": ActionBasePickCards.PICK_DRAFT,
+			"pick_draft_cards": false,
+			"draft_from_card_pool": true,
+			"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}},{Scripts.ACTION_ADD_CARDS_TO_DECK:{}}],
+			"validator_data": [],
+			# use same rng as player drafting so it counts as draft
+			"rng_name": "rng_card_drafting",
+			"draft_card_pack_id": "card_pack_grey"
+		}}]
 	# an attack that hits harder on higher difficulties
 	brackishbeds.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -5626,7 +5661,7 @@ func add_cards_trade() -> void:
 	card_trade6.card_requires_target = false
 	card_trade6.card_play_destination = HandManager.EXHAUST_PILE
 	card_trade6.card_values = {"insight_amount": 1,"money_amount":-4,"money_required":4}
-	card_trade6.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":3}}]
+	card_trade6.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":4}}]
 	card_trade6.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
@@ -5652,7 +5687,7 @@ func add_cards_trade() -> void:
 	card_trade7.card_requires_target = false
 	card_trade7.card_play_destination = HandManager.EXHAUST_PILE
 	card_trade7.card_values = {"room_amount": 1,"money_amount":-4,"money_required":4}
-	card_trade7.card_play_validators = [{Scripts.VALIDATOR_MONEY:{}}]
+	card_trade7.card_play_validators = [{Scripts.VALIDATOR_MONEY:{"money_required":4}}]
 	card_trade7.card_play_actions = [
 		{
 			Scripts.ACTION_ADD_MONEY:
@@ -8464,9 +8499,9 @@ func add_cards_green() -> void:
 	card_culinarydruid.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_culinarydruid.card_rarity = CardData.CARD_RARITIES.RARE
 	card_culinarydruid.card_requires_target = false
-	card_culinarydruid.card_influence = 5
-	card_culinarydruid.card_energy_cost = 3
-	card_culinarydruid.card_values = {"created_card_object_id":1,"number_of_cards":1}
+	card_culinarydruid.card_influence = 4
+	card_culinarydruid.card_energy_cost = 2
+	card_culinarydruid.card_values = {"created_card_object_id":"card_delicacy","number_of_cards":1}
 	card_culinarydruid.card_first_upgrade_property_changes = {"card_energy_cost":2}
 	card_culinarydruid.card_play_actions = [
 		{

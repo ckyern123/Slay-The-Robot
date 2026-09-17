@@ -7,7 +7,7 @@ func perform_action():
 	# overrides user card selection with generated cards
 	var action_interceptor_processors: Array[ActionInterceptorProcessor] = _intercept_action([])
 	for action_interceptor_processor in action_interceptor_processors:
-		var created_card_object_id: String = action_interceptor_processor.get_shadowed_action_values("created_card_object_id", "")
+		var created_card_object_id: String = action_interceptor_processor.get_shadowed_action_values("created_card_object_id", "card_delicacy")
 		var number_of_cards: int = action_interceptor_processor.get_shadowed_action_values("number_of_cards", 1)
 		#var insight_required: int = action_interceptor_processor.get_shadowed_action_values("insight_required", 1)
 		var food_required: int = action_interceptor_processor.get_shadowed_action_values("food_required", 3)

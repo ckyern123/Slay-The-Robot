@@ -55,8 +55,10 @@
 [ext_resource type="Texture2D" uid="uid://bo6n833g5bte1" path="res://sprites/menu.svg" id="32_nddw4"]
 [ext_resource type="Texture2D" uid="uid://cnaunjflinprt" path="res://sprites/suits.svg" id="35_jiqw6"]
 [ext_resource type="Texture2D" uid="uid://dqjugqp1n72r7" path="res://sprites/Sprites/UI_Flat_Frame01a.png" id="38_ug4o1"]
+[ext_resource type="Texture2D" uid="uid://by1gks8in6eh4" path="res://sprites/hades-symbol(1).svg" id="39_4m3bv"]
 [ext_resource type="Script" uid="uid://ffsrgwkkas86" path="res://scenes/ui/AscendButton.gd" id="39_8b2qk"]
 [ext_resource type="Texture2D" uid="uid://daoiik3k5jxvw" path="res://sprites/card-draw.svg" id="39_bf4by"]
+[ext_resource type="Texture2D" uid="uid://crys0hf62prqk" path="res://sprites/upgrade.svg" id="40_gndye"]
 [ext_resource type="Texture2D" uid="uid://bxodxn727oyk4" path="res://sprites/discard.svg" id="40_r05d4"]
 [ext_resource type="Texture2D" uid="uid://kimnalvtilo3" path="res://sprites/map.svg" id="40_v75fn"]
 [ext_resource type="Script" uid="uid://cv2h3ccb6uytr" path="res://scripts/ui/Tooltips.gd" id="40_wtekq"]
@@ -2069,6 +2071,42 @@ unique_name_in_owner = true
 visible = false
 position = Vector2(267, 7)
 
+[node name="marker" type="TextureRect" parent="RunScreen/Combat/Player" unique_id=788316017]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.124000005
+anchor_bottom = 0.14500001
+offset_left = 81.0
+offset_top = 99.0
+offset_right = 81.2
+offset_bottom = 100.655
+texture = ExtResource("39_4m3bv")
+expand_mode = 1
+
+[node name="marker2" type="TextureRect" parent="RunScreen/Combat/Player" unique_id=1732754781]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.124000005
+anchor_bottom = 0.14500001
+offset_left = 155.0
+offset_top = 99.0
+offset_right = 155.2
+offset_bottom = 100.655
+texture = ExtResource("39_4m3bv")
+expand_mode = 1
+
+[node name="marker3" type="TextureRect" parent="RunScreen/Combat/Player" unique_id=1740908564]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.124000005
+anchor_bottom = 0.14500001
+offset_left = 230.0
+offset_top = 99.0
+offset_right = 230.2
+offset_bottom = 100.655
+texture = ExtResource("39_4m3bv")
+expand_mode = 1
+
 [node name="AscendButton" type="Button" parent="RunScreen/Combat/Player" unique_id=68841014]
 unique_name_in_owner = true
 layout_mode = 0
@@ -2076,7 +2114,10 @@ offset_left = 70.0
 offset_top = 158.0
 offset_right = 270.0
 offset_bottom = 208.0
-text = "ASCEND"
+text = "ASCEND FACTION"
+icon = ExtResource("40_gndye")
+alignment = 0
+expand_icon = true
 script = ExtResource("39_8b2qk")
 
 [node name="EnemyContainer" type="Control" parent="RunScreen/Combat" unique_id=754159237]

@@ -186,7 +186,7 @@ func floor_recursive(location_data: LocationData, act_data: ActData, floor_dict:
 			location_data.difficulty = 1
 			if location_data.location_type == LocationData.LOCATION_TYPES.PLAINS:
 				location_data.location_event_pool_object_id = act_data.act_medium_plains_event_pool_object_id
-				location_data.icon_texture_path = "external/sprites/locations/plains_med.svg"
+				location_data.icon_texture_path = "external/sprites/locations/plains.svg"
 				location_data.tooltip_bbcode = "Plains Medium:\nFood>Ore>Room\nFeatures: Fertilise, Grain, Rock"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/plains.png"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.FOREST:
@@ -214,7 +214,7 @@ func floor_recursive(location_data: LocationData, act_data: ActData, floor_dict:
 			location_data.difficulty = 2
 			if location_data.location_type == LocationData.LOCATION_TYPES.PLAINS:
 				location_data.location_event_pool_object_id = act_data.act_hard_plains_event_pool_object_id
-				location_data.icon_texture_path = "external/sprites/locations/plains_hard.svg"
+				location_data.icon_texture_path = "external/sprites/locations/plains.svg"
 				location_data.tooltip_bbcode = "Plains Hard:\nFood>Ore>Room\nFeatures: Fertilise, Grain, Rock"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/plains.png"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.FOREST:
