@@ -591,7 +591,7 @@ func add_artifacts() -> void:
 	var artifact_repair_periodic: ArtifactData = ArtifactData.new("artifact_repair_periodic")
 	artifact_repair_periodic.artifact_name = "Smithy"
 	artifact_repair_periodic.artifact_texture_path = "external/sprites/artifacts/smithy.svg"
-	artifact_repair_periodic.artifact_description = "Repair a random Craft card in discard pile every 3 turns."
+	artifact_repair_periodic.artifact_description = "Repair 1 to a random Craft card in discard pile every 3 turns."
 	artifact_repair_periodic.artifact_shop_description = "Repair a random Craft card in discard pile every 3 turns."
 	artifact_repair_periodic.artifact_rarity = ArtifactData.ARTIFACT_RARITIES.SHOP
 	artifact_repair_periodic.artifact_turn_start_actions = [{Scripts.ACTION_INCREASE_ARTIFACT_CHARGE:{}}]
@@ -605,7 +605,7 @@ func add_artifacts() -> void:
 		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to Repair. {1} cards selected",
 		"validator_data": [
-			{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.CRAFT]}}
+			{Scripts.VALIDATOR_CARD_TAG: {"card_tags": ["tag_repair"]}}
 		],
 		"action_data": [
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
@@ -3354,7 +3354,7 @@ func add_characters() -> void:
 	character_green.character_starting_card_object_ids = [
 		"card_basic_ore_green", "card_basic_ore_green", "card_basic_explore_green", "card_basic_explore_green",
 		"card_basic_weave_green", "card_basic_money_green", "card_basic_money_green", "card_basic_explore_green", 
-		"card_basic_explore_green", "card_basic_explore_green","card_culinarydruid"
+		"card_basic_explore_green", "card_basic_explore_green"
 	]
 	
 	Global.register_rod(character_green)
@@ -4458,14 +4458,14 @@ func add_enemies() -> void:
 	dryfield.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	dryfield.enemy_initial_status_effects = {"status_effect_root_reward": 1, "status_effect_rock_reward": 1}
+	dryfield.enemy_initial_status_effects = {"status_effect_root_reward": 1, "status_effect_rock_reward": 2}
 	dryfield.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_root",
 		"number_of_cards":1,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
 		}},{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_rock",
-		"number_of_cards":1,
+		"number_of_cards":2,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
 		}}]
 	# an attack that hits harder on higher difficulties
@@ -4491,12 +4491,12 @@ func add_enemies() -> void:
 	mangroveroots.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	mangroveroots.enemy_initial_status_effects = {"status_effect_delicacy_reward": 1}
+	mangroveroots.enemy_initial_status_effects = {"status_effect_delicacy_reward": 1,"status_effect_ore_reward":2}
 	mangroveroots.enemy_actions_on_death = [{	Scripts.ACTION_CREATE_CARDS: {
 		"created_card_object_id": "card_delicacy",
 		"number_of_cards":1,
 		"action_data": [{Scripts.ACTION_DISCARD_CARDS: {}}]
-		}}]
+		}},{Scripts.ACTION_ADD_ORE:{"ore_amount":2}}]
 	# an attack that hits harder on higher difficulties
 	mangroveroots.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -4570,8 +4570,8 @@ func add_enemies() -> void:
 	infestedwaters.add_intent_state([
 		EnemyIntentData.new(EnemyIntentData.INTENT_INITIAL, DIFFICULTY_STARTING, 0, 0, "", 0, "", {"intent_block":1}),
 		])
-	infestedwaters.enemy_actions_on_death = [{Scripts.ACTION_ADD_INSIGHT:{"insight_amount": 1}}]
-	infestedwaters.enemy_initial_status_effects = {"status_effect_insight_reward": 1}
+	infestedwaters.enemy_actions_on_death = [{Scripts.ACTION_ADD_INSIGHT:{"insight_amount": 1}},{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rock","number_of_cards":1,"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	infestedwaters.enemy_initial_status_effects = {"status_effect_insight_reward": 1,"status_effect_rock_reward":1}
 	# an attack that hits harder on higher difficulties
 	infestedwaters.add_intent_state([
 		EnemyIntentData.new("intent_block", DIFFICULTY_STARTING, 0, 0, "", 0, ""),
@@ -5150,6 +5150,7 @@ func add_cards_misc() -> void:
 			}
 		}
 		]
+	card_root.card_tags = ["tag_charges"]
 	for action in uses_action_data.duplicate():
 		card_root.card_play_actions.append(action)
 	Global.register_rod(card_root)
@@ -5213,6 +5214,7 @@ func add_cards_misc() -> void:
 	card_scroll.card_values = {}
 	card_scroll.card_play_actions = [
 		]
+	card_scroll.card_tags = ["tag_repair"]
 	for action in uses_action_data.duplicate():
 		card_scroll.card_play_actions.append(action)
 	Global.register_rod(card_scroll)
@@ -5229,6 +5231,7 @@ func add_cards_misc() -> void:
 	card_missives.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_missives.card_requires_target = false
 	card_missives.card_is_retained = true
+	card_missives.card_tags = ["tag_repair"]
 	card_missives.card_values = {"draw_count": 4,"discard_count":2}
 	var sweep_duplicate_data: Array[Dictionary] = sweep_action_data.duplicate()
 	card_missives.card_play_actions = sweep_duplicate_data
@@ -5246,6 +5249,7 @@ func add_cards_misc() -> void:
 	card_delicacy.card_energy_cost = 0
 	card_delicacy.card_influence = 3
 	card_delicacy.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_delicacy.card_tags = ["tag_repair"]
 	card_delicacy.card_requires_target = false
 	card_delicacy.card_is_retained = true
 	card_delicacy.card_values = {"energy_amount":2}
@@ -5269,6 +5273,7 @@ func add_cards_misc() -> void:
 	card_steelflame.card_energy_cost = 0
 	card_steelflame.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_steelflame.card_influence = 3
+	card_steelflame.card_tags = ["tag_repair"]
 	card_steelflame.card_requires_target = true
 	card_steelflame.card_values = {"damage": 3, "number_of_attacks": 2, "card_influence": -1}
 	card_steelflame.card_play_actions = [
@@ -5295,6 +5300,7 @@ func add_cards_misc() -> void:
 	card_sword.card_energy_cost = 0
 	card_sword.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_sword.card_influence = 3
+	card_sword.card_tags = ["tag_repair"]
 	card_sword.card_requires_target = true
 	card_sword.card_values = {"damage": 2, "number_of_attacks": 1, "card_influence": -1}
 	card_sword.card_play_actions = [
@@ -5320,6 +5326,7 @@ func add_cards_misc() -> void:
 	card_treasure.card_energy_cost = 0
 	card_treasure.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_treasure.card_influence = 1
+	card_treasure.card_tags = ["tag_repair"]
 	card_treasure.card_requires_target = false
 	card_treasure.card_values = {"money_amount": 1, "card_influence": -1,"card_value_improvements":{"money_amount":1}}
 	card_treasure.card_play_actions = [
@@ -5381,13 +5388,14 @@ func add_cards_misc() -> void:
 	card_debt.card_name = "Debt"
 	card_debt.card_color_id = "color_{0}".format([color])
 	card_debt.card_texture_path = "external/sprites/cards/basic/cash.png"
-	card_debt.card_description = "Unplayable. Lose 1{0} at the end of turn.".format([Card.MONEY_ICON_KEYWORD])
+	card_debt.card_description = "Lose 1{0} at the end of turn.".format([Card.MONEY_ICON_KEYWORD])
 	card_debt.card_type = CardData.CARD_TYPES.CURSE
 	card_debt.card_energy_cost = 0
 	card_debt.card_rarity = CardData.CARD_RARITIES.GENERATED
 	card_debt.card_influence = 2
 	card_debt.card_requires_target = false
 	card_debt.card_is_playable = false
+	card_debt.card_tags = ["tag_charges"]
 	card_debt.card_end_of_turn_actions = [
 			# check flag when drawn	
 		{Scripts.ACTION_VALIDATOR: {
@@ -5438,6 +5446,23 @@ func add_cards_misc() -> void:
 	card_bandit.card_play_actions = [{Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION:{"card_destination": HandManager.EXHAUST_PILE}}]
 	card_bandit.card_end_of_turn_actions.append({Scripts.ACTION_ADD_FOOD:{"food_amount":-1}})
 	Global.register_rod(card_bandit)
+	
+	var card_banditveteran: CardData = CardData.new("card_banditveteran")
+	card_banditveteran.card_name = "Bandit Veteran"
+	card_banditveteran.card_color_id = "color_{0}".format([color])
+	card_banditveteran.card_texture_path = "external/sprites/cards/basic/02_sail.png"
+	card_banditveteran.card_description = "ON DRAW: Move this to the rightmost position in hand.\nLose 3{0} at the end of turn.".format([Card.FOOD_ICON_KEYWORD])
+	#card_banditveteran.card_keyword_object_ids = ["keyword_frontier"]
+	card_banditveteran.card_type = CardData.CARD_TYPES.CURSE
+	card_banditveteran.card_energy_cost = 0
+	card_banditveteran.card_rarity = CardData.CARD_RARITIES.GENERATED
+	card_banditveteran.card_influence = 0
+	card_banditveteran.card_requires_target = false
+	card_banditveteran.card_is_playable = false
+	card_banditveteran.card_play_validators = [{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}]
+	card_banditveteran.card_play_actions = [{Scripts.ACTION_CHANGE_CARD_PLAY_DESTINATION:{"card_destination": HandManager.EXHAUST_PILE}}]
+	card_banditveteran.card_end_of_turn_actions.append({Scripts.ACTION_ADD_FOOD:{"food_amount":-3}})
+	Global.register_rod(card_banditveteran)
 
 	var card_rebel: CardData = CardData.new("card_rebel")
 	card_rebel.card_name = "Rebel"
@@ -6074,23 +6099,23 @@ func add_cards_red() -> void:
 	card_partisanattendant.card_name = "Partisan Attendant"
 	card_partisanattendant.card_color_id = "color_{0}".format([color])
 	card_partisanattendant.card_texture_path = "external/sprites/cards/boss/partisanattendant.png"
-	card_partisanattendant.card_description = "ON DRAW: Rattle and retain a random card in hand by 3.\n\nAppease a random card in discard pile by 4".format([Card.FOOD_ICON_KEYWORD])
+	card_partisanattendant.card_description = "END OF TURN: Rattle and retain a random card in hand by 4.\n\nAppease a random card in discard pile by 4".format([Card.FOOD_ICON_KEYWORD])
 	card_partisanattendant.card_type = CardData.CARD_TYPES.CURSE
 	card_partisanattendant.card_keyword_object_ids = ["keyword_rattle","keyword_appease"]
-	card_partisanattendant.card_energy_cost = 1
+	card_partisanattendant.card_energy_cost = 3
 	card_partisanattendant.card_influence = 0
 	card_partisanattendant.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_partisanattendant.card_requires_target = false
 	card_partisanattendant.card_is_playable = true
 	card_partisanattendant.card_values = {"min_card_amount":1,"max_card_amount":1}
-	card_partisanattendant.card_draw_actions = [{
+	card_partisanattendant.card_end_of_turn_actions = [{
 		Scripts.ACTION_PICK_CARDS: {
 		"min_cards_are_required_for_action": false,
 		"random_selection": true,
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
 		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}],
-		"action_data":[{Scripts.ACTION_RETAIN_CARDS:{}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-3}}]
+		"action_data":[{Scripts.ACTION_RETAIN_CARDS:{}},{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-4}}]
 		}
 	}]
 	card_partisanattendant.card_play_actions = [{
@@ -6124,7 +6149,7 @@ func add_cards_red() -> void:
 		"max_card_amount":1,
 		"min_cards_are_required_for_action": false,
 		"random_selection": true,
-		"card_pick_type": HandManager.HAND_PILE,
+		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
 		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}}],
 		"action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-1}}]
@@ -6149,7 +6174,7 @@ func add_cards_red() -> void:
 	card_witchofdecay.card_name = "Witch of Decay"
 	card_witchofdecay.card_color_id = "color_{0}".format([color])
 	card_witchofdecay.card_texture_path = "external/sprites/cards/boss/witchofdecay.png"
-	card_witchofdecay.card_description = "END TURN DISCARD: Reduce the use of a random Craft card in discard pile by 1.\n\nON DISCARD: Repair all Craft cards by 1".format([Card.FOOD_ICON_KEYWORD])
+	card_witchofdecay.card_description = "END TURN DISCARD: Reduce the use of a random Craft card in discard pile by 1.\n\nON DISCARD: Repair all Craft cards by 1.".format([Card.FOOD_ICON_KEYWORD])
 	card_witchofdecay.card_type = CardData.CARD_TYPES.CURSE
 	card_witchofdecay.card_keyword_object_ids = ["keyword_repair"]
 	card_witchofdecay.card_energy_cost = 1
@@ -6165,7 +6190,7 @@ func add_cards_red() -> void:
 		"random_selection": true,
 		"card_pick_type": HandManager.HAND_PILE,
 		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
-		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.CRAFT]}}],
+		"validator_data":[{Scripts.VALIDATOR_CARD_TAG:{"card_tags":["tag_repair"]}}],
 		"action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":-1}}]
 		}
 	}]	
@@ -6178,7 +6203,7 @@ func add_cards_red() -> void:
 		"random_selection": true,
 		"card_pick_type": HandManager.DISCARD_PILE,
 		"card_pick_text": "Choose {0} card to improve. {1} cards selected",
-		"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.CRAFT]}}],
+		"validator_data":[{Scripts.VALIDATOR_CARD_TAG:{"card_tags":["tag_repair"]}}],
 		"action_data":[{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{"card_influence":1}}]
 		}
 	}]
@@ -6341,7 +6366,7 @@ func add_cards_purple() -> void:
 	card_underdocktrade.card_color_id = "color_{0}".format([color])
 	card_underdocktrade.card_texture_path = "external/sprites/cards/pearl/22_underdocktrade.png"
 	card_underdocktrade.texture_bg_path = "external/sprites/cards/frames/pearlframe.png"
-	card_underdocktrade.card_description = "Discard a card, then draft a Trade Order. Put it into your hand. Tick Down Shop Refresh by [refresh_amount]."
+	card_underdocktrade.card_description = "Discard the rightmost card, then draft a Trade Order. Put it into your hand. Tick Down Shop Refresh by [refresh_amount]."
 	card_underdocktrade.card_type = CardData.CARD_TYPES.FACTION
 	card_underdocktrade.card_subtype = CardData.CARD_SUBTYPES.PEARL
 	card_underdocktrade.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -6697,8 +6722,8 @@ func add_cards_purple() -> void:
 		{
 		Scripts.ACTION_PICK_CARDS:
 			{
-			"min_card_amount": 1,
-			"min_cards_are_required_for_action": true,
+			"min_card_amount": 0,
+			"min_cards_are_required_for_action": false,
 			"random_selection": false,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to return to hand. {1} cards selected",
@@ -7321,7 +7346,7 @@ func add_cards_black() -> void:
 	card_flintlockmage.card_color_id = "color_{0}".format([color])
 	card_flintlockmage.card_texture_path = "external/sprites/cards/aniseed/07_flintlockmage.png"
 	card_flintlockmage.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_flintlockmage.card_description = "Forge [number_of_cards] Sword(s). Sift [draw_count] for Craft cards."
+	card_flintlockmage.card_description = "Forge [number_of_cards] Sword(s). Sift [draw_count] for Food cards."
 	card_flintlockmage.card_keyword_object_ids = ["keyword_forge","keyword_sword", "keyword_sift"]
 	card_flintlockmage.card_type = CardData.CARD_TYPES.FACTION
 	card_flintlockmage.card_subtype = CardData.CARD_SUBTYPES.ANISEED
@@ -7331,8 +7356,7 @@ func add_cards_black() -> void:
 	card_flintlockmage.card_values = {"ore_required":1, "ore_amount":-1,"created_card_object_id": "card_sword",  "number_of_cards": 1, "draw_count":5}
 	card_flintlockmage.card_upgrade_value_improvements = {"ore_required":1, "ore_amount":-1,"draw_count":1}
 	
-	var sift_food_duplicate: Array[Dictionary] = sift_food_data.duplicate()
-	card_flintlockmage.card_play_actions = sift_food_duplicate
+	card_flintlockmage.card_play_actions = sift_food_data.duplicate()
 	card_flintlockmage.card_play_actions.append(forge_action.duplicate())
 	card_flintlockmage.card_play_actions.append(influence_action.duplicate())
 	card_flintlockmage.card_draw_actions = start_action_data.duplicate()
@@ -7625,6 +7649,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to appease. {1} cards selected",
+			"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}},{Scripts.VALIDATOR_CARD_TAG:{"card_tags":["tag_repair"]}}],
 			"action_data": [
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"time_delay": 0.1,
@@ -7874,7 +7899,7 @@ func add_cards_green() -> void:
 	card_youngmentor.card_color_id = "color_{0}".format([color])
 	card_youngmentor.card_texture_path = "external/sprites/cards/jade/02_youngmentor.png"
 	card_youngmentor.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_youngmentor.card_description = "Return a card from your discard pile to your hand, then Appease/Repair it by [card_influence].".format([Card.EXPLORE_ICON_KEYWORD])
+	card_youngmentor.card_description = "Return a card from your discard pile to your hand, then Appease/Repair a card by 2 if possible.".format([Card.EXPLORE_ICON_KEYWORD])
 	card_youngmentor.card_keyword_object_ids = ["keyword_appease","keyword_repair"]
 	card_youngmentor.card_type = CardData.CARD_TYPES.FACTION
 	card_youngmentor.card_subtype = CardData.CARD_SUBTYPES.JADE
@@ -7894,8 +7919,8 @@ func add_cards_green() -> void:
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to return to hand. {1} cards selected",
 			"action_data": [
-			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {}},
-			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}}
+			{Scripts.ACTION_ADD_CARDS_TO_HAND:{}},
+			{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{}}
 			]
 			}
 		}
@@ -7910,7 +7935,7 @@ func add_cards_green() -> void:
 	card_luckfinder.card_color_id = "color_{0}".format([color])
 	card_luckfinder.card_texture_path = "external/sprites/cards/jade/03_luckfinder.png"
 	card_luckfinder.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_luckfinder.card_description = "Create [number_of_cards] Roots. If discard pile is empty, gain [ore_amount]{0}.".format([Card.ORE_ICON_KEYWORD])
+	card_luckfinder.card_description = "If discard pile is empty, gain [ore_amount]{0}. Then create [number_of_cards] Roots.".format([Card.ORE_ICON_KEYWORD])
 	card_luckfinder.card_type = CardData.CARD_TYPES.FACTION
 	card_luckfinder.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_luckfinder.card_rarity = CardData.CARD_RARITIES.COMMON
@@ -7919,10 +7944,10 @@ func add_cards_green() -> void:
 	card_luckfinder.card_influence = 4
 	card_luckfinder.card_values = {"created_card_object_id":"card_root","number_of_cards":2,"ore_amount":3}
 	card_luckfinder.card_upgrade_value_improvements = {"number_of_cards":1}
-	card_luckfinder.card_play_actions = [{Scripts.ACTION_VALIDATOR:{
+	card_luckfinder.card_play_actions = [{Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{Scripts.ACTION_VALIDATOR:{
 		"validator_data":[{Scripts.VALIDATOR_PILE_SIZE:{ "card_pick_type":HandManager.DISCARD_PILE,"operator":"<=", "comparison_value":0}}],
 		"passed_action_data":[{Scripts.ACTION_ADD_ORE:{"ore_amount":4}}]
-	}},{Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}}]
+	}}]
 	card_luckfinder.card_play_actions.append(influence_action.duplicate())
 	card_luckfinder.card_draw_actions = start_action_data.duplicate()
 	card_luckfinder.card_end_of_turn_actions = end_action_data.duplicate()
@@ -8463,7 +8488,7 @@ func add_cards_green() -> void:
 	card_unrulysourcer.card_color_id = "color_{0}".format([color])
 	card_unrulysourcer.card_texture_path = "external/sprites/cards/jade/20_unrulysourcer.png"
 	card_unrulysourcer.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_unrulysourcer.card_description = "Explore [damage]{0}, Gain [food_amount]{1}.\nFRONTIER: If not in Frontier, create 1 Rebel.".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
+	card_unrulysourcer.card_description = "Explore [damage]{0}, Gain [food_amount]{1}.\nFRONTIER: If not in Frontier, create 1 Bandit.".format([Card.EXPLORE_ICON_KEYWORD,Card.FOOD_ICON_KEYWORD])
 	card_unrulysourcer.card_keyword_object_ids = ["keyword_frontier"]
 	card_unrulysourcer.card_type = CardData.CARD_TYPES.FACTION
 	card_unrulysourcer.card_subtype = CardData.CARD_SUBTYPES.JADE
@@ -8476,7 +8501,7 @@ func add_cards_green() -> void:
 	card_unrulysourcer.card_play_actions = [{
 		Scripts.ACTION_VALIDATOR:{
 			"validator_data":[{Scripts.VALIDATOR_CARD_POSITION_IN_HAND:{"position_in_hand":"right"}}],
-			"failed_action_data":[{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_rebel","number_of_cards":1}}]
+			"failed_action_data":[{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_bandit","number_of_cards":1}}]
 		}
 	},
 			{Scripts.ACTION_ATTACK_GENERATOR:{}
@@ -8707,7 +8732,7 @@ func add_cards_gold() -> void:
 			"random_selection": false,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to appease. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.CRAFT]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_TAG: {"card_tags": ["tag_repair"]}}],
 			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"card_influence":3,
 			"time_delay": 0.1,
@@ -8822,7 +8847,7 @@ func add_cards_gold() -> void:
 				"random_selection": true,
 				"card_pick_type": HandManager.DISCARD_PILE,
 				"card_pick_text": "Choose up to {0} card(s) to wield. {1} cards selected",
-				"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.CRAFT]}}],
+				"validator_data":[{Scripts.VALIDATOR_CARD_TAG:{"card_tags":["tag_repair"]}}],
 				"action_data": [
 				{Scripts.ACTION_CHANGE_CARD_INFLUENCE:{}}]
 				}
@@ -8858,7 +8883,7 @@ func add_cards_gold() -> void:
 	card_reveredsmithy.card_color_id = "color_{0}".format([color])
 	card_reveredsmithy.card_texture_path = "external/sprites/cards/cengkih/07_reveredsmithy.png"
 	card_reveredsmithy.texture_bg_path = "external/sprites/cards/frames/cengkihframe.png"
-	card_reveredsmithy.card_description = "Forge [ore_required] Treasures. Repair 1 Craft in discard pile by 2."
+	card_reveredsmithy.card_description = "Forge [ore_required] Treasures. Repair a Craft card in discard pile by 2."
 	card_reveredsmithy.card_keyword_object_ids = ["keyword_forge","keyword_treasure","keyword_repair"]
 	card_reveredsmithy.card_type = CardData.CARD_TYPES.FACTION
 	card_reveredsmithy.card_subtype = CardData.CARD_SUBTYPES.CENGKIH
@@ -8877,7 +8902,7 @@ func add_cards_gold() -> void:
 			"random_selection": false,
 			"card_pick_type": HandManager.DISCARD_PILE,
 			"card_pick_text": "Choose {0} card to appease. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_types": [CardData.CARD_TYPES.CRAFT]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_TAG: {"card_tags": ["tag_repair"]}}],
 			"action_data": [{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"card_influence":3,
 			"time_delay": 0.1,

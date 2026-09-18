@@ -333,7 +333,8 @@ func _on_player_bandit_changed(_delta: int = 0):
 	var random_int: int = randi_range(0,100)
 	var activate_bandit: bool = (random_int+Global.player_data.player_bandit_chance) > 110
 	if (activate_bandit):
-		var bandit_num: int = 1 + (Global.player_data.player_health/40)
+		var bandit_num: int = 1 + (Global.player_data.player_bandit_increase/3) + (Global.player_data.player_health/50)
+		Global.player_data.player_bandit_increase += 1
 		var bandit_sound_action_data: Array[Dictionary] = [{Scripts.ACTION_CREATE_CARDS:{"created_card_object_id":"card_bandit","number_of_cards":bandit_num, "action_data":[{Scripts.ACTION_DISCARD_CARDS:{}}]}},{
 		Scripts.ACTION_PLAY_SOUND: {"audio_path": "external/audio/sounds/bandit.wav"},
 		}]

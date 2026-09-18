@@ -96,8 +96,9 @@ func init(_card_data: CardData, angular_offset: float, connect_combat_signals: b
 		if (card_data.card_energy_cost == 0):
 			card_energy_sprite.visible = false
 			card_energy_cost_label.visible = false
-		if (card_data.card_influence == 0):
+		if ((!card_data.card_tags.has("tag_repair") and !card_data.card_tags.has("tag_charges")) or card_data.card_influence == 0):
 			card_influence_sprite.visible = false
+			card_influence_label.visible = false
 		else:
 			card_influence_sprite.texture = load("res://sprites/crate.svg")
 	update_card_display()

@@ -27,7 +27,7 @@ class_name Tooltip
 @onready var shop_refresh = %ShopRefreshLabel
 @onready var rot_warning = %RotLabel
 @onready var ascend_button = %AscendButton
-@onready var objectives_label = %ObjectivesLabel 
+@onready var objectives_label = %Player
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var tooltip_label: RichTextLabel = $PanelContainer/TooltipLabel
 @onready var keyword_container: KeywordContainer = $KeywordContainer
@@ -74,7 +74,7 @@ func _ready() -> void:
 		[trade_container, "[color=orange]Trade orders[/color]\nGain a Trade Order card. Play the card to trade resources. Each order can only be used once. You can only gain one Trade order card per Shop Refresh.", true, false, true, $TooltipPositions/TradeTooltipPos],
 		[shop_refresh, "[color=orange]Shop Refresh[/color]\nWhen this counter is at zero, the shop is refreshed.", true, false, true, $TooltipPositions/RefreshTooltipPos],
 		[rot_warning, "[color=orange]Rot Warning[/color]\nWhen this counter is at zero, 25-50% of your food will be gone.", true, false, true, $TooltipPositions/RotTooltipPos],
-		[objectives_label, "[color=orange]Objectives[/color]\nTo win the game, complete these objectives\nThe total number of cards you have can be seen at the Size counter\nArtifacts are built by purchasing blueprint cards and playing them\n.Books are drafted every three times Scrolls are played.", true, false, true, $TooltipPositions/ObjectivesTooltipPos],
+		[objectives_label, "[color=orange]Objectives[/color]\nTo win the game, gain 125 Prestige.\n\nYou gain Prestige from gaining cards, exploring Sites, building Artifacts, drafting Books, and ascending Faction cards.", true, false, true, $TooltipPositions/ObjectivesTooltipPos],
 		[ascend_button, "[color=orange]Ascend[/color]\nSpend 1 Insight to Ascend a Faction card in hand to the Royal Court.\nThis counts as exhausting the card.\n\nYou gain Prestige, which increases depending on the card's rarity and upgrade status. Only cards with 5 or more influence can be selected.", true, false, true, $TooltipPositions/AscendTooltipPos],				
 		[energy, "[color=orange]Energy[/color]\nUsed to play cards", false, false, false, $TooltipPositions/EnergyTooltipPos],
 		[draw_pile_button, "[color=orange]Draw Pile[/color]\nThese cards will be drawn", false, false, false, $TooltipPositions/DrawTooltipPos],

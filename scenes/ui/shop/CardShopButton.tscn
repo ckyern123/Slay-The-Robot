@@ -5,11 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://kij5hy6ws7ih" path="res://sprites/rupee.svg" id="3_gs1e1"]
 
 [node name="CardShopButton" type="Control" unique_id=248046505]
-custom_minimum_size = Vector2(144, 208)
+custom_minimum_size = Vector2(5, 5)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 144.0
-offset_bottom = 208.0
+offset_right = 5.0
+offset_bottom = 5.0
 script = ExtResource("1_c2gpa")
 
 [node name="Card" parent="." unique_id=30564077 instance=ExtResource("2_1jbuy")]

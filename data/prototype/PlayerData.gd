@@ -20,6 +20,7 @@ const PLAYER_START_ROT: int = 14
 @export var player_refresh: int = 4
 @export var player_rot: int = PLAYER_START_ROT
 @export var player_bandit_chance: int = 0
+@export var player_bandit_increase: int = 0
 @export var max_card_layover: int = 0
 
 var threshold_mark: int = 30

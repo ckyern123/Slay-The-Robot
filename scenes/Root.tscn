@@ -2455,7 +2455,7 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_left = 550.0
 offset_right = 780.0
-offset_bottom = 150.0
+offset_bottom = 25.0
 bbcode_enabled = true
 text = "ARTIFACT BLUEPRINTS"
 
@@ -2505,7 +2505,7 @@ offset_right = 809.5
 offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 70
+theme_override_constants/separation = 225
 
 [node name="TradeContainer" type="HBoxContainer" parent="RunScreen/Combat/ShopOverlay" unique_id=878969051]
 layout_mode = 1
@@ -2520,14 +2520,14 @@ offset_right = -238.5
 offset_bottom = 74.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 70
+theme_override_constants/separation = 225
 
 [node name="ArtifactContainer" type="VBoxContainer" parent="RunScreen/Combat/ShopOverlay" unique_id=899795513]
 layout_mode = 0
 offset_left = 550.0
 offset_top = 30.0
-offset_right = 950.0
-offset_bottom = 230.0
+offset_right = 831.0
+offset_bottom = 372.0
 theme_override_constants/separation = 65
 
 [node name="ContinueButton" type="Button" parent="RunScreen/Combat/ShopOverlay" unique_id=1269696807]
@@ -2588,18 +2588,18 @@ horizontal_alignment = 1
 
 [node name="ColorRect2" type="ColorRect" parent="RunScreen/Combat/CardPicking" unique_id=1211793975]
 layout_mode = 0
-offset_left = 494.0
+offset_left = 629.0
 offset_top = 231.0
-offset_right = 894.0
+offset_right = 1029.0
 offset_bottom = 281.0
-color = Color(0.10747976, 0.10747973, 0.10747973, 1)
+color = Color(0.07748466, 0.10382002, 0.4085719, 1)
 
 [node name="ConfirmPickButton" type="Button" parent="RunScreen/Combat/CardPicking" unique_id=1476605964]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 500.0
+offset_left = 630.0
 offset_top = 240.0
-offset_right = 884.0
+offset_right = 1014.0
 offset_bottom = 271.0
 text = "CONFIRM"
 icon_alignment = 1
@@ -3274,6 +3274,34 @@ offset_right = 1973.0
 offset_bottom = 1080.0
 color = Color(0.203922, 0.188235, 0.215686, 0.141176)
 
+[node name="ColorRect" type="ColorRect" parent="RunScreen/PauseOverlay" unique_id=2086620140]
+layout_mode = 0
+offset_left = 1261.0
+offset_top = 304.0
+offset_right = 1761.0
+offset_bottom = 704.0
+color = Color(0.07683582, 0.07683582, 0.07683582, 1)
+
+[node name="Label" type="Label" parent="RunScreen/PauseOverlay/ColorRect" unique_id=1358215085]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 18.0
+offset_right = 457.0
+offset_bottom = 344.33334
+text = "VICTORY CONDITION: 
+Gain 125 Prestige.
+
+You gain Prestige from:
+1) Total number of cards owned (1 point per card).
+2) Ascending cards (higher rarity + upgrade status
+ yields more points).
+3) Exploring sites (1 point per enemy / 3 points per elite)
+4) Building artifacts (3 points per artifact).
+5) Drafting books (5 points per book).
+
+GAME LOSS: 
+You lose when you have 0 food."
+
 [node name="Background2" type="ColorRect" parent="RunScreen/PauseOverlay" unique_id=726319778]
 layout_mode = 1
 anchors_preset = 8
@@ -3537,13 +3565,12 @@ border_width = 5.0
 metadata/_edit_use_anchors_ = true
 
 [node name="ObjectivesTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions" unique_id=943137326]
-visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.09739583
-anchor_top = 0.18055555
-anchor_right = 0.20208333
-anchor_bottom = 0.28611112
+anchor_left = 0.0203125
+anchor_top = 0.06666667
+anchor_right = 0.22447917
+anchor_bottom = 0.23518519
 mouse_filter = 2
 border_width = 5.0
 metadata/_edit_use_anchors_ = true

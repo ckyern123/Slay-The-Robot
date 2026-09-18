@@ -158,28 +158,28 @@ func floor_recursive(location_data: LocationData, act_data: ActData, floor_dict:
 			location_data.difficulty = 0
 			if location_data.location_type == LocationData.LOCATION_TYPES.PLAINS:
 				location_data.icon_texture_path = "external/sprites/locations/plains.svg"
-				location_data.tooltip_bbcode = "Plains:\nFood>Ore>Room\nFeatures: Fertilise, Grain, Rock"
+				location_data.tooltip_bbcode = "Plains:\nFood,Ore,Room\nFeatures: Grain, Rock"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/plains.png"
 				location_data.location_event_pool_object_id = act_data.act_easy_plains_event_pool_object_id
 			elif location_data.location_type == LocationData.LOCATION_TYPES.FOREST:
 				location_data.location_event_pool_object_id = act_data.act_easy_forest_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/forest.svg"
-				location_data.tooltip_bbcode = "Forest:\nMoney>Food>Room\nFeatures: Draft, Fertilise, Root, Spice"
+				location_data.tooltip_bbcode = "Forest:\nMoney,Food,Room\nFeatures: Draft, Fertilise, Root, Spice"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/forest.png"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.COAST:
 				location_data.location_event_pool_object_id = act_data.act_easy_coast_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/coast.svg"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/coast.png"
-				location_data.tooltip_bbcode = "Coast:\nFood>Money>Insight\nFeatures: Fish, Shop Refresh, Treasure"
+				location_data.tooltip_bbcode = "Coast:\nFood,Money,Insight\nFeatures: Fish, Shop Refresh, Treasure"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.SWAMP:
 				location_data.location_event_pool_object_id = act_data.act_easy_swamp_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/swamp.svg"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/swamp.png"
-				location_data.tooltip_bbcode = "Swamp:\nFood>Insight\nFeatures: Delicacy, Draft, Fertilise, Root"
+				location_data.tooltip_bbcode = "Swamp:\nFood,Ore,Insight\nFeatures: Delicacy, Draft, Fertilise, Root"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.DESERT:
 				location_data.location_event_pool_object_id = act_data.act_easy_desert_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/desert.svg"
-				location_data.tooltip_bbcode = "Desert\n:Ore>Money>Insight\nFeatures: Rock, Shop Refresh, Treasure"
+				location_data.tooltip_bbcode = "Desert\n:Ore,Money,Insight\nFeatures: Rock, Shop Refresh, Treasure"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/desert.png"
 		elif k > 3 and prob_num < 100:
 			prob_later += 5
@@ -187,10 +187,10 @@ func floor_recursive(location_data: LocationData, act_data: ActData, floor_dict:
 			if location_data.location_type == LocationData.LOCATION_TYPES.PLAINS:
 				location_data.location_event_pool_object_id = act_data.act_medium_plains_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/plains.svg"
-				location_data.tooltip_bbcode = "Plains Medium:\nFood>Ore>Room\nFeatures: Fertilise, Grain, Rock"
+				location_data.tooltip_bbcode = "Plains Medium:\nFood,Ore,Room\nFeatures: Grain, Rock"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/plains.png"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.FOREST:
-				location_data.tooltip_bbcode = "Forest Medium:\nMoney>Food>Room\nFeatures: Draft, Fertilise, Root, Spice"
+				location_data.tooltip_bbcode = "Forest Medium:\nMoney,Food,Room\nFeatures: Draft, Fertilise, Root, Spice"
 				location_data.location_event_pool_object_id = act_data.act_medium_forest_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/forest_med.svg"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/forest.png"
@@ -198,16 +198,16 @@ func floor_recursive(location_data: LocationData, act_data: ActData, floor_dict:
 				location_data.icon_texture_path = "external/sprites/locations/coast_med.svg"
 				location_data.location_event_pool_object_id = act_data.act_medium_coast_event_pool_object_id
 				location_data.location_background_texture_path = "external/sprites/backgrounds/coast.png"
-				location_data.tooltip_bbcode = "Coast Medium:\nFood>Money>Insight\nFeatures: Fish, Shop Refresh, Treasure"
+				location_data.tooltip_bbcode = "Coast Medium:\nFood,Money,Insight\nFeatures: Fish, Shop Refresh, Treasure"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.SWAMP:
 				location_data.location_event_pool_object_id = act_data.act_medium_swamp_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/swamp_med.svg"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/swamp.png"
-				location_data.tooltip_bbcode = "Swamp Medium:\nFood>Insight\nFeatures: Delicacy, Draft, Fertilise, Root"
+				location_data.tooltip_bbcode = "Swamp Medium:\nFood,Ore,Insight\nFeatures: Delicacy, Draft, Fertilise, Root"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.DESERT:
 				location_data.location_event_pool_object_id = act_data.act_medium_desert_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/desert_med.svg"
-				location_data.tooltip_bbcode = "Desert Medium\n:Ore>Money>Insight\nFeatures: Rock, Shop Refresh, Treasure"
+				location_data.tooltip_bbcode = "Desert Medium\n:Ore,Money,Insight\nFeatures: Rock, Shop Refresh, Treasure"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/desert.png"
 		else:
 			prob_later = 0
@@ -215,27 +215,27 @@ func floor_recursive(location_data: LocationData, act_data: ActData, floor_dict:
 			if location_data.location_type == LocationData.LOCATION_TYPES.PLAINS:
 				location_data.location_event_pool_object_id = act_data.act_hard_plains_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/plains.svg"
-				location_data.tooltip_bbcode = "Plains Hard:\nFood>Ore>Room\nFeatures: Fertilise, Grain, Rock"
+				location_data.tooltip_bbcode = "Plains Hard:\nFood,Ore,Room\nFeatures: Grain, Rock"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/plains.png"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.FOREST:
-				location_data.tooltip_bbcode = "Forest Hard:\nMoney>Food>Room\nFeatures: Draft, Fertilise, Root, Spice"
+				location_data.tooltip_bbcode = "Forest Hard:\nMoney,Food,Room\nFeatures: Draft, Fertilise, Root, Spice"
 				location_data.location_event_pool_object_id = act_data.act_hard_forest_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/forest_hard.svg"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/forest.png"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.COAST:
 				location_data.icon_texture_path = "external/sprites/locations/coast_hard.svg"
-				location_data.tooltip_bbcode = "Coast Hard:\nFood>Money>Insight\nFeatures: Fish, Shop Refresh, Treasure"		
+				location_data.tooltip_bbcode = "Coast Hard:\nFood,Money,Insight\nFeatures: Fish, Shop Refresh, Treasure"		
 				location_data.location_event_pool_object_id = act_data.act_hard_coast_event_pool_object_id
 				location_data.location_background_texture_path = "external/sprites/backgrounds/coast.png"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.SWAMP:
 				location_data.location_event_pool_object_id = act_data.act_hard_swamp_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/swamp_hard.svg"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/swamp.png"
-				location_data.tooltip_bbcode = "Swamp Hard:\nFood>Insight\nFeatures: Delicacy, Draft, Fertilise, Root"
+				location_data.tooltip_bbcode = "Swamp Hard:\nFood,Ore,Insight\nFeatures: Delicacy, Draft, Fertilise, Root"
 			elif location_data.location_type == LocationData.LOCATION_TYPES.DESERT:
 				location_data.location_event_pool_object_id = act_data.act_hard_desert_event_pool_object_id
 				location_data.icon_texture_path = "external/sprites/locations/desert_hard.svg"
-				location_data.tooltip_bbcode = "Desert Hard\n:Ore>Money>Insight\nFeatures: Rock, Shop Refresh, Treasure"
+				location_data.tooltip_bbcode = "Desert Hard\n:Ore,Money,Insight\nFeatures: Rock, Shop Refresh, Treasure"
 				location_data.location_background_texture_path = "external/sprites/backgrounds/desert.png"
 	for child in location_data.location_next_location_ids:
 		var location_child = Global.get_location_data(child)
