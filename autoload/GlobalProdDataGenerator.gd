@@ -8135,27 +8135,16 @@ func add_cards_green() -> void:
 	card_mysticsower.card_color_id = "color_{0}".format([color])
 	card_mysticsower.card_texture_path = "external/sprites/cards/jade/07_facetrecaster.png"
 	card_mysticsower.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_mysticsower.card_description = "Create [number_of_cards] Grains. Put up to 4 cards from your discard pile to the bottom of your draw pile."
+	card_mysticsower.card_description = "Create [number_of_cards] Grain card(s) in your draw pile."
 	card_mysticsower.card_keyword_object_ids = ["keyword_grain"]
 	card_mysticsower.card_type = CardData.CARD_TYPES.FACTION
 	card_mysticsower.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_mysticsower.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_mysticsower.card_requires_target = false
 	card_mysticsower.card_energy_cost = 1
-	card_mysticsower.card_values = {"created_card_object_id":"card_grain","number_of_cards":2}
+	card_mysticsower.card_values = {"created_card_object_id":"card_grain","number_of_cards":1}
 	card_mysticsower.card_upgrade_value_improvements = {"number_of_cards":1}
 	card_mysticsower.card_play_actions = [
-		{
-			Scripts.ACTION_PICK_CARDS:{
-				"min_card_amount": 0,
-				"max_card_amount": 4,
-				"card_pick_type": HandManager.DISCARD_PILE,
-				"min_cards_are_required_for_action": false,
-				"random_selection": false,
-				"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DRAW: {"card_destination_strategy":HandManager.PILE_INSERTION_STRATEGIES.BOTTOM}
-				}]
-			}
-		},
 		{
 		Scripts.ACTION_CREATE_CARDS:{"action_data":[{Scripts.ACTION_ADD_CARDS_TO_DRAW:{}}]
 		}}]
@@ -8393,7 +8382,7 @@ func add_cards_green() -> void:
 	card_staticrecaster.card_color_id = "color_{0}".format([color])
 	card_staticrecaster.card_texture_path = "external/sprites/cards/jade/19_staticrecaster.png"
 	card_staticrecaster.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_staticrecaster.card_description = "Search your draw pile for up to [max_card_amount] Jade cards and play them."
+	card_staticrecaster.card_description = "Search your draw pile for up to [max_card_amount] Basic/Jade cards and play them."
 	card_staticrecaster.card_type = CardData.CARD_TYPES.FACTION
 	card_staticrecaster.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_staticrecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -8408,7 +8397,7 @@ func add_cards_green() -> void:
 				"min_cards_are_required_for_action": false,
 				"random_selection": false,
 				"card_pick_type": HandManager.DRAW_PILE,
-				"card_pick_text": "Choose {0} card(s) to add to hand. {1} cards selected",
+				"card_pick_text": "Choose {0} card(s) to play. {1} cards selected",
 				"validator_data": [{Scripts.VALIDATOR_CARD_COLOR:{"card_color_ids":["color_green"]}}],
 				"action_data": [
 				{
