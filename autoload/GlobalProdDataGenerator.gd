@@ -7723,7 +7723,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.PEARL]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_SUBTYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.PEARL]}}],
 			"action_data": [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
 		}
 		},
@@ -7736,7 +7736,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.ANISEED]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_SUBTYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.ANISEED]}}],
 			"action_data": [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
 		}
 		},
@@ -7749,7 +7749,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.JADE]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_SUBTYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.JADE]}}],
 			"action_data": [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
 		}
 		},
@@ -7762,13 +7762,14 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to appease twice and return to you hand. {1} cards selected",
-			"validator_data": [{Scripts.VALIDATOR_CARD_TYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.CENGKIH]}}],
+			"validator_data": [{Scripts.VALIDATOR_CARD_SUBTYPE: {"card_subtypes": [CardData.CARD_SUBTYPES.CENGKIH]}}],
 			"action_data": [{Scripts.ACTION_ADD_ENERGY:{"energy_amount":1}}]
 		}
 		},]
 	var sift_faction_duplicate: Array[Dictionary] = sift_faction_data.duplicate()
 	for action in sift_faction_duplicate:
 		card_grandunifier.card_play_actions.append(action)
+	card_grandunifier.card_play_actions.append(influence_action.duplicate())
 	card_grandunifier.card_draw_actions = start_action_data.duplicate()
 	card_grandunifier.card_end_of_turn_actions = end_action_data.duplicate()
 	Global.register_rod(card_grandunifier)
@@ -8382,7 +8383,7 @@ func add_cards_green() -> void:
 	card_staticrecaster.card_color_id = "color_{0}".format([color])
 	card_staticrecaster.card_texture_path = "external/sprites/cards/jade/19_staticrecaster.png"
 	card_staticrecaster.texture_bg_path = "external/sprites/cards/frames/jadeframe.png"
-	card_staticrecaster.card_description = "Search your draw pile for up to [max_card_amount] Basic/Jade cards and play them."
+	card_staticrecaster.card_description = "Search your draw pile for up to [max_card_amount] Jade cards and play them."
 	card_staticrecaster.card_type = CardData.CARD_TYPES.FACTION
 	card_staticrecaster.card_subtype = CardData.CARD_SUBTYPES.JADE
 	card_staticrecaster.card_rarity = CardData.CARD_RARITIES.UNCOMMON
@@ -8397,8 +8398,8 @@ func add_cards_green() -> void:
 				"min_cards_are_required_for_action": false,
 				"random_selection": false,
 				"card_pick_type": HandManager.DRAW_PILE,
-				"card_pick_text": "Choose {0} card(s) to play. {1} cards selected",
-				"validator_data": [{Scripts.VALIDATOR_CARD_COLOR:{"card_color_ids":["color_green"]}}],
+				"card_pick_text": "Choose {0} Jade card(s) to play. {1} cards selected",
+				"validator_data": [{Scripts.VALIDATOR_CARD_SUBTYPE:{"card_subtypes":[CardData.CARD_SUBTYPES.JADE]}}],
 				"action_data": [
 				{
 					Scripts.ACTION_PLAY_CARDS:{

@@ -146,6 +146,7 @@ func load_texture(image_partial_path, is_absolute: bool = false) -> ImageTexture
 			else:
 				texture = ImageTexture.create_from_image(image)
 			texture.take_over_path(full_path)
+			print(full_path)
 			self._cached_textures[full_path] = texture
 			return texture
 		else:

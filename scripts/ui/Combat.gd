@@ -74,7 +74,7 @@ var end_turn_object: CombatEndTurn = null
 # condition so it doesn't count as turn start on load
 @onready var no_need_generate: bool = false
 var game_start: bool = true
-var elite_is_present: bool = false
+
 
 func _ready():
 	FileLoader.load_texture(money_texture_path)
@@ -360,11 +360,11 @@ func _on_enemy_killed(enemy: Enemy):
 	if ActionHandler.actions_being_performed:
 		await ActionHandler.actions_ended
 	if (enemy.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
-		elite_is_present = false
+		Global.player_data.elite_is_present = false
 		Global.player_data.add_health(3, 0)
 	else:
 		Global.player_data.add_health(1, 0)
-	if (combat_end_button.visible == false and !elite_is_present):
+	if (combat_end_button.visible == false and !Global.player_data.elite_is_present):
 		combat_end_button.visible = true
 
 	
@@ -398,7 +398,7 @@ func _on_combat_started(event_id: String):
 	for child in enemy_container.get_children():
 		for childer in child.get_children():
 			if (childer.enemy_data.enemy_type == EnemyData.ENEMY_TYPES.MINIBOSS):
-				elite_is_present = true
+				Global.player_data.elite_is_present = true
 	if (game_start):
 		Global.get_player().reset_player()
 		start_turn_animation()

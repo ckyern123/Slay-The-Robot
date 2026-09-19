@@ -22,6 +22,7 @@ const PLAYER_START_ROT: int = 14
 @export var player_bandit_chance: int = 0
 @export var player_bandit_increase: int = 0
 @export var max_card_layover: int = 0
+@export var elite_is_present: bool = false
 
 var threshold_mark: int = 30
 var player_energy: int = 3 # in combat energy. Not saved.

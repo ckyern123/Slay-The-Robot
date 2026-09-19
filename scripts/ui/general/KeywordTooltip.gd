@@ -42,7 +42,9 @@ func init(keyword_object_id: String) -> void:
 				breakpoint
 				DebugLogger.log_error("KeywordTooltip.init(): Invald keyword_status_effect_id of \"{0}\"".format([keyword_status_effect_id]))
 			else:
-				keyword_bbcode = "[img width={0}]{1}[/img] {2}".format([EMBEDDED_IMAGE_SIZE, status_effect_data.status_effect_texture_path, keyword_bbcode])
+				var texture_path_string: String = "res://" + status_effect_data.status_effect_texture_path
+				var texture: ImageTexture = FileLoader.load_texture(texture_path_string, true)
+				keyword_bbcode = "[img width={0}]{1}[/img] {2}".format([EMBEDDED_IMAGE_SIZE, texture_path_string, keyword_bbcode])
 		
 		# append keyword text
 		keyword_bbcode = "{0}\n{1}".format([keyword_bbcode, keyword_data.keyword_text_bb_code])
