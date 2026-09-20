@@ -7439,7 +7439,7 @@ func add_cards_black() -> void:
 	Global.register_rod(card_peddlerveteran)
 	
 	var card_spicyepicure: CardData = CardData.new("card_spicyepicure")
-	card_spicyepicure.card_name = "Spicy Epicutre"
+	card_spicyepicure.card_name = "Spicy Epicure"
 	card_spicyepicure.card_color_id = "color_{0}".format([color])
 	card_spicyepicure.card_texture_path = "external/sprites/cards/aniseed/22_spicyepicure.png"
 	card_spicyepicure.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
@@ -7631,13 +7631,13 @@ func add_cards_black() -> void:
 	card_royalpurveyor.card_color_id = "color_{0}".format([color])
 	card_royalpurveyor.card_texture_path = "external/sprites/cards/aniseed/17_royalpurveyor.png"
 	card_royalpurveyor.texture_bg_path = "external/sprites/cards/frames/anisframe.png"
-	card_royalpurveyor.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Appease/Repair [card_influence] to Faction and Craft cards in hand. \nON DISCARD: Fertilise [artifact_charge_increase]."
+	card_royalpurveyor.card_description = "Discard [discard_count] rightmost cards, then draw [draw_count]. Repair 2 to Craft cards in hand. \nON DISCARD: Fertilise [artifact_charge_increase]."
 	card_royalpurveyor.card_keyword_object_ids = ["keyword_appease","keyword_repair", "keyword_fertilise"]
 	card_royalpurveyor.card_type = CardData.CARD_TYPES.FACTION
 	card_royalpurveyor.card_subtype = CardData.CARD_SUBTYPES.ANISEED
 	card_royalpurveyor.card_rarity = CardData.CARD_RARITIES.UNCOMMON
 	card_royalpurveyor.card_requires_target = false
-	card_royalpurveyor.card_energy_cost = 2
+	card_royalpurveyor.card_energy_cost = 1
 	card_royalpurveyor.card_values = {"card_influence":2, "artifact_charge_increase": 3,"discard_count":3, "draw_count":5}
 	card_royalpurveyor.card_upgrade_value_improvements = {"card_influence":1}
 	card_royalpurveyor.card_play_actions = [		{
@@ -7649,7 +7649,7 @@ func add_cards_black() -> void:
 			"random_selection": true,
 			"card_pick_type": HandManager.HAND_PILE,
 			"card_pick_text": "Choose {0} card to appease. {1} cards selected",
-			"validator_data":[{Scripts.VALIDATOR_CARD_TYPE:{"card_types":[CardData.CARD_TYPES.FACTION]}},{Scripts.VALIDATOR_CARD_TAG:{"card_tags":["tag_repair"]}}],
+			"validator_data":[{Scripts.VALIDATOR_CARD_TAG:{"card_tags":["tag_repair"]}}],
 			"action_data": [
 			{Scripts.ACTION_CHANGE_CARD_INFLUENCE: {
 			"time_delay": 0.1,
@@ -7873,8 +7873,8 @@ func add_cards_green() -> void:
 	card_cofferskeeper.card_rarity = CardData.CARD_RARITIES.COMMON
 	card_cofferskeeper.card_requires_target = false
 	card_cofferskeeper.card_energy_cost = 1
-	card_cofferskeeper.card_values = {"ore_amount":1,"money_amount":1,"food_amount":1,"created_card_object_id":"card_debt", "number_of_cards": 1}
-	card_cofferskeeper.card_upgrade_value_improvements = {"ore_amount":1, "money_amount":1, "food_amount":1, "number_of_cards": 1}
+	card_cofferskeeper.card_values = {"ore_amount":1,"money_amount":2,"food_amount":1,"created_card_object_id":"card_debt", "number_of_cards": 1}
+	card_cofferskeeper.card_upgrade_value_improvements = {"ore_amount":1, "money_amount":2, "food_amount":1, "number_of_cards": 1}
 	card_cofferskeeper.card_play_actions = [
 		{
 		Scripts.ACTION_CREATE_CARDS:{
